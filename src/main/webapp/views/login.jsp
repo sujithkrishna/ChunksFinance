@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -266,6 +269,86 @@
                 background-color: #c0392b;
             }
         }
+			/* Update the CSS for success message */
+			.green-success-message {
+				background: #4CAF50;
+				color: white;
+				padding: 15px;
+				border-radius: 4px;
+				margin: 20px auto;
+				display: none;
+				align-items: center;
+				gap: 15px;
+				animation: slideIn 0.3s ease-out;
+				max-width: 600px;
+			}
+			.message-text {
+				display: flex;
+				flex-direction: column;
+				gap: 5px;
+			}
+
+			.message-text span {
+				font-weight: 600;
+			}
+
+			.message-text span {
+				font-size: 0.9em;
+				opacity: 0.9;
+			}
+
+			.green-success-message.show {
+				display: flex;
+			}
+
+			.green-success-message i {
+				font-size: 20px;
+			}
+
+
+			.red-error-message {
+				background: #e74c3c;;
+				color: white;
+				padding: 15px;
+				border-radius: 4px;
+				margin: 20px auto; /* Changed from 200px to auto for centering */
+				display: none;
+				align-items: center;
+				gap: 10px;
+				animation: slideIn 0.3s ease-out;
+				max-width: 600px; /* Added for better control */
+			}
+
+			.red-error-message.show {
+				display: flex;
+			}
+
+			.red-error-message i {
+				font-size: 20px;
+			}
+			@keyframes slideIn {
+				from {
+					opacity: 0;
+					transform: translateY(-20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			/* Add close button style */
+				.close-btn {
+					margin-left: auto;
+					cursor: pointer;
+					padding: 5px;
+					border-radius: 50%;
+					transition: background 0.3s ease;
+				}
+
+			.close-btn:hover {
+				background: rgba(255,255,255,0.2);
+			}		
     </style>
 </head>
 <body>
@@ -282,7 +365,29 @@
     <main>
         <section class="login-section">
             <h2>Login</h2>
-            <form action="dashboard.html">
+			<!-- Update the success message section -->
+			<div class="green-success-message" id="greenSuccessMessage">
+				<i class="fas fa-check-circle"></i>
+				<div class="message-text">
+					<span>Finance created successfully!</span>
+					<span>Finance created by Sujith!</span>
+				</div>
+				<div class="close-btn" onclick="closeGreenSuccessMessage()">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<!-- Error Message -->
+			<div class="red-error-message" id="redErrorMessage">
+				<i class="fas fa-check-circle"></i>
+				<div class="message-text">
+					<span>Finance created successfully!</span>
+					<span>Finance created by Sujith!</span>
+				</div>
+				<div class="close-btn" onclick="closeRedErrorMessage()">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>				
+            <form action="dashboard">
                 <!-- Username -->
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -324,6 +429,29 @@
     </footer>
 
     <script>
+        function showErrorMessage() {
+            const errorMsg = document.getElementById('redErrorMessage');
+            errorMsg.classList.add('show');
+            setTimeout(() => {
+                errorMsg.classList.remove('show');
+            }, 5000); // Auto-hide after 5 seconds
+        }
+		
+		function closeRedErrorMessage() {
+            document.getElementById('redErrorMessage').classList.remove('show');
+        }
+
+        function showSuccessMessage() {
+            const successMsg = document.getElementById('greenSuccessMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 5000); // Auto-hide after 5 seconds
+        }
+		
+        function closeGreenSuccessMessage() {
+            document.getElementById('greenSuccessMessage').classList.remove('show');
+        }	
         function validateForm() {
             const username = document.getElementById("username");
             const password = document.getElementById("password");
@@ -346,7 +474,10 @@
             }
 
             if (isValid) {
-                window.location.href = 'dashboard.html';
+                // Submit the form or handle valid data			
+		        //showSuccessMessage();
+				//showErrorMessage();			
+                window.location.href = 'dashboard';
             }
         }
 

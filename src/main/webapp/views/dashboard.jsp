@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -428,16 +431,16 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="dashboard.html" class="active">Dashboard</a></li>
-            <li><a href="approvals.html">Approvals</a></li>
-            <li><a href="financeUploads.html">Finance Upload</a></li>
-            <li><a href="financeStatus.html">Finance Status</a></li>
-            <li><a href="loan.html">Loans</a></li>
-            <li><a href="cash.html">Cash</a></li>
-            <li><a href="expenses.html">Expenses</a></li>
-            <li><a href="member.html">Members</a></li>
-            <li><a href="newChits.html">Chits</a></li>
-            <li><a href="createFinance.html">Create Finance</a></li>
+            <li><a href="dashboard" class="active">Dashboard</a></li>
+            <li><a href="approvals">Approvals</a></li>
+            <li><a href="finance-uploads">Finance Upload</a></li>
+            <li><a href="finance-status">Finance Status</a></li>
+            <li><a href="loan">Loans</a></li>
+            <li><a href="cash">Cash</a></li>
+            <li><a href="expenses">Expenses</a></li>
+            <li><a href="member">Members</a></li>
+            <li><a href="new-chits">Chits</a></li>
+            <li><a href="create-finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -451,19 +454,19 @@
                 <div class="card">
                     <div>
                         <div class="stat-title">Total Earnings</div>
-                        <div class="stat-value">₹50,000</div>
+                        <div class="stat-value">&#8377;50,000</div>
                     </div>
                     <div>
                         <div class="stat-title">Total Expenses</div>
-                        <div class="stat-value negative">-₹15,000</div>
+                        <div class="stat-value negative">&#8377;-15,000</div>
                     </div>
                     <div>
                         <div class="stat-title">Pending Loans</div>
-                        <div class="stat-value">₹10,000</div>
+                        <div class="stat-value">&#8377;10,000</div>
                     </div>
                     <div>
                         <div class="stat-title">Current Balance</div>
-                        <div class="stat-value">₹10,000</div>
+                        <div class="stat-value">&#8377;10,000</div>
                     </div>
                 </div>
             </section>
@@ -475,19 +478,19 @@
                 <div class="card">
                     <div>
                         <div class="stat-title">Total Earnings</div>
-                        <div class="stat-value">₹50,000</div>
+                        <div class="stat-value">&#8377;50,000</div>
                     </div>
                     <div>
                         <div class="stat-title">Total Expenses</div>
-                        <div class="stat-value">₹15,000</div>
+                        <div class="stat-value">&#8377;15,000</div>
                     </div>
                     <div>
                         <div class="stat-title">Pending Loans</div>
-                        <div class="stat-value">₹10,000</div>
+                        <div class="stat-value">&#8377;10,000</div>
                     </div>
                     <div>
                         <div class="stat-title">Current Balance</div>
-                        <div class="stat-value">₹10,000</div>
+                        <div class="stat-value">&#8377;10,000</div>
                     </div>
                 </div>
             </section>
@@ -520,7 +523,7 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (this.classList.contains('yes')) {
-                    window.location.href = 'login.html';
+                    window.location.href = 'login';
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });

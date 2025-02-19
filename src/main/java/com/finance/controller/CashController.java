@@ -9,14 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @date 19 Feb 2025
  */
 @Controller
-public class HomeController {
-	
-	
-	@GetMapping(path = {"/", "/home", "/index"})
-	public String handleHome() {
-		return "login";
-	}
-	
-	
+public class CashController {
 
+	@GetMapping(path = {"/cash"})
+	public String handleCash() {
+		return "cash";
+	}
 }

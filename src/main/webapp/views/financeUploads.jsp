@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -374,6 +377,88 @@
 				25% { transform: translateX(-5px); }
 				75% { transform: translateX(5px); }
 			}
+			
+			/* Update the CSS for success message */
+			.green-success-message {
+				background: #4CAF50;
+				color: white;
+				padding: 15px;
+				border-radius: 4px;
+				margin: 20px auto;
+				display: none;
+				align-items: center;
+				gap: 15px;
+				animation: slideIn 0.3s ease-out;
+				max-width: 600px;
+			}
+			.message-text {
+				display: flex;
+				flex-direction: column;
+				gap: 5px;
+			}
+
+			.message-text span {
+				font-weight: 600;
+			}
+
+			.message-text span {
+				font-size: 0.9em;
+				opacity: 0.9;
+			}
+
+			.green-success-message.show {
+				display: flex;
+			}
+
+			.green-success-message i {
+				font-size: 20px;
+			}
+
+
+			.red-error-message {
+				background: #e74c3c;;
+				color: white;
+				padding: 15px;
+				border-radius: 4px;
+				margin: 20px auto; /* Changed from 200px to auto for centering */
+				display: none;
+				align-items: center;
+				gap: 10px;
+				animation: slideIn 0.3s ease-out;
+				max-width: 600px; /* Added for better control */
+			}
+
+			.red-error-message.show {
+				display: flex;
+			}
+
+			.red-error-message i {
+				font-size: 20px;
+			}
+			@keyframes slideIn {
+				from {
+					opacity: 0;
+					transform: translateY(-20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			/* Add close button style */
+				.close-btn {
+					margin-left: auto;
+					cursor: pointer;
+					padding: 5px;
+					border-radius: 50%;
+					transition: background 0.3s ease;
+				}
+
+			.close-btn:hover {
+				background: rgba(255,255,255,0.2);
+			}
+			
 			/* === Error Styles END === */			
 			
         /* === Common END here === */
@@ -601,16 +686,16 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="approvals.html">Approvals</a></li>
-            <li><a href="financeUploads.html" class="active">Finance Upload</a></li>
-            <li><a href="financeStatus.html">Finance Status</a></li>
-            <li><a href="loan.html">Loans</a></li>
-            <li><a href="cash.html">Cash</a></li>
-            <li><a href="expenses.html">Expenses</a></li>
-            <li><a href="member.html">Members</a></li>
-            <li><a href="newChits.html">Chits</a></li>
-            <li><a href="createFinance.html">Create Finance</a></li>
+            <li><a href="dashboard">Dashboard</a></li>
+            <li><a href="approvals">Approvals</a></li>
+            <li><a href="finance-uploads" class="active">Finance Upload</a></li>
+            <li><a href="finance-status">Finance Status</a></li>
+            <li><a href="loan">Loans</a></li>
+            <li><a href="cash">Cash</a></li>
+            <li><a href="expenses">Expenses</a></li>
+            <li><a href="member">Members</a></li>
+            <li><a href="new-chits">Chits</a></li>
+            <li><a href="create-finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -619,6 +704,28 @@
         <div class="content-wrapper">
             <section>
                 <h2>Finance Upload</h2>
+				<!-- Update the success message section -->
+				<div class="green-success-message" id="greenSuccessMessage">
+					<i class="fas fa-check-circle"></i>
+					<div class="message-text">
+						<span>Finance created successfully!</span>
+						<span>Finance created by Sujith!</span>
+					</div>
+					<div class="close-btn" onclick="closeGreenSuccessMessage()">
+						<i class="fas fa-times"></i>
+					</div>
+				</div>
+				<!-- Error Message -->
+				<div class="red-error-message" id="redErrorMessage">
+					<i class="fas fa-check-circle"></i>
+					<div class="message-text">
+						<span>Finance created successfully!</span>
+						<span>Finance created by Sujith!</span>
+					</div>
+					<div class="close-btn" onclick="closeRedErrorMessage()">
+						<i class="fas fa-times"></i>
+					</div>
+				</div>				
                 <form>
                     <!-- Finance Type -->
                     <div class="form-group">
@@ -699,6 +806,30 @@
 
     <script>
 
+        function showErrorMessage() {
+            const errorMsg = document.getElementById('redErrorMessage');
+            errorMsg.classList.add('show');
+            setTimeout(() => {
+                errorMsg.classList.remove('show');
+            }, 5000); // Auto-hide after 5 seconds
+        }
+		
+		function closeRedErrorMessage() {
+            document.getElementById('redErrorMessage').classList.remove('show');
+        }
+
+        function showSuccessMessage() {
+            const successMsg = document.getElementById('greenSuccessMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 5000); // Auto-hide after 5 seconds
+        }
+		
+        function closeGreenSuccessMessage() {
+            document.getElementById('greenSuccessMessage').classList.remove('show');
+        }
+
 // Updated JavaScript
         function validateForm() {
             const fields = [
@@ -729,7 +860,9 @@
             });
 
             if (isValid) {
-                alert('Form submitted successfully!');
+            // Submit the form or handle valid data			
+               showSuccessMessage();
+				//showErrorMessage();
             }
         }
 
@@ -818,7 +951,7 @@
                 e.preventDefault();
                 if(this.classList.contains('yes')) {
                     // Replace with actual logout logic
-                    window.location.href = 'login.html'; // Removed leading slash
+                    window.location.href = 'login'; // Removed leading slash
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });

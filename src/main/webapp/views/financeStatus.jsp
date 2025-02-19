@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -541,16 +544,16 @@
     <!-- Navigation -->
     <nav>
         <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="approvals.html">Approvals</a></li>
-            <li><a href="financeUploads.html">Finance Upload</a></li>
-            <li><a href="financeStatus.html" class="active">Finance Status</a></li>
-            <li><a href="loan.html">Loans</a></li>
-            <li><a href="cash.html">Cash</a></li>
-            <li><a href="expenses.html">Expenses</a></li>
-            <li><a href="member.html">Members</a></li>
-            <li><a href="newChits.html">Chits</a></li>
-            <li><a href="createFinance.html">Create Finance</a></li>
+            <li><a href="dashboard">Dashboard</a></li>
+            <li><a href="approvals">Approvals</a></li>
+            <li><a href="finance-uploads">Finance Upload</a></li>
+            <li><a href="finance-status" class="active">Finance Status</a></li>
+            <li><a href="loan">Loans</a></li>
+            <li><a href="cash">Cash</a></li>
+            <li><a href="expenses">Expenses</a></li>
+            <li><a href="member">Members</a></li>
+            <li><a href="new-chits">Chits</a></li>
+            <li><a href="create-finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -585,28 +588,28 @@
             <!-- Data Rows -->
             <div class="table-row">
                 <div class="table-cell">Sujith</div>
-                <div class="table-cell">₹300</div>
+                <div class="table-cell">&#8377;300</div>
                 <div class="table-cell"><input type="checkbox" checked></div>
             </div>
             <div class="table-row">
                 <div class="table-cell">Manesh</div>
-                <div class="table-cell">₹300</div>
+                <div class="table-cell">&#8377;300</div>
                 <div class="table-cell"><input type="checkbox" checked></div>
             </div>
             <div class="table-row">
                 <div class="table-cell">Sijin</div>
-                <div class="table-cell">₹300</div>
+                <div class="table-cell">&#8377;300</div>
                 <div class="table-cell"><input type="checkbox" checked></div>
             </div>
             <div class="table-row">
                 <div class="table-cell">Jijin</div>
-                <div class="table-cell">₹300</div>
+                <div class="table-cell">&#8377;300</div>
                 <div class="table-cell"><input type="checkbox" checked></div>
             </div>
             <div class="table-row">
                 <div class="table-cell"></div>
                 <div class="table-cell"></div>
-                <div class="table-cell"><h4>Total Collection: ₹900</h4></div>
+                <div class="table-cell"><h4>Total Collection: &#8377;900</h4></div>
             </div>
         </div>
         <!-- Save Button -->
@@ -685,7 +688,7 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (this.classList.contains('yes')) {
-                    window.location.href = 'login.html';
+                    window.location.href = 'login';
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });
