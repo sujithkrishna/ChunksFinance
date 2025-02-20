@@ -15,7 +15,7 @@ import com.finance.exception.DuplicateMemberTypeNameException;
 import com.finance.model.MemberModel;
 import com.finance.model.MemberModel.MemberId;
 import com.finance.repository.MemberRepository;
-import com.finance.security.AESEncryptionUtil;
+import com.finance.security.Base64EncryptionUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -29,10 +29,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MemberService {
 
 	@Autowired
-	private MemberRepository memeberRepository;
+	private MemberRepository memberRepository;
 
 	@Autowired
-	private AESEncryptionUtil encryptionUtil;
+	private Base64EncryptionUtil encryptionUtil;
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean createMember(HttpServletRequest request, MemberModel member) {
@@ -43,16 +43,17 @@ public class MemberService {
 		member.setId(mId);
 		
 		String email = member.getEmailId();
-		Boolean emailPressent = memeberRepository.existsByEmailId(email);
+		Boolean emailPressent = memberRepository.existsByEmailId(email);
 		if (emailPressent) {
 			throw new DuplicateMemberEmailIdException();
 		}
-		List<MemberModel> memberPresent = memeberRepository.findByMemberTypeAndMemberName(member.getId().getMemberType(),member.getId().getMemberName());
+		List<MemberModel> memberPresent = memberRepository.findByMemberTypeAndMemberName(member.getId().getMemberType(),member.getId().getMemberName());
 		if(memberPresent.size()>0) {
 			throw new DuplicateMemberTypeNameException();
 		}
 		try {
-			member.setPassword(encryptionUtil.encrypt(member.getPassword()));
+			String encryptionPassword = encryptionUtil.encrypt(member.getPassword());
+			member.setPassword(encryptionPassword);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,7 +62,7 @@ public class MemberService {
 		}
 		
 		try {
-			memeberRepository.save(member);
+			memberRepository.save(member);
 			return true;
 		} catch (Exception exception) {
 			return false;
@@ -69,7 +70,7 @@ public class MemberService {
 	}
 
 	public List<String> getAllPrimaryMemeber() {
-		List<MemberModel> primaryMembersMemMdl = memeberRepository.findByIdMemberType(ChunksFinanceConstants.PRIMARY);
+		List<MemberModel> primaryMembersMemMdl = memberRepository.findByIdMemberType(ChunksFinanceConstants.PRIMARY);
 		List<String> primaryMembers = new ArrayList<String>();
 		for (MemberModel memberModel : primaryMembersMemMdl) {
 			primaryMembers.add(memberModel.getId().getMemberName());

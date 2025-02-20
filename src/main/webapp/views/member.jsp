@@ -843,11 +843,6 @@
     <script>
 
 	 // Check for success message on page load
-	    window.addEventListener('DOMContentLoaded', () => {
-	       
-	    });
-	 
-	 
 	    document.addEventListener('DOMContentLoaded', function() {
             const memberTypeSelect = document.getElementById('memberType');
             const referenceMemberGroup = document.getElementById('referenceMemberGroup');

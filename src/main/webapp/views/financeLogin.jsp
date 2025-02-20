@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -380,18 +379,17 @@
 			<div class="red-error-message" id="redErrorMessage">
 				<i class="fas fa-check-circle"></i>
 				<div class="message-text">
-					<span>Finance created successfully!</span>
-					<span>Finance created by Sujith!</span>
+					<span><c:out value="${error}" /></span>
 				</div>
 				<div class="close-btn" onclick="closeRedErrorMessage()">
 					<i class="fas fa-times"></i>
 				</div>
 			</div>				
-            <form action="dashboard">
+            <form method="post" action="financeLoginSubmit" id="financeLogin" name="financeLogin">
                 <!-- Username -->
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" class="input-field" placeholder="Enter your username" required>
+                    <input name="emailId" type="text" id="emailId" class="input-field" placeholder="Enter your username" required>
                     <div class="error-message" id="username-error">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Username is required</span>
@@ -401,7 +399,7 @@
                 <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="input-field" placeholder="Enter your password" required>
+                    <input name="password" type="password" id="password" class="input-field" placeholder="Enter your password" required>
                     <div class="error-message" id="password-error">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Password is required</span>
@@ -430,6 +428,17 @@
     </footer>
 
     <script>
+    
+    
+	    document.addEventListener('DOMContentLoaded', function() {
+	        <c:if test="${not empty success}">
+	            showSuccessMessage();
+	        </c:if>	  
+	        <c:if test="${not empty error}">
+	        showErrorMessage();
+	    </c:if>	             
+	    });    
+    
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
             errorMsg.classList.add('show');
@@ -454,7 +463,7 @@
             document.getElementById('greenSuccessMessage').classList.remove('show');
         }	
         function validateForm() {
-            const username = document.getElementById("username");
+            const username = document.getElementById("emailId");
             const password = document.getElementById("password");
             let isValid = true;
 
@@ -477,8 +486,20 @@
             if (isValid) {
                 // Submit the form or handle valid data			
 		        //showSuccessMessage();
-				//showErrorMessage();			
-                window.location.href = 'dashboard';
+				//showErrorMessage();
+			    const form = document.getElementById('financeLogin');
+			    form.method = 'POST';
+			    form.action = 'financeLoginSubmit'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();	
             }
         }
 
@@ -495,7 +516,7 @@
         }
 
         // Add input event listeners
-        document.getElementById('username').addEventListener('input', function() {
+        document.getElementById('emailId').addEventListener('input', function() {
             clearError(this, 'username-error');
         });
 
