@@ -742,8 +742,8 @@
                         <label for="finance-type">Finance Type</label>
                         <select id="finance-type" class="input-field" required>
                             <option value="" disabled selected>Select Finance Type</option>
-                            <option value="chunks-finance">Primary</option>
-                            <option value="onam-fund">Secondary</option>
+                            <option value="Primary">Primary</option>
+                            <option value="Secondary">Secondary</option>
                         </select>
                         <div class="error-message" id="finance-type-error">
                             <i class="fas fa-exclamation-circle"></i>

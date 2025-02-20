@@ -725,9 +725,9 @@
                 <div class="form-group">
                     <label for="memberType">Member Type:</label>
                     <select id="memberType" name="memberType" class="input-field" required>
-                        <option value="" disabled selected>Member Type</option>
+                        <option value="" disabled>Member Type</option>
                         <option value="Primary">Primary</option>
-                        <option value="Secondary">Secondary</option>
+                        <option value="Secondary" selected>Secondary</option>
                     </select>
                     <div class="error-message" id="memberType-error">
                         <i class="fas fa-exclamation-circle"></i>
@@ -758,16 +758,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="memberDOB">Date of Birth:</label>
-                    <input id="memberDOB" name="memberDOB" type="date"  class="input-field" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="mobile">Mobile:</label>
-                    <input id="mobileNumber" name="mobileNumber" type="text"  class="input-field" placeholder="Enter mobile number" required>
-                </div>
-
-                <div class="form-group">
                     <label for="email">Email/Login:</label>
                     <input id="emailId" name="emailId" type="email"  class="input-field" placeholder="Enter email" required>
                     <div class="error-message" id="emailId-error">
@@ -783,6 +773,16 @@
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Please enter a password</span>
                     </div>					
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberDOB">Date of Birth:</label>
+                    <input id="memberDOB" name="memberDOB" type="date"  class="input-field" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input id="mobileNumber" name="mobileNumber" type="text"  class="input-field" placeholder="Enter mobile number" required>
                 </div>
 
                 <div class="form-group">
@@ -865,7 +865,9 @@
                     }, 300);
                 }
             });
-
+            
+            memberTypeSelect.dispatchEvent(new Event('change'));
+            
             <c:if test="${not empty success}">
                 showSuccessMessage();
             </c:if>	  
