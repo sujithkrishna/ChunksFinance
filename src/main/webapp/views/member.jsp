@@ -715,8 +715,7 @@
 			<div class="red-error-message" id="redErrorMessage">
 				<i class="fas fa-check-circle"></i>
 				<div class="message-text">
-					<span>Finance created successfully!</span>
-					<span>Finance created by Sujith!</span>
+					<span><c:out value="${error}" /></span>
 				</div>
 				<div class="close-btn" onclick="closeRedErrorMessage()">
 					<i class="fas fa-times"></i>
@@ -869,7 +868,10 @@
 
             <c:if test="${not empty success}">
                 showSuccessMessage();
-            </c:if>	        
+            </c:if>	  
+            <c:if test="${not empty error}">
+            showErrorMessage();
+        </c:if>	             
         });
 	 
         function showErrorMessage() {
