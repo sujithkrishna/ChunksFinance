@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-	@GetMapping(path = {"/login"})
+	@GetMapping(path = {"/financeLogin"})
 	public String handleHome() {
-		return "login";
+		return "financeLogin";
 	}
 }

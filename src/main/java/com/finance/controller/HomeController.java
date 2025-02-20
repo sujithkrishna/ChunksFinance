@@ -14,7 +14,7 @@ public class HomeController {
 	
 	@GetMapping(path = {"/", "/home", "/index"})
 	public String handleHome() {
-		return "login";
+		return "financeLogin";
 	}
 	
 	

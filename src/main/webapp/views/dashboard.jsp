@@ -523,7 +523,7 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (this.classList.contains('yes')) {
-                    window.location.href = 'login';
+                    window.location.href = 'financeLogin';
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });

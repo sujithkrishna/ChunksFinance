@@ -1131,7 +1131,7 @@ function validateForm() {
 				e.preventDefault();
 				if(this.classList.contains('yes')) {
 					// Replace with actual logout logic
-					window.location.href = 'login'; // Removed leading slash
+					window.location.href = 'financeLogin'; // Removed leading slash
 				}
 				document.querySelector('.logout-confirm').style.display = 'none';
 			});

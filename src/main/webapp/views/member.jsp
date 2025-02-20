@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -642,7 +641,19 @@
 				margin-left: 0;
 				justify-content: flex-start;
             }
-        }		
+        }
+			/* Transition for referenceMemberGroup */
+			#referenceMemberGroup {
+			    transition: opacity 0.3s ease, height 0.3s ease;
+			    opacity: 0;
+			    height: 0;
+			    overflow: hidden;
+			}
+			
+			#referenceMemberGroup.show {
+			    opacity: 1;
+			    height: auto;
+			}
     </style>
 </head>
 <body>
@@ -694,8 +705,7 @@
 			<div class="green-success-message" id="greenSuccessMessage">
 				<i class="fas fa-check-circle"></i>
 				<div class="message-text">
-					<span>Finance created successfully!</span>
-					<span>Finance created by Sujith!</span>
+					<span><c:out value="${success}" /></span>
 				</div>
 				<div class="close-btn" onclick="closeGreenSuccessMessage()">
 					<i class="fas fa-times"></i>
@@ -712,23 +722,36 @@
 					<i class="fas fa-times"></i>
 				</div>
 			</div>				
-            <form>
+            <form method="post" action="createMember" id="formcreateMember" name="formcreateMember">
                 <div class="form-group">
-                    <label for="ownerOfFund">Finance Type:</label>
-                    <select id="ownerOfFund" class="input-field" required>
-                        <option value="" disabled selected>Finance Type</option>
-                        <option value="chunksFinance">Chunks Finance</option>
-                        <option value="onamFund">Onam Fund</option>
+                    <label for="memberType">Member Type:</label>
+                    <select id="memberType" name="memberType" class="input-field" required>
+                        <option value="" disabled selected>Member Type</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Secondary">Secondary</option>
                     </select>
-                    <div class="error-message" id="ownerOfFund-error">
+                    <div class="error-message" id="memberType-error">
                         <i class="fas fa-exclamation-circle"></i>
-                        <span>Please select a finance type</span>
+                        <span>Please select a member type</span>
                     </div>					
                 </div>
-
+				<div class="form-group" id="referenceMemberGroup" style="display: none;">
+				    <label for="referenceMember">Reference Member:</label>
+				    <select id="referenceMember" name="referenceMember" class="input-field" required>
+				        <option value="" disabled selected>Reference Member</option>
+				        <c:forEach items="${primaryMembers}" var="member">
+				            <option value="${member}">${member}</option>
+				        </c:forEach>
+				    </select>
+				    <div class="error-message" id="referenceMember-error">
+				        <i class="fas fa-exclamation-circle"></i>
+				        <span>Please select a Reference Member</span>
+				    </div>
+				</div>
+                
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="name" class="input-field" placeholder="Enter member name" required>
+                    <input id="memberName" name="memberName" type="text"  class="input-field" placeholder="Enter member name" required>
                     <div class="error-message" id="name-error">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Please enter member name</span>
@@ -736,19 +759,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="dob">Date of Birth:</label>
-                    <input type="date" id="dob" class="input-field" required>
+                    <label for="memberDOB">Date of Birth:</label>
+                    <input id="memberDOB" name="memberDOB" type="date"  class="input-field" required>
                 </div>
 
                 <div class="form-group">
                     <label for="mobile">Mobile:</label>
-                    <input type="tel" id="mobile" class="input-field" placeholder="Enter mobile number" required>
+                    <input id="mobileNumber" name="mobileNumber" type="text"  class="input-field" placeholder="Enter mobile number" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email/Login:</label>
-                    <input type="email" id="email" class="input-field" placeholder="Enter email" required>
-                    <div class="error-message" id="email-error">
+                    <input id="emailId" name="emailId" type="email"  class="input-field" placeholder="Enter email" required>
+                    <div class="error-message" id="emailId-error">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Please enter a valid email</span>
                     </div>					
@@ -756,7 +779,7 @@
 
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" id="password" class="input-field" placeholder="Enter password" required>
+                    <input id="password" name="password" type="password"  class="input-field" placeholder="Enter password" required>
                     <div class="error-message" id="password-error">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Please enter a password</span>
@@ -765,40 +788,42 @@
 
                 <div class="form-group">
                     <label for="address1">Address 1:</label>
-                    <input type="text" id="address1" class="input-field" placeholder="Enter address" required>
+                    <input id="address1" name="address1" type="text"  class="input-field" placeholder="Enter address" required>
                 </div>
 
                 <div class="form-group">
                     <label for="area">Area/Place:</label>
-                    <input type="text" id="area" class="input-field" placeholder="Enter area" required>
+                    <input id="place" name="place" type="text"  class="input-field" placeholder="Enter area" required>
                 </div>
 
                 <div class="form-group">
                     <label for="taluk">Taluk:</label>
-                    <input type="text" id="taluk" class="input-field" placeholder="Enter taluk" required>
+                    <input id="taluk"  name="taluk" type="text"  class="input-field" placeholder="Enter taluk" required>
                 </div>
 
                 <div class="form-group">
                     <label for="district">District:</label>
-                    <input type="text" id="district" class="input-field" placeholder="Enter district" required>
+                    <input id="district" name="district" type="text"  class="input-field" placeholder="Enter district" required>
                 </div>
 
                 <div class="form-group">
                     <label for="state">State:</label>
-                    <input type="text" id="state" class="input-field" placeholder="Enter state" required>
+                    <input id="state"  name="state" type="text"  class="input-field" placeholder="Enter state" required>
                 </div>
 
                 <div class="form-group">
                     <label for="pin">PINCode:</label>
-                    <input type="text" id="pin" class="input-field" placeholder="Enter PINCode" required>
+                    <input id="pincode" name="pincode" type="text"  class="input-field" placeholder="Enter PINCode" required>
                 </div>
 
                 <!-- Button Group for Save, Update, Delete -->
                 <div class="button-group">
-                    <button type="button" onclick="validateForm()"><i class="fas fa-user-plus"></i> Add Member</button>
+                    <button type="submit" onclick="validateForm()"><i class="fas fa-user-plus"></i> Add Member</button>
                     <button type="button"> <i class="fas fa-edit"></i>Edit</button>
                     <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>
                 </div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                
             </form>
         </section>
     </main>
@@ -818,6 +843,35 @@
 	
     <script>
 
+	 // Check for success message on page load
+	    window.addEventListener('DOMContentLoaded', () => {
+	       
+	    });
+	 
+	 
+	    document.addEventListener('DOMContentLoaded', function() {
+            const memberTypeSelect = document.getElementById('memberType');
+            const referenceMemberGroup = document.getElementById('referenceMemberGroup');
+
+            memberTypeSelect.addEventListener('change', function() {
+                if (this.value === 'Secondary') {
+                    referenceMemberGroup.style.display = ''; // Fix: Remove inline display:none
+                    setTimeout(() => {
+                        referenceMemberGroup.classList.add('show');
+                    }, 10);
+                } else {
+                    referenceMemberGroup.classList.remove('show');
+                    setTimeout(() => {
+                        referenceMemberGroup.style.display = 'none';
+                    }, 300);
+                }
+            });
+
+            <c:if test="${not empty success}">
+                showSuccessMessage();
+            </c:if>	        
+        });
+	 
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
             errorMsg.classList.add('show');
@@ -859,30 +913,43 @@
             let isValid = true;
             
             // Clear previous errors
-            clearError(document.getElementById('ownerOfFund'), 'ownerOfFund-error');
-            clearError(document.getElementById('name'), 'name-error');
-            clearError(document.getElementById('email'), 'email-error');
+            clearError(document.getElementById('referenceMember'), 'referenceMember-error');
+            clearError(document.getElementById('memberType'), 'memberType-error');
+            clearError(document.getElementById('memberName'), 'name-error');
+            clearError(document.getElementById('emailId'), 'emailId-error');
             clearError(document.getElementById('password'), 'password-error');
 
             // Validate Finance Type
-            const financeType = document.getElementById('ownerOfFund');
-            if (!financeType.value) {
-                showError(financeType, 'ownerOfFund-error');
+            const memberType = document.getElementById('memberType');
+            if (!memberType.value) {
+                showError(memberType, 'memberType-error');
                 isValid = false;
             }
 
+            // Validate Reference Member if Secondary
+            if (memberType.value === 'Secondary') {
+                const referenceMember = document.getElementById('referenceMember');
+                if (!referenceMember.value) {
+                    showError(referenceMember, 'referenceMember-error');
+                    isValid = false;
+                }
+            }else{
+            	const referenceMemberSelect = document.getElementById('referenceMember');
+                referenceMemberSelect.value = "Primary";
+            }
+            
             // Validate Name
-            const name = document.getElementById('name');
+            const name = document.getElementById('memberName');
             if (!name.value.trim()) {
                 showError(name, 'name-error');
                 isValid = false;
             }
 
             // Validate Email
-            const email = document.getElementById('email');
+            const email = document.getElementById('emailId');
 			
 			if (!email.value.trim()) {
-                showError(email, 'email-error');
+                showError(email, 'emailId-error');
                 isValid = false;
             }
 			
@@ -896,9 +963,26 @@
             }
 
 			if (isValid) {
-			// You can add form submission logic here
-			 showSuccessMessage();
-			//showErrorMessage();				
+				// You can add form submission logic here
+				// showSuccessMessage();
+				//showErrorMessage();	
+				
+				// Create a hidden form
+			    const form = document.getElementById('formcreateMember');
+			    form.method = 'POST';
+			    form.action = 'crateMember'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();		
+				
+			
             }
 
 
@@ -906,16 +990,20 @@
         }
 		
         // Add input listeners for real-time validation
-        document.getElementById('ownerOfFund').addEventListener('change', function() {
-            clearError(this, 'ownerOfFund-error');
+        document.getElementById('memberType').addEventListener('change', function() {
+            clearError(this, 'memberType-error');
         });
 
-        document.getElementById('name').addEventListener('input', function() {
+        document.getElementById('referenceMember').addEventListener('change', function() {
+            clearError(this, 'referenceMember-error');
+        });
+        
+        document.getElementById('memberName').addEventListener('input', function() {
             clearError(this, 'name-error');
         });
 
-        document.getElementById('email').addEventListener('input', function() {
-            clearError(this, 'email-error');
+        document.getElementById('emailId').addEventListener('input', function() {
+            clearError(this, 'emailId-error');
         });
 
         document.getElementById('password').addEventListener('input', function() {
@@ -948,7 +1036,7 @@
 				e.preventDefault();
 				if(this.classList.contains('yes')) {
 					// Replace with actual logout logic
-					window.location.href = 'login'; // Removed leading slash
+					window.location.href = 'financeLogin'; // Removed leading slash
 				}
 				document.querySelector('.logout-confirm').style.display = 'none';
 			});
