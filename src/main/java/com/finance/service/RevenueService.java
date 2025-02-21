@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.CashModel;
+import com.finance.model.RevenueModel;
 import com.finance.model.MemberModel;
-import com.finance.repository.CashRepository;
+import com.finance.repository.RevenueRepository;
 import com.finance.repository.FinanceRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,35 +21,33 @@ import jakarta.servlet.http.HttpServletRequest;
  *
  */
 @Service
-public class CashService {
+public class RevenueService {
 	
 	
 
 	@Autowired
-    private CashRepository cashRepository;
+    private RevenueRepository revenueRepository;
 	
 	@Autowired
 	private FinanceRepository financeRepository;
 	
-	public Long getMaxCashNumber() {
-        return cashRepository.findMaxCashNumber(); 
+	public Long getMaxRevenueNumber() {
+        return revenueRepository.findMaxRevenueNumber(); 
     }
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	public boolean creatCash(HttpServletRequest request, CashModel cash) {
-		cash.setCurrentStatus(ChunksFinanceConstants.IN_PROGRESS);
-		if(null != cash.getFinanceType()) {
-			String[] financeTypeDataSplit = cash.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
+	public boolean creatRevenue(HttpServletRequest request, RevenueModel revenue) {
+		revenue.setCurrentStatus(ChunksFinanceConstants.IN_PROGRESS);
+		if(null != revenue.getFinanceType()) {
+			String[] financeTypeDataSplit = revenue.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
 			String financeOwnerName = financeTypeDataSplit[2];
-			cash.setApproverName(financeOwnerName);		
+			revenue.setApproverName(financeOwnerName);		
 		}else {
 			// Its going to Default Approver
 			
 		}
-		
-
 		try {
-			cashRepository.save(cash);
+			revenueRepository.save(revenue);
 			return true;
 		} catch (Exception exception) {
 			return false;

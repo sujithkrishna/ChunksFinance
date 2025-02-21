@@ -688,7 +688,7 @@
             <li><a href="finance-uploads">Finance Upload</a></li>
             <li><a href="finance-status">Finance Status</a></li>
             <li><a href="loan" class="active">Loans</a></li>
-            <li><a href="cash">Cash</a></li>
+            <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>

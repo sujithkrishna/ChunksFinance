@@ -20,13 +20,13 @@ import lombok.ToString;
 @Data
 @Entity
 @ToString
-@Table(name = "cash")
-@IdClass(CashId.class) // Specify the composite key class
-public class CashModel {
+@Table(name = "revenue")
+@IdClass(RevenueId.class) // Specify the composite key class
+public class RevenueModel {
 
 	 	@Id
-	    @Column(name = "cash_number", nullable = false)
-	    private Long cashNumber;
+	    @Column(name = "revenue_number", nullable = false)
+	    private Long revenueNumber;
 
 	    @Id
 	    @Column(name = "finance_type", nullable = false)

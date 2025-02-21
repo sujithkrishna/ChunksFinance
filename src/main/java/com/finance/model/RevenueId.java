@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class CashId implements Serializable {
+public class RevenueId implements Serializable {
 
     @Id
-    @Column(name = "cash_number")
-    private Long cashNumber;
+    @Column(name = "revenue_number")
+    private Long revenueNumber;
 
     @Id
     @Column(name = "finance_type")

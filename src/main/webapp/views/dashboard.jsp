@@ -436,7 +436,7 @@
             <li><a href="finance-uploads">Finance Upload</a></li>
             <li><a href="finance-status">Finance Status</a></li>
             <li><a href="loan">Loans</a></li>
-            <li><a href="cash">Cash</a></li>
+            <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
@@ -468,16 +468,16 @@
 		            <h5>The fund is managed by ${financeItem.financeOwnerName}</h5>
 		                <div class="card">
 		                    <div>
-		                        <div class="stat-title">Total Earnings</div>
-		                        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+		                        <div class="stat-title">Total Revenue</div>
+		                        <div class="stat-value">&#8377;0</div>
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Total Expenses</div>
-		                        <div class="stat-value negative">&#8377;${financeItem.currentBalance}</div>
+		                        <div class="stat-value negative">&#8377;0</div>
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Pending Loans</div>
-		                        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+		                        <div class="stat-value">&#8377;0</div>
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Current Balance</div>

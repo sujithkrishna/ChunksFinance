@@ -6,14 +6,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash Management System | Chunks Finance Dashboard</title>
-    <meta name="description" content="Manage and track cash transactions efficiently with Chunks Finance comprehensive cash management system">
-    <meta name="keywords" content="cash management, financial tracking, expense recording, chunks finance, money management">
+    <title>Revenue Management System | Chunks Finance Dashboard</title>
+    <meta name="description" content="Manage and track revenue transactions efficiently with Chunks Finance comprehensive revenue management system">
+    <meta name="keywords" content="revenue management, financial tracking, expense recording, chunks finance, money management">
     <meta name="author" content="Chunks Finance">
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Cash Management System - Chunks Finance">
-    <meta property="og:description" content="Professional cash transaction management interface with real-time tracking">
+    <meta property="og:title" content="Revenue Management System - Chunks Finance">
+    <meta property="og:description" content="Professional revenue transaction management interface with real-time tracking">
     <meta property="og:type" content="website">
     
     <!-- Preconnected Resources -->
@@ -704,7 +704,7 @@
             <li><a href="finance-uploads">Finance Upload</a></li>
             <li><a href="finance-status">Finance Status</a></li>
             <li><a href="loan">Loans</a></li>
-            <li><a href="Cash" class="active">Cash</a></li>
+            <li><a href="revenue" class="active">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
@@ -716,7 +716,7 @@
      <main>
         <div class="content-wrapper">
             <section>
-                <h2>Cash Management</h2>
+                <h2>Revenue Management</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
@@ -737,13 +737,13 @@
 						<i class="fas fa-times"></i>
 					</div>
 				</div>					
-                <form method="post" action="createCash" id="formcreateCash" name="formcreateCash">
+                <form method="post" action="createRevenue" id="formcreateRevenue" name="formcreateRevenue">
                     <div class="form-group">
-                        <label for="CashNo">Cash No:</label>
-                        <input name="cashNumber" type="text" id="CashNo" class="input-field" placeholder="Enter Cash number" required readonly>
-                        <div class="error-message" id="CashNo-error">
+                        <label for="RevenueNo">Revenue No:</label>
+                        <input name="RevenueNumber" type="text" id="RevenueNo" class="input-field" placeholder="Enter Revenue number" required readonly>
+                        <div class="error-message" id="RevenueNo-error">
                             <i class="fas fa-exclamation-circle"></i>
-                            <span>Cash number is required</span>
+                            <span>Revenue number is required</span>
                         </div>
                     </div>
 
@@ -762,36 +762,36 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="CashName">Spender Name:</label>
-                        <input name="spenderName" type="text" id="CashName" class="input-field" placeholder="Enter Spender name" required readonly>
-                        <div class="error-message" id="CashName-error">
+                        <label for="RevenueName">Spender Name:</label>
+                        <input name="spenderName" type="text" id="RevenueName" class="input-field" placeholder="Enter Spender name" required readonly>
+                        <div class="error-message" id="RevenueName-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Spender name is required</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="CashDetails">Spender Details:</label>
-                        <input name="spenderDetails" type="text" id="CashDetails" class="input-field" placeholder="Enter Spender details" required>
-                        <div class="error-message" id="CashDetails-error">
+                        <label for="RevenueDetails">Spender Details:</label>
+                        <input name="spenderDetails" type="text" id="RevenueDetails" class="input-field" placeholder="Enter Spender details" required>
+                        <div class="error-message" id="RevenueDetails-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Spender details are required</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="CashDate">Date:</label>
-                        <input name="spendDate" type="date" id="CashDate" class="input-field" required>
-                        <div class="error-message" id="CashDate-error">
+                        <label for="RevenueDate">Date:</label>
+                        <input name="spendDate" type="date" id="RevenueDate" class="input-field" required>
+                        <div class="error-message" id="RevenueDate-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Please select a date</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="CashAmount">Amount:</label>
-                        <input name="spendAmount" type="number" id="CashAmount" class="input-field" placeholder="Enter amount" required>
-                        <div class="error-message" id="CashAmount-error">
+                        <label for="RevenueAmount">Amount:</label>
+                        <input name="spendAmount" type="number" id="RevenueAmount" class="input-field" placeholder="Enter amount" required>
+                        <div class="error-message" id="RevenueAmount-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Amount is required</span>
                         </div>
@@ -799,7 +799,7 @@
 
                     <!-- Submit Button -->
                     <div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fas fa-money-bill-wave"></i> Add Cash</button>
+                        <button type="button" onclick="validateForm()"><i class="fas fa-money-bill-wave"></i> Add Revenue</button>
                         <button type="button"> <i class="fas fa-edit"></i>Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
                     </div>
@@ -816,18 +816,18 @@
 
     <script>
     
-	 // Check for success message on page load
-    document.addEventListener('DOMContentLoaded', function() {
-    	document.getElementById('CashNo').value = '${cashNumber}';
-    	document.getElementById('CashName').value = '${currentUserName}';
-    	
-        <c:if test="${not empty success}">
-            showSuccessMessage();
-        </c:if>	  
-        <c:if test="${not empty error}">
-       		 showErrorMessage();
-   		 </c:if>	             
-    });
+		 // Check for success message on page load
+	    document.addEventListener('DOMContentLoaded', function() {
+	    	document.getElementById('RevenueNo').value = '${revenueNumber}';
+	    	document.getElementById('RevenueName').value = '${currentUserName}';
+	    	
+	        <c:if test="${not empty success}">
+	            showSuccessMessage();
+	        </c:if>	  
+	        <c:if test="${not empty error}">
+	       		 showErrorMessage();
+	   		 </c:if>	             
+	    });
 	 
 
         function showErrorMessage() {
@@ -856,7 +856,7 @@
 		
         // Function to set the current date in the date input field
         function setCurrentDate() {
-            const dateInput = document.getElementById('CashDate');
+            const dateInput = document.getElementById('RevenueDate');
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -867,14 +867,15 @@
 
         
 		
- function validateForm() {
+ 			
+        function validateForm() {
             const fields = [
-                { id: 'CashNo', errorId: 'CashNo-error' },
+                { id: 'RevenueNo', errorId: 'RevenueNo-error' },
                 { id: 'ownerOfFund', errorId: 'financeType-error' },
-                { id: 'CashName', errorId: 'CashName-error' },
-                { id: 'CashDetails', errorId: 'CashDetails-error' },
-                { id: 'CashDate', errorId: 'CashDate-error' },
-                { id: 'CashAmount', errorId: 'CashAmount-error' }
+                { id: 'RevenueName', errorId: 'RevenueName-error' },
+                { id: 'RevenueDetails', errorId: 'RevenueDetails-error' },
+                { id: 'RevenueDate', errorId: 'RevenueDate-error' },
+                { id: 'RevenueAmount', errorId: 'RevenueAmount-error' }
             ];
 
             let isValid = true;
@@ -903,9 +904,9 @@
 				
 
 				// Create a hidden form
-			    const form = document.getElementById('formcreateCash');
+			    const form = document.getElementById('formcreateRevenue');
 			    form.method = 'POST';
-			    form.action = 'create-cash'; // Your endpoint URL
+			    form.action = 'create-revenue'; // Your endpoint URL
 
 			    // Add CSRF token (required for Spring Security)
 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;

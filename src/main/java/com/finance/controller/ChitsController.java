@@ -23,7 +23,7 @@ public class ChitsController {
 	private CurrentUser currentUser;
 	
 	@GetMapping(path = {"/new-chits"})
-	public String handleCash(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String handleChits(HttpServletRequest request, HttpServletResponse response, Model model) {
 		if(null != currentUser  && !currentUser.isLoggedIn()) {
 			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
 		}

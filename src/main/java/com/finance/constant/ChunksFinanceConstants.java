@@ -7,19 +7,25 @@ package com.finance.constant;
  */
 public class ChunksFinanceConstants {
 
+	public static final String APPROVED = "APPROVED";
+	
 	public static final String SILENT_WATCHER = "SilentWatcher";
 	
 	public static final String ALL_FINANCE = "AllFinance";
 	
-	public static final String CASH_NUMBER = "cashNumber";
+	public static final String REVENUE_NUMBER = "revenueNumber";
 	
-	public static final String CASH_NUMBER_ONE = "1";
+	public static final String REVENUE = "REVENUE";
+	
+	public static final String REVENUE_NUMBER_ONE = "1";
 	
 	public static final String FINANCETYPE_SPLIT_REGEX = "\\|";
 	
 	public static final String PRIMARY = "Primary";
 	
 	public static final String CURRENT_USER = "currentUser";
+	
+	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";
 	
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	
@@ -33,11 +39,15 @@ public class ChunksFinanceConstants {
 	
 	public static final String FINANCE_CREATE_NEWFINANCE_MESSAGE = "finance.create.message";
 	
+	public static final String FINANCE_ALREADY_APPOVED_MESSAGE = "finance.already.appoved.message";
+	
+	public static final String FINANCE_APPOVED_MESSAGE = "finance.appoved.message";
+	
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_EMAILPRESENT_MESSAGE = "member.create.newuser.error.emailpresent.message";
 	
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_SAMENAME_TYPE_MESSAGE = "member.create.newuser.error.samename.type.message";
 	
-	public static final String FINANCE_CREATE_CASH_MESSAGE = "finance.create.cash.message";
+	public static final String FINANCE_CREATE_REVENUE_MESSAGE = "finance.create.revenue.message";
 	
 	public static final String USER_NOTFOUND_ERROR = "user.notfound.error";
 	
@@ -46,4 +56,10 @@ public class ChunksFinanceConstants {
 	public static final String SUCCESS = "success";
 	
 	public static final String ERROR = "error";
+	
+	public static final String CURRENT_ID = "currentId";
+	
+	public static final String STATUS = "status";
+
+	public static final String CURRENT_TYPE = "currentType";
 }

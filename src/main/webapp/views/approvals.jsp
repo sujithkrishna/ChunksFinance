@@ -473,6 +473,87 @@
                 margin-right: 5px;
             }
         }
+        
+        /* Update the CSS for success message */
+			.green-success-message {
+				background: #4CAF50;
+				color: white;
+				padding: 15px;
+				border-radius: 4px;
+				margin: 20px auto;
+				display: none;
+				align-items: center;
+				gap: 15px;
+				animation: slideIn 0.3s ease-out;
+				max-width: 600px;
+			}
+			.message-text {
+				display: flex;
+				flex-direction: column;
+				gap: 5px;
+			}
+
+			.message-text span {
+				font-weight: 600;
+			}
+
+			.message-text span {
+				font-size: 0.9em;
+				opacity: 0.9;
+			}
+
+			.green-success-message.show {
+				display: flex;
+			}
+
+			.green-success-message i {
+				font-size: 20px;
+			}
+
+
+			.red-error-message {
+				background: #e74c3c;;
+				color: white;
+				padding: 15px;
+				border-radius: 4px;
+				margin: 20px auto; /* Changed from 200px to auto for centering */
+				display: none;
+				align-items: center;
+				gap: 10px;
+				animation: slideIn 0.3s ease-out;
+				max-width: 600px; /* Added for better control */
+			}
+
+			.red-error-message.show {
+				display: flex;
+			}
+
+			.red-error-message i {
+				font-size: 20px;
+			}
+			@keyframes slideIn {
+				from {
+					opacity: 0;
+					transform: translateY(-20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			/* Add close button style */
+				.close-btn {
+					margin-left: auto;
+					cursor: pointer;
+					padding: 5px;
+					border-radius: 50%;
+					transition: background 0.3s ease;
+				}
+
+			.close-btn:hover {
+				background: rgba(255,255,255,0.2);
+			}
 
         /* Updated Date Input Styles */
         input[type="date"] {
@@ -527,7 +608,7 @@
             <li><a href="finance-uploads">Finance Upload</a></li>
             <li><a href="finance-status">Finance Status</a></li>
             <li><a href="loan">Loans</a></li>
-            <li><a href="cash">Cash</a></li>
+            <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
@@ -539,77 +620,70 @@
     <main>
         <section id="approvals">
             <h2>Pending Approvals</h2>
-            <div class="form-container">
-                <div class="form-group">
-                    <label for="approval-date">Filter Date:</label>
-                    <input type="date" id="approval-date" name="approval-date" required>
-                </div>
-            </div>
-            <div class="table-container">
-                <!-- Table Header -->
-                <div class="table-row header">
-                    <div class="table-cell">Requester</div>
-                    <div class="table-cell">Request Type</div>
-                    <div class="table-cell">Amount</div>
-                    <div class="table-cell">Date Submitted</div>
-                    <div class="table-cell">Authorization</div>
-                </div>
-
-                <!-- Approval Rows -->
-                <div class="table-row">
-                    <div class="table-cell">Sujith Krishna</div>
-                    <div class="table-cell">Weekly Collection</div>
-                    <div class="table-cell">&#8377;300</div>
-                    <div class="table-cell">2023-10-01</div>
-                    <div class="table-cell">
-                        <div class="button-group-approved">
-                            <button aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
-                            <button style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="table-row">
-                    <div class="table-cell">Sujith Krishna</div>
-                    <div class="table-cell">Onam Fund Collection</div>
-                    <div class="table-cell">&#8377;5000</div>
-                    <div class="table-cell">2023-10-01</div>
-                    <div class="table-cell">
-                        <div class="button-group-approved">
-                            <button aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
-                            <button style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
-                        </div>
-                    </div>
-                </div>				
-
-                <div class="table-row">
-                    <div class="table-cell">Manesh</div>
-                    <div class="table-cell">Expense Claim</div>
-                    <div class="table-cell">&#8377;5,000</div>
-                    <div class="table-cell">2023-10-01</div>
-                    <div class="table-cell">
-                        <div class="button-group-approved">
-                            <button aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
-                            <button style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
-                        </div>
-                    </div>
-                </div>				
-
-                <div class="table-row">
-                    <div class="table-cell">Jijin</div>
-                    <div class="table-cell">Cash Deposit</div>
-                    <div class="table-cell">&#8377;8,000</div>
-                    <div class="table-cell">2023-10-01</div>
-                    <div class="table-cell">
-                        <div class="button-group-approved">
-                            <button aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
-                            <button style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
-                        </div>
-                    </div>
-                </div>					
-
-
-            </div>
+            <!-- Update the success message section -->
+			<div class="green-success-message" id="greenSuccessMessage">
+				<i class="fas fa-check-circle"></i>
+				<div class="message-text">
+					<span><c:out value="${success}" /></span>
+				</div>
+				<div class="close-btn" onclick="closeGreenSuccessMessage()">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>
+			<!-- Error Message -->
+			<div class="red-error-message" id="redErrorMessage">
+				<i class="fas fa-check-circle"></i>
+				<div class="message-text">
+					<span><c:out value="${error}" /></span>
+				</div>
+				<div class="close-btn" onclick="closeRedErrorMessage()">
+					<i class="fas fa-times"></i>
+				</div>
+			</div>	
+			<form method="post" action="createApproval" id="formcreateApproval" name="formcreateApproval">
+	            <div class="form-container">
+	                <div class="form-group">
+	                    <label for="approval-date">Filter Date:</label>
+	                    <input type="date" id="approval-date" name="approval-date" required>
+	                </div>
+	            </div>
+	            <div class="table-container">
+	                <!-- Table Header -->
+	                <div class="table-row header">
+	                    <div class="table-cell">Requester</div>
+	                    <div class="table-cell">Request Type</div>
+	                    <div class="table-cell">Amount</div>
+	                    <div class="table-cell">Date Submitted</div>
+	                    <div class="table-cell">Authorization</div>
+	                </div>
+	                <!-- Approval Rows -->
+		                 <c:choose>
+			    			<c:when test="${nonApprovedRevenueList == null}">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
+			        	            <h3> You don't have any items to approve.</h3>
+		   			            </div>
+			    			</c:when>
+			    			 <c:otherwise>
+				                     <c:forEach items="${nonApprovedRevenueList}" var="ApprovalItem">
+				               		            <div class="table-row" style="background: linear-gradient(135deg, rgba(147, 208, 131, 0.9), rgba(187, 242, 172, 0.9))">
+								                    <div class="table-cell">${ApprovalItem.spenderName}</div>
+								                    <div class="table-cell">${ApprovalItem.spenderDetails}</div>
+								                    <div class="table-cell">&#8377;${ApprovalItem.spendAmount}</div>
+								                    <div class="table-cell">${ApprovalItem.spendDate}</div>
+								                    <div class="table-cell">
+								                        <div class="button-group-approved">
+								                            <button onclick="validateForm('${ApprovalItem.revenueNumber}','REVENUE','APPROVED')" aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
+								                            <button onclick="validateForm('${ApprovalItem.revenueNumber}','REVENUE','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
+								                        </div>
+								                    </div>
+								                </div>
+							 				
+				                      </c:forEach>		    			 
+			    			 </c:otherwise>
+			    		</c:choose>	
+	            </div>
+	            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+           </form>	
         </section>
     </main>
 
@@ -627,6 +701,42 @@
     </div>
 	
     <script>
+    
+		 // Check for success message on page load
+	    document.addEventListener('DOMContentLoaded', function() {
+	    	setCurrentDate();
+	        <c:if test="${not empty success}">
+	            showSuccessMessage();
+	        </c:if>	  
+	        <c:if test="${not empty error}">
+	       		 showErrorMessage();
+	   		 </c:if>	             
+	    });
+	    
+	    
+	    function showErrorMessage() {
+	        const errorMsg = document.getElementById('redErrorMessage');
+	        errorMsg.classList.add('show');
+	        setTimeout(() => {
+	            errorMsg.classList.remove('show');
+	        }, 5000); // Auto-hide after 5 seconds
+	    }
+		
+		function closeRedErrorMessage() {
+	        document.getElementById('redErrorMessage').classList.remove('show');
+	    }
+	
+	    function showSuccessMessage() {
+	        const successMsg = document.getElementById('greenSuccessMessage');
+	        successMsg.classList.add('show');
+	        setTimeout(() => {
+	            successMsg.classList.remove('show');
+	        }, 5000); // Auto-hide after 5 seconds
+	    }
+		
+	    function closeGreenSuccessMessage() {
+	        document.getElementById('greenSuccessMessage').classList.remove('show');
+	    }
         // Function to set the current date in the date input field
         function setCurrentDate() {
             const dateInput = document.getElementById('approval-date');
@@ -638,8 +748,51 @@
             dateInput.value = formattedDate;
         }
 
-        // Call the function to set the current date when the page loads
-        window.onload = setCurrentDate;
+        function validateForm(currentId,currentType,status) {
+        	// Create a hidden form
+		    const form = document.getElementById('formcreateApproval');
+		    form.method = 'POST';
+		    form.action = 'create-approval'; // Your endpoint URL
+		    // Add CSRF token (required for Spring Security)
+		    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+		    const csrfInput = document.createElement('input');
+		    csrfInput.type = 'hidden';
+		    csrfInput.name = '_csrf';
+		    csrfInput.value = csrfToken;
+		    
+		    let idInput = form.querySelector('input[name="currentId"]');
+		    if (!idInput) {
+		        idInput = document.createElement('input');
+		        idInput.type = 'hidden';
+		        idInput.name = 'currentId';
+		        idInput.value = currentId;
+		        form.appendChild(idInput);
+		    }
+		    
+		    let idTypeInput = form.querySelector('input[name="currentType"]');
+		    if (!idTypeInput) {
+		    	idTypeInput = document.createElement('input');
+		    	idTypeInput.type = 'hidden';
+		    	idTypeInput.name = 'currentType';
+		    	idTypeInput.value = currentType;
+		        form.appendChild(idTypeInput);
+		    }
+		    
+		    let statusInput = form.querySelector('input[name="status"]');
+		    if (!statusInput) {
+		    	statusInput = document.createElement('input');
+		    	statusInput.type = 'hidden';
+		    	statusInput.name = 'status';
+		    	statusInput.value = status;
+		        form.appendChild(statusInput);
+		    }
+		    
+		    
+		    
+		    form.appendChild(csrfInput);
+		    document.body.appendChild(form);
+		    form.submit();	
+        }
 
         // Function to handle button click
         function handleButtonClick(event) {
