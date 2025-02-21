@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ page isELIgnored="true" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -506,7 +506,7 @@
         </div>
         <div class="user-profile">
             <div>
-                <div class="user-name">Sujith Krishna</div>
+                <div class="user-name"><c:out value="${currentUser.memberName}" /></div>
                 <div class="user-role">Administrator</div>
             </div>
             <div class="user-avatar">

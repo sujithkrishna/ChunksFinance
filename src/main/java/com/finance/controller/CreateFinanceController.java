@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
+import com.finance.model.CurrentUser;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.service.CreateFinanceService;
@@ -35,11 +36,19 @@ public class CreateFinanceController {
 	@Autowired
 	private ChunksFinancePropertyService propertyService;
 	
+	@Autowired
+	private CurrentUser currentUser;
+	
+	
 	@GetMapping(path = {"/load-finance"})
 	public ModelAndView handleLoanFinance(ModelAndView modelview) {
 		List<String> primaryMembers = createFinanceService.getAllPrimaryMemeber();
 		modelview.addObject("primaryMembers",primaryMembers);
 		modelview.setViewName("createFinance");
+		if(null != currentUser  && !currentUser.isLoggedIn()) {
+			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
+		}
+		modelview.addObject("currentUser", currentUser);
         return modelview;
 	}
 	

@@ -7,6 +7,8 @@ package com.finance.constant;
  */
 public class ChunksFinanceConstants {
 
+	public static final String SILENT_WATCHER = "SilentWatcher";
+	
 	public static final String PRIMARY = "Primary";
 	
 	public static final String MEMBER_TYPE = "memberType";

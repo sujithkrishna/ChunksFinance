@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -679,7 +680,7 @@
         </div>
         <div class="user-profile">
             <div>
-                <div class="user-name">Sujith Krishna</div>
+                <div class="user-name"><c:out value="${currentUser.memberName}" /></div>
                 <div class="user-role">Administrator</div>
             </div>
             <div class="user-avatar">
@@ -795,7 +796,7 @@
                         <button type="button"><i class="fas fa-edit"></i> Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
-                    <input type="text" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </section>
         </div>
@@ -821,7 +822,6 @@
     
 	        // Function to set the current date in the date input field
         function setCurrentDate() {
-	        	alert("I'm setting date...")
             const dateInput = document.getElementById('finance-date');
             const today = new Date();
             const year = today.getFullYear();

@@ -14,6 +14,7 @@ import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.DuplicateMemberEmailIdException;
 import com.finance.exception.DuplicateMemberTypeNameException;
+import com.finance.model.CurrentUser;
 import com.finance.model.MemberModel;
 import com.finance.service.MemberService;
 
@@ -33,11 +34,18 @@ public class MemberController {
 	
 	@Autowired
 	private ChunksFinancePropertyService propertyService;
+	
+	@Autowired
+	private CurrentUser currentUser;
 
 	@GetMapping(path = {"/member"})
 	public String handleMember(HttpServletRequest request, HttpServletResponse response, Model model) {
         List<String> primaryMembers = memberService.getAllPrimaryMemeber();
         model.addAttribute("primaryMembers", primaryMembers);
+		if(null != currentUser  && !currentUser.isLoggedIn()) {
+			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
+		}
+		model.addAttribute("currentUser", currentUser);
         return "member";
 	}
 	

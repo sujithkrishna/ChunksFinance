@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -446,53 +447,55 @@
     <!-- Main Content -->
     <main>
         <div class="content-wrapper">
-            <section id="Content">
-            <h2>Chunks Finance Overview</h2>
-            <p>Comprehensive financial status for Chunks Fund:</p>
-
-                <div class="card">
-                    <div>
-                        <div class="stat-title">Total Earnings</div>
-                        <div class="stat-value">&#8377;50,000</div>
-                    </div>
-                    <div>
-                        <div class="stat-title">Total Expenses</div>
-                        <div class="stat-value negative">&#8377;-15,000</div>
-                    </div>
-                    <div>
-                        <div class="stat-title">Pending Loans</div>
-                        <div class="stat-value">&#8377;10,000</div>
-                    </div>
-                    <div>
-                        <div class="stat-title">Current Balance</div>
-                        <div class="stat-value">&#8377;10,000</div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="Content">
-            <h2>Onam Fund Overview</h2>
-            <p>Detailed financial status for Onam Fund:</p>
-
-                <div class="card">
-                    <div>
-                        <div class="stat-title">Total Earnings</div>
-                        <div class="stat-value">&#8377;50,000</div>
-                    </div>
-                    <div>
-                        <div class="stat-title">Total Expenses</div>
-                        <div class="stat-value">&#8377;15,000</div>
-                    </div>
-                    <div>
-                        <div class="stat-title">Pending Loans</div>
-                        <div class="stat-value">&#8377;10,000</div>
-                    </div>
-                    <div>
-                        <div class="stat-title">Current Balance</div>
-                        <div class="stat-value">&#8377;10,000</div>
-                    </div>
-                </div>
-            </section>
+        
+        <c:choose>
+		    <c:when test="${AllFinance == null}">
+		        <section id="Content">
+		            <p></p>
+		                <div class="card">
+		                    <div>
+		                        <div class="stat-title">Oops! It looks like you don’t have any funds to manage right now.</div>
+		                        <div class="stat-value">Chunks Finanace Team</div>
+		                    </div>
+		                    
+		                </div>
+		            </section>
+		    </c:when>
+		    <c:otherwise>
+		        <c:forEach items="${AllFinance}" var="financeItem">
+	             <section id="Content">
+		            <h2>${financeItem.financeName}</h2>
+		            <h5>The fund is managed by ${financeItem.financeOwnerName}</h5>
+		                <div class="card">
+		                    <div>
+		                        <div class="stat-title">Total Earnings</div>
+		                        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+		                    </div>
+		                    <div>
+		                        <div class="stat-title">Total Expenses</div>
+		                        <div class="stat-value negative">&#8377;${financeItem.currentBalance}</div>
+		                    </div>
+		                    <div>
+		                        <div class="stat-title">Pending Loans</div>
+		                        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+		                    </div>
+		                    <div>
+		                        <div class="stat-title">Current Balance</div>
+		                        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+		                    </div>
+		                </div>
+		            </section>
+	        </c:forEach> 
+		    </c:otherwise>
+		</c:choose>
+        
+        
+        
+	   		
+	        
+	        
+	        
+	        
         </div>
     </main>
 
