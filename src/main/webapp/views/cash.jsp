@@ -721,8 +721,7 @@
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -732,17 +731,16 @@
 				<div class="red-error-message" id="redErrorMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
 					</div>
 				</div>					
-                <form>
+                <form method="post" action="createCash" id="formcreateCash" name="formcreateCash">
                     <div class="form-group">
                         <label for="CashNo">Cash No:</label>
-                        <input type="text" id="CashNo" class="input-field" placeholder="Enter Cash number" required>
+                        <input name="cashNumber" type="text" id="CashNo" class="input-field" placeholder="Enter Cash number" required readonly>
                         <div class="error-message" id="CashNo-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Cash number is required</span>
@@ -751,10 +749,11 @@
 
                     <div class="form-group">
                         <label for="finance-type">Finance Type</label>
-                        <select id="ownerOfFund" class="input-field">
+                        <select name="financeType" id="ownerOfFund" class="input-field">
                             <option value="" disabled selected>Finance Type</option>
-                            <option value="johnDoe">Chunks Finance</option>
-                            <option value="janeDoe">Onam Fund</option>
+                            <c:forEach items="${AllFinance}" var="financeItem">
+                            	<option value="${financeItem.financeType}|${financeItem.financeName}|${financeItem.financeOwnerName}">${financeItem.financeName}</option>
+                            </c:forEach>
                         </select>
                         <div class="error-message" id="financeType-error">
                             <i class="fas fa-exclamation-circle"></i>
@@ -764,7 +763,7 @@
 
                     <div class="form-group">
                         <label for="CashName">Spender Name:</label>
-                        <input type="text" id="CashName" class="input-field" placeholder="Enter Spender name" required>
+                        <input name="spenderName" type="text" id="CashName" class="input-field" placeholder="Enter Spender name" required readonly>
                         <div class="error-message" id="CashName-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Spender name is required</span>
@@ -773,7 +772,7 @@
 
                     <div class="form-group">
                         <label for="CashDetails">Spender Details:</label>
-                        <input type="text" id="CashDetails" class="input-field" placeholder="Enter Spender details" required>
+                        <input name="spenderDetails" type="text" id="CashDetails" class="input-field" placeholder="Enter Spender details" required>
                         <div class="error-message" id="CashDetails-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Spender details are required</span>
@@ -782,7 +781,7 @@
 
                     <div class="form-group">
                         <label for="CashDate">Date:</label>
-                        <input type="date" id="CashDate" class="input-field" required>
+                        <input name="spendDate" type="date" id="CashDate" class="input-field" required>
                         <div class="error-message" id="CashDate-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Please select a date</span>
@@ -791,7 +790,7 @@
 
                     <div class="form-group">
                         <label for="CashAmount">Amount:</label>
-                        <input type="number" id="CashAmount" class="input-field" placeholder="Enter amount" required>
+                        <input name="spendAmount" type="number" id="CashAmount" class="input-field" placeholder="Enter amount" required>
                         <div class="error-message" id="CashAmount-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Amount is required</span>
@@ -804,6 +803,7 @@
                         <button type="button"> <i class="fas fa-edit"></i>Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
                     </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </section>
         </div>
@@ -815,6 +815,20 @@
     </footer>
 
     <script>
+    
+	 // Check for success message on page load
+    document.addEventListener('DOMContentLoaded', function() {
+    	document.getElementById('CashNo').value = '${cashNumber}';
+    	document.getElementById('CashName').value = '${currentUserName}';
+    	
+        <c:if test="${not empty success}">
+            showSuccessMessage();
+        </c:if>	  
+        <c:if test="${not empty error}">
+       		 showErrorMessage();
+   		 </c:if>	             
+    });
+	 
 
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
@@ -851,8 +865,7 @@
             dateInput.value = formattedDate;
         }
 
-        // Call the function to set the current date when the page loads
-        window.onload = setCurrentDate;	
+        
 		
  function validateForm() {
             const fields = [
@@ -885,8 +898,26 @@
 
             if (isValid) {
             // Submit the form or handle valid data			
-		         showSuccessMessage();
+		        // showSuccessMessage();
 				//showErrorMessage();
+				
+
+				// Create a hidden form
+			    const form = document.getElementById('formcreateCash');
+			    form.method = 'POST';
+			    form.action = 'create-cash'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();		
+			    
+				
             }
         }
 

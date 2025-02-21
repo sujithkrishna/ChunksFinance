@@ -40,8 +40,8 @@ public class FinanceModel {
     private LocalDate financeCreationDate;
 
     @Column(name = "finance_amount")
-    private Long financeAmount;
+    private Double financeAmount;
 
     @Column(name = "current_balance")
-    private Long currentBalance;
+    private Double currentBalance;
 }

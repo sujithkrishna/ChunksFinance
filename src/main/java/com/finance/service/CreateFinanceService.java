@@ -31,10 +31,10 @@ public class CreateFinanceService {
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean creatFinance(HttpServletRequest request, FinanceModel finance) {
 		if(null == finance.getCurrentBalance()) {
-			finance.setCurrentBalance(Long.valueOf(0));
+			finance.setCurrentBalance(Double.valueOf(0));
 		}
 		if(null == finance.getFinanceAmount()) {
-			finance.setFinanceAmount(Long.valueOf(0));
+			finance.setFinanceAmount(Double.valueOf(0));
 		}
 		
 		financeRepository.save(finance);

@@ -23,6 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class DashBoardController {
 	
+	
+
 	@Autowired
 	private CurrentUser currentUser;
 	
@@ -35,11 +37,11 @@ public class DashBoardController {
 			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
 		}
 		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
-		model.addAttribute("currentUser", currentUser);
+		model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		if(financeModel.size()==0) {
 			financeModel = null;
 		}
-		model.addAttribute("AllFinance", financeModel);
+		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
         return "dashboard";
 	}
 
