@@ -1,10 +1,12 @@
 package com.finance.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.exception.PasswordWrongException;
 import com.finance.exception.UserNotFoundException;
@@ -33,6 +35,7 @@ public class LoginService {
 	@Autowired
 	private CurrentUser currentUser;
 	
+	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean validateLogin(HttpServletRequest request, MemberModel member) {
 	
 		List<MemberModel> user= memberRepository.findByEmailId(member.getEmailId());

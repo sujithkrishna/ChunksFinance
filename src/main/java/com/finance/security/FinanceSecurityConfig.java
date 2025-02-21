@@ -21,7 +21,7 @@ public class FinanceSecurityConfig {
 	        .authorizeHttpRequests(auth -> auth
 	            .requestMatchers("/views/**", "/financeLogin", "/css/**", "/js/**", "/images/**").permitAll()
 	            .requestMatchers("/test-ping").permitAll()
-	            .requestMatchers("/h2-console/**", "/secure/**").authenticated()
+	            .requestMatchers("/h2-console/**", "/secure/**","/member/**"	).authenticated()
 	            .anyRequest().permitAll()
 	        )
 	        .formLogin(form -> form

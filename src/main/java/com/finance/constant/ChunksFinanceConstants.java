@@ -15,6 +15,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String MEMBER_CREATE_NEWUSER_MESSAGE = "member.create.newuser.message";
 	
+	public static final String FINANCE_CREATE_NEWFINANCE_MESSAGE = "finance.create.message";
+	
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_EMAILPRESENT_MESSAGE = "member.create.newuser.error.emailpresent.message";
 	
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_SAMENAME_TYPE_MESSAGE = "member.create.newuser.error.samename.type.message";

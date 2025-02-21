@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ page isELIgnored="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -705,7 +704,7 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member" >Members</a></li>
             <li><a href="new-chits">Chits</a></li>
-            <li><a href="create-finance" class="active">Create Finance</a></li>
+            <li><a href="load-finance" class="active">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -718,8 +717,7 @@
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -729,18 +727,17 @@
                 <div class="red-error-message" id="redErrorMessage">
                     <i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
                     <div class="close-btn" onclick="closeRedErrorMessage()">
                         <i class="fas fa-times"></i>
                     </div>
-                </div>					
-                <form>
+                </div>	
+                <form action="createFinance" id="formcreateFinance" name="formcreateFinance"	>
                     <!-- Finance Type -->
                     <div class="form-group">
                         <label for="finance-type">Finance Type</label>
-                        <select id="finance-type" class="input-field" required>
+                        <select id="finance-type" name="financeType" class="input-field" required>
                             <option value="" disabled selected>Select Finance Type</option>
                             <option value="Primary">Primary</option>
                             <option value="Secondary">Secondary</option>
@@ -754,23 +751,22 @@
                     <!-- Finance Name -->
                     <div class="form-group">
                         <label for="finance-name">Finance Name</label>
-                        <input type="text" id="finance-name" class="input-field" placeholder="Enter finance Name" required>
+                        <input type="text" id="finance-name" name="financeName" class="input-field" placeholder="Enter finance Name" required>
                         <div class="error-message" id="finance-name-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Finance Name is required</span>
                         </div>
                     </div>
-
                     <!-- Finance Owner Name -->
                     <div class="form-group">
                         <label for="finance-owner-name">Finance Owner Name</label>
-                        <select id="finance-owner-name" class="input-field" required>
+                        <select id="finance-owner-name" name="financeOwnerName" class="input-field" required>
                             <option value="" disabled selected>Select Person</option>
-                            <option value="johnDoe">Sujith Krishna</option>
-                            <option value="janeDoe">Fr Jaison</option>
-                            <option value="alexSmith">Manesh</option>
-                            <option value="maryJohnson">Jijin</option>
+					        <c:forEach items="${primaryMembers}" var="member">
+					            <option value="${member}">${member}</option>
+					        </c:forEach>  
                         </select>
+                        
                         <div class="error-message" id="finance-owner-name-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Finance Owner Name is required</span>
@@ -779,8 +775,8 @@
 
                     <!-- Finance Date -->
                     <div class="form-group">
-                        <label for="finance-date">Finance Date</label>
-                        <input type="date" id="finance-date" class="input-field" required>
+                        <label for="finance-date">Finance Creation Date</label>
+                        <input type="date" id="finance-date"  name="financeCreationDate" class="input-field" required>
                         <div class="error-message" id="finance-date-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Finance Date is required</span>
@@ -790,7 +786,7 @@
                     <!-- Finance Amount (Optional) -->
                     <div class="form-group">
                         <label for="finance-amount">Finance Amount</label>
-                        <input type="number" id="finance-amount" class="input-field" placeholder="Enter finance amount">
+                        <input type="number" id="finance-amount"  name="financeAmount" class="input-field" placeholder="Enter finance amount">
                     </div>
 
                     <!-- Submit Button -->
@@ -799,6 +795,7 @@
                         <button type="button"><i class="fas fa-edit"></i> Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
+                    <input type="text" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </section>
         </div>
@@ -811,8 +808,20 @@
 
     <script>
 	
+			 // Check for success message on page load
+		    document.addEventListener('DOMContentLoaded', function() {
+		    	setCurrentDate();
+		        <c:if test="${not empty success}">
+		            showSuccessMessage();
+		        </c:if>	  
+		        <c:if test="${not empty error}">
+		        showErrorMessage();
+		    </c:if>	             
+		    });    
+    
 	        // Function to set the current date in the date input field
         function setCurrentDate() {
+	        	alert("I'm setting date...")
             const dateInput = document.getElementById('finance-date');
             const today = new Date();
             const year = today.getFullYear();
@@ -822,10 +831,7 @@
             dateInput.value = formattedDate;
         }
 
-        // Call the function to set the current date when the page loads
-        window.onload = setCurrentDate;
-		
-	
+
         function validateForm() {
 
             const financeType = document.getElementById("finance-type");
@@ -866,8 +872,24 @@
 
             if (isValid) {
                 // You can add form submission logic here			
-                showSuccessMessage();
+               // showSuccessMessage();
 				//showErrorMessage();
+				
+				// Create a hidden form
+			    const form = document.getElementById('formcreateFinance');
+			    form.method = 'POST';
+			    form.action = 'create-finance'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();					
+				
             }
         }
         function showErrorMessage() {

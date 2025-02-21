@@ -68,6 +68,8 @@ public class MemberService {
 			return false;
 		}
 	}
+	
+	
 
 	public List<String> getAllPrimaryMemeber() {
 		List<MemberModel> primaryMembersMemMdl = memberRepository.findByIdMemberType(ChunksFinanceConstants.PRIMARY);

@@ -37,7 +37,7 @@ public class LoginController {
 	private CurrentUser currentUser;
 	
 	@GetMapping(path = {"/financeLogin"})
-	public String handleLogin(Model model) {
+	public String handleLogin() {
 		return "financeLogin";
 	}
 	
