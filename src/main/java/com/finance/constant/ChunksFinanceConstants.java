@@ -9,6 +9,9 @@ public class ChunksFinanceConstants {
 
 	public static final String APPROVED = "APPROVED";
 	
+	
+	public static final String SELCTED_APPROVAL_DATE = "selctedapprovaldate";
+	
 	public static final String SILENT_WATCHER = "SilentWatcher";
 	
 	public static final String ALL_FINANCE = "AllFinance";
@@ -17,6 +20,7 @@ public class ChunksFinanceConstants {
 	
 	public static final String EXPENSES_NUMBER = "expensesNumber";
 	
+	public static final String APPROVAL_DATE = "approval-date";
 	
 	public static final String REVENUE = "REVENUE";
 	

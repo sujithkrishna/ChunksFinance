@@ -1,10 +1,12 @@
 package com.finance.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.finance.model.RevenueId;
@@ -27,5 +29,9 @@ public interface RevenueRepository extends JpaRepository<RevenueModel, RevenueId
 	List<RevenueModel> findByCurrentStatusAndApproverName(String currentStatus, String approverName);
 	
 	Optional<RevenueModel> findByRevenueNumber(Long revenueNumber);
+	
+	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND (:currentStatus IS NULL OR r.currentStatus = :currentStatus) AND (:approverName IS NULL OR r.approverName = :approverName)")
+		List<RevenueModel> findRevenueByDateRangeAndStatusAndApprover(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("currentStatus") String currentStatus, @Param("approverName") String approverName);
+
 	
 }

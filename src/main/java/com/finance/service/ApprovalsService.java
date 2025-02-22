@@ -1,5 +1,7 @@
 package com.finance.service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +42,6 @@ public class ApprovalsService {
 	@Autowired
     private FinanceRepository financeRepository;
 	
-	
-	
 	@Autowired
     private CurrentUser currentUser;
 	
@@ -64,8 +64,6 @@ public class ApprovalsService {
 			}
 	        return expensesRepository.findByCurrentStatusAndApproverName(ChunksFinanceConstants.IN_PROGRESS,currentUserName);
 	  }
-	 
-	 
 	 
 	 
 	 @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
