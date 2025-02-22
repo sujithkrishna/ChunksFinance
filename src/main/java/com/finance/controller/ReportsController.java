@@ -17,18 +17,18 @@ import jakarta.servlet.http.HttpServletResponse;
  * @date 19 Feb 2025
  */
 @Controller
-public class FinanceStatusController {
+public class ReportsController {
 
 
 	@Autowired
 	private CurrentUser currentUser;
 	
-	@GetMapping(path = {"/finance-status"})
-	public String handleFinanceStatus(HttpServletRequest request, HttpServletResponse response, Model model) {
+	@GetMapping(path = {"/reports"})
+	public String handleReports(HttpServletRequest request, HttpServletResponse response, Model model) {
 		if(null != currentUser  && !currentUser.isLoggedIn()) {
 			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
 		}
 		model.addAttribute("currentUser", currentUser);
-		return "financeStatus";
+		return "reports";
 	}
 }

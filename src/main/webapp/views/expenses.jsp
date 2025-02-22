@@ -697,7 +697,7 @@
             <li><a href="dashboard">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
             <li><a href="finance-uploads">Finance Upload</a></li>
-            <li><a href="finance-status">Finance Status</a></li>
+            <li><a href="reports">Reports</a></li>
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses" class="active">Expenses</a></li>
