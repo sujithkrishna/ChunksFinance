@@ -716,8 +716,7 @@
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -727,17 +726,16 @@
 				<div class="red-error-message" id="redErrorMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
 					</div>
 				</div>					
-                <form>
+                <form method="post" action="create-expenses" id="formcreateExpenses" name="formcreateExpenses">
                     <div class="form-group">
                         <label for="expenseNo">Expense No:</label>
-                        <input type="text" id="expenseNo" class="input-field" placeholder="Enter expense number" required>
+                        <input name="expensesNumber" type="text" id="ExpensesNo" class="input-field" placeholder="Enter expense number" required readonly>
                         <div class="error-message" id="expenseNo-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Expense number is required</span>
@@ -746,29 +744,30 @@
 
                     <div class="form-group">
                         <label for="finance-type">Finance Type</label>
-                        <select id="ownerOfFund" class="input-field">
+                        <select name="financeType" id="ownerOfFund" class="input-field">
                             <option value="" disabled selected>Finance Type</option>
-                            <option value="johnDoe">Chunks Finance</option>
-                            <option value="janeDoe">Onam Fund</option>
+	                            <c:forEach items="${AllFinance}" var="financeItem">
+	                            	<option value="${financeItem.financeType}|${financeItem.financeName}|${financeItem.financeOwnerName}">${financeItem.financeName}</option>
+	                            </c:forEach>
                         </select>
-                        <div class="error-message" id="financeType-error">
+                        <div class="error-message" id="ownerOfFund-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Please select a finance type</span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="personName">Person Name:</label>
-                        <input type="text" id="personName" class="input-field" placeholder="Enter person's name" required>
-                        <div class="error-message" id="personName-error">
+                        <label for="RevenueName">Spender Name:</label>
+                        <input name="spenderName" type="text" id="ExpensesName" class="input-field" placeholder="Enter Spender name" required readonly>
+                        <div class="error-message" id="ExpensesName-error">
                             <i class="fas fa-exclamation-circle"></i>
-                            <span>Person name is required</span>
+                            <span>Spender name is required</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="expenseDetails">Expense Details:</label>
-                        <input type="text" id="expenseDetails" class="input-field" placeholder="Enter expense details" required>
+                        <input name="spenderDetails" type="text" id="expenseDetails" class="input-field" placeholder="Enter Expense details" required>
                         <div class="error-message" id="expenseDetails-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Expense details are required</span>
@@ -777,8 +776,8 @@
 
                     <div class="form-group">
                         <label for="date">Date:</label>
-                        <input type="date" id="date" class="input-field" required>
-                        <div class="error-message" id="date-error">
+                        <input name="spendDate" type="date" id="expensesdate" class="input-field" required>
+                        <div class="error-message" id="expensesdate-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Please select a date</span>
                         </div>
@@ -786,7 +785,7 @@
 
                     <div class="form-group">
                         <label for="amount">Amount:</label>
-                        <input type="number" id="amount" class="input-field" placeholder="Enter amount" required>
+                        <input name="spendAmount" type="number" id="amount" class="input-field" placeholder="Enter amount" required>
                         <div class="error-message" id="amount-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Amount is required</span>
@@ -799,6 +798,7 @@
                         <button type="button"> <i class="fas fa-edit"></i>Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
                     </div>
+                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </section>
         </div>
@@ -810,6 +810,24 @@
     </footer>
 
     <script>
+    
+		 // Check for success message on page load
+	    document.addEventListener('DOMContentLoaded', function() {
+	    	
+	        const dateInput = document.getElementById('expensesdate');
+	        const today = new Date();
+	        dateInput.value = today.toISOString().split('T')[0];
+	        
+	    	document.getElementById('ExpensesNo').value = '${expensesNumber}';
+	    	document.getElementById('ExpensesName').value = '${currentUserName}';
+	    	
+	        <c:if test="${not empty success}">
+	            showSuccessMessage();
+	        </c:if>	  
+	        <c:if test="${not empty error}">
+	       		 showErrorMessage();
+	   		 </c:if>	             
+	    });
 	
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
@@ -836,7 +854,7 @@
         }
         // Function to set the current date in the date input field
         function setCurrentDate() {
-            const dateInput = document.getElementById('date');
+            const dateInput = document.getElementById('expensesdate');
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -845,67 +863,63 @@
             dateInput.value = formattedDate;
         }
 
-        // Call the function to set the current date when the page loads
-        window.onload = setCurrentDate;	
-		
+       
     function validateExpenseForm() {
-            const fields = [
-                { id: 'expenseNo', errorId: 'expenseNo-error' },
-                { id: 'ownerOfFund', errorId: 'financeType-error' },
-                { id: 'personName', errorId: 'personName-error' },
-                { id: 'expenseDetails', errorId: 'expenseDetails-error' },
-                { id: 'date', errorId: 'date-error' },
-                { id: 'amount', errorId: 'amount-error' }
-            ];
-
-            let isValid = true;
-
-            fields.forEach(({ id, errorId }) => {
-                const field = document.getElementById(id);
-                clearError(field, errorId);
-
-                if (field.tagName === 'SELECT') {
-                    if (field.value === "" || field.value === null) {
-                        showError(field, errorId);
-                        isValid = false;
-                    }
-                } else {
-                    if (!field.value.trim()) {
-                        showError(field, errorId);
-                        isValid = false;
-                    }
-                }
-            });
-
-            if (isValid) {
-                // Submit the form or handle valid data
-		         showSuccessMessage();
-				//showErrorMessage();
-            }
+	    	const fields = [
+	            { id: 'ExpensesNo', errorId: 'expenseNo-error' }, // Fixed ID
+	            { id: 'ownerOfFund', errorId: 'ownerOfFund-error' },
+	            { id: 'ExpensesName', errorId: 'ExpensesName-error' },
+	            { id: 'expenseDetails', errorId: 'expenseDetails-error' },
+	            { id: 'expensesdate', errorId: 'expensesdate-error' },
+	            { id: 'amount', errorId: 'amount-error' }
+	        ];
+	
+	        let isValid = true;
+	
+	        fields.forEach(({ id, errorId }) => {
+	            const field = document.getElementById(id);
+	            const errorMessage = document.getElementById(errorId); // Get error message element
+	            
+	            // Clear errors
+	            field.classList.remove('error');
+	            errorMessage.classList.remove('show');
+	
+	            // Validate field
+	            if (field.tagName === 'SELECT' && !field.value) {
+	                showError(field, errorMessage);
+	                isValid = false;
+	            } else if (field.value.trim() === '') {
+	                showError(field, errorMessage);
+	                isValid = false;
+	            }
+	        });
+	
+	        if (isValid) {
+	            document.getElementById('formcreateExpenses').submit();
+	        }
         }
 
-        function showError(input, errorId) {
-            const errorMessage = document.getElementById(errorId);
-            input.classList.add('error');
-            errorMessage.classList.add('show');
-        }
+		    function showError(input, errorElement) {
+		        input.classList.add('error');
+		        errorElement.classList.add('show');
+		    }
 
-        function clearError(input, errorId) {
-            const errorMessage = document.getElementById(errorId);
-            input.classList.remove('error');
-            errorMessage.classList.remove('show');
-        }
+		    function clearError(input, errorElement) {
+		        input.classList.remove('error');
+		        errorElement.classList.remove('show');
+		    }
 
         // Add input event listeners to clear errors
-        document.querySelectorAll('.input-field').forEach(input => {
-            input.addEventListener('input', function() {
-                const errorId = `${this.id}-error`;
-                clearError(this, errorId);
-            });
-        });
+       document.querySelectorAll('.input-field').forEach(input => {
+		    input.addEventListener('input', function() {
+		        const errorId = this.id === 'ExpensesNo' ? 'expenseNo-error' : `${this.id}-error`;
+		        const errorMessage = document.getElementById(errorId);
+		        clearError(this, errorMessage);
+		    });
+		});
 
         document.getElementById('ownerOfFund').addEventListener('change', function() {
-            clearError(this, 'financeType-error');
+            clearError(this, 'ownerOfFund-error');
         });
 	
         // Function to handle button click

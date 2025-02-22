@@ -818,6 +818,11 @@
     
 		 // Check for success message on page load
 	    document.addEventListener('DOMContentLoaded', function() {
+	    	
+	    	 const dateInput = document.getElementById('RevenueDate');
+	        const today = new Date();
+	        dateInput.value = today.toISOString().split('T')[0];
+	    	
 	    	document.getElementById('RevenueNo').value = '${revenueNumber}';
 	    	document.getElementById('RevenueName').value = '${currentUserName}';
 	    	
@@ -854,18 +859,7 @@
             document.getElementById('greenSuccessMessage').classList.remove('show');
         }
 		
-        // Function to set the current date in the date input field
-        function setCurrentDate() {
-            const dateInput = document.getElementById('RevenueDate');
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(today.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            dateInput.value = formattedDate;
-        }
-
-        
+              
 		
  			
         function validateForm() {

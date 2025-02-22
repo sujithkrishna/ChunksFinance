@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class LoginService {
 				e.printStackTrace();
 			}
 			if (decryptedStoredPassword != null && decryptedStoredPassword.equals(member.getPassword())) {
+				System.out.println("User Login is sucessfull---"+member.toString()+"At :"+LocalDate.now());
 				populateCurrentUser(currentUser,user.get(0));
 			    return true;
 			} else {

@@ -390,6 +390,10 @@
         .stat-value.negative {
             color: #e74c3c;
         }
+        
+        .stat-value.positive {
+            color: #40bb14;
+        }
 
         /* === Responsive Design for Desktop === */
         @media (max-width: 768px) {
@@ -473,7 +477,7 @@
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Total Expenses</div>
-		                        <div class="stat-value negative">&#8377;0</div>
+		                        <div class="stat-value">&#8377;0</div>
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Pending Loans</div>
@@ -481,7 +485,21 @@
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Current Balance</div>
-		                        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+		                        
+								<c:choose>
+								    <c:when test="${financeItem.currentBalance > 0}">
+								        <div class="stat-value positive">&#8377;${financeItem.currentBalance}</div>
+								    </c:when>
+								    <c:when test="${financeItem.currentBalance < 0}">
+								       <div class="stat-value negative">&#8377;${financeItem.currentBalance}</div>
+								    </c:when>
+								    <c:otherwise>
+								        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
+								    </c:otherwise>
+								</c:choose>		                        
+		                        
+		                        
+		                        
 		                    </div>
 		                </div>
 		            </section>

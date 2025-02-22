@@ -371,7 +371,7 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 15px;
+            padding: 0px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -647,41 +647,64 @@
 	                    <input type="date" id="approval-date" name="approval-date" required>
 	                </div>
 	            </div>
-	            <div class="table-container">
-	                <!-- Table Header -->
-	                <div class="table-row header">
-	                    <div class="table-cell">Requester</div>
-	                    <div class="table-cell">Request Type</div>
-	                    <div class="table-cell">Amount</div>
-	                    <div class="table-cell">Date Submitted</div>
-	                    <div class="table-cell">Authorization</div>
-	                </div>
-	                <!-- Approval Rows -->
-		                 <c:choose>
-			    			<c:when test="${nonApprovedRevenueList == null}">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
-			        	            <h3> You don't have any items to approve.</h3>
-		   			            </div>
-			    			</c:when>
-			    			 <c:otherwise>
-				                     <c:forEach items="${nonApprovedRevenueList}" var="ApprovalItem">
-				               		            <div class="table-row" style="background: linear-gradient(135deg, rgba(147, 208, 131, 0.9), rgba(187, 242, 172, 0.9))">
-								                    <div class="table-cell">${ApprovalItem.spenderName}</div>
-								                    <div class="table-cell">${ApprovalItem.spenderDetails}</div>
-								                    <div class="table-cell">&#8377;${ApprovalItem.spendAmount}</div>
-								                    <div class="table-cell">${ApprovalItem.spendDate}</div>
-								                    <div class="table-cell">
-								                        <div class="button-group-approved">
-								                            <button onclick="validateForm('${ApprovalItem.revenueNumber}','REVENUE','APPROVED')" aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
-								                            <button onclick="validateForm('${ApprovalItem.revenueNumber}','REVENUE','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
-								                        </div>
-								                    </div>
-								                </div>
-							 				
-				                      </c:forEach>		    			 
-			    			 </c:otherwise>
-			    		</c:choose>	
-	            </div>
+	            </br>
+<div class="table-container">
+    <!-- Table Header -->
+    <div class="table-row header">
+        <div class="table-cell">Requester</div>
+        <div class="table-cell">Request Type</div>
+        <div class="table-cell">Amount</div>
+        <div class="table-cell">Date Submitted</div>
+        <div class="table-cell" style="text-align: center;">Authorization</div>
+	    </div>
+		    <c:choose>
+		        <c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList}">
+		            <!-- Show empty state message -->
+					<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
+						<h3> You don't have any items to approve.</h3>
+					</div>
+		        </c:when>
+		        <c:otherwise>
+		            <!-- Revenue Approvals -->
+		            <c:if test="${not empty nonApprovedRevenueList}">
+					 <c:forEach items="${nonApprovedRevenueList}" var="RevenueApprovalItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(147, 208, 131, 0.9), rgba(187, 242, 172, 0.9))">
+									<div class="table-cell">${RevenueApprovalItem.spenderName}</div>
+									<div class="table-cell">${RevenueApprovalItem.spenderDetails}</div>
+									<div class="table-cell">&#8377;${RevenueApprovalItem.spendAmount}</div>
+									<div class="table-cell">${RevenueApprovalItem.spendDate}</div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','REVENUE','APPROVED')" aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
+											<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','REVENUE','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
+										</div>
+									</div>
+								</div>
+							
+					  </c:forEach>
+		            </c:if>
+		
+		            <!-- Expenses Approvals -->
+		            <c:if test="${not empty nonApprovedExpensesList}">
+						 <c:forEach items="${nonApprovedExpensesList}" var="ExpensesApprovalItem">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(213, 134, 134, 0.9), rgba(247, 156, 156, 0.9))">
+										<div class="table-cell">${ExpensesApprovalItem.spenderName}</div>
+										<div class="table-cell">${ExpensesApprovalItem.spenderDetails}</div>
+										<div class="table-cell">&#8377;${ExpensesApprovalItem.spendAmount}</div>
+										<div class="table-cell">${ExpensesApprovalItem.spendDate}</div>
+										<div class="table-cell">
+											<div class="button-group-approved">
+												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','EXPENSES','APPROVED')" aria-label="Approve request"><i class="fas fa-check"></i> Approve</button>
+												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','EXPENSES','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request"><i class="fas fa-times"></i> Reject</button>
+											</div>
+										</div>
+									</div>
+								
+						  </c:forEach>	
+		            </c:if>
+		        </c:otherwise>
+		    </c:choose>
+			</div>	            
 	            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
            </form>	
         </section>
@@ -704,7 +727,12 @@
     
 		 // Check for success message on page load
 	    document.addEventListener('DOMContentLoaded', function() {
-	    	setCurrentDate();
+	    	
+	    	  const dateInput = document.getElementById('approval-date');
+	          const today = new Date();
+	          dateInput.value = today.toISOString().split('T')[0];
+    	
+	    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();
 	        </c:if>	  
@@ -737,16 +765,6 @@
 	    function closeGreenSuccessMessage() {
 	        document.getElementById('greenSuccessMessage').classList.remove('show');
 	    }
-        // Function to set the current date in the date input field
-        function setCurrentDate() {
-            const dateInput = document.getElementById('approval-date');
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(today.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            dateInput.value = formattedDate;
-        }
 
         function validateForm(currentId,currentType,status) {
         	// Create a hidden form

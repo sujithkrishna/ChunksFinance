@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.RevenueModel;
+import com.finance.model.ExpensesModel;
 import com.finance.model.MemberModel;
 import com.finance.repository.RevenueRepository;
+import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,37 +23,34 @@ import jakarta.servlet.http.HttpServletRequest;
  *
  */
 @Service
-public class RevenueService {
+public class ExpensesService {
 	
 	
 
 	@Autowired
-    private RevenueRepository revenueRepository;
+    private ExpensesRepository expensesRepository;
 	
-	@Autowired
-	private FinanceRepository financeRepository;
-	
-	public Long getMaxRevenueNumber() {
-        return revenueRepository.findMaxRevenueNumber(); 
+	public Long getMaxExpensesNumber() {
+        return expensesRepository.findMaxExpensesNumber(); 
     }
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	public boolean creatRevenue(HttpServletRequest request, RevenueModel revenue) {
-		revenue.setCurrentStatus(ChunksFinanceConstants.IN_PROGRESS);
-		if(null != revenue.getFinanceType()) {
-			String[] financeTypeDataSplit = revenue.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
+	public boolean createExpenses(HttpServletRequest request, ExpensesModel expenses) {
+		expenses.setCurrentStatus(ChunksFinanceConstants.IN_PROGRESS);
+		if(null != expenses.getFinanceType()) {
+			String[] financeTypeDataSplit = expenses.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
 			String financeOwnerName = financeTypeDataSplit[2];
-			revenue.setApproverName(financeOwnerName);		
+			expenses.setApproverName(financeOwnerName);		
 		}else {
 			// Its going to Default Approver
 			
 		}
 		try {
-			Long maxRevenueNum = getMaxRevenueNumber();
-			if(null != maxRevenueNum && maxRevenueNum>=revenue.getRevenueNumber()) {
-				revenue.setRevenueNumber(++maxRevenueNum);
+			Long maxExpensesNum = getMaxExpensesNumber();
+			if(null != maxExpensesNum && maxExpensesNum>=expenses.getExpensesNumber()) {
+				expenses.setExpensesNumber(++maxExpensesNum);
 			}
-			revenueRepository.save(revenue);
+			expensesRepository.save(expenses);
 			return true;
 		} catch (Exception exception) {
 			return false;

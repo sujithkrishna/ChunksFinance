@@ -56,7 +56,7 @@ public class RevenueController {
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 		Long currentRevenueNumber = revenueService.getMaxRevenueNumber();
 		if(null == currentRevenueNumber) {
-			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, ChunksFinanceConstants.REVENUE_NUMBER_ONE);
+			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, ChunksFinanceConstants.NUMBER_ONE);
 		}else {
 			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, ++currentRevenueNumber);
 		}

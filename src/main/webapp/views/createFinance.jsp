@@ -811,7 +811,11 @@
 	
 			 // Check for success message on page load
 		    document.addEventListener('DOMContentLoaded', function() {
-		    	setCurrentDate();
+		    	
+		    	const dateInput = document.getElementById('finance-date');
+		        const today = new Date();
+		        dateInput.value = today.toISOString().split('T')[0];
+		    	
 		        <c:if test="${not empty success}">
 		            showSuccessMessage();
 		        </c:if>	  
@@ -820,18 +824,6 @@
 		    </c:if>	             
 		    });    
     
-	        // Function to set the current date in the date input field
-        function setCurrentDate() {
-            const dateInput = document.getElementById('finance-date');
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(today.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            dateInput.value = formattedDate;
-        }
-
-
         function validateForm() {
 
             const financeType = document.getElementById("finance-type");

@@ -566,7 +566,7 @@
             <!-- Date Input -->
             <div class="form-group">
                 <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required>
+                <input type="date" name="financeStatusdate" id="financeStatusdate" name="date" required>
             </div>
             <!-- Finance Type Dropdown -->
             <div class="form-group">
@@ -633,19 +633,22 @@
 	
     <script>
 	
-        // Function to set the current date in the date input field
-        function setCurrentDate() {
-            const dateInput = document.getElementById('date');
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(today.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            dateInput.value = formattedDate;
-        }
 
-        // Call the function to set the current date when the page loads
-        window.onload = setCurrentDate;		
+			 // Check for success message on page load
+		   document.addEventListener('DOMContentLoaded', function() {
+		   	
+		   	  const dateInput = document.getElementById('financeStatusdate');
+		         const today = new Date();
+		         dateInput.value = today.toISOString().split('T')[0];
+			
+		   	
+			        <c:if test="${not empty success}">
+			            showSuccessMessage();
+			        </c:if>	  
+			        <c:if test="${not empty error}">
+			       		 showErrorMessage();
+			   		 </c:if>	             
+		   	});
 	
         // Function to handle button click
         function handleButtonClick(event) {

@@ -1,6 +1,7 @@
 create table finance (finance_creationdate date not null, current_balance bigint, finance_amount bigint, finance_name varchar(255) not null, finance_ownername varchar(255) not null, finance_type varchar(255) not null, primary key (finance_name, finance_ownername, finance_type));
 create table member (memeber_dob date, address1 varchar(255), district varchar(255), email_id varchar(255) not null unique, member_name varchar(255) not null, member_type varchar(255) not null, mobile_number varchar(255), password varchar(255) not null, pincode varchar(255), place varchar(255), reference_member varchar(255), state varchar(255), taluk varchar(255), primary key (member_name, member_type));
 create table revenue (spend_date date not null, revenue_number bigint not null, spend_amount bigint not null, approver_name varchar(255), current_status varchar(255) not null, finance_type varchar(255) not null, spender_detaisl varchar(255) not null, spender_name varchar(255) not null, primary key (revenue_number, finance_type, spender_name));
+create table expenses (spend_amount float(53) not null, spend_date date not null, expenses_number bigint not null, approver_name varchar(255), current_status varchar(255) not null, finance_type varchar(255) not null, spender_details varchar(255) not null, spender_name varchar(255) not null, primary key (expenses_number, finance_type, spender_name));
 
 
 insert into member (address1,district,email_id,memeber_dob,mobile_number,password,pincode,place,reference_member,state,taluk,member_name,member_type) values ('Kaithavalappil House','Alappuzha','jijinfrancisanna@gmail.com','2025-02-20','9845375129','amlqaW5mcmFuY2lzYW5uYQ==','688540','Ezhupunna','','Kerala','Cherthala','ജിജിൻ ഫ്രാൻസിസ്','Primary');
@@ -21,6 +22,12 @@ insert into finance (current_balance,finance_amount,finance_creationdate,finance
 
 
 insert into revenue (approver_name,current_status,spend_amount,spend_date,spender_detaisl,revenue_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','500','2025-02-19','Book Amount',1,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','ജിജിൻ ഫ്രാൻസിസ്');
-insert into revenue (approver_name,current_status,spend_amount,spend_date,spender_detaisl,revenue_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','1000','2025-02-19','Bus Fare',2,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','സുജിത്ത് കൃഷ്ണാ');
-insert into revenue (approver_name,current_status,spend_amount,spend_date,spender_detaisl,revenue_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','1500','2025-02-19','Lottery Amount',3,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','സരിത റഫയൽ');
+insert into revenue (approver_name,current_status,spend_amount,spend_date,spender_detaisl,revenue_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','100','2025-02-19','Bus Fare',2,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','സുജിത്ത് കൃഷ്ണാ');
+insert into revenue (approver_name,current_status,spend_amount,spend_date,spender_detaisl,revenue_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','500','2025-02-19','Lottery Amount',3,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','സരിത റഫയൽ');
 insert into revenue (approver_name,current_status,spend_amount,spend_date,spender_detaisl,revenue_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','5000','2025-02-19','Bata Cash',4,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','ജീജോ ജേക്കബ്');
+
+insert into expenses (approver_name,current_status,spend_amount,spend_date,spender_details,expenses_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','500','2025-02-22','Bough Fan',1,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','സുജിത്ത് കൃഷ്ണാ');
+insert into expenses (approver_name,current_status,spend_amount,spend_date,spender_details,expenses_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','500','2025-02-22','Bough TubeLight',2,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','ജിജിൻ ഫ്രാൻസിസ്');
+insert into expenses (approver_name,current_status,spend_amount,spend_date,spender_details,expenses_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','100','2025-02-22','Bough Bags',3,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','സരിത റഫയൽ');
+insert into expenses (approver_name,current_status,spend_amount,spend_date,spender_details,expenses_number,finance_type,spender_name) values ('മനേഷ് മൈക്കിൽ','IN_PROGRESS','100','2025-02-22','Bough Sample Items',4,'Primary|Chunks Finance|മനേഷ് മൈക്കിൽ','ജീജോ ജേക്കബ്');
+

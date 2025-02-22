@@ -988,6 +988,26 @@
 	</div>	
     <!-- JavaScript for Form Validation -->
     <script>
+    
+	    // Check for success message on page load
+	    document.addEventListener('DOMContentLoaded', function() {
+	    	
+	    	const dateInput = document.getElementById('start-date');
+	        const today = new Date();
+	        dateInput.value = today.toISOString().split('T')[0];
+	    	
+	    	document.getElementById('RevenueNo').value = '${revenueNumber}';
+	    	document.getElementById('RevenueName').value = '${currentUserName}';
+	    	
+	        <c:if test="${not empty success}">
+	            showSuccessMessage();
+	        </c:if>	  
+	        <c:if test="${not empty error}">
+	       		 showErrorMessage();
+	   		 </c:if>	             
+	    });    
+	    
+    
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
             errorMsg.classList.add('show');
@@ -1012,21 +1032,7 @@
             document.getElementById('greenSuccessMessage').classList.remove('show');
         }
 		
-        // Function to set the current date in the date input field
-        function setCurrentDate() {
-            const dateInput = document.getElementById('start-date');
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-            const day = String(today.getDate()).padStart(2, '0');
-            const formattedDate = `${year}-${month}-${day}`;
-            dateInput.value = formattedDate;
-        }
-
-        // Call the function to set the current date when the page loads
-        window.onload = setCurrentDate;	
-		
-function validateForm() {
+			function validateForm() {
             const mandatoryFields = [
                 // Main form fields
                 { id: 'chits-number', errorId: 'chits-number-error' },

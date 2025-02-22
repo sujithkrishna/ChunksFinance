@@ -18,11 +18,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Component
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class RevenueAlreadyApprovedException extends RuntimeException{
+public class AlreadyApprovedException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 
-	public RevenueAlreadyApprovedException(String message) {
+	public AlreadyApprovedException(String message) {
 		super(message);
 	}
 }

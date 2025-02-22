@@ -26,6 +26,6 @@ public interface RevenueRepository extends JpaRepository<RevenueModel, RevenueId
 	
 	List<RevenueModel> findByCurrentStatusAndApproverName(String currentStatus, String approverName);
 	
-	
 	Optional<RevenueModel> findByRevenueNumber(Long revenueNumber);
+	
 }
