@@ -13,13 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
-import com.finance.model.RevenueModel;
+import com.finance.exception.DateExpiredException;
 import com.finance.model.CurrentUser;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
-import com.finance.repository.RevenueRepository;
+import com.finance.model.RevenueModel;
 import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
+import com.finance.repository.RevenueRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @Service
 public class ApprovalsService {
+	/*
 	
 	@Autowired
     private RevenueRepository revenueRepository;
@@ -77,6 +79,9 @@ public class ApprovalsService {
 	                Optional<RevenueModel> revenueOptional = revenueRepository.findByRevenueNumber(revenueNum);
 	                if (revenueOptional.isPresent()) {
 	                    RevenueModel revenueModel = revenueOptional.get();
+	                    if(!isBussinessExipredRule(revenueModel.getSpendDate())) {
+	                    	throw new DateExpiredException(); 
+	                    }
 	                    if(revenueModel.getCurrentStatus().equals(ChunksFinanceConstants.APPROVED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
@@ -110,6 +115,9 @@ public class ApprovalsService {
 	                Optional<ExpensesModel> expensesOptional = expensesRepository.findByExpensesNumber(expensesNum);
 	                if (expensesOptional.isPresent()) {
 	                	ExpensesModel expensesModel = expensesOptional.get();
+	                	if(!isBussinessExipredRule(expensesModel.getSpendDate())) {
+	                    	throw new DateExpiredException(); 
+	                    }
 	                    if(expensesModel.getCurrentStatus().equals(ChunksFinanceConstants.APPROVED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
@@ -140,5 +148,17 @@ public class ApprovalsService {
 		 }
 		 return false;
 	 }
+	 
+	 private boolean isBussinessExipredRule(LocalDate spendDate) {
+		 if(null != spendDate) {
+			 LocalDate today = LocalDate.now();
+             LocalDate lastMonday = today.with(DayOfWeek.MONDAY);
+             LocalDate upcomingSunday = today.with(DayOfWeek.SUNDAY);
+             return (spendDate.isEqual(lastMonday) || spendDate.isAfter(lastMonday)) && (spendDate.isEqual(upcomingSunday) || spendDate.isBefore(upcomingSunday));
+		 }else {
+			 return false;
+		 }
+	 }
+	 */
 
 }

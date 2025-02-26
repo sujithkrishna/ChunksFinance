@@ -5,7 +5,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -14,7 +13,6 @@ import lombok.NoArgsConstructor;
  * 21 Feb 2025
  *
  */
-@Data
 @NoArgsConstructor
 @Component
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)

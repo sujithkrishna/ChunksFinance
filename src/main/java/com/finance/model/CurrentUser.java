@@ -34,5 +34,6 @@ public class CurrentUser {
     private String state;
     private String pincode;
     private boolean isLoggedIn;
+    private MemberModel currentUser;
     
 }

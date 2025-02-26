@@ -705,7 +705,7 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member" >Members</a></li>
             <li><a href="new-chits">Chits</a></li>
-            <li><a href="load-finance" class="active">Create Finance</a></li>
+            <li><a href="finance" class="active">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -734,14 +734,14 @@
                         <i class="fas fa-times"></i>
                     </div>
                 </div>	
-                <form action="createFinance" id="formcreateFinance" name="formcreateFinance"	>
+                <form action="finance" id="formcreateFinance" name="formcreateFinance"	>
                     <!-- Finance Type -->
                     <div class="form-group">
                         <label for="finance-type">Finance Type</label>
                         <select id="finance-type" name="financeType" class="input-field" required>
                             <option value="" disabled selected>Select Finance Type</option>
-                            <option value="Primary">Primary</option>
-                            <option value="Secondary">Secondary</option>
+                            <option value="PRIMARY">Primary</option>
+                            <option value="SECONDARY">Secondary</option>
                         </select>
                         <div class="error-message" id="finance-type-error">
                             <i class="fas fa-exclamation-circle"></i>
@@ -760,15 +760,15 @@
                     </div>
                     <!-- Finance Owner Name -->
                     <div class="form-group">
-                        <label for="finance-owner-name">Finance Owner Name</label>
-                        <select id="finance-owner-name" name="financeOwnerName" class="input-field" required>
+                        <label for="finance-owner">Finance Owner Name</label>
+                        <select id="finance-owner" name="financeOwner" class="input-field" required>
                             <option value="" disabled selected>Select Person</option>
 					        <c:forEach items="${primaryMembers}" var="member">
-					            <option value="${member}">${member}</option>
+					            <option value="${member.no}">${member.memberName}</option>
 					        </c:forEach>  
                         </select>
                         
-                        <div class="error-message" id="finance-owner-name-error">
+                        <div class="error-message" id="finance-owner-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Finance Owner Name is required</span>
                         </div>
@@ -828,14 +828,14 @@
 
             const financeType = document.getElementById("finance-type");
             const financeName = document.getElementById("finance-name");
-            const financeOwnerName = document.getElementById("finance-owner-name");
+            const financeOwner = document.getElementById("finance-owner");
             const financeDate = document.getElementById("finance-date");
             let isValid = true;
 
             // Clear previous errors
             clearError(financeType, 'finance-type-error');
             clearError(financeName, 'finance-name-error');
-            clearError(financeOwnerName, 'finance-owner-name-error');
+            clearError(financeOwner, 'finance-owner-error');
             clearError(financeDate, 'finance-date-error');
 
             // Validate Finance Type
@@ -851,8 +851,8 @@
             }
 
             // Validate Finance Owner Name
-            if (!financeOwnerName.value.trim()) {
-                showError(financeOwnerName, 'finance-owner-name-error');
+            if (!financeOwner.value.trim()) {
+                showError(financeOwner, 'finance-owner-error');
                 isValid = false;
             }
 
@@ -866,11 +866,10 @@
                 // You can add form submission logic here			
                // showSuccessMessage();
 				//showErrorMessage();
-				
 				// Create a hidden form
 			    const form = document.getElementById('formcreateFinance');
 			    form.method = 'POST';
-			    form.action = 'create-finance'; // Your endpoint URL
+			    form.action = 'finance'; // Your endpoint URL
 
 			    // Add CSRF token (required for Spring Security)
 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
@@ -930,8 +929,8 @@
             clearError(this, 'finance-name-error');
         });
 
-        document.getElementById('finance-owner-name').addEventListener('input', function() {
-            clearError(this, 'finance-owner-name-error');
+        document.getElementById('finance-owner').addEventListener('input', function() {
+            clearError(this, 'finance-owner-error');
         });
 
         document.getElementById('finance-date').addEventListener('input', function() {

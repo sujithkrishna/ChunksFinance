@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Component
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserNotFoundException extends RuntimeException {
+public class DuplicateMemberException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 
-	public UserNotFoundException(String message) {
+	public DuplicateMemberException(String message) {
 		super(message);
 	}
 

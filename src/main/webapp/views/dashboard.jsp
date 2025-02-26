@@ -444,7 +444,7 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
-            <li><a href="load-finance">Create Finance</a></li>
+            <li><a href="finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -469,7 +469,7 @@
 		        <c:forEach items="${AllFinance}" var="financeItem">
 	             <section id="Content">
 		            <h2>${financeItem.financeName}</h2>
-		            <h5>The fund is managed by ${financeItem.financeOwnerName}</h5>
+		            <h5>The fund is managed by ${financeItem.financeOwner.memberName}</h5>
 		                <div class="card">
 		                    <div>
 		                        <div class="stat-title">Total Revenue</div>

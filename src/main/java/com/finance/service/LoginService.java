@@ -2,6 +2,7 @@ package com.finance.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,37 +39,38 @@ public class LoginService {
 	
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean validateLogin(HttpServletRequest request, MemberModel member) {
-	
-		List<MemberModel> user= memberRepository.findByEmailId(member.getEmailId());
-		if(user.size()==0) {
-			throw new UserNotFoundException();
-		}else if(user.size()==1) {
-		        String decryptedStoredPassword = null;
+		Optional<MemberModel> user= memberRepository.findByEmailId(member.getEmailId());
+		 String decryptedStoredPassword = null;
+		if (user.isPresent()) {
 			try {
-				decryptedStoredPassword = encryptionUtil.decrypt(user.get(0).getPassword());
+				decryptedStoredPassword = encryptionUtil.decrypt(user.get().getPassword());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if (decryptedStoredPassword != null && decryptedStoredPassword.equals(member.getPassword())) {
 				System.out.println("User Login is sucessfull---"+member.toString()+"At :"+LocalDate.now());
-				populateCurrentUser(currentUser,user.get(0));
+				populateCurrentUser(currentUser,user.get());
 			    return true;
 			} else {
 			    throw new PasswordWrongException();
 			}
-		}else {
-			System.out.println("Mutiple Users are getting....");
+		} else {
 			return false;
 		}
+		
 	}
 	
 	public void populateCurrentUser(CurrentUser currentUser,MemberModel member) {
 		currentUser.setLoggedIn(true);
 		currentUser.setEmailId(member.getEmailId());
 		currentUser.setPassword(member.getPassword());
-		currentUser.setMemberType(member.getId().getMemberType());
-		currentUser.setMemberName(member.getId().getMemberName());
-		currentUser.setReferenceMember(member.getReferenceMember());
+		currentUser.setMemberType(member.getMemberType().name());
+		currentUser.setMemberName(member.getMemberName());
+		if(null != member.getReferenceMember()) {
+			currentUser.setReferenceMember(member.getReferenceMember().getMemberName());	
+		}else{
+			currentUser.setReferenceMember(null);
+		}
 		currentUser.setMemberDOB(member.getMemberDOB());
 		currentUser.setMobileNumber(member.getMobileNumber());
 		currentUser.setAddress1(member.getAddress1());
@@ -76,7 +78,9 @@ public class LoginService {
 		currentUser.setTaluk(member.getTaluk());
 		currentUser.setDistrict(member.getDistrict());
 		currentUser.setState(member.getState());
-		currentUser.setPincode(member.getPincode());		
+		currentUser.setPincode(member.getPincode());
+		currentUser.setCurrentUser(member);
+	
 	}
 
 }

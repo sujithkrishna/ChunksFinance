@@ -708,7 +708,7 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
-            <li><a href="load-finance">Create Finance</a></li>
+            <li><a href="finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -737,10 +737,10 @@
 						<i class="fas fa-times"></i>
 					</div>
 				</div>					
-                <form method="post" action="createRevenue" id="formcreateRevenue" name="formcreateRevenue">
+                <form method="post" action="revenue" id="formrevenue" name="formrevenue">
                     <div class="form-group">
                         <label for="RevenueNo">Revenue No:</label>
-                        <input name="RevenueNumber" type="text" id="RevenueNo" class="input-field" placeholder="Enter Revenue number" required readonly>
+                        <input name="revenueNumber" type="text" id="RevenueNo" class="input-field" placeholder="Enter Revenue number" required readonly>
                         <div class="error-message" id="RevenueNo-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Revenue number is required</span>
@@ -752,7 +752,7 @@
                         <select name="financeType" id="ownerOfFund" class="input-field">
                             <option value="" disabled selected>Finance Type</option>
                             <c:forEach items="${AllFinance}" var="financeItem">
-                            	<option value="${financeItem.financeType}|${financeItem.financeName}|${financeItem.financeOwnerName}">${financeItem.financeName}</option>
+                            	<option value="${financeItem.id}">${financeItem.financeName}</option>
                             </c:forEach>
                         </select>
                         <div class="error-message" id="financeType-error">
@@ -763,7 +763,7 @@
 
                     <div class="form-group">
                         <label for="RevenueName">Spender Name:</label>
-                        <input name="spenderName" type="text" id="RevenueName" class="input-field" placeholder="Enter Spender name" required readonly>
+                        <input name="spenderNameValue" type="text" id="RevenueName" class="input-field" placeholder="Enter Spender name" required readonly>
                         <div class="error-message" id="RevenueName-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Spender name is required</span>
@@ -898,9 +898,9 @@
 				
 
 				// Create a hidden form
-			    const form = document.getElementById('formcreateRevenue');
+			    const form = document.getElementById('formrevenue');
 			    form.method = 'POST';
-			    form.action = 'create-revenue'; // Your endpoint URL
+			    form.action = 'revenue'; // Your endpoint URL
 
 			    // Add CSRF token (required for Spring Security)
 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;

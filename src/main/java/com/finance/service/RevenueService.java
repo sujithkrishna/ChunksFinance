@@ -5,20 +5,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.RevenueModel;
 import com.finance.model.CurrentUser;
-import com.finance.model.MemberModel;
-import com.finance.repository.RevenueRepository;
+import com.finance.model.FinanceModel;
+import com.finance.model.RevenueModel;
 import com.finance.repository.FinanceRepository;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.finance.repository.RevenueRepository;
 
 /**
  * @author Sujith Krishna
@@ -37,36 +35,62 @@ public class RevenueService {
 	@Autowired
 	private FinanceRepository financeRepository;
 	
+	@Autowired
+	private DashBoardService boardService;
+	
 
 	@Autowired
     private CurrentUser currentUser;
 	
-	public Long getMaxRevenueNumber() {
-        return revenueRepository.findMaxRevenueNumber(); 
+	public Integer getMaxRevenueNumber() {
+        return revenueRepository.findMaxNo(); 
     }
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	public boolean creatRevenue(HttpServletRequest request, RevenueModel revenue) {
-		revenue.setCurrentStatus(ChunksFinanceConstants.IN_PROGRESS);
+	public boolean creatRevenue(RevenueModel revenue) {
 		if(null != revenue.getFinanceType()) {
-			String[] financeTypeDataSplit = revenue.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
-			String financeOwnerName = financeTypeDataSplit[2];
-			revenue.setApproverName(financeOwnerName);		
+			//String[] financeTypeDataSplit = revenue.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
+			//String financeOwnerName = financeTypeDataSplit[2];
+			//revenue.setApproverName(financeOwnerName);		
 		}else {
 			// Its going to Default Approver
 			
 		}
 		try {
-			Long maxRevenueNum = getMaxRevenueNumber();
-			if(null != maxRevenueNum && maxRevenueNum>=revenue.getRevenueNumber()) {
+			Integer maxRevenueNum = getMaxRevenueNumber();
+			if(null != maxRevenueNum && maxRevenueNum<revenue.getRevenueNumber()) {
 				revenue.setRevenueNumber(++maxRevenueNum);
+			}else {
+				revenue.setRevenueNumber(1);
 			}
+			revenue.setSpenderName(currentUser.getCurrentUser());
+			revenue.setApproverName(revenue.getFinanceType().getFinanceOwner());
 			revenueRepository.save(revenue);
 			return true;
 		} catch (Exception exception) {
 			return false;
 		}
 		
+	}
+	
+	
+	public Model populatingFields(Model model) {
+		model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+		model.addAttribute(ChunksFinanceConstants.CURRENT_USER_NAME, currentUser.getMemberName());
+		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
+		if(financeModel.size()==0) {
+			financeModel = null;
+		}
+		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
+		Integer currentRevenueNumber = getMaxRevenueNumber();
+		
+		if(null == currentRevenueNumber) {
+			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, ChunksFinanceConstants.NUMBER_ONE);
+		}else {
+			++currentRevenueNumber;
+			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, currentRevenueNumber);
+		}
+		return model;
 	}
 	
 	 public List<RevenueModel> getRevenueFromMondayToGivenDate(LocalDate givenDate) {
@@ -77,7 +101,8 @@ public class RevenueService {
 			}else {
 				currentUserName = currentUser.getMemberName();
 			}
-	        return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate,ChunksFinanceConstants.IN_PROGRESS,currentUserName);
+	       // return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate,ChunksFinanceConstants.IN_PROGRESS,currentUserName);
+		 	return null;
 	    }
 	
 }

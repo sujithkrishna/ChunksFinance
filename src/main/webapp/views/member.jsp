@@ -694,7 +694,7 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member" class="active">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
-            <li><a href="load-finance">Create Finance</a></li>
+            <li><a href="finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -722,13 +722,13 @@
 					<i class="fas fa-times"></i>
 				</div>
 			</div>				
-            <form method="post" action="createMember" id="formcreateMember" name="formcreateMember">
+            <form method="post" action="member" id="member" name="member">
                 <div class="form-group">
                     <label for="memberType">Member Type:</label>
                     <select id="memberType" name="memberType" class="input-field" required>
                         <option value="" disabled>Member Type</option>
-                        <option value="Primary">Primary</option>
-                        <option value="Secondary" selected>Secondary</option>
+                        <option value="PRIMARY">Primary</option>
+                        <option value="SECONDARY" selected>Secondary</option>
                     </select>
                     <div class="error-message" id="memberType-error">
                         <i class="fas fa-exclamation-circle"></i>
@@ -740,7 +740,7 @@
 				    <select id="referenceMember" name="referenceMember" class="input-field" required>
 				        <option value="" disabled selected>Reference Member</option>
 				        <c:forEach items="${primaryMembers}" var="member">
-				            <option value="${member}">${member}</option>
+				            <option value="${member.no}">${member.memberName}</option>
 				        </c:forEach>
 				    </select>
 				    <div class="error-message" id="referenceMember-error">
@@ -849,7 +849,7 @@
             const referenceMemberGroup = document.getElementById('referenceMemberGroup');
 
             memberTypeSelect.addEventListener('change', function() {
-                if (this.value === 'Secondary') {
+                if (this.value === 'SECONDARY') {
                     referenceMemberGroup.style.display = ''; // Fix: Remove inline display:none
                     setTimeout(() => {
                         referenceMemberGroup.classList.add('show');
@@ -927,7 +927,7 @@
             }
 
             // Validate Reference Member if Secondary
-            if (memberType.value === 'Secondary') {
+            if (memberType.value === 'SECONDARY') {
                 const referenceMember = document.getElementById('referenceMember');
                 if (!referenceMember.value) {
                     showError(referenceMember, 'referenceMember-error');
@@ -935,7 +935,7 @@
                 }
             }else{
             	const referenceMemberSelect = document.getElementById('referenceMember');
-                referenceMemberSelect.value = "Primary";
+                referenceMemberSelect.value = "PRIMARY";
             }
             
             // Validate Name
@@ -963,14 +963,10 @@
             }
 
 			if (isValid) {
-				// You can add form submission logic here
-				// showSuccessMessage();
-				//showErrorMessage();	
-				
 				// Create a hidden form
-			    const form = document.getElementById('formcreateMember');
+			    const form = document.getElementById('member');
 			    form.method = 'POST';
-			    form.action = 'crateMember'; // Your endpoint URL
+			    form.action = 'member'; // Your endpoint URL
 
 			    // Add CSRF token (required for Spring Security)
 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
@@ -981,8 +977,6 @@
 			    form.appendChild(csrfInput);
 			    document.body.appendChild(form);
 			    form.submit();		
-				
-			
             }
 
 

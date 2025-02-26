@@ -52,6 +52,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String FINANCE_ALREADY_APPOVED_MESSAGE = "finance.already.appoved.message";
 	
+	public static final String FINANCE_DATEEXPIRED_MESSAGE = "finance.dateexpired.message";
+	
 	public static final String FINANCE_APPOVED_MESSAGE = "finance.appoved.message";
 	
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_EMAILPRESENT_MESSAGE = "member.create.newuser.error.emailpresent.message";

@@ -4,12 +4,16 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
-import lombok.ToString;
 
 /**
  * @author Sujith Krishna
@@ -19,22 +23,33 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@ToString
-@Table(name = "finance")
-@IdClass(FinanceModelId.class) // Specify the composite key class
+@Table(name = "finance",
+uniqueConstraints = {
+    @UniqueConstraint(
+        name = "uniq_finance_composite",
+        columnNames = {"finance_type", "finance_name", "finance_owner_no"}
+    )
+})
 public class FinanceModel {
 
-    @Id
-    @Column(name = "finance_type", nullable = false)
-    private String financeType;
+    public enum FinanceType {
+        PRIMARY, SECONDARY
+    }
 
     @Id
+    @Column(nullable = false)
+    private Integer id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "finance_type", nullable = false)
+    private FinanceType financeType;
+
     @Column(name = "finance_name", nullable = false)
     private String financeName;
 
-    @Id
-    @Column(name = "finance_ownername", nullable = false)
-    private String financeOwnerName;
+    @ManyToOne
+    @JoinColumn(name = "finance_owner_no", referencedColumnName = "no")
+    private MemberModel financeOwner;
 
     @Column(name = "finance_creationdate", nullable = false)
     private LocalDate financeCreationDate;
@@ -44,4 +59,6 @@ public class FinanceModel {
 
     @Column(name = "current_balance")
     private Double currentBalance;
+
+    
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
+import com.finance.exception.DateExpiredException;
 import com.finance.model.CurrentUser;
 import com.finance.model.ExpensesModel;
 import com.finance.model.RevenueModel;
@@ -30,8 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @Controller
 public class ApprovalsController {
-
-
+	/*
 
 	@Autowired
 	private CurrentUser currentUser;
@@ -83,26 +83,7 @@ public class ApprovalsController {
 
         System.out.println("LocalDate: " + selectedDate);
 		
-		if(null != currentUser  && !currentUser.isLoggedIn()) {
-			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
-		}
-		model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
-		
-		//Fetching Revenue List
-		List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(selectedDate);
-		if(null != nonApprovedRevenueList && nonApprovedRevenueList.size() == 0) {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, null);
-		}else {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, nonApprovedRevenueList);
-		}
-		
-		//Fetching Expenses List		
-		List<ExpensesModel> nonApprovedExpensesList = expensesService.getExpensesFromMondayToGivenDate(selectedDate);
-		if(null != nonApprovedExpensesList && nonApprovedExpensesList.size() == 0) {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, null);
-		}else {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
-		}
+        revewnueAndExpensesList(model, selectedDate);
 		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
 		return "approvals";
@@ -119,31 +100,42 @@ public class ApprovalsController {
 			boolean status = approvalsService.processApprovels(request,response);
 			if(status) {
 				model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getProperty(ChunksFinanceConstants.FINANCE_APPOVED_MESSAGE));
-				if(null != currentUser  && !currentUser.isLoggedIn()) {
-					currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
-				}
-				model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
-				List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(selectedDate);
-				if(null != nonApprovedRevenueList && nonApprovedRevenueList.size() == 0) {
-					model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, null);
-				}else {
-					model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, nonApprovedRevenueList);
-				}
-				
-				List<ExpensesModel> nonApprovedExpensesList = expensesService.getExpensesFromMondayToGivenDate(selectedDate);
-				if(null != nonApprovedExpensesList && nonApprovedExpensesList.size() == 0) {
-					model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, null);
-				}else {
-					model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
-				}
+				revewnueAndExpensesList(model, selectedDate);
 			}
+		}catch(DateExpiredException exception) {
+			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_DATEEXPIRED_MESSAGE));
+			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
+			revewnueAndExpensesList(model, selectedDate);
+			return "approvals";
 		}catch(AlreadyApprovedException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_ALREADY_APPOVED_MESSAGE));
 			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
+			revewnueAndExpensesList(model, selectedDate);
 			return "approvals";
 		}
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
 		return "approvals";
 	}
-	
+
+
+	private void revewnueAndExpensesList(Model model, LocalDate selectedDate) {
+		if(null != currentUser  && !currentUser.isLoggedIn()) {
+			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
+		}
+		model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+		List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(selectedDate);
+		if(null != nonApprovedRevenueList && nonApprovedRevenueList.size() == 0) {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, null);
+		}else {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, nonApprovedRevenueList);
+		}
+		
+		List<ExpensesModel> nonApprovedExpensesList = expensesService.getExpensesFromMondayToGivenDate(selectedDate);
+		if(null != nonApprovedExpensesList && nonApprovedExpensesList.size() == 0) {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, null);
+		}else {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
+		}
+	}
+	*/
 }

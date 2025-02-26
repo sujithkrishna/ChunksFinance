@@ -464,11 +464,6 @@
         /* === Common END here === */
 
 
-
-
-
-
-
         main {
             padding: 2rem;
             max-width: 1200px;
@@ -692,7 +687,7 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
             <li><a href="new-chits">Chits</a></li>
-            <li><a href="load-finance">Create Finance</a></li>
+            <li><a href="finance">Create Finance</a></li>
         </ul>
     </nav>
 
@@ -706,7 +701,6 @@
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
 						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -717,7 +711,6 @@
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
 						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
@@ -732,10 +725,9 @@
 								<label for="finance-source">Loan Reference Name</label>
 								<select id="finance-source" class="input-field" required>
 									<option value="" disabled selected>Loan Reference Name</option>
-									<option value="johnDoe">Sujith Krishna</option>
-									<option value="janeDoe">Fr Jaison</option>
-									<option value="alexSmith">Manesh</option>
-									<option value="maryJohnson">Jijin</option>
+							        <c:forEach items="${primaryMembers}" var="member">
+							            <option value="${member}">${member}</option>
+							        </c:forEach>
 								</select>
 								<div class="error-message" id="finance-source-error">
 									<i class="fas fa-exclamation-circle"></i>
@@ -756,11 +748,20 @@
                             <!-- Loan Applicant Name -->
                             <div class="form-group">
                                 <label for="applicant-name">Loan Applicant Name</label>
-                                <input type="text" id="applicant-name" name="applicant-name" class="input-field" placeholder="Enter applicant name" required>
+								<select id="applicant-name" name="applicant-name"  class="input-field" required>
+									<option value="" disabled selected>Loan Applicant name</option>
+							        <c:forEach items="${primaryMembers}" var="priMember">
+							            <option value="${priMember}">${priMember} P</option>
+							        </c:forEach>									
+							        <c:forEach items="${secondaryMembers}" var="secMember">
+							            <option value="${secMember}">${secMember} S</option>
+							        </c:forEach>
+								</select>		
 								<div class="error-message" id="applicant-name-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Applicant Name is required</span>
 								</div>								
+																
                             </div>
 
                             <!-- Loan Amount -->

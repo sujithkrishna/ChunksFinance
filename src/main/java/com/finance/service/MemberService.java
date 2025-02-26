@@ -1,23 +1,21 @@
 package com.finance.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.DuplicateMemberEmailIdException;
-import com.finance.exception.DuplicateMemberTypeNameException;
+import com.finance.model.CurrentUser;
 import com.finance.model.MemberModel;
-import com.finance.model.MemberModel.MemberId;
 import com.finance.repository.MemberRepository;
 import com.finance.security.Base64EncryptionUtil;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Sujith Krishna
@@ -33,51 +31,79 @@ public class MemberService {
 
 	@Autowired
 	private Base64EncryptionUtil encryptionUtil;
+	
+	@Autowired
+	private CurrentUser currentUser;
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	public boolean createMember(HttpServletRequest request, MemberModel member) {
-		
-		MemberId mId = new MemberId();
-		mId.setMemberName(request.getParameter(ChunksFinanceConstants.MEMBER_NAME));
-		mId.setMemberType(request.getParameter(ChunksFinanceConstants.MEMBER_TYPE));
-		member.setId(mId);
-		
-		String email = member.getEmailId();
-		Boolean emailPressent = memberRepository.existsByEmailId(email);
-		if (emailPressent) {
+	public boolean  createMember(MemberModel member) {
+		String emailId = member.getEmailId();
+		Optional<MemberModel> existingMember = memberRepository.findByEmailId(emailId);
+		if(existingMember.isPresent()) {
 			throw new DuplicateMemberEmailIdException();
+		}else {
+				try {
+					String encryptionPassword = encryptionUtil.encrypt(member.getPassword());
+					member.setPassword(encryptionPassword);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Integer currentValue = getMaxMemberNo();
+				member.setNo(++currentValue);
+				memberRepository.save(member);
 		}
-		List<MemberModel> memberPresent = memberRepository.findByMemberTypeAndMemberName(member.getId().getMemberType(),member.getId().getMemberName());
-		if(memberPresent.size()>0) {
-			throw new DuplicateMemberTypeNameException();
+		return true;
+	}
+	
+	public void loadPrimaryMemCurrentUser(Model model) {
+		List<MemberModel> primaryMembers = getAllPrimaryMemeber();
+        model.addAttribute("primaryMembers", primaryMembers);
+		if(null != currentUser  && !currentUser.isLoggedIn()) {
+			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
 		}
-		try {
-			String encryptionPassword = encryptionUtil.encrypt(member.getPassword());
-			member.setPassword(encryptionPassword);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (null == member.getReferenceMember()) {
-			member.setReferenceMember(ChunksFinanceConstants.PRIMARY);
-		}
-		
-		try {
-			memberRepository.save(member);
-			return true;
-		} catch (Exception exception) {
-			return false;
-		}
+		model.addAttribute("currentUser", currentUser);
 	}
 	
 	
-
-	public List<String> getAllPrimaryMemeber() {
-		List<MemberModel> primaryMembersMemMdl = memberRepository.findByIdMemberType(ChunksFinanceConstants.PRIMARY);
-		List<String> primaryMembers = new ArrayList<String>();
-		for (MemberModel memberModel : primaryMembersMemMdl) {
-			primaryMembers.add(memberModel.getId().getMemberName());
-		}
+	
+	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
+	public Integer getMaxMemberNo() {
+        return memberRepository.findMaxNo();
+    }
+	
+	public List<MemberModel> getAllPrimaryMemeber() {
+		List<MemberModel> primaryMembers = memberRepository.findByMemberType(MemberModel.MemberType.PRIMARY);
 		return primaryMembers;
 	}
+	
+	public List<String> getAllSecondaryMemeber() {
+		/*
+		List<MemberModel> secondaryMembersMemMdl = memberRepository.findAllSecondaryMembers();
+		List<String> secondaryMembers = new ArrayList<String>();
+		for (MemberModel memberModel : secondaryMembersMemMdl) {
+			secondaryMembers.add(memberModel.getId().getMemberName());
+		}
+		return secondaryMembers;
+		*/
+		return null;
+	}
+	
+	
+	public List<String> getEligibleLoanMembers() {
+		/*
+		List<MemberModel> primaryMembersMemMdl = memberRepository.findAllPrimaryMembers();
+		List<MemberModel> secondaryMembersMemMdl = memberRepository.findAllSecondaryMembers();
+		List<String> eligibleLoanMembers = new ArrayList<String>();
+		for (MemberModel memberModel : primaryMembersMemMdl) {
+			eligibleLoanMembers.add(memberModel.getId().getMemberName());
+		}
+		for (MemberModel memberModel : secondaryMembersMemMdl) {
+			eligibleLoanMembers.add(memberModel.getId().getMemberName());
+		}
+		return eligibleLoanMembers;
+		*/
+		return null;
+	}
+	
 
 }

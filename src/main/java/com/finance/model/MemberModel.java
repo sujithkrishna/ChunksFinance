@@ -1,17 +1,20 @@
 package com.finance.model;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import lombok.Data;
-import lombok.ToString;
-
 /**
  * @author Sujith Krishna
  *
@@ -20,30 +23,46 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@ToString
-@Table(name = "member", uniqueConstraints = {
-	    @UniqueConstraint(columnNames = "emailId") // Ensure emailId is unique
-	})
+@Table(name = "members",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "emailId"),
+        @UniqueConstraint(
+            name = "uniq_member_composite",
+            columnNames = {"memberName", "memberType", "reference_member_no"}
+        )
+    })
 public class MemberModel {
-	
-	
-	@EmbeddedId
-    private MemberId id;
 
-    @Column(name = "reference_member")
-    private String referenceMember;
+    public enum MemberType {
+        PRIMARY, SECONDARY
+    }
 
-    @Column(name = "memeber_dob")
-    private LocalDate memberDOB;
+    @Id
+    @Column(nullable = false)
+    private Integer no;
 
-    @Column(name = "mobile_number")
-    private String mobileNumber;
+    @Column(nullable = false)
+    private String memberName;
 
-    @Column(name = "email_id", nullable = false, unique = true)
+    @Column(name = "email_id",nullable = false, unique = true)
     private String emailId;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MemberType memberType;
+
+    @ManyToOne
+    @JoinColumn(name = "reference_member_no")
+    private MemberModel referenceMember;
+
+    @Column(name = "member_dob")
+    private LocalDate memberDOB;
+
+    @Column(name = "mobile_number")
+    private String mobileNumber;
 
     @Column(name = "address1")
     private String address1;
@@ -62,18 +81,5 @@ public class MemberModel {
 
     @Column(name = "pincode")
     private String pincode;
-    
-    @Embeddable
-    @Data
-    public static class MemberId implements Serializable {
-        private static final long serialVersionUID = 1L;
 
-        @Column(name = "member_type", nullable = false)
-        private String memberType;
-
-        @Column(name = "member_name", nullable = false)
-        private String memberName;
-
-    }
-	
 }
