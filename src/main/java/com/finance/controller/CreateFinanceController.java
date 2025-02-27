@@ -3,25 +3,21 @@ package com.finance.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.CurrentUser;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.service.CreateFinanceService;
-import com.finance.service.LoginService;
 import com.finance.service.MemberService;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.finance.user.MemberDetails;
 /**
  * 
  * 
@@ -39,20 +35,17 @@ public class CreateFinanceController {
 	private ChunksFinancePropertyService propertyService;
 		
 	@Autowired
-	private CurrentUser currentUser;
-
-	@Autowired
 	private MemberService memberService;
 	
 	
 	@GetMapping(path = {"/finance"})
-	public String handleLoanFinance(Model modelview) {
+	public String handleLoanFinance(@AuthenticationPrincipal MemberDetails memberDetails,Model model) {
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		modelview.addAttribute("primaryMembers",primaryMembers);
-		if(null != currentUser  && !currentUser.isLoggedIn()) {
-			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
-		}
-		modelview.addAttribute("currentUser", currentUser);
+		if (memberDetails != null) {
+            MemberModel currentUser = memberDetails.getMember();
+            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+		}		
+		model.addAttribute("primaryMembers",primaryMembers);
         return "createFinance";
 	}
 	

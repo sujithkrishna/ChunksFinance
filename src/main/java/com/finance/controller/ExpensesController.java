@@ -3,6 +3,7 @@ package com.finance.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +13,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.CurrentUser;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
-import com.finance.model.RevenueModel;
+import com.finance.model.MemberModel;
 import com.finance.service.DashBoardService;
 import com.finance.service.ExpensesService;
-import com.finance.service.RevenueService;
+import com.finance.user.MemberDetails;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,9 +32,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ExpensesController {
 	
 	@Autowired
-	private CurrentUser currentUser;
-	
-	@Autowired
 	private DashBoardService boardService;
 	
 	@Autowired
@@ -44,12 +41,11 @@ public class ExpensesController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/expenses"})
-	public String handleExpenses(HttpServletRequest request, HttpServletResponse response, Model model) {
-		if(null != currentUser  && !currentUser.isLoggedIn()) {
-			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
+	public String handleExpenses(@AuthenticationPrincipal MemberDetails memberDetails,Model model) {
+		if (memberDetails != null) {
+            MemberModel currentUser = memberDetails.getMember();
+            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
-		model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
-		model.addAttribute(ChunksFinanceConstants.CURRENT_USER_NAME, currentUser.getMemberName());
 		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
 		if(financeModel.size()==0) {
 			financeModel = null;
@@ -69,11 +65,6 @@ public class ExpensesController {
 	public String handleCreatExpenses(@ModelAttribute ExpensesModel expensesModel,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) {
 		boolean status = expensesService.createExpenses(request, expensesModel);
 		String memberName = null;
-		if(null != currentUser  && !currentUser.isLoggedIn()) {
-			memberName = ChunksFinanceConstants.SILENT_WATCHER;
-		}else {
-			memberName = currentUser.getMemberName();
-		}
 		if(status) {
 			redirectAttributes.addFlashAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_EXPENSES_MESSAGE,memberName));
 	        return "redirect:/expenses";

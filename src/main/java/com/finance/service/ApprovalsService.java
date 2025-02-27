@@ -1,29 +1,6 @@
 package com.finance.service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.finance.constant.ChunksFinanceConstants;
-import com.finance.exception.AlreadyApprovedException;
-import com.finance.exception.DateExpiredException;
-import com.finance.model.CurrentUser;
-import com.finance.model.ExpensesModel;
-import com.finance.model.FinanceModel;
-import com.finance.model.RevenueModel;
-import com.finance.repository.ExpensesRepository;
-import com.finance.repository.FinanceRepository;
-import com.finance.repository.RevenueRepository;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author Sujith Krishna

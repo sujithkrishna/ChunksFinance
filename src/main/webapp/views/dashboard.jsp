@@ -521,7 +521,9 @@
     <footer>
         &copy; 2025 Chunks Finance | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
     </footer>
-
+	<form action="${pageContext.request.contextPath}/perform_logout" method="post" id="financeLogout">
+	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	</form>
     <!-- Confirmation Dialog -->
     <div class="logout-confirm">
         <p>Are you sure you want to logout?</p>
@@ -543,7 +545,24 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 if (this.classList.contains('yes')) {
-                    window.location.href = 'financeLogin';
+                    // Logout.
+                    
+                	 const form = document.getElementById('financeLogout');
+     			    form.method = 'POST';
+     			    form.action = 'perform_logout'; // Your endpoint URL
+
+     			    // Add CSRF token (required for Spring Security)
+     			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+     			    const csrfInput = document.createElement('input');
+     			    csrfInput.type = 'hidden';
+     			    csrfInput.name = '_csrf';
+     			    csrfInput.value = csrfToken;
+     			    form.appendChild(csrfInput);
+     			    document.body.appendChild(form);
+     			    form.submit();	
+                    
+                    
+                    
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });

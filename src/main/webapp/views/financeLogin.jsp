@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -386,11 +387,11 @@
 					<i class="fas fa-times"></i>
 				</div>
 			</div>				
-            <form method="post" action="financeLoginSubmit" id="financeLogin" name="financeLogin">
+            <form method="post" action="/perform_login" id="financeLogin" name="financeLogin">
                 <!-- Username -->
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input name="emailId" type="text" id="emailId" class="input-field" placeholder="Enter your username" required>
+                    <input name="username" type="text" id="emailId" class="input-field" placeholder="Enter your username" required>
                     <div class="error-message" id="username-error">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>Username is required</span>
@@ -490,7 +491,7 @@
 				//showErrorMessage();
 			    const form = document.getElementById('financeLogin');
 			    form.method = 'POST';
-			    form.action = 'financeLoginSubmit'; // Your endpoint URL
+			    form.action = 'perform_login'; // Your endpoint URL
 
 			    // Add CSRF token (required for Spring Security)
 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;

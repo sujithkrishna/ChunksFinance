@@ -11,13 +11,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.RevenueModel;
-import com.finance.model.CurrentUser;
 import com.finance.model.ExpensesModel;
-import com.finance.model.MemberModel;
-import com.finance.repository.RevenueRepository;
 import com.finance.repository.ExpensesRepository;
-import com.finance.repository.FinanceRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -32,9 +27,6 @@ public class ExpensesService {
 	
 	@Autowired
     private ExpensesRepository expensesRepository;
-	
-	@Autowired
-    private CurrentUser currentUser;
 	
 	public Long getMaxExpensesNumber() {
         return expensesRepository.findMaxExpensesNumber(); 
@@ -67,11 +59,6 @@ public class ExpensesService {
 	 public List<ExpensesModel> getExpensesFromMondayToGivenDate(LocalDate givenDate) {
 	        LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
 	        String currentUserName = null;
-		 	if(null != currentUser  && !currentUser.isLoggedIn()) {
-		 		currentUserName = ChunksFinanceConstants.SILENT_WATCHER;
-			}else {
-				currentUserName = currentUser.getMemberName();
-			}
 	        return expensesRepository.findExpensesByDateRangeAndStatusAndApprover(startOfWeek, givenDate,ChunksFinanceConstants.IN_PROGRESS,currentUserName);
 	    }
 	

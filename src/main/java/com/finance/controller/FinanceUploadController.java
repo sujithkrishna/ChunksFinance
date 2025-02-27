@@ -1,12 +1,8 @@
 package com.finance.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.CurrentUser;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,16 +15,10 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class FinanceUploadController {
 
-
-	@Autowired
-	private CurrentUser currentUser;
-	
 	@GetMapping(path = {"/finance-uploads"})
 	public String handleFinanceUploads(HttpServletRequest request, HttpServletResponse response, Model model) {
-		if(null != currentUser  && !currentUser.isLoggedIn()) {
-			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
-		}
-		model.addAttribute("currentUser", currentUser);
+	
+		model.addAttribute("currentUser", "NULL");
 		return "financeUploads";
 	}
 }

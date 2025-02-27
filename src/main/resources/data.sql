@@ -11,7 +11,7 @@ INSERT INTO members (member_dob, no, reference_member_no, address1, district, em
 INSERT INTO members (member_dob, no, reference_member_no, address1, district, email_id, member_name, mobile_number, password, pincode, place, state, taluk, member_type) VALUES ('1992-11-15', 9, NULL, '789 Road, Area C', 'District Z', 'sijin.celine@gmail.com', 'സിജിൻ  TV',  '7654321098', 'c2lqaW4uY2VsaW5l', '560003', 'City C', 'State C', 'Taluk C', 'PRIMARY');
 INSERT INTO members (member_dob, no, reference_member_no, address1, district, email_id, member_name,mobile_number, password, pincode, place, state, taluk, member_type) VALUES ('1990-05-12', 10, NULL, '123 Street, Area A', 'District X', 'sujithskrishna@gmail.com', 'സുജിത്ത് കൃഷ്ണാ','9876543210', 'c3VqaXRoc2tyaXNobmE=', '560001', 'City A', 'State A', 'Taluk A', 'PRIMARY');
 INSERT INTO members (member_dob, no, reference_member_no, address1, district, email_id, member_name, mobile_number, password, pincode, place, state, taluk, member_type) VALUES  ('1988-09-25', 11, NULL, '456 Avenue, Area B', 'District Y', 'saritharaphel@gmail.com', 'സരിത റഫയൽ',  '8765432109', 'c2FyaXRoYXJhcGhlbA==', '560002', 'City B', 'State B', 'Taluk B', 'PRIMARY');
-
+																																																																																		
 
 
 create table finance (current_balance float(53), finance_amount float(53), finance_creationdate date not null, finance_owner_no integer, id integer not null, finance_name varchar(255) not null, finance_type enum ('PRIMARY','SECONDARY') not null, primary key (id), constraint uniq_finance_composite unique (finance_type, finance_name, finance_owner_no));

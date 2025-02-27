@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.CurrentUser;
 import com.finance.model.FinanceModel;
 import com.finance.model.RevenueModel;
 import com.finance.repository.FinanceRepository;
@@ -39,9 +38,6 @@ public class RevenueService {
 	private DashBoardService boardService;
 	
 
-	@Autowired
-    private CurrentUser currentUser;
-	
 	public Integer getMaxRevenueNumber() {
         return revenueRepository.findMaxNo(); 
     }
@@ -63,7 +59,8 @@ public class RevenueService {
 			}else {
 				revenue.setRevenueNumber(1);
 			}
-			revenue.setSpenderName(currentUser.getCurrentUser());
+			//revenue.setSpenderName(currentUser.getCurrentUser());
+			revenue.setSpenderName(null);
 			revenue.setApproverName(revenue.getFinanceType().getFinanceOwner());
 			revenueRepository.save(revenue);
 			return true;
@@ -75,8 +72,6 @@ public class RevenueService {
 	
 	
 	public Model populatingFields(Model model) {
-		model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
-		model.addAttribute(ChunksFinanceConstants.CURRENT_USER_NAME, currentUser.getMemberName());
 		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
 		if(financeModel.size()==0) {
 			financeModel = null;
@@ -96,11 +91,7 @@ public class RevenueService {
 	 public List<RevenueModel> getRevenueFromMondayToGivenDate(LocalDate givenDate) {
 	        LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
 	        String currentUserName = null;
-		 	if(null != currentUser  && !currentUser.isLoggedIn()) {
-		 		currentUserName = ChunksFinanceConstants.SILENT_WATCHER;
-			}else {
-				currentUserName = currentUser.getMemberName();
-			}
+
 	       // return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate,ChunksFinanceConstants.IN_PROGRESS,currentUserName);
 		 	return null;
 	    }

@@ -4,18 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.DuplicateMemberEmailIdException;
-import com.finance.model.CurrentUser;
 import com.finance.model.MemberModel;
 import com.finance.repository.MemberRepository;
-import com.finance.security.Base64EncryptionUtil;
 
 /**
  * @author Sujith Krishna
@@ -30,10 +28,7 @@ public class MemberService {
 	private MemberRepository memberRepository;
 
 	@Autowired
-	private Base64EncryptionUtil encryptionUtil;
-	
-	@Autowired
-	private CurrentUser currentUser;
+	private PasswordEncoder passwordEncoder;
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean  createMember(MemberModel member) {
@@ -43,8 +38,8 @@ public class MemberService {
 			throw new DuplicateMemberEmailIdException();
 		}else {
 				try {
-					String encryptionPassword = encryptionUtil.encrypt(member.getPassword());
-					member.setPassword(encryptionPassword);
+					String encodedPassword = passwordEncoder.encode(member.getPassword());
+				    member.setPassword(encodedPassword);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,10 +53,7 @@ public class MemberService {
 	public void loadPrimaryMemCurrentUser(Model model) {
 		List<MemberModel> primaryMembers = getAllPrimaryMemeber();
         model.addAttribute("primaryMembers", primaryMembers);
-		if(null != currentUser  && !currentUser.isLoggedIn()) {
-			currentUser.setMemberName(ChunksFinanceConstants.SILENT_WATCHER);
-		}
-		model.addAttribute("currentUser", currentUser);
+		model.addAttribute("currentUser", "NULL");
 	}
 	
 	

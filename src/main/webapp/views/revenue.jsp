@@ -824,7 +824,7 @@
 	        dateInput.value = today.toISOString().split('T')[0];
 	    	
 	    	document.getElementById('RevenueNo').value = '${revenueNumber}';
-	    	document.getElementById('RevenueName').value = '${currentUserName}';
+	    	document.getElementById('RevenueName').value = '${currentUser.memberName}';
 	    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();

@@ -2,6 +2,7 @@ package com.finance.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +13,9 @@ import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.DuplicateMemberEmailIdException;
 import com.finance.exception.DuplicateMemberException;
-import com.finance.model.CurrentUser;
 import com.finance.model.MemberModel;
 import com.finance.service.MemberService;
+import com.finance.user.MemberDetails;
 /**
  * 
  * 
@@ -30,11 +31,12 @@ public class MemberController {
 	@Autowired
 	private ChunksFinancePropertyService propertyService;
 	
-	@Autowired
-	private CurrentUser currentUser;
-
 	@GetMapping(path = {"/member"})
-	public String handleMember(Model model) {
+	public String handleMember(@AuthenticationPrincipal MemberDetails memberDetails,Model model) {
+		if (memberDetails != null) {
+            MemberModel currentUser = memberDetails.getMember();
+            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+		}		
 		memberService.loadPrimaryMemCurrentUser(model);
         return "member";
 	}
