@@ -485,7 +485,6 @@
 		                    </div>
 		                    <div>
 		                        <div class="stat-title">Current Balance</div>
-		                        
 								<c:choose>
 								    <c:when test="${financeItem.currentBalance > 0}">
 								        <div class="stat-value positive">&#8377;${financeItem.currentBalance}</div>
@@ -497,8 +496,6 @@
 								        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
 								    </c:otherwise>
 								</c:choose>		                        
-		                        
-		                        
 		                        
 		                    </div>
 		                </div>
@@ -547,7 +544,7 @@
                 if (this.classList.contains('yes')) {
                     // Logout.
                     
-                	 const form = document.getElementById('financeLogout');
+                	const form = document.getElementById('financeLogout');
      			    form.method = 'POST';
      			    form.action = 'perform_logout'; // Your endpoint URL
 
@@ -560,9 +557,6 @@
      			    form.appendChild(csrfInput);
      			    document.body.appendChild(form);
      			    form.submit();	
-                    
-                    
-                    
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });

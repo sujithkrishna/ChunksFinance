@@ -788,6 +788,11 @@
                     <div class="form-group">
                         <label for="finance-amount">Finance Amount</label>
                         <input type="number" id="finance-amount"  name="financeAmount" class="input-field" placeholder="Enter finance amount">
+					    <!-- Add this error message -->
+					    <div class="error-message" id="finance-amount-error">
+					        <i class="fas fa-exclamation-circle"></i>
+					        <span>Finance Amount is required for Primary accounts</span>
+					    </div>                        
                     </div>
 
                     <!-- Submit Button -->
@@ -806,7 +811,9 @@
     <footer>
         &copy; 2025 Chunks Finance | <a href="#" style="color: white; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: white; text-decoration: none;">Terms of Service</a>
     </footer>
-
+	<form action="${pageContext.request.contextPath}/perform_logout" method="post" id="financeLogout">
+	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	</form>
     <script>
 	
 			 // Check for success message on page load
@@ -830,6 +837,7 @@
             const financeName = document.getElementById("finance-name");
             const financeOwner = document.getElementById("finance-owner");
             const financeDate = document.getElementById("finance-date");
+            const financeAmount = document.getElementById("finance-amount"); 
             let isValid = true;
 
             // Clear previous errors
@@ -859,6 +867,10 @@
             // Validate Finance Date
             if (!financeDate.value.trim()) {
                 showError(financeDate, 'finance-date-error');
+                isValid = false;
+            }
+            if (financeType.value === "PRIMARY" && !financeAmount.value.trim()) {
+                showError(financeAmount, 'finance-amount-error');
                 isValid = false;
             }
 
@@ -894,6 +906,10 @@
 		function closeRedErrorMessage() {
             document.getElementById('redErrorMessage').classList.remove('show');
         }
+		
+		document.getElementById('finance-amount').addEventListener('input', function() {
+		    clearError(this, 'finance-amount-error');
+		});
 
         function showSuccessMessage() {
             const successMsg = document.getElementById('greenSuccessMessage');
@@ -979,7 +995,19 @@
                 e.preventDefault();
                 if(this.classList.contains('yes')) {
                     // Replace with actual logout logic
-                    window.location.href = 'financeLogin'; // Removed leading slash
+                	const form = document.getElementById('financeLogout');
+     			    form.method = 'POST';
+     			    form.action = 'perform_logout'; // Your endpoint URL
+
+     			    // Add CSRF token (required for Spring Security)
+	     			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+	     			    const csrfInput = document.createElement('input');
+	     			    csrfInput.type = 'hidden';
+	     			    csrfInput.name = '_csrf';
+	     			    csrfInput.value = csrfToken;
+	     			    form.appendChild(csrfInput);
+	     			    document.body.appendChild(form);
+	     			    form.submit();	
                 }
                 document.querySelector('.logout-confirm').style.display = 'none';
             });
