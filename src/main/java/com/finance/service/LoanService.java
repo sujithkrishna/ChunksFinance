@@ -79,7 +79,6 @@ public class LoanService {
 		}
         loanModel.setEmiDetails(emiDetails);
         loanModel.setFirstapproverName(loanModel.getFinanceType().getFinanceOwner());
-        
 		loanRepository.save(loanModel);
 		return true;
 		

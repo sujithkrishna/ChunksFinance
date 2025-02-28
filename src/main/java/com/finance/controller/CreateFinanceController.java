@@ -52,10 +52,12 @@ public class CreateFinanceController {
 	
 	@PostMapping(path = {"/finance"})
 	public String handleCreateFinance(Model model,@ModelAttribute FinanceModel finance,RedirectAttributes redirectAttributes) {
-		createFinanceService.creatFinance(finance);
+		boolean status = createFinanceService.creatFinance(finance);
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
 		model.addAttribute("primaryMembers",primaryMembers);
-		model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_NEWFINANCE_MESSAGE,finance.getFinanceName()));
+		if(status) {
+		 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_NEWFINANCE_MESSAGE,finance.getFinanceName()));
+		}
 				
 		return "createFinance";
 	}

@@ -64,6 +64,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String FINANCE_CREATE_EXPENSES_MESSAGE = "finance.create.expenses.message";
 	
+	public static final String LOAN_CREATE_MESSAGE = "loan.create.message";
+	
 	public static final String USER_NOTFOUND_ERROR = "user.notfound.error";
 	
 	public static final String USER_PASSWORD_WRONG_ERROR = "user.password.wrong.error";

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.finance.config.ChunksFinancePropertyService;
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.LoanModel;
 import com.finance.service.LoanService;
 import com.finance.user.MemberDetails;
@@ -22,6 +24,9 @@ public class LoanController {
 	@Autowired
 	private LoanService loanService;
 	
+	@Autowired
+	private ChunksFinancePropertyService propertyService;
+	
 	@GetMapping(path = {"/loan"})
 	public String handleLoan(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
 		loanService.populateLoanPageDetails(currenUser, model);
@@ -30,7 +35,10 @@ public class LoanController {
 	
 	@PostMapping(path = {"/loan"})
 	public String handleCreateLoan(@AuthenticationPrincipal MemberDetails currenUser,@ModelAttribute LoanModel loanModel, Model model) {
-		loanService.createLoan(loanModel);
+		boolean status = loanService.createLoan(loanModel);
+			if(status) {
+				 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_CREATE_MESSAGE,currenUser.getMember().getMemberName()));
+			}
 		loanService.populateLoanPageDetails(currenUser, model);
 		return "loan";
 	}

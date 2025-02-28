@@ -700,7 +700,7 @@
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -710,7 +710,7 @@
 				<div class="red-error-message" id="redErrorMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
