@@ -1,7 +1,6 @@
 package com.finance.service;
 
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +30,6 @@ public class MemberDetailsService  implements UserDetailsService {
     	MemberModel member = memberRepository.findByEmailId(emailId)
     		    .orElseThrow(() -> {
     		        String errorMessage = "Login attempt failed for email: " + emailId + " - User not found!";
-    		        System.out.println(errorMessage); // Log to console
     		        return new UsernameNotFoundException(errorMessage);
     		    });
     	

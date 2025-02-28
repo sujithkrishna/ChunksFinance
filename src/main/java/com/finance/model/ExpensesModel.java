@@ -2,8 +2,6 @@ package com.finance.model;
 
 import java.time.LocalDate;
 
-import com.finance.model.RevenueModel.CurrentStatus;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -59,7 +57,11 @@ public class ExpensesModel {
     private CurrentStatus currentStatus = CurrentStatus.INPROGRESS;
 
     @ManyToOne
-    @JoinColumn(name = "approver_member_no", referencedColumnName = "no")
-    private MemberModel approverName;
+    @JoinColumn(name = "first_approver_member_no", referencedColumnName = "no")
+    private MemberModel firstapproverName;
+    
+    @ManyToOne
+    @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
+    private MemberModel secondapproverName;
     
 }

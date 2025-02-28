@@ -55,6 +55,10 @@ public class RevenueModel {
     private CurrentStatus currentStatus = CurrentStatus.INPROGRESS;
 
     @ManyToOne
-    @JoinColumn(name = "approver_member_no", referencedColumnName = "no")
-    private MemberModel approverName;
+    @JoinColumn(name = "first_approver_member_no", referencedColumnName = "no")
+    private MemberModel firstapproverName;
+    
+    @ManyToOne
+    @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
+    private MemberModel secondapproverName;
 }

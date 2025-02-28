@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
@@ -20,8 +21,6 @@ import com.finance.repository.FinanceRepository;
 import com.finance.repository.RevenueRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import org.springframework.transaction.annotation.Transactional;
 
 
 

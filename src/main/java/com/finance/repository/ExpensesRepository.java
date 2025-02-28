@@ -24,7 +24,7 @@ public interface ExpensesRepository extends JpaRepository<ExpensesModel, Integer
 	@Query("SELECT MAX(e.expensesNumber) FROM ExpensesModel e")
 	Integer findMaxNo();
 
-	@Query("SELECT e FROM ExpensesModel e WHERE e.spendDate BETWEEN :startDate AND :endDate AND e.currentStatus = :currentStatus AND e.approverName = :approverName")
-	List<ExpensesModel> findExpensesByDateRangeAndStatusAndApprover(LocalDate startDate, LocalDate endDate,CurrentStatus currentStatus, MemberModel approverName);
+	@Query("SELECT e FROM ExpensesModel e WHERE e.spendDate BETWEEN :startDate AND :endDate AND e.currentStatus = :currentStatus AND e.firstapproverName = :firstapproverName")
+	List<ExpensesModel> findExpensesByDateRangeAndStatusAndApprover(LocalDate startDate, LocalDate endDate,CurrentStatus currentStatus, MemberModel firstapproverName);
 
 }

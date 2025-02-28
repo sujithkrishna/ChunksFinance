@@ -720,6 +720,21 @@
                     <!-- Split into two columns -->
                     <div class="form-container">
                         <div class="form-left">
+
+		                    <div class="form-group">
+		                        <label for="finance-type">Finance Type</label>
+		                        <select name="financeType" id="ownerOfFund" class="input-field">
+		                            <option value="" disabled selected>Finance Type</option>
+		                            <c:forEach items="${AllFinance}" var="financeItem">
+		                            	<option value="${financeItem.id}">${financeItem.financeName} by ${financeItem.financeOwner.memberName}</option> 
+		                            </c:forEach>
+		                        </select>
+		                        <div class="error-message" id="financeType-error">
+		                            <i class="fas fa-exclamation-circle"></i>
+		                            <span>Please select a finance type</span>
+		                        </div>
+		                    </div>                        
+                        
                             <!-- Finance Source -->
 							<div class="form-group">
 								<label for="finance-source">Loan Reference Name</label>
@@ -771,12 +786,25 @@
                             <!-- Loan Date -->
                             <div class="form-group">
                                 <label for="loan-date">Loan Date</label>
-                                <input type="date" id="loan-date" name="loanDate" class="input-field" required>
+                                <input type="date" id="loan-date" name="loanDate" class="input-field" required onchange="handleLoanDateChange()">
 								<div class="error-message" id="loan-date-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Loan Date is required</span>
 								</div>								
                             </div>
+
+
+                            <!-- Loan Date -->
+                            <div class="form-group">
+                                <label for="loan-repayment-date">Loan repayment start date</label>
+                                <input type="date" id="loan-repayment-date" name="loanRepaymentDate" class="input-field" required>
+								<div class="error-message" id="loan-repayment-date-error">
+									<i class="fas fa-exclamation-circle"></i>
+									<span>Loan repayment date is required</span>
+								</div>								
+                            </div>                            
+                            
+                            
                         </div>
 
                         <div class="form-right">
@@ -894,7 +922,7 @@
 							<button type="button"> <i class="fas fa-edit"></i>Edit</button>
 							<button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
           				</div>
-          	 <input type="text" name="${_csrf.parameterName}" value="${_csrf.token}"/>			
+          	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>			
         </form>
       </section>
     </div>
@@ -943,6 +971,30 @@
 	                applicantSelect.add(option);
 	            });
 	    });
+	  
+	  function handleLoanDateChange() {
+		    const loandateInput = document.getElementById('loan-date');
+		    const dateRepaymentInput = document.getElementById('loan-repayment-date');
+
+		    const selectedLoanDate = new Date(loandateInput.value);
+		    if (isNaN(selectedLoanDate)) {
+		        console.error("Invalid loan date selected");
+		        return;
+		    }
+
+		    const dayOfWeek = selectedLoanDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+		    let repaymentDate = new Date(selectedLoanDate); // Clone the selected date
+
+		    
+		    if (dayOfWeek === 1 || dayOfWeek === 2) {
+	    		repaymentDate.setDate((selectedLoanDate.getDate() - dayOfWeek)+7);
+	    	} else {
+	    		repaymentDate.setDate((selectedLoanDate.getDate() + (7 - dayOfWeek) % 7)+7);
+	    	}
+		    dateRepaymentInput.value = repaymentDate.toISOString().split('T')[0];
+		}
+	  
+	  
 	  
   
 	  document.getElementById('loan-amount').addEventListener('input', function() {
@@ -996,9 +1048,28 @@
 	 // Check for success message on page load
   	document.addEventListener('DOMContentLoaded', function() {
   	
-  	  const dateInput = document.getElementById('loan-date');
+  	    const dateInput = document.getElementById('loan-date');
         const today = new Date();
         dateInput.value = today.toISOString().split('T')[0];
+        
+        const dateRepaymentInput = document.getElementById('loan-repayment-date');
+        const todayRepayment = new Date();
+    	const dayOfWeek = todayRepayment.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    	let repaymentDate = new Date(todayRepayment); // Clone todayRepayment's date
+    	if (dayOfWeek === 1 || dayOfWeek === 2) {
+    		
+    		repaymentDate.setDate((todayRepayment.getDate() - dayOfWeek)+7);
+    	} else {
+    		
+    		repaymentDate.setDate((todayRepayment.getDate() + (7 - dayOfWeek) % 7)+7);
+    	}
+    	dateRepaymentInput.value = repaymentDate.toISOString().split('T')[0];
+        
+        
+        
+        
+        
+        
 	
         document.getElementById('loan-no').value = '${loanNumber}';
   	
@@ -1022,6 +1093,19 @@
             document.getElementById('redErrorMessage').classList.remove('show');
         }
 
+	    document.getElementById('ownerOfFund').addEventListener('change', function() {
+	        clearError(this, 'financeType-error');
+	    });
+		
+	    document.getElementById('loan-date').addEventListener('change', function() {
+	        clearError(this, 'loan-date-error');
+	    });	    
+	    
+	    document.getElementById('loan-date').addEventListener('change', function() {
+	        clearError(this, 'loan-date-error');
+	    });	
+	    
+	    
         function showSuccessMessage() {
             const successMsg = document.getElementById('greenSuccessMessage');
             successMsg.classList.add('show');
@@ -1039,9 +1123,11 @@
         const mandatoryFields = [
             { id: 'finance-source', errorId: 'finance-source-error' },
             { id: 'loan-no', errorId: 'loan-number-error' },
+            { id: 'ownerOfFund', errorId: 'financeType-error' },
             { id: 'applicant-name', errorId: 'applicant-name-error' },
             { id: 'loan-amount', errorId: 'loan-amount-error' },
-            { id: 'loan-date', errorId: 'loan-date-error' }
+            { id: 'loan-date', errorId: 'loan-date-error' },
+            { id: 'loan-repayment-date', errorId: 'loan-repayment-date-error' }
         ];
 
         let isValid = true;
@@ -1103,6 +1189,9 @@
         });
     });  
 
+    
+
+    
         // Function to handle button click
         function handleButtonClick(event) {
             const button = event.target;

@@ -16,8 +16,8 @@ import com.finance.model.MemberModel;
  *
  */
 public class MemberDetails implements UserDetails {
-
-    private final MemberModel member;
+	private static final long serialVersionUID = 1L;
+	private final MemberModel member;
 
     public MemberDetails(MemberModel member) {
         this.member = member;

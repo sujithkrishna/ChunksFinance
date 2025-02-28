@@ -24,7 +24,6 @@ import com.finance.service.RevenueService;
 import com.finance.user.MemberDetails;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 /**
  * 
  * 
@@ -56,7 +55,6 @@ public class ApprovalsController {
 			currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
-		
 		//Fetching Revenue List
 		LocalDate givenDate = LocalDate.now();
 		revewnueAndExpensesList(model,givenDate,currentUser);
@@ -71,13 +69,8 @@ public class ApprovalsController {
 			currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
-		
 		LocalDate selectedDate = request.getParameter(ChunksFinanceConstants.APPROVAL_DATE) != null ? LocalDate.parse(request.getParameter(ChunksFinanceConstants.APPROVAL_DATE), DateTimeFormatter.ISO_LOCAL_DATE) : null;
-
-        System.out.println("LocalDate: " + selectedDate);
-		
         revewnueAndExpensesList(model,selectedDate,currentUser);
-		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
 		return "approvals";
 	}

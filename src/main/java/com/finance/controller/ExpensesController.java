@@ -1,7 +1,5 @@
 package com.finance.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -9,22 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ExpensesModel;
-import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
-import com.finance.model.RevenueModel;
-import com.finance.repository.FinanceRepository;
-import com.finance.service.CreateFinanceService;
-import com.finance.service.DashBoardService;
 import com.finance.service.ExpensesService;
 import com.finance.user.MemberDetails;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 /**
  * 
  * 

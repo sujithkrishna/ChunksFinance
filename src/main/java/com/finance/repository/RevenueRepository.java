@@ -23,7 +23,7 @@ public interface RevenueRepository extends JpaRepository<RevenueModel, Integer> 
 	@Query("SELECT MAX(r.revenueNumber) FROM RevenueModel r")
 	Integer findMaxNo();
 	
-	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus = :currentStatus AND r.approverName = :approverName")
-	List<RevenueModel> findRevenueByDateRangeAndStatusAndApprover(LocalDate startDate, LocalDate endDate,CurrentStatus currentStatus, MemberModel approverName);
+	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus = :currentStatus AND r.firstapproverName = :firstapproverName")
+	List<RevenueModel> findRevenueByDateRangeAndStatusAndApprover(LocalDate startDate, LocalDate endDate,CurrentStatus currentStatus, MemberModel firstapproverName);
 
 }

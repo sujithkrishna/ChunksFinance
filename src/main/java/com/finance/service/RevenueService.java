@@ -15,7 +15,6 @@ import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
-import com.finance.repository.FinanceRepository;
 import com.finance.repository.RevenueRepository;
 import com.finance.user.MemberDetails;
 
@@ -51,7 +50,7 @@ public class RevenueService {
 				revenue.setRevenueNumber(++maxRnumFromDB);
 			}
 			revenue.setSpenderName(currentUser.getMember());
-			revenue.setApproverName(revenue.getFinanceType().getFinanceOwner());
+			revenue.setFirstapproverName(revenue.getFinanceType().getFinanceOwner());
 			revenueRepository.save(revenue);
 			return true;
 		} catch (Exception exception) {

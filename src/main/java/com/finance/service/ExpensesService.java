@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -18,8 +17,6 @@ import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.repository.ExpensesRepository;
 import com.finance.user.MemberDetails;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author Sujith Krishna
@@ -49,7 +46,7 @@ public class ExpensesService {
 				expenses.setExpensesNumber(++maxExpensesNum);
 			}
 			expenses.setSpenderName(currentUser.getMember());
-			expenses.setApproverName(expenses.getFinanceType().getFinanceOwner());
+			expenses.setFirstapproverName(expenses.getFinanceType().getFinanceOwner());
 			expensesRepository.save(expenses);
 			return true;
 		} catch (Exception exception) {
