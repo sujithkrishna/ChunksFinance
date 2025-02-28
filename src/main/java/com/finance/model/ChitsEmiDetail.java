@@ -17,19 +17,18 @@ import lombok.Data;
 /**
  * @author Sujith Krishna
  *
- * 27 Feb 2025
+ * 28 Feb 2025
  *
  */
 @Entity
-@Table(name = "emi_detail")
+@Table(name = "chits_emi_detail")
 @Data
-public class EmiDetail {
+public class ChitsEmiDetail {
 
-public enum CurrentStatus {
-    INPROGRESS,  // Note: Just created
-    PAID,   // Note: First Approval
-    PRECLOSE,   // Note: First Approval Rejected
-}
+	public enum CurrentStatus {
+	    INPROGRESS, 
+	    PAID  
+	}
     
 	@Id
 	@Column(name = "emi_id")
@@ -55,8 +54,8 @@ public enum CurrentStatus {
     private BigDecimal amount;
 
     @ManyToOne
-    @JoinColumn(name = "loan_no", referencedColumnName = "loan_no")
-    private LoanModel loan;
+    @JoinColumn(name = "chits_no", referencedColumnName = "chits_no")
+    private ChitsModel chits;
     
     @ManyToOne
     @JoinColumn(name = "first_approver_member_no", referencedColumnName = "no")
@@ -65,6 +64,5 @@ public enum CurrentStatus {
     @ManyToOne
     @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
     private MemberModel secondapproverName;
-    
     
 }

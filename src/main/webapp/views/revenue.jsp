@@ -707,7 +707,7 @@
             <li><a href="revenue" class="active">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
-            <li><a href="new-chits">Chits</a></li>
+            <li><a href="chits">Chits</a></li>
             <li><a href="finance">Create Finance</a></li>
         </ul>
     </nav>

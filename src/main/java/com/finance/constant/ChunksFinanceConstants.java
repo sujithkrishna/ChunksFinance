@@ -16,6 +16,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String ALL_FINANCE = "AllFinance";
 	
+	public static final String CHITS_NUMBER = "chitsNumber";
+	
 	public static final String REVENUE_NUMBER = "revenueNumber";
 	
 	public static final String EXPENSES_NUMBER = "expensesNumber";

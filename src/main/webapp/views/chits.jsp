@@ -684,7 +684,7 @@
             <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member">Members</a></li>
-            <li><a href="new-chits" class="active">Chits</a></li>
+            <li><a href="chits" class="active">Chits</a></li>
             <li><a href="finance">Create Finance</a></li>
         </ul>
     </nav>
@@ -698,8 +698,7 @@
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -709,41 +708,44 @@
 				<div class="red-error-message" id="redErrorMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
 					</div>
 				</div>					
-                <form>
+                <form method="post" action="chits" id="formchits" name="formchits">
                     <!-- Split into two columns -->
                     <div class="form-container">
                         <div class="form-left">
                             <!-- Chits No -->
                             <div class="form-group">
                                 <label for="chits-number">Chits No:</label>
-                                <input type="text" id="chits-number" class="input-field" placeholder="Enter Chits number" required>
+                                <input type="text" name="chitsNo" id="chits-number" class="input-field" placeholder="Enter Chits number" required readonly>
 								<div class="error-message" id="chits-number-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Chits number is required</span>
 								</div>								
                             </div>
 
-                            <!-- Chits Name -->
-                            <div class="form-group">
-                                <label for="chits-name">Chits Name:</label>
-                                <input type="text" id="chits-name" class="input-field" placeholder="Enter Chits name" required>
+ 							<div class="form-group">
+								<label for="chits-name">Chits in the name of:</label>
+								<select id="chits-name" name="chitsNameOf" class="input-field" required>
+									<option value="" disabled selected>Chits in the name of</option>
+							        <c:forEach items="${primaryMembers}" var="member">
+							            <option value="${member.no}">${member.memberName}</option>
+							        </c:forEach>
+								</select>
 								<div class="error-message" id="chits-name-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Chits name is required</span>
-								</div>								
-                            </div>
-
+								</div>
+							</div>                           
+                            
                             <!-- Start Date -->
                             <div class="form-group">
                                 <label for="start-date">Start Date:</label>
-                                <input type="date" id="start-date" class="input-field" required>
+                                <input name="chitsStartDate" type="date" id="start-date" class="input-field" required>
 								<div class="error-message" id="start-date-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Start date is required</span>
@@ -753,22 +755,37 @@
                             <!-- Total Chits -->
                             <div class="form-group">
                                 <label for="total-chits">Total Chits:</label>
-                                <input type="number" id="total-chits" class="input-field" placeholder="Enter total number of chits" required>
+                                <input name="totalChitsNo" type="number" id="total-chits" class="input-field" placeholder="Enter total number of chits" required>
 								<div class="error-message" id="total-chits-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Total chits is required</span>
 								</div>								
                             </div>
-
-                            <!-- Total Amount -->
-                            <div class="form-group">
-                                <label for="total-amount">Total Amount:</label>
-                                <input type="number" id="total-amount" class="input-field" placeholder="Enter total amount" required>
+							
+							<!-- Total Amount -->
+							<div class="form-group">
+							    <label for="total-amount">Total Amount:</label>
+							    <input name="totalChitsAmount" type="number" id="total-amount" class="input-field" placeholder="Enter total amount" required>
 								<div class="error-message" id="total-amount-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Total amount is required</span>
 								</div>								
-                            </div>
+							</div>
+
+		                    <div class="form-group">
+		                        <label for="finance-type">EMI should deduct from</label>
+		                        <select name="financeType" id="ownerOfFund" class="input-field">
+		                            <option value="" disabled selected>Finance Type</option>
+		                            <c:forEach items="${AllFinance}" var="financeItem">
+		                            	<option value="${financeItem.id}">${financeItem.financeName} by ${financeItem.financeOwner.memberName}</option> 
+		                            </c:forEach>
+		                        </select>
+		                        <div class="error-message" id="financeType-error">
+		                            <i class="fas fa-exclamation-circle"></i>
+		                            <span>Please select a finance type</span>
+		                        </div>
+		                    </div> 
+							 
                         </div>
 
                         <div class="form-right">
@@ -778,13 +795,14 @@
 
                     <!-- Chits 1 to Chits 10 -->
                     <div class="chits-section">
-                        <h3>Chits Details</h3>
+                        <h4 id="chitsTotalAmountPaying">Chits Details with the total Amount of 0</h4>
+                        
                         <div class="form-container">
                             <div class="form-left">
                                 <!-- Chits 1 to Chits 5 -->
                                 <div class="form-group">
                                     <label for="chits-1">Chits 1:</label>
-                                    <input type="text" id="chits-1" class="input-field" placeholder="Enter Chits 1 details" required>
+                                    <input type="text" name="chits-1" id="chits-1" class="input-field" placeholder="Enter Chits 1 details" required>
 									<div class="error-message" id="chits-1-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 1 details required</span>
@@ -792,7 +810,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-2">Chits 2:</label>
-                                    <input type="text" id="chits-2" class="input-field" placeholder="Enter Chits 2 details" required>
+                                    <input type="text" name="chits-2" id="chits-2" class="input-field" placeholder="Enter Chits 2 details" required>
 									<div class="error-message" id="chits-2-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 2 details required</span>
@@ -800,7 +818,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-3">Chits 3:</label>
-                                    <input type="text" id="chits-3" class="input-field" placeholder="Enter Chits 3 details" required>
+                                    <input type="text" name="chits-3" id="chits-3" class="input-field" placeholder="Enter Chits 3 details" required>
 									<div class="error-message" id="chits-3-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 3 details required</span>
@@ -808,7 +826,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-4">Chits 4:</label>
-                                    <input type="text" id="chits-4" class="input-field" placeholder="Enter Chits 4 details" required>
+                                    <input type="text" name="chits-4" id="chits-4" class="input-field" placeholder="Enter Chits 4 details" required>
 									<div class="error-message" id="chits-4-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 4 details required</span>
@@ -816,7 +834,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-5">Chits 5:</label>
-                                    <input type="text" id="chits-5" class="input-field" placeholder="Enter Chits 5 details" required>
+                                    <input type="text" name="chits-5" id="chits-5" class="input-field" placeholder="Enter Chits 5 details" required>
 									<div class="error-message" id="chits-5-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 5 details required</span>
@@ -828,7 +846,7 @@
                                 <!-- Chits 6 to Chits 10 -->
                                 <div class="form-group">
                                     <label for="chits-6">Chits 6:</label>
-                                    <input type="text" id="chits-6" class="input-field" placeholder="Enter Chits 6 details" required>
+                                    <input type="text" name="chits-6" id="chits-6" class="input-field" placeholder="Enter Chits 6 details" required>
 									<div class="error-message" id="chits-6-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 6 details required</span>
@@ -836,7 +854,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-7">Chits 7:</label>
-                                    <input type="text" id="chits-7" class="input-field" placeholder="Enter Chits 7 details" required>
+                                    <input type="text" name="chits-7" id="chits-7" class="input-field" placeholder="Enter Chits 7 details" required>
 									<div class="error-message" id="chits-7-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 7 details required</span>
@@ -844,7 +862,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-8">Chits 8:</label>
-                                    <input type="text" id="chits-8" class="input-field" placeholder="Enter Chits 8 details" required>
+                                    <input type="text" name="chits-8" id="chits-8" class="input-field" placeholder="Enter Chits 8 details" required>
 									<div class="error-message" id="chits-8-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 8 details required</span>
@@ -852,7 +870,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-9">Chits 9:</label>
-                                    <input type="text" id="chits-9" class="input-field" placeholder="Enter Chits 9 details" required>
+                                    <input type="text" name="chits-9" id="chits-9" class="input-field" placeholder="Enter Chits 9 details" required>
 									<div class="error-message" id="chits-9-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 9 details required</span>
@@ -860,7 +878,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-10">Chits 10:</label>
-                                    <input type="text" id="chits-10" class="input-field" placeholder="Enter Chits 10 details" required>
+                                    <input type="text" name="chits-10" id="chits-10" class="input-field" placeholder="Enter Chits 10 details" required>
 									<div class="error-message" id="chits-10-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 10 details required</span>
@@ -877,7 +895,7 @@
                                 <!-- Chits 11 to Chits 15 -->
                                 <div class="form-group">
                                     <label for="chits-11">Chits 11:</label>
-                                    <input type="text" id="chits-11" class="input-field" placeholder="Enter Chits 11 details" required>
+                                    <input type="text" name="chits-11" id="chits-11" class="input-field" placeholder="Enter Chits 11 details" required>
 									<div class="error-message" id="chits-11-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 11 details required</span>
@@ -885,7 +903,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-12">Chits 12:</label>
-                                    <input type="text" id="chits-12" class="input-field" placeholder="Enter Chits 12 details" required>
+                                    <input type="text" name="chits-12" id="chits-12" class="input-field" placeholder="Enter Chits 12 details" required>
 									<div class="error-message" id="chits-12-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 12 details required</span>
@@ -893,7 +911,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-13">Chits 13:</label>
-                                    <input type="text" id="chits-13" class="input-field" placeholder="Enter Chits 13 details" required>
+                                    <input type="text" name="chits-13" id="chits-13" class="input-field" placeholder="Enter Chits 13 details" required>
 									<div class="error-message" id="chits-13-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 13 details required</span>
@@ -901,7 +919,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-14">Chits 14:</label>
-                                    <input type="text" id="chits-14" class="input-field" placeholder="Enter Chits 14 details" required>
+                                    <input type="text" name="chits-14" id="chits-14" class="input-field" placeholder="Enter Chits 14 details" required>
 									<div class="error-message" id="chits-14-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 14 details required</span>
@@ -909,7 +927,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-15">Chits 15:</label>
-                                    <input type="text" id="chits-15" class="input-field" placeholder="Enter Chits 15 details" required>
+                                    <input type="text" name="chits-15" id="chits-15" class="input-field" placeholder="Enter Chits 15 details" required>
 									<div class="error-message" id="chits-15-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 15 details required</span>
@@ -921,7 +939,7 @@
                                 <!-- Chits 16 to Chits 20 -->
                                 <div class="form-group">
                                     <label for="chits-16">Chits 16:</label>
-                                    <input type="text" id="chits-16" class="input-field" placeholder="Enter Chits 16 details" required>
+                                    <input type="text" name="chits-16" id="chits-16" class="input-field" placeholder="Enter Chits 16 details" required>
 									<div class="error-message" id="chits-16-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 16 details required</span>
@@ -929,7 +947,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-17">Chits 17:</label>
-                                    <input type="text" id="chits-17" class="input-field" placeholder="Enter Chits 17 details" required>
+                                    <input type="text" name="chits-17" id="chits-17" class="input-field" placeholder="Enter Chits 17 details" required>
 									<div class="error-message" id="chits-17-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 17 details required</span>
@@ -937,7 +955,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-18">Chits 18:</label>
-                                    <input type="text" id="chits-18" class="input-field" placeholder="Enter Chits 18 details" required>
+                                    <input type="text" name="chits-18" id="chits-18" class="input-field" placeholder="Enter Chits 18 details" required>
 									<div class="error-message" id="chits-18-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 18 details required</span>
@@ -945,7 +963,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-19">Chits 19:</label>
-                                    <input type="text" id="chits-19" class="input-field" placeholder="Enter Chits 19 details" required>
+                                    <input type="text" name="chits-19" id="chits-19" class="input-field" placeholder="Enter Chits 19 details" required>
 									<div class="error-message" id="chits-19-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 19 details required</span>
@@ -953,7 +971,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="chits-20">Chits 20:</label>
-                                    <input type="text" id="chits-20" class="input-field" placeholder="Enter Chits 20 details" required>
+                                    <input type="text" name="chits-20" id="chits-20" class="input-field" placeholder="Enter Chits 20 details" required>
 									<div class="error-message" id="chits-20-error">
 										<i class="fas fa-exclamation-circle"></i>
 										<span>Chits 20 details required</span>
@@ -969,6 +987,7 @@
 						<button type="button"> <i class="fas fa-edit"></i>Edit</button>
 						<button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>		
                     </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </form>
             </section>
         </div>
@@ -989,6 +1008,10 @@
     <!-- JavaScript for Form Validation -->
     <script>
     
+	    document.getElementById('ownerOfFund').addEventListener('change', function() {
+	        clearError(this, 'financeType-error');
+	    });
+    
 	    // Check for success message on page load
 	    document.addEventListener('DOMContentLoaded', function() {
 	    	
@@ -996,8 +1019,9 @@
 	        const today = new Date();
 	        dateInput.value = today.toISOString().split('T')[0];
 	    	
-	    	document.getElementById('RevenueNo').value = '${revenueNumber}';
-	    	document.getElementById('RevenueName').value = '${currentUserName}';
+	    	document.getElementById('chits-number').value = '${chitsNumber}';
+	    	document.getElementById('total-chits').value = 20;
+	    	document.getElementById('chits-name').value =   '${currentUser.memberName}';
 	    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();
@@ -1028,18 +1052,51 @@
             }, 5000); // Auto-hide after 5 seconds
         }
 		
+        
+        
+        
+        document.getElementById('total-amount').addEventListener('input', function() {
+            const chitsAmount = parseFloat(this.value) || 0;
+            const formatNumber = num => {
+                const rounded = Math.round(num * 100) / 100;
+                return rounded.toFixed(2).replace(/\.?0+$/, '');
+            };
+            
+            const percentages = [0.05, 0.0385, 0.039, 0.0395, 0.0405, 0.0405, 0.041, 0.0415, 0.042, 0.0425,
+                0.043, 0.044, 0.045, 0.046, 0.047, 0.048, 0.0485, 0.049, 0.0495, 0.05];
+            let totalPayable = 0;
+            
+            percentages.forEach((percent, index) => {
+                const emiAmount = chitsAmount * percent;
+                const inputId = 'chits-'+(index + 1);
+                const inputField = document.getElementById(inputId);
+                if (inputField) {  
+                    inputField.value = formatNumber(emiAmount);
+                } else {
+                    console.error(`Element #${index + 1} (ID: ${inputId}) not found!`);
+                }
+                totalPayable += emiAmount;
+            });
+            
+            document.getElementById('chitsTotalAmountPaying').textContent = "Chits Details with the total Amount of " + formatNumber(totalPayable);
+        });
+        
+        
+        
+        
         function closeGreenSuccessMessage() {
             document.getElementById('greenSuccessMessage').classList.remove('show');
         }
 		
 			function validateForm() {
-            const mandatoryFields = [
+				const mandatoryFields = [
                 // Main form fields
                 { id: 'chits-number', errorId: 'chits-number-error' },
                 { id: 'chits-name', errorId: 'chits-name-error' },
                 { id: 'start-date', errorId: 'start-date-error' },
                 { id: 'total-chits', errorId: 'total-chits-error' },
-                { id: 'total-amount', errorId: 'total-amount-error' },
+				{ id: 'total-amount', errorId: 'total-amount-error' },
+                { id: 'ownerOfFund', errorId: 'financeType-error' },
                 
                 // Chits details fields
                 { id: 'chits-1', errorId: 'chits-1-error' },
@@ -1064,7 +1121,6 @@
 				{ id: 'chits-20', errorId: 'chits-20-error' }
                 // ... Add entries for chits 3-20 following same pattern
             ];
-
             let isValid = true;
 
             mandatoryFields.forEach(field => {
@@ -1078,11 +1134,27 @@
                     clearError(input, error);
                 }
             });
-
             if (isValid) {
-                // Submit the form or handle valid data
-		        showSuccessMessage();
-				//showErrorMessage();				
+            	// Submit the form or handle valid data
+		       // showSuccessMessage();
+				//showErrorMessage();	
+
+				// Create a hidden form
+			    const form = document.getElementById('formchits');
+			    form.method = 'POST';
+			    form.action = 'chits'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();		
+			    
+				
             }
         }
 

@@ -52,7 +52,6 @@ public class LoanModel {
     @Column(name = "loan_applicant_name")
     private String loanApplicantName;
 
-  
     @Column(name = "loan_amount", precision = 19, scale = 2)
     private BigDecimal loanAmount;
 
@@ -81,8 +80,7 @@ public class LoanModel {
 
     // EMI Details (1-17 EMIs)
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmiDetail> emiDetails;
-    
+    private List<LoanEmiDetail> emiDetails;
     
     @ManyToOne
     @JoinColumn(name = "first_approver_member_no", referencedColumnName = "no")

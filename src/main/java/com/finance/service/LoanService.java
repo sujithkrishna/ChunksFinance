@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.EmiDetail;
+import com.finance.model.LoanEmiDetail;
 import com.finance.model.FinanceModel;
 import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
@@ -50,7 +50,7 @@ public class LoanService {
 		BigDecimal total16EMI = new BigDecimal("16");
 		BigDecimal EmiAmtfor16 = emiAmt.multiply(total16EMI);
 		BigDecimal lastEmiAmt = loanAmount.subtract(EmiAmtfor16);
-        List<EmiDetail> emiDetails = new ArrayList<>();
+        List<LoanEmiDetail> emiDetails = new ArrayList<LoanEmiDetail>();
         Integer currentLoanNumber = getMaxLoanNumber();
         int startEmiId = 1;
         if (currentLoanNumber != null) {
@@ -59,7 +59,7 @@ public class LoanService {
         LocalDate loanRepaymentDate = loanModel.getLoanRepaymentDate();
         loanRepaymentDate = loanRepaymentDate.minusDays(7);
         for (int i = 1; i <= 17; i++) {
-            EmiDetail emi = new EmiDetail();
+            LoanEmiDetail emi = new LoanEmiDetail();
             emi.setId(startEmiId + i - 1);
             emi.setEmiNumber(i);
             emi.setEmiDate(loanRepaymentDate.plusDays(i * 7));
