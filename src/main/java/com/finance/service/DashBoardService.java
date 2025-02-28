@@ -20,7 +20,5 @@ public class DashBoardService {
 	@Autowired
 	private FinanceRepository financeRepository;
 	
-    public List<FinanceModel> getAllFinanceRecords() {
-        return financeRepository.findAll();
-    }
+   
 }

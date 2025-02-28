@@ -13,9 +13,11 @@ import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.FinanceModel;
+import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
 import com.finance.repository.FinanceRepository;
 import com.finance.repository.RevenueRepository;
+import com.finance.user.MemberDetails;
 
 /**
  * @author Sujith Krishna
@@ -32,10 +34,7 @@ public class RevenueService {
     private RevenueRepository revenueRepository;
 	
 	@Autowired
-	private FinanceRepository financeRepository;
-	
-	@Autowired
-	private DashBoardService boardService;
+	private CreateFinanceService financeService;
 	
 
 	public Integer getMaxRevenueNumber() {
@@ -43,24 +42,15 @@ public class RevenueService {
     }
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	public boolean creatRevenue(RevenueModel revenue) {
-		if(null != revenue.getFinanceType()) {
-			//String[] financeTypeDataSplit = revenue.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
-			//String financeOwnerName = financeTypeDataSplit[2];
-			//revenue.setApproverName(financeOwnerName);		
-		}else {
-			// Its going to Default Approver
-			
-		}
+	public boolean creatRevenue(MemberDetails currentUser , RevenueModel revenue) {
 		try {
-			Integer maxRevenueNum = getMaxRevenueNumber();
-			if(null != maxRevenueNum && maxRevenueNum<revenue.getRevenueNumber()) {
-				revenue.setRevenueNumber(++maxRevenueNum);
-			}else {
+			Integer maxRnumFromDB = getMaxRevenueNumber();
+			if(null == maxRnumFromDB) {
 				revenue.setRevenueNumber(1);
+			} else {
+				revenue.setRevenueNumber(++maxRnumFromDB);
 			}
-			//revenue.setSpenderName(currentUser.getCurrentUser());
-			revenue.setSpenderName(null);
+			revenue.setSpenderName(currentUser.getMember());
 			revenue.setApproverName(revenue.getFinanceType().getFinanceOwner());
 			revenueRepository.save(revenue);
 			return true;
@@ -71,29 +61,25 @@ public class RevenueService {
 	}
 	
 	
-	public Model populatingFields(Model model) {
-		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
+	public void populatingFields(Model model) {
+		List<FinanceModel> financeModel = financeService.getAllFinanceRecords();
 		if(financeModel.size()==0) {
 			financeModel = null;
 		}
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 		Integer currentRevenueNumber = getMaxRevenueNumber();
-		
+		// Check here what you are doing....
 		if(null == currentRevenueNumber) {
 			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, ChunksFinanceConstants.NUMBER_ONE);
 		}else {
 			++currentRevenueNumber;
 			model.addAttribute(ChunksFinanceConstants.REVENUE_NUMBER, currentRevenueNumber);
 		}
-		return model;
 	}
 	
-	 public List<RevenueModel> getRevenueFromMondayToGivenDate(LocalDate givenDate) {
+	 public List<RevenueModel> getRevenueFromMondayToGivenDate(LocalDate givenDate,MemberModel currentUser) {
 	        LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
-	        String currentUserName = null;
-
-	       // return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate,ChunksFinanceConstants.IN_PROGRESS,currentUserName);
-		 	return null;
+	       return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate,RevenueModel.CurrentStatus.INPROGRESS,currentUser);
 	    }
 	
 }

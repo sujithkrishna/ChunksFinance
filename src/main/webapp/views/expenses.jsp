@@ -732,7 +732,7 @@
 						<i class="fas fa-times"></i>
 					</div>
 				</div>					
-                <form method="post" action="create-expenses" id="formcreateExpenses" name="formcreateExpenses">
+                <form method="post" action="expenses" id="formcreateExpenses" name="formcreateExpenses">
                     <div class="form-group">
                         <label for="expenseNo">Expense No:</label>
                         <input name="expensesNumber" type="text" id="ExpensesNo" class="input-field" placeholder="Enter expense number" required readonly>
@@ -747,7 +747,7 @@
                         <select name="financeType" id="ownerOfFund" class="input-field">
                             <option value="" disabled selected>Finance Type</option>
 	                            <c:forEach items="${AllFinance}" var="financeItem">
-	                            	<option value="${financeItem.financeType}|${financeItem.financeName}|${financeItem.financeOwnerName}">${financeItem.financeName}</option>
+	                            	<option value="${financeItem.id}">${financeItem.financeName} owned by ${financeItem.financeOwner.memberName}</option>
 	                            </c:forEach>
                         </select>
                         <div class="error-message" id="ownerOfFund-error">
@@ -758,7 +758,7 @@
 
                     <div class="form-group">
                         <label for="RevenueName">Spender Name:</label>
-                        <input name="spenderName" type="text" id="ExpensesName" class="input-field" placeholder="Enter Spender name" required readonly>
+                        <input name="spenderNameValue" type="text" id="ExpensesName" class="input-field" placeholder="Enter Spender name" required readonly>
                         <div class="error-message" id="ExpensesName-error">
                             <i class="fas fa-exclamation-circle"></i>
                             <span>Spender name is required</span>
@@ -819,7 +819,7 @@
 	        dateInput.value = today.toISOString().split('T')[0];
 	        
 	    	document.getElementById('ExpensesNo').value = '${expensesNumber}';
-	    	document.getElementById('ExpensesName').value = '${currentUserName}';
+	    	document.getElementById('ExpensesName').value = '${currentUser.memberName}';
 	    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();

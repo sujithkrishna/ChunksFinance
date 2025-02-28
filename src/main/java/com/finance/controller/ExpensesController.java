@@ -16,6 +16,9 @@ import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
+import com.finance.model.RevenueModel;
+import com.finance.repository.FinanceRepository;
+import com.finance.service.CreateFinanceService;
 import com.finance.service.DashBoardService;
 import com.finance.service.ExpensesService;
 import com.finance.user.MemberDetails;
@@ -31,8 +34,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class ExpensesController {
 	
-	@Autowired
-	private DashBoardService boardService;
+
 	
 	@Autowired
 	private ExpensesService expensesService;
@@ -41,36 +43,23 @@ public class ExpensesController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/expenses"})
-	public String handleExpenses(@AuthenticationPrincipal MemberDetails memberDetails,Model model) {
-		if (memberDetails != null) {
-            MemberModel currentUser = memberDetails.getMember();
+	public String handleExpenses(@AuthenticationPrincipal MemberDetails currenUser,Model model) {
+		if (currenUser != null) {
+            MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
-		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
-		if(financeModel.size()==0) {
-			financeModel = null;
-		}
-		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
-		
-		Long currentExpensesNumber = expensesService.getMaxExpensesNumber();
-		if(null == currentExpensesNumber) {
-			model.addAttribute(ChunksFinanceConstants.EXPENSES_NUMBER, ChunksFinanceConstants.NUMBER_ONE);
-		}else {
-			model.addAttribute(ChunksFinanceConstants.EXPENSES_NUMBER, ++currentExpensesNumber);
-		}
+		expensesService.populatingFields(model);
 		return "expenses";
 	}
 	
-	@PostMapping(path = {"/create-expenses"})
-	public String handleCreatExpenses(@ModelAttribute ExpensesModel expensesModel,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) {
-		boolean status = expensesService.createExpenses(request, expensesModel);
-		String memberName = null;
+	@PostMapping(path = {"/expenses"})
+	public String handleCreatExpenses(@AuthenticationPrincipal MemberDetails currentUser,@ModelAttribute ExpensesModel expensesModel,Model model) {
+		boolean status = expensesService.createExpenses(currentUser,expensesModel);
 		if(status) {
-			redirectAttributes.addFlashAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_EXPENSES_MESSAGE,memberName));
-	        return "redirect:/expenses";
+			expensesService.populatingFields(model);
+			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_EXPENSES_MESSAGE,currentUser.getMember().getMemberName()));
 		}
-		
-		return "";
+  	   return "expenses";
 	}
 	
 	

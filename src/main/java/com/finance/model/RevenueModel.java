@@ -25,7 +25,7 @@ public class RevenueModel {
 
     public enum CurrentStatus {
         INPROGRESS,  // Note: Might want to rename to IN_PROGRESS for correctness
-        APPPRVED,    // Note: Likely a typo, should be APPROVED
+        APPROVED,    // Note: Likely a typo, should be APPROVED
         REJECTED
     }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
+import com.finance.service.CreateFinanceService;
 import com.finance.service.DashBoardService;
 import com.finance.user.MemberDetails;
 
@@ -26,13 +27,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class DashBoardController {
 	
 	@Autowired
-	private DashBoardService boardService;
+	private CreateFinanceService financeService;
 	
 	@GetMapping(path = {"/dashboard"})
-	public String handleDashboard(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
-		List<FinanceModel> financeModel = boardService.getAllFinanceRecords();
-		if (memberDetails != null) {
-	            MemberModel currentUser = memberDetails.getMember();
+	public String handleDashboard(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+		List<FinanceModel> financeModel = financeService.getAllFinanceRecords();
+		if (currenUser != null) {
+	            MemberModel currentUser = currenUser.getMember();
 	            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 	    }
 		if(financeModel.size()==0) {

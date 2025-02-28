@@ -39,10 +39,10 @@ public class CreateFinanceController {
 	
 	
 	@GetMapping(path = {"/finance"})
-	public String handleLoanFinance(@AuthenticationPrincipal MemberDetails memberDetails,Model model) {
+	public String handleLoanFinance(@AuthenticationPrincipal MemberDetails currenUser,Model model) {
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		if (memberDetails != null) {
-            MemberModel currentUser = memberDetails.getMember();
+		if (currenUser != null) {
+            MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}		
 		model.addAttribute("primaryMembers",primaryMembers);

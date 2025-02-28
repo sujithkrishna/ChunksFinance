@@ -24,10 +24,7 @@ public class CreateFinanceService {
 
 	@Autowired
 	private FinanceRepository financeRepository;
-	
-	@Autowired
-	private MemberService memberService;
-
+		
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean creatFinance(FinanceModel finance) {
 		if(null == finance.getCurrentBalance()) {
@@ -46,5 +43,9 @@ public class CreateFinanceService {
 		return true;
 	}
 	
+	
+	 public List<FinanceModel> getAllFinanceRecords() {
+	        return financeRepository.findAll();
+	    }
 	
 }

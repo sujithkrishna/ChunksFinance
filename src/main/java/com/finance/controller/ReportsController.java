@@ -21,9 +21,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ReportsController {
 
 	@GetMapping(path = {"/reports"})
-	public String handleReports(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
-		if (memberDetails != null) {
-            MemberModel currentUser = memberDetails.getMember();
+	public String handleReports(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+		if (currenUser != null) {
+            MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		return "reports";

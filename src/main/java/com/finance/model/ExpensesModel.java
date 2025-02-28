@@ -2,10 +2,15 @@ package com.finance.model;
 
 import java.time.LocalDate;
 
+import com.finance.model.RevenueModel.CurrentStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
@@ -20,34 +25,41 @@ import lombok.ToString;
 @Entity
 @ToString
 @Table(name = "expenses")
-@IdClass(ExpensesId.class) // Specify the composite key class
 public class ExpensesModel {
 
-	 	@Id
-	    @Column(name = "expenses_number", nullable = false)
-	    private Long expensesNumber;
+    public enum CurrentStatus {
+        INPROGRESS,  // Note: Might want to rename to IN_PROGRESS for correctness
+        APPROVED,    // Note: Likely a typo, should be APPROVED
+        REJECTED
+    }
+    
+    @Id
+    @Column(name = "expenses_number", nullable = false)
+    private Integer expensesNumber;	 	
 
-	    @Id
-	    @Column(name = "finance_type", nullable = false)
-	    private String financeType;
+    @ManyToOne
+    @JoinColumn(name = "finance_id", referencedColumnName = "id")
+    private FinanceModel financeType;
 
-	    @Id
-	    @Column(name = "spender_name", nullable = false)
-	    private String spenderName;
+    @ManyToOne
+    @JoinColumn(name = "spender_member_no", referencedColumnName = "no")
+    private MemberModel spenderName;
+    
+    @Column(name = "spender_details")
+    private String spenderDetails;
 
-	    @Column(name = "spender_details", nullable = false)
-	    private String spenderDetails;
+    @Column(name = "spend_date", nullable = false)
+    private LocalDate spendDate;
 
-	    @Column(name = "spend_date", nullable = false)
-	    private LocalDate spendDate;
+    @Column(name = "spend_amount", nullable = false)
+    private Double spendAmount;
 
-	    @Column(name = "spend_amount", nullable = false)
-	    private Double spendAmount;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "current_status", nullable = false)
+    private CurrentStatus currentStatus = CurrentStatus.INPROGRESS;
 
-	    @Column(name = "current_status", nullable = false)
-	    private String currentStatus;
-
-	    @Column(name = "approver_name")
-	    private String approverName;
+    @ManyToOne
+    @JoinColumn(name = "approver_member_no", referencedColumnName = "no")
+    private MemberModel approverName;
     
 }

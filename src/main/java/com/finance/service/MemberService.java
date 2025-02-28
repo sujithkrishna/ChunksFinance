@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.DuplicateMemberEmailIdException;
 import com.finance.model.MemberModel;
 import com.finance.repository.MemberRepository;
+import com.finance.user.MemberDetails;
 
 /**
  * @author Sujith Krishna
@@ -50,10 +52,13 @@ public class MemberService {
 		return true;
 	}
 	
-	public void loadPrimaryMemCurrentUser(Model model) {
+	public void loadPrimaryMemCurrentUser(Model model,MemberDetails currenUserDetails) {
 		List<MemberModel> primaryMembers = getAllPrimaryMemeber();
         model.addAttribute("primaryMembers", primaryMembers);
-		model.addAttribute("currentUser", "NULL");
+        if (currenUserDetails != null) {
+            MemberModel currentUser = currenUserDetails.getMember();
+            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+		}	
 	}
 	
 	
@@ -68,16 +73,9 @@ public class MemberService {
 		return primaryMembers;
 	}
 	
-	public List<String> getAllSecondaryMemeber() {
-		/*
-		List<MemberModel> secondaryMembersMemMdl = memberRepository.findAllSecondaryMembers();
-		List<String> secondaryMembers = new ArrayList<String>();
-		for (MemberModel memberModel : secondaryMembersMemMdl) {
-			secondaryMembers.add(memberModel.getId().getMemberName());
-		}
+	public List<MemberModel> getAllSecondaryMemeber() {
+		List<MemberModel> secondaryMembers = memberRepository.findByMemberType(MemberModel.MemberType.SECONDARY);
 		return secondaryMembers;
-		*/
-		return null;
 	}
 	
 	

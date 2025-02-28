@@ -716,17 +716,17 @@
 						<i class="fas fa-times"></i>
 					</div>
 				</div>				
-                <form>
+                <form method="post"  action="loan" id="formloan" name="formloan">
                     <!-- Split into two columns -->
                     <div class="form-container">
                         <div class="form-left">
                             <!-- Finance Source -->
 							<div class="form-group">
 								<label for="finance-source">Loan Reference Name</label>
-								<select id="finance-source" class="input-field" required>
+								<select id="finance-source" name="loanReferenceName" class="input-field" required>
 									<option value="" disabled selected>Loan Reference Name</option>
 							        <c:forEach items="${primaryMembers}" var="member">
-							            <option value="${member}">${member}</option>
+							            <option value="${member.no}">${member.memberName}</option>
 							        </c:forEach>
 								</select>
 								<div class="error-message" id="finance-source-error">
@@ -738,7 +738,7 @@
                             <!-- Loan No -->
                             <div class="form-group">
                                 <label for="loan-no">Loan No</label>
-                                <input type="text" id="loan-no" name="loan-no" class="input-field" placeholder="LoanNo" required>
+                                <input type="text" id="loan-no" name="loanNo" class="input-field" placeholder="LoanNo" required readonly>
 								<div class="error-message" id="loan-number-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Loan Number is required</span>
@@ -748,15 +748,9 @@
                             <!-- Loan Applicant Name -->
                             <div class="form-group">
                                 <label for="applicant-name">Loan Applicant Name</label>
-								<select id="applicant-name" name="applicant-name"  class="input-field" required>
-									<option value="" disabled selected>Loan Applicant name</option>
-							        <c:forEach items="${primaryMembers}" var="priMember">
-							            <option value="${priMember}">${priMember} P</option>
-							        </c:forEach>									
-							        <c:forEach items="${secondaryMembers}" var="secMember">
-							            <option value="${secMember}">${secMember} S</option>
-							        </c:forEach>
-								</select>		
+								 <select id="applicant-name" name="loanApplicantName" class="input-field" required>
+		        					<option value="" disabled selected>Select Applicant</option>
+		   						 </select>	
 								<div class="error-message" id="applicant-name-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Applicant Name is required</span>
@@ -767,7 +761,7 @@
                             <!-- Loan Amount -->
                             <div class="form-group">
                                 <label for="loan-amount">Loan Amount</label>
-                                <input type="number" id="loan-amount" name="loan-amount" class="input-field" placeholder="Enter loan amount" required>
+                                <input type="number" id="loan-amount" name="loanAmount" class="input-field" placeholder="Enter loan amount" required>
 							<div class="error-message" id="loan-amount-error">
 								<i class="fas fa-exclamation-circle"></i>
 								<span>Loan Amount is required</span>
@@ -777,7 +771,7 @@
                             <!-- Loan Date -->
                             <div class="form-group">
                                 <label for="loan-date">Loan Date</label>
-                                <input type="date" id="loan-date" name="loan-date" class="input-field" required>
+                                <input type="date" id="loan-date" name="loanDate" class="input-field" required>
 								<div class="error-message" id="loan-date-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Loan Date is required</span>
@@ -789,25 +783,25 @@
 								<!-- Loan Disbursement Amount -->
 								<div class="form-group">
 									<label for="disbursement-amount">Loan Disbursement Amount</label>
-									<input type="number" id="disbursement-amount" name="disbursement-amount" class="input-field" placeholder="Enter disbursement amount">
+									<input type="number" id="disbursement-amount" name="disbursementAmount" class="input-field" placeholder="Enter disbursement amount" readonly>
 								</div>
 
 								<!-- Interest Amount -->
 								<div class="form-group">
 									<label for="interest-amount">Interest Amount</label>
-									<input type="number" id="interest-amount" name="interest-amount" class="input-field" placeholder="Enter interest amount">
+									<input type="number" id="interest-amount" name="interestAmount" class="input-field" placeholder="Enter interest amount" readonly>
 								</div>
 							
 
                             <!-- Received and Yet to Receive Amount -->
                             <div class="form-group">
                                 <label for="received-amount">Received Amount</label>
-                                <input type="number" id="received-amount" name="received-amount" class="input-field" placeholder="Enter received amount">
+                                <input type="number" id="received-amount" name="receivedAmount" class="input-field" placeholder="Enter received amount" readonly>
                             </div>
 
                             <div class="form-group">
                                 <label for="pending-amount">Yet to Receive Amount</label>
-                                <input type="number" id="pending-amount" name="pending-amount" class="input-field" placeholder="Enter yet to receive amount">
+                                <input type="number" id="pending-amount" name="yetToReceiveAmount" class="input-field" placeholder="Enter yet to receive amount" readonly>
                             </div>
                         </div>
                     </div>
@@ -820,39 +814,39 @@
                                 <!-- EMI 1 to EMI 9 -->
                                 <div class="form-group">
                                     <label for="emi-1">EMI 1</label>
-                                    <input type="number" id="emi-1" name="emi-1" class="input-field" placeholder="Enter EMI 1 amount">
+                                    <input type="number" id="emi-1" name="emi-1" class="input-field" placeholder="Enter EMI 1 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-2">EMI 2</label>
-                                    <input type="number" id="emi-2" name="emi-2" class="input-field" placeholder="Enter EMI 2 amount">
+                                    <input type="number" id="emi-2" name="emi-2" class="input-field" placeholder="Enter EMI 2 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-3">EMI 3</label>
-                                    <input type="number" id="emi-3" name="emi-3" class="input-field" placeholder="Enter EMI 3 amount">
+                                    <input type="number" id="emi-3" name="emi-3" class="input-field" placeholder="Enter EMI 3 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-4">EMI 4</label>
-                                    <input type="number" id="emi-4" name="emi-4" class="input-field" placeholder="Enter EMI 4 amount">
+                                    <input type="number" id="emi-4" name="emi-4" class="input-field" placeholder="Enter EMI 4 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-5">EMI 5</label>
-                                    <input type="number" id="emi-5" name="emi-5" class="input-field" placeholder="Enter EMI 5 amount">
+                                    <input type="number" id="emi-5" name="emi-5" class="input-field" placeholder="Enter EMI 5 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-6">EMI 6</label>
-                                    <input type="number" id="emi-6" name="emi-6" class="input-field" placeholder="Enter EMI 6 amount">
+                                    <input type="number" id="emi-6" name="emi-6" class="input-field" placeholder="Enter EMI 6 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-7">EMI 7</label>
-                                    <input type="number" id="emi-7" name="emi-7" class="input-field" placeholder="Enter EMI 7 amount">
+                                    <input type="number" id="emi-7" name="emi-7" class="input-field" placeholder="Enter EMI 7 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-8">EMI 8</label>
-                                    <input type="number" id="emi-8" name="emi-8" class="input-field" placeholder="Enter EMI 8 amount">
+                                    <input type="number" id="emi-8" name="emi-8" class="input-field" placeholder="Enter EMI 8 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-9">EMI 9</label>
-                                    <input type="number" id="emi-9" name="emi-9" class="input-field" placeholder="Enter EMI 9 amount">
+                                    <input type="number" id="emi-9" name="emi-9" class="input-field" placeholder="Enter EMI 9 amount" readonly>
                                 </div>
                             </div>
 
@@ -860,46 +854,47 @@
                                 <!-- EMI 10 to EMI 17 -->
                                 <div class="form-group">
                                     <label for="emi-10">EMI 10</label>
-                                    <input type="number" id="emi-10" name="emi-10" class="input-field" placeholder="Enter EMI 10 amount">
+                                    <input type="number" id="emi-10" name="emi-10" class="input-field" placeholder="Enter EMI 10 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-11">EMI 11</label>
-                                    <input type="number" id="emi-11" name="emi-11" class="input-field" placeholder="Enter EMI 11 amount">
+                                    <input type="number" id="emi-11" name="emi-11" class="input-field" placeholder="Enter EMI 11 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-12">EMI 12</label>
-                                    <input type="number" id="emi-12" name="emi-12" class="input-field" placeholder="Enter EMI 12 amount">
+                                    <input type="number" id="emi-12" name="emi-12" class="input-field" placeholder="Enter EMI 12 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-13">EMI 13</label>
-                                    <input type="number" id="emi-13" name="emi-13" class="input-field" placeholder="Enter EMI 13 amount">
+                                    <input type="number" id="emi-13" name="emi-13" class="input-field" placeholder="Enter EMI 13 amount" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="emi-14">EMI 14</label>
-                                    <input type="number" id="emi-14" name="emi-14" class="input-field" placeholder="Enter EMI 14 amount">
+                                    <input type="number" id="emi-14" name="emi-14" class="input-field" placeholder="Enter EMI 14 amount" readonly>
                                 </div>
 								<div class="form-group">
 								  <label for="emi-15">EMI 15</label>
-								  <input type="number" id="emi-15" name="emi-15" class="input-field" placeholder="Enter EMI 15 amount">
+								  <input type="number" id="emi-15" name="emi-15" class="input-field" placeholder="Enter EMI 15 amount" readonly>
 								</div>
 								<div class="form-group">
-								  <label for="emi-16">EMI 16</label>
-								  <input type="number" id="emi-16" name="emi-16" class="input-field" placeholder="Enter EMI 16 amount">
+								  <label for="emi-16">EMI 16</label> 
+								  <input type="number" id="emi-16" name="emi-16" class="input-field" placeholder="Enter EMI 16 amount" readonly>
 								</div>
 								<div class="form-group">
 								  <label for="emi-17">EMI 17</label>
-								  <input type="number" id="emi-17" name="emi-17" class="input-field" placeholder="Enter EMI 17 amount">
+								  <input type="number" id="emi-17" name="emi-17" class="input-field" placeholder="Enter EMI 17 amount" readonly>
 								</div>
 							  </div>
 							</div>
 						  </div>
 
-          <!-- Buttons -->
-          <div class="button-group">
-						<button type="button" onclick="validateLoanForm()"><i class="fas fa-hand-holding-usd"></i> Add Loan</button>
-						<button type="button"> <i class="fas fa-edit"></i>Edit</button>
-						<button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
-          </div>
+          				<!-- Buttons -->
+          				<div class="button-group">
+							<button type="button" onclick="validateLoanForm()"><i class="fas fa-hand-holding-usd"></i> Add Loan</button>
+							<button type="button"> <i class="fas fa-edit"></i>Edit</button>
+							<button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
+          				</div>
+          	 <input type="text" name="${_csrf.parameterName}" value="${_csrf.token}"/>			
         </form>
       </section>
     </div>
@@ -920,6 +915,84 @@
 	
   <script>
   
+ 
+	  // Convert secondary members to JS array
+	  const secondaryMembers = [
+	      <c:forEach items="${secondaryMembers}" var="secMember" varStatus="loop">
+	          { 
+	              no: "${secMember.referenceMember.no}", 
+	              memberNo: "${secMember.no}",
+	              memberName: "${secMember.memberName}" 
+	          }<c:if test="${not loop.last}">,</c:if>
+	      </c:forEach>
+	  ];
+
+	  document.getElementById('finance-source').addEventListener('change', function() {
+	        const primaryMemberNo = this.value;
+	        const primaryMemberName = this.options[this.selectedIndex].text;
+	        const applicantSelect = document.getElementById('applicant-name');
+	        
+	        // Clear existing options
+	        applicantSelect.innerHTML = '<option value="" disabled selected>Select Applicant</option> <option value="'+primaryMemberNo+'">'+primaryMemberName+'</option>';
+	        
+	        // Filter and populate secondary members
+	        secondaryMembers
+	            .filter(member => member.no === primaryMemberNo)
+	            .forEach(member => {
+	                const option = new Option(member.memberName, member.memberNo);
+	                applicantSelect.add(option);
+	            });
+	    });
+	  
+  
+	  document.getElementById('loan-amount').addEventListener('input', function() {
+		    const loanAmount = parseFloat(this.value) || 0;
+		    const disbursementAmount = loanAmount * 0.90; // 95% of loan amount
+		    const interestAmount = loanAmount * 0.10; // 5% of loan amount
+		    const emiAmount = loanAmount * 0.06; // 5% of loan amount
+		    const currentReceivedAmount = 0; // 5% of loan amount
+		   
+		    
+		 // Format numbers with smart decimal handling
+		    const formatNumber = num => {
+		        // Round to 2 decimal places first to fix floating point issues
+		        const rounded = Math.round(num * 100) / 100;
+		        // Convert to string and remove trailing zeros
+		        return rounded.toFixed(2).replace(/\.?0+$/, '');
+		    };
+		    
+		    
+		    document.getElementById('disbursement-amount').value = formatNumber(disbursementAmount);
+		    document.getElementById('interest-amount').value = formatNumber(interestAmount);
+		    
+		    document.getElementById('received-amount').value = formatNumber(currentReceivedAmount);
+
+		    const receivedAmount = parseFloat(document.getElementById('interest-amount').value) || 0;
+		    document.getElementById('pending-amount').value = formatNumber(disbursementAmount + receivedAmount);
+		    
+		    document.getElementById('emi-1').value = formatNumber(emiAmount);
+		    document.getElementById('emi-2').value = formatNumber(emiAmount);
+		    document.getElementById('emi-3').value = formatNumber(emiAmount);
+		    document.getElementById('emi-4').value = formatNumber(emiAmount);
+		    document.getElementById('emi-5').value = formatNumber(emiAmount);
+		    document.getElementById('emi-6').value = formatNumber(emiAmount);
+		    document.getElementById('emi-7').value = formatNumber(emiAmount);
+		    document.getElementById('emi-8').value = formatNumber(emiAmount);
+		    document.getElementById('emi-9').value = formatNumber(emiAmount);
+		    document.getElementById('emi-10').value = formatNumber(emiAmount);
+		    document.getElementById('emi-11').value = formatNumber(emiAmount);
+		    document.getElementById('emi-12').value = formatNumber(emiAmount);
+		    document.getElementById('emi-13').value = formatNumber(emiAmount);
+		    document.getElementById('emi-14').value = formatNumber(emiAmount);
+		    document.getElementById('emi-15').value = formatNumber(emiAmount);
+		    document.getElementById('emi-16').value = formatNumber(emiAmount);
+		    const lastEmi= 16 * formatNumber(emiAmount);
+		    document.getElementById('emi-17').value = formatNumber(loanAmount - lastEmi);
+		});	  
+	  
+	  
+	  
+	  
 	 // Check for success message on page load
   	document.addEventListener('DOMContentLoaded', function() {
   	
@@ -927,6 +1000,7 @@
         const today = new Date();
         dateInput.value = today.toISOString().split('T')[0];
 	
+        document.getElementById('loan-no').value = '${loanNumber}';
   	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();
@@ -987,9 +1061,24 @@
         });
 
         if (isValid) {
-         // Submit the form or handle valid data		
-		 showSuccessMessage();
-		//showErrorMessage();
+         // Submit the form or handle valid data
+         
+        	 const form = document.getElementById('formloan');
+			    form.method = 'POST';
+			    form.action = 'loan'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();		
+         
+         
+         
         }
     }
 

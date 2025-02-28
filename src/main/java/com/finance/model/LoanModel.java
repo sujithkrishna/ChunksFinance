@@ -29,12 +29,10 @@ import lombok.ToString;
 @ToString
 @Table(name = "loan")
 public class LoanModel {
+   
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "loan_no", unique = true)
-    private String loanNo;
+    private Integer loanNo;
     
     @Column(name = "loan_reference_name")
     private String loanReferenceName;
@@ -67,21 +65,3 @@ public class LoanModel {
     private List<EmiDetail> emiDetails;
 }
 
-@Entity
-@Table(name = "emi_detail")
-@Data
-class EmiDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "emi_number")
-    private int emiNumber;  // 1-17
-
-    @Column(name = "amount", precision = 19, scale = 2)
-    private BigDecimal amount;
-
-    @ManyToOne
-    @JoinColumn(name = "loan_id")
-    private LoanModel loan;
-}

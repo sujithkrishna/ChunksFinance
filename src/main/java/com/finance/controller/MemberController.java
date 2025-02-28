@@ -32,39 +32,35 @@ public class MemberController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/member"})
-	public String handleMember(@AuthenticationPrincipal MemberDetails memberDetails,Model model) {
-		if (memberDetails != null) {
-            MemberModel currentUser = memberDetails.getMember();
-            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
-		}		
-		memberService.loadPrimaryMemCurrentUser(model);
+	public String handleMember(@AuthenticationPrincipal MemberDetails currentUser,Model model) {
+		memberService.loadPrimaryMemCurrentUser(model,currentUser);
         return "member";
 	}
 	
 	@PostMapping(path = {"/member"})
-	public String handleCreateMember(@ModelAttribute MemberModel member,Model model) {
+	public String handleCreateMember(@AuthenticationPrincipal MemberDetails currentUserDetails,@ModelAttribute MemberModel member,Model model) {
 		boolean status;
 		String memberName = member.getMemberName();
 		try {
 			status = memberService.createMember(member);
 			if(status) {
 				model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.MEMBER_CREATE_NEWUSER_MESSAGE,memberName));
-				memberService.loadPrimaryMemCurrentUser(model);
+				memberService.loadPrimaryMemCurrentUser(model,currentUserDetails);
 		        return "member";
 			}
 		} catch (DuplicateMemberEmailIdException exception) {
 			StringBuffer errorMessage = new StringBuffer(propertyService.getFormattedProperty(ChunksFinanceConstants.MEMBER_CREATE_NEWUSER_ERROR_EMAILPRESENT_MESSAGE,memberName));
 			model.addAttribute(ChunksFinanceConstants.ERROR, errorMessage);
-			memberService.loadPrimaryMemCurrentUser(model);
+			memberService.loadPrimaryMemCurrentUser(model,currentUserDetails);
 	        return "member";
 		}catch (DuplicateMemberException | DataIntegrityViolationException exception) {
 			StringBuffer errorMessage = new StringBuffer(propertyService.getFormattedProperty(ChunksFinanceConstants.MEMBER_CREATE_NEWUSER_ERROR_SAMENAME_TYPE_MESSAGE,memberName));
 			model.addAttribute(ChunksFinanceConstants.ERROR, errorMessage);
-			memberService.loadPrimaryMemCurrentUser(model);
+			memberService.loadPrimaryMemCurrentUser(model,currentUserDetails);
 	        return "member";
 		} catch (Exception exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR, exception.getMessage());
-			memberService.loadPrimaryMemCurrentUser(model);
+			memberService.loadPrimaryMemCurrentUser(model,currentUserDetails);
 	        return "member";
 		}
 		return "member"; 

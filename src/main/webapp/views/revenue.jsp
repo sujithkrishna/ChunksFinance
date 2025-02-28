@@ -752,7 +752,7 @@
                         <select name="financeType" id="ownerOfFund" class="input-field">
                             <option value="" disabled selected>Finance Type</option>
                             <c:forEach items="${AllFinance}" var="financeItem">
-                            	<option value="${financeItem.id}">${financeItem.financeName}</option>
+                            	<option value="${financeItem.id}">${financeItem.financeName} owned by ${financeItem.financeOwner.memberName}</option> 
                             </c:forEach>
                         </select>
                         <div class="error-message" id="financeType-error">

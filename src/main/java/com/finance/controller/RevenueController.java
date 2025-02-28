@@ -33,24 +33,23 @@ public class RevenueController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/revenue"})
-	public String handleRevenue(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
-		if (memberDetails != null) {
-            MemberModel currentUser = memberDetails.getMember();
+	public String handleRevenue(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+		if (currenUser != null) {
+            MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}		
-		model = revenueService.populatingFields(model);
+		revenueService.populatingFields(model);
 		return "revenue";
 	}
 
 	
 	
 	@PostMapping(path = {"/revenue"})
-	public String handleCreatRevenue(@ModelAttribute RevenueModel revenueModel,Model model) {
-		boolean status = revenueService.creatRevenue(revenueModel);
-		String memberName = null;
+	public String handleCreatRevenue(@AuthenticationPrincipal MemberDetails currentUser,@ModelAttribute RevenueModel revenueModel,Model model) {
+		boolean status = revenueService.creatRevenue(currentUser,revenueModel);
 		if(status) {
-			model = revenueService.populatingFields(model);
-			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_REVENUE_MESSAGE,"NULL"));
+			revenueService.populatingFields(model);
+			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_REVENUE_MESSAGE,currentUser.getMember().getMemberName()));
 	        return "revenue";
 		}
 		

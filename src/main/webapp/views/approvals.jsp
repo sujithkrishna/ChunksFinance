@@ -739,7 +739,7 @@ input[type="date"]:focus {
 							<c:if test="${not empty nonApprovedRevenueList}">
 								<c:forEach items="${nonApprovedRevenueList}" var="RevenueApprovalItem">
 									<div class="table-row" style="background: linear-gradient(135deg, rgba(147, 208, 131, 0.9), rgba(187, 242, 172, 0.9))">
-										<div class="table-cell">${RevenueApprovalItem.spenderName}</div>
+										<div class="table-cell">${RevenueApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">${RevenueApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${RevenueApprovalItem.spendAmount}</div>
 										<div class="table-cell">${RevenueApprovalItem.spendDate}</div>
@@ -762,7 +762,7 @@ input[type="date"]:focus {
 							<c:if test="${not empty nonApprovedExpensesList}">
 								<c:forEach items="${nonApprovedExpensesList}" var="ExpensesApprovalItem">
 									<div class="table-row" style="background: linear-gradient(135deg, rgba(213, 134, 134, 0.9), rgba(247, 156, 156, 0.9))">
-										<div class="table-cell">${ExpensesApprovalItem.spenderName}</div>
+										<div class="table-cell">${ExpensesApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">${ExpensesApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${ExpensesApprovalItem.spendAmount}</div>
 										<div class="table-cell">${ExpensesApprovalItem.spendDate}</div>

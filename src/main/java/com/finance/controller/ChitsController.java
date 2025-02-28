@@ -23,9 +23,9 @@ public class ChitsController {
 	
 	
 	@GetMapping(path = {"/new-chits"})
-	public String handleChits(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
-		if (memberDetails != null) {
-            MemberModel currentUser = memberDetails.getMember();
+	public String handleChits(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+		if (currenUser != null) {
+            MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		return "newChits";

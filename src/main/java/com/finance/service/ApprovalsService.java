@@ -1,6 +1,31 @@
 package com.finance.service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+
+import com.finance.constant.ChunksFinanceConstants;
+import com.finance.exception.AlreadyApprovedException;
+import com.finance.exception.DateExpiredException;
+import com.finance.model.ExpensesModel;
+import com.finance.model.FinanceModel;
+import com.finance.model.RevenueModel;
+import com.finance.repository.ExpensesRepository;
+import com.finance.repository.FinanceRepository;
+import com.finance.repository.RevenueRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.transaction.annotation.Transactional;
+
+
+
+
 
 /**
  * @author Sujith Krishna
@@ -10,7 +35,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ApprovalsService {
-	/*
+
 	
 	@Autowired
     private RevenueRepository revenueRepository;
@@ -21,39 +46,17 @@ public class ApprovalsService {
 	@Autowired
     private FinanceRepository financeRepository;
 	
-	@Autowired
-    private CurrentUser currentUser;
-	
-	 public List<RevenueModel> getAllNonApprovedRevenueForMyApproval() {
-		 	String currentUserName = null;
-		 	if(null != currentUser  && !currentUser.isLoggedIn()) {
-		 		currentUserName = ChunksFinanceConstants.SILENT_WATCHER;
-			}else {
-				currentUserName = currentUser.getMemberName();
-			}
-	        return revenueRepository.findByCurrentStatusAndApproverName(ChunksFinanceConstants.IN_PROGRESS,currentUserName);
-	  }
-	 
-	 public List<ExpensesModel> getAllNonApprovedExpensesForMyApproval() {
-		 	String currentUserName = null;
-		 	if(null != currentUser  && !currentUser.isLoggedIn()) {
-		 		currentUserName = ChunksFinanceConstants.SILENT_WATCHER;
-			}else {
-				currentUserName = currentUser.getMemberName();
-			}
-	        return expensesRepository.findByCurrentStatusAndApproverName(ChunksFinanceConstants.IN_PROGRESS,currentUserName);
-	  }
-	 
-	 
+	 	 
 	 @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	 public boolean processApprovels(HttpServletRequest request,HttpServletResponse response) {
+	 public boolean processApprovels(HttpServletRequest request) {
+		
 		 String currentType =request.getParameter(ChunksFinanceConstants.CURRENT_TYPE);
 		 String idNumber =request.getParameter(ChunksFinanceConstants.CURRENT_ID);
 		 String status =request.getParameter(ChunksFinanceConstants.STATUS);
 		 if(ChunksFinanceConstants.REVENUE.equals(currentType) && null != idNumber) {
 			 try {
-	                Long revenueNum = Long.parseLong(idNumber);
-	                Optional<RevenueModel> revenueOptional = revenueRepository.findByRevenueNumber(revenueNum);
+				 	Integer revenueNum = Integer.parseInt(idNumber);
+				 	Optional<RevenueModel> revenueOptional = revenueRepository.findById(revenueNum);
 	                if (revenueOptional.isPresent()) {
 	                    RevenueModel revenueModel = revenueOptional.get();
 	                    if(!isBussinessExipredRule(revenueModel.getSpendDate())) {
@@ -62,16 +65,12 @@ public class ApprovalsService {
 	                    if(revenueModel.getCurrentStatus().equals(ChunksFinanceConstants.APPROVED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
-	                    	revenueModel.setCurrentStatus(status);
+	                    	revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.valueOf(status.toUpperCase()));
 	                    	revenueRepository.save(revenueModel);
 	  	                    if(null != status && ChunksFinanceConstants.APPROVED.equals(status)) {
 	  	                    	// Process the amount from existing fund of the type he submitted.
 	  	                    	if(null != revenueModel.getFinanceType()) {
-	  	                    		String[] financeTypeDataSplit = revenueModel.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
-	  	                    		String financeType = financeTypeDataSplit[0];
-	  	                    		String financeName = financeTypeDataSplit[1];
-	  	                    		String financeOwnerName = financeTypeDataSplit[2];
-	  	                    		FinanceModel currentModel = financeRepository.findByFinanceTypeAndFinanceNameAndFinanceOwnerName(financeType, financeName, financeOwnerName);
+	  	                    		FinanceModel currentModel = revenueModel.getFinanceType();
 	  	                    		if(null != currentModel) {
 	  	                    			Double currentBalance = currentModel.getCurrentBalance() + revenueModel.getSpendAmount();
 	  	                    			currentModel.setCurrentBalance(currentBalance);
@@ -88,8 +87,8 @@ public class ApprovalsService {
 	            }
 		 }else if(ChunksFinanceConstants.EXPENSES.equals(currentType) && null != idNumber) {
 			 try {
-	                Long expensesNum = Long.parseLong(idNumber);
-	                Optional<ExpensesModel> expensesOptional = expensesRepository.findByExpensesNumber(expensesNum);
+				 	Integer expensesNum = Integer.parseInt(idNumber);
+	                Optional<ExpensesModel> expensesOptional = expensesRepository.findById(expensesNum);
 	                if (expensesOptional.isPresent()) {
 	                	ExpensesModel expensesModel = expensesOptional.get();
 	                	if(!isBussinessExipredRule(expensesModel.getSpendDate())) {
@@ -98,16 +97,12 @@ public class ApprovalsService {
 	                    if(expensesModel.getCurrentStatus().equals(ChunksFinanceConstants.APPROVED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
-	                    	expensesModel.setCurrentStatus(status);
+	                    	expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.valueOf(status.toUpperCase()));
 	                    	expensesRepository.save(expensesModel);
 	  	                    if(null != status && ChunksFinanceConstants.APPROVED.equals(status)) {
 	  	                    	// Process the amount from existing fund of the type he submitted.
 	  	                    	if(null != expensesModel.getFinanceType()) {
-	  	                    		String[] financeTypeDataSplit = expensesModel.getFinanceType().split(ChunksFinanceConstants.FINANCETYPE_SPLIT_REGEX);
-	  	                    		String financeType = financeTypeDataSplit[0];
-	  	                    		String financeName = financeTypeDataSplit[1];
-	  	                    		String financeOwnerName = financeTypeDataSplit[2];
-	  	                    		FinanceModel currentModel = financeRepository.findByFinanceTypeAndFinanceNameAndFinanceOwnerName(financeType, financeName, financeOwnerName);
+	  	                    		FinanceModel currentModel = expensesModel.getFinanceType();
 	  	                    		if(null != currentModel) {
 	  	                    			Double currentBalance = currentModel.getCurrentBalance() - expensesModel.getSpendAmount();
 	  	                    			currentModel.setCurrentBalance(currentBalance);
@@ -136,6 +131,6 @@ public class ApprovalsService {
 			 return false;
 		 }
 	 }
-	 */
+	
 
 }
