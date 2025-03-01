@@ -633,11 +633,20 @@ input[type="date"]:focus {
         align-items: stretch;
     }
     
+    .user-role h4 {
+				text-align: center; /* Center align on mobile */
+	}
     .button-group-view {
         margin-left: 0;
         justify-content: flex-end;
     }
 }
+       .user-role h4 {
+		    text-align: center;
+		    margin: 0;
+		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
+		    font-weight: 500; /* Optional: Match dashboard header weight */
+		}
 </style>
 </head>
 <body>
@@ -659,7 +668,7 @@ input[type="date"]:focus {
 				        <h4>SuperAdmin</h4>
 				    </c:when>
 				    <c:otherwise>
-				        NormalUser
+				        Contributor
 				    </c:otherwise>
 				</c:choose>
 				</div>

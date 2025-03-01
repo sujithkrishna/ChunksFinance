@@ -1,1 +1,83 @@
-= "INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (" & A2 & ", '" & B2 & "', '" & C2 & "', '" & D2 & "', '" & E2 & "', '" & F2 & "', " & G2 & ", '" & H2 & "', '" & I2 & "', '" & J2 & "', '" & K2 & "', '" & L2 & "', '" & M2 & "', '" & N2 & "', '" & O2 & "');"
+=CONCATENATE("INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (",
+IF(A2="", "null", A2), ", '",
+IF(B2="", "null", B2), "', '",
+IF(C2="", "null", C2), "', '",
+IF(D2="", "null", D2), "', '",
+IF(E2="", "null", E2), "', '",
+IF(F2="", "null", F2), "', '",
+IF(G2="", "null", G2), "', '",
+IF(H2="", "null", H2), "', '",
+IF(I2="", "null", I2), "', '",
+IF(J2="", "null", J2), "', '",
+IF(K2="", "null", K2), "', '",
+IF(L2="", "null", L2), "', '",
+IF(M2="", "null", M2), "', '",
+IF(N2="", "null", N2), "', '",
+IF(O2="", "null", O2), "');")
+
+- Validated working...
+
+
+
+=CONCATENATE("INSERT INTO revenue (revenue_number, finance_id, spender_member_no, spender_details, spend_date, spend_amount, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (", 
+IF(A2="", "null", CONCAT("'", A2, "'")), ", ", 
+IF(B2="", "null", CONCAT("'", B2, "'")), ", ", 
+IF(C2="", "null", CONCAT("'", C2, "'")), ", ", 
+IF(D2="", "null", CONCAT("'", D2, "'")), ", ", 
+IF(E2="", "null", CONCAT("'", E2, "'")), ", ", 
+IF(F2="", "null", CONCAT("'", F2, "'")), ", ", 
+IF(G2="", "null", CONCAT("'", G2, "'")), ", ", 
+IF(H2="", "null", CONCAT("'", H2, "'")), ", ", 
+IF(I2="", "null", CONCAT("'", I2, "'")), ", ", 
+IF(J2="", "null", CONCAT("'", J2, "'")), ", ", 
+IF(K2="", "null", CONCAT("'", K2, "'")), ");")
+
+
+
+=CONCATENATE("INSERT INTO expenses (expenses_number, finance_id, spender_details, spend_amount, spend_date, spender_member_no, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (",
+IF(A2="", "null", A2), ", ",
+IF(B2="", "null", B2), ", ",
+IF(C2="", "null", CONCAT("'", C2, "'")), ", ",
+IF(D2="", "null", D2), ", ",
+IF(E2="", "null", CONCAT("'", E2, "'")), ", ",
+IF(F2="", "null", F2), ", ",
+IF(G2="", "null", G2), ", ",
+IF(H2="", "null", H2), ", ",
+IF(I2="", "null", CONCAT("'", I2, "'")), ", ",
+IF(J2="", "null", CONCAT("'", J2, "'")), ", ",
+IF(K2="", "null", CONCAT("'", K2, "'")), ");")
+
+
+=CONCATENATE("INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, current_status) VALUES (", 
+IF(A2="", "null", A2), ", ", 
+IF(B2="", "null", B2), ", '", 
+IF(C2="", "null", C2), "', ", 
+IF(D2="", "null", D2), ", ", 
+IF(E2="", "null", E2), ", ", 
+IF(F2="", "null", F2), ", '", 
+IF(G2="", "null", G2), "');")
+
+
+=CONCATENATE("INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, paid_on_time, payment_date_time, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (", 
+IF(A2="", "null", A2), ", ", 
+IF(B2="", "null", B2), ", ", 
+IF(C2="", "null", C2), ", ", 
+IF(D2="", "null", D2), ", '", 
+IF(E2="", "null", E2), "', ", 
+IF(F2="", "null", F2), ", '", 
+IF(G2="", "null", G2), "', ", 
+IF(H2="", "null", H2), ", ", 
+IF(I2="", "null", I2), ", '", 
+IF(J2="", "null", J2), "', ", 
+IF(K2="", "null", K2), ", '", 
+IF(L2="", "null", L2), "');")
+
+
+
+=CONCATENATE("INSERT INTO loan (loan_no, loan_applicant_name, loan_reference_name, loan_date, loan_amount, received_amount, finance_id, disbursement_amount, yet_to_receive_amount, interest_amount, loan_repayment_date")
+
+=CONCATENATE("first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (", A2, ", '", B2, "', '", C2, "', '", D2, "', ")
+
+=CONCATENATE(E2, ", ", F2, ", ", G2, ", ", H2, ", ", I2, ", ", J2, ", '", K2, "', ")
+
+=CONCATENATE(L2, ", ", M2, ", ", N2, ", ", O2, ", '", P2, "');")

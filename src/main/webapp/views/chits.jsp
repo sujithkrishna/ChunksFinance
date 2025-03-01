@@ -319,6 +319,10 @@
                 padding-top: 8px;
             }
 
+			.user-role h4 {
+				text-align: center; /* Center align on mobile */
+			}
+			
             .user-info {
                 order: -1;
             }
@@ -646,6 +650,12 @@
         .chits-section .form-group {
             margin-bottom: 10px;
         }
+        .user-role h4 {
+		    text-align: center;
+		    margin: 0;
+		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
+		    font-weight: 500; /* Optional: Match dashboard header weight */
+		}        
     </style>
 </head>
 <body>
@@ -667,7 +677,7 @@
 				        <h4>SuperAdmin</h4>
 				    </c:when>
 				    <c:otherwise>
-				        NormalUser
+				        Contributor
 				    </c:otherwise>
 				</c:choose>
 				</div>

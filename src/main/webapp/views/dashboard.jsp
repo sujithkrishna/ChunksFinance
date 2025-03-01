@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -328,7 +329,9 @@
             .user-info {
                 order: -1;
             }
-
+		    .user-role h4 {
+		        text-align: center; /* Center align on mobile */
+		    }	
             .logout-container {
                 bottom: -5px;
                 right: 4px;
@@ -405,6 +408,12 @@
                 grid-template-columns: 1fr;
             }
         }
+        .user-role h4 {
+		    text-align: center;
+		    margin: 0;
+		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
+		    font-weight: 500; /* Optional: Match dashboard header weight */
+		}
     </style>
 </head>
 <body>
@@ -426,7 +435,7 @@
 				        <h4>SuperAdmin</h4>
 				    </c:when>
 				    <c:otherwise>
-				        NormalUser
+				        Contributor
 				    </c:otherwise>
 				</c:choose>
 				</div>
@@ -478,7 +487,7 @@
 		        <c:forEach items="${AllFinance}" var="financeItem">
 	             <section id="Content">
 		            <h2>${financeItem.financeName}</h2>
-		            <h5>The fund is managed by ${financeItem.financeOwner.memberName}</h5>
+		             <h5>The fund is managed by ${financeItem.financeOwner.memberName} started on <span class="formattedStartDate">${financeItem.financeCreationDate}</span> </h5>
 		                <div class="card">
 		                    <div>
 		                        <div class="stat-title">Total Revenue</div>
@@ -547,6 +556,25 @@
             dialog.style.display = 'block';
         });
 
+       
+        function formatDate(date) {
+          var d = new Date(date);
+          var day = ("0" + d.getDate()).slice(-2);  // Pad single digit day
+          var month = ("0" + (d.getMonth() + 1)).slice(-2);  // Pad single digit month
+          var year = d.getFullYear();
+          return day + '-' + month + '-' + year;
+        }
+        
+        const dateElements = document.getElementsByClassName('formattedStartDate');
+        for (let i = 0; i < dateElements.length; i++) {
+            const dateElement = dateElements[i];
+            const rawDate = dateElement.innerText; // Get the raw date
+            const formattedDate = formatDate(rawDate); // Format the date
+            dateElement.innerText = formattedDate; // Set the formatted date back to the element
+        }
+        
+        
+        
         document.querySelectorAll('.confirm-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
