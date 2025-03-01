@@ -33,6 +33,10 @@ public class MemberModel {
     public enum MemberType {
         PRIMARY, SECONDARY
     }
+    
+    public enum ROLE {
+    	USER, SUPER_ADMIN
+    }
 
     @Id
     @Column(nullable = false)
@@ -50,6 +54,10 @@ public class MemberModel {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberType memberType;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ROLE role=ROLE.USER;
 
     @ManyToOne
     @JoinColumn(name = "reference_member_no")

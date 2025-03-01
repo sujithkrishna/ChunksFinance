@@ -29,11 +29,11 @@ import lombok.ToString;
 public class ChitsModel {
 
     public enum CurrentStatus {
-        REQUESTED, 
-        APPROVED,  
+    	REQUESTED, 
+    	INITIAL_APPROVAL,  
         REJECTED,
         INPROGRESS,
-        COMPLETED 
+        CLOSED 
     }	
     @Id
     @Column(name = "chits_no", unique = true)

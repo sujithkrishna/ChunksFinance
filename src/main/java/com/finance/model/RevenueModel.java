@@ -1,6 +1,7 @@
 package com.finance.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,8 +25,9 @@ import lombok.Data;
 public class RevenueModel {
 
     public enum CurrentStatus {
-        INPROGRESS,  // Note: Might want to rename to IN_PROGRESS for correctness
-        APPROVED,    // Note: Likely a typo, should be APPROVED
+        INPROGRESS,
+        INITIAL_APPROVAL,  
+        COMPLETED,    
         REJECTED
     }
 
@@ -61,4 +63,10 @@ public class RevenueModel {
     @ManyToOne
     @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
     private MemberModel secondapproverName;
+    
+    @Column(name = "first_approval_date_time")
+    private LocalDateTime firstApprovalTime;
+    
+    @Column(name = "second_approval_date_time")
+    private LocalDateTime secondApprovalTime;
 }

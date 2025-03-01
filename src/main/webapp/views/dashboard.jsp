@@ -420,7 +420,16 @@
         <div class="user-profile">
             <div>
                 <div class="user-name"><c:out value="${currentUser.memberName}" /></div>
-                <div class="user-role">Administrator</div>
+                <div class="user-role">
+            	  <c:choose>
+				    <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+				        <h4>SuperAdmin</h4>
+				    </c:when>
+				    <c:otherwise>
+				        NormalUser
+				    </c:otherwise>
+				</c:choose>
+				</div>
             </div>
             <div class="user-avatar">
                 <div class="logout-container">

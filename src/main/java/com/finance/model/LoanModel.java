@@ -2,6 +2,7 @@ package com.finance.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -30,10 +31,10 @@ import lombok.ToString;
 public class LoanModel {
 	
     public enum CurrentStatus {
-        REQUESTED,  // Note: Just created
-        APPROVED,   // Note: First Approval
-        REJECTED,   // Note: First Approval Rejected
-        ISSUED,    // Note: Second Approval Granted
+        REQUESTED,  
+        INITIAL_APPROVAL,  
+        REJECTED,   
+        INPROGRESS,    
         CLOSED,
         PRE_CLOSED,
     }	
@@ -89,6 +90,12 @@ public class LoanModel {
     @ManyToOne
     @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
     private MemberModel secondapproverName;
+    
+    @Column(name = "first_approval_date_time")
+    private LocalDateTime firstApprovalTime;
+    
+    @Column(name = "second_approval_date_time")
+    private LocalDateTime secondApprovalTime;    
     
 }
 

@@ -61,22 +61,22 @@ public class ApprovalsService {
 	                    if(!isBussinessExipredRule(revenueModel.getSpendDate())) {
 	                    	throw new DateExpiredException(); 
 	                    }
-	                    if(revenueModel.getCurrentStatus().equals(ChunksFinanceConstants.APPROVED)) {
+	                    if(revenueModel.getCurrentStatus().equals(ChunksFinanceConstants.COMPLETED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
 	                    	revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.valueOf(status.toUpperCase()));
 	                    	revenueRepository.save(revenueModel);
+	                    	
+	                    	
 	  	                    if(null != status && ChunksFinanceConstants.APPROVED.equals(status)) {
-	  	                    	// Process the amount from existing fund of the type he submitted.
-	  	                    	if(null != revenueModel.getFinanceType()) {
-	  	                    		FinanceModel currentModel = revenueModel.getFinanceType();
-	  	                    		if(null != currentModel) {
-	  	                    			Double currentBalance = currentModel.getCurrentBalance() + revenueModel.getSpendAmount();
-	  	                    			currentModel.setCurrentBalance(currentBalance);
-	  	                    			financeRepository.save(currentModel);
-	  	                    			// If this is approved then save this to approval Model.
-	  	                    		}
-	  	                    	}
+	  	                    	
+	  	                    	
+	  	                    	
+	  	                    	
+	  	                    	
+	  	                    	
+	  	                    	
+	  	                    	
 	  	                    }
 	  	                    return true;
 	                    }

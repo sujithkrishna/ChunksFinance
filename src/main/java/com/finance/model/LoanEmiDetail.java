@@ -26,9 +26,10 @@ import lombok.Data;
 public class LoanEmiDetail {
 
 	public enum CurrentStatus {
-	    INPROGRESS,  // Note: Just created
-	    PAID,   // Note: First Approval
-	    PRECLOSE,   // Note: First Approval Rejected
+	    INPROGRESS, 
+	    INITIAL_APPROVAL,
+	    PAID,   
+	    PRECLOSE,   
 	}
     
 	@Id
@@ -66,5 +67,10 @@ public class LoanEmiDetail {
     @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
     private MemberModel secondapproverName;
     
+    @Column(name = "first_approval_date_time")
+    private LocalDateTime firstApprovalTime;
+    
+    @Column(name = "second_approval_date_time")
+    private LocalDateTime secondApprovalTime;
     
 }

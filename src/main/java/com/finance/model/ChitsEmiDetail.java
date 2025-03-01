@@ -27,6 +27,7 @@ public class ChitsEmiDetail {
 
 	public enum CurrentStatus {
 	    INPROGRESS, 
+	    INITIAL_APPROVAL,
 	    PAID  
 	}
     
@@ -64,5 +65,11 @@ public class ChitsEmiDetail {
     @ManyToOne
     @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
     private MemberModel secondapproverName;
+    
+    @Column(name = "first_approval_date_time")
+    private LocalDateTime firstApprovalTime;
+    
+    @Column(name = "second_approval_date_time")
+    private LocalDateTime secondApprovalTime;
     
 }

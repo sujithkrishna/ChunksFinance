@@ -9,7 +9,8 @@ public class ChunksFinanceConstants {
 
 	public static final String APPROVED = "APPROVED";
 	
-	
+	public static final String COMPLETED = "COMPLETED";
+		
 	public static final String SELCTED_APPROVAL_DATE = "selctedapprovaldate";
 	
 	public static final String SILENT_WATCHER = "SilentWatcher";

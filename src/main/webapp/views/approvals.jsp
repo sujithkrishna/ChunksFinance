@@ -650,20 +650,28 @@ input[type="date"]:focus {
 			<h1>Chunks Finance Dashboard</h1>
 			<p>Your financial overview at a glance</p>
 		</div>
-		<div class="user-profile">
-			<div>
-				<div class="user-name">
-					<c:out value="${currentUser.memberName}" />
+        <div class="user-profile">
+            <div>
+                <div class="user-name"><c:out value="${currentUser.memberName}" /></div>
+                <div class="user-role">
+            	  <c:choose>
+				    <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+				        <h4>SuperAdmin</h4>
+				    </c:when>
+				    <c:otherwise>
+				        NormalUser
+				    </c:otherwise>
+				</c:choose>
 				</div>
-				<div class="user-role">Administrator</div>
-			</div>
-			<div class="user-avatar">
-				<div class="logout-container">
-					<a href="#" class="logout-btn" id="logoutTrigger"> <i class="fas fa-power-off"></i>
-					</a>
-				</div>
-			</div>
-		</div>
+            </div>
+            <div class="user-avatar">
+                <div class="logout-container">
+                    <a href="#" class="logout-btn" id="logoutTrigger">
+                        <i class="fas fa-power-off"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
 	</header>
 
 	<!-- Navigation -->

@@ -2,6 +2,7 @@ package com.finance.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
+import com.finance.model.RevenueModel.CurrentStatus;
 import com.finance.repository.RevenueRepository;
 import com.finance.user.MemberDetails;
 
@@ -77,8 +79,12 @@ public class RevenueService {
 	}
 	
 	 public List<RevenueModel> getRevenueFromMondayToGivenDate(LocalDate givenDate,MemberModel currentUser) {
-	        LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
-	       return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate,RevenueModel.CurrentStatus.INPROGRESS,currentUser);
+		 LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
+		    if (currentUser.getRole() == MemberModel.ROLE.SUPER_ADMIN) {
+		        List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
+		        return revenueRepository.findBySpendDateAndCurrentStatus(startOfWeek, givenDate, statusList);
+		    } 
+		    return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate, CurrentStatus.INPROGRESS, currentUser);
 	    }
 	
 }

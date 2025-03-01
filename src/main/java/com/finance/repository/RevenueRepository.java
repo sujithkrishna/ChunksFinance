@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.finance.model.MemberModel;
@@ -25,5 +26,10 @@ public interface RevenueRepository extends JpaRepository<RevenueModel, Integer> 
 	
 	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus = :currentStatus AND r.firstapproverName = :firstapproverName")
 	List<RevenueModel> findRevenueByDateRangeAndStatusAndApprover(LocalDate startDate, LocalDate endDate,CurrentStatus currentStatus, MemberModel firstapproverName);
+	
+	
+     @Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.secondApprovalTime IS NULL")
+     List<RevenueModel> findBySpendDateAndCurrentStatus(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<CurrentStatus> statuses);
+	
 
 }
