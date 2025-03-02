@@ -42,6 +42,7 @@ public class FinanceSecurityConfig {
              .requestMatchers("/views/**", "/financeLogin", "/css/**", "/js/**", "/images/**").permitAll()
              .requestMatchers("/test-ping").permitAll()
              .requestMatchers("/h2-console/**", "/secure/**", "/member/**").authenticated()
+             .requestMatchers("/finance/**").hasRole("SUPER_ADMIN")
              .anyRequest().authenticated() // Secure all other endpoints
          )
          .formLogin(form -> form
@@ -66,6 +67,10 @@ public class FinanceSecurityConfig {
              .frameOptions().disable()
          )
          .userDetailsService(memberDetailsService); // Use custom UserDetailsService
+    
+    	 http.exceptionHandling(exception -> 
+    	    exception.accessDeniedPage("/error")
+    	);	 
 
      return http.build();
     }

@@ -414,6 +414,90 @@
 		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 		    font-weight: 500; /* Optional: Match dashboard header weight */
 		}
+    /* Error Page Specific Styles */
+    .error-container {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .error-icon {
+        font-size: 5rem;
+        color: #e74c3c;
+        animation: pulse 1.5s infinite;
+    }
+
+    .error-content {
+        flex: 1;
+    }
+
+    .error-title {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+    }
+
+    .error-details {
+        background: rgba(241, 241, 241, 0.9);
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    .error-details p {
+        margin: 10px 0;
+        color: #555;
+    }
+
+    .error-code {
+        font-weight: 500;
+        color: #e74c3c !important;
+    }
+
+    .timestamp {
+        font-size: 0.9rem;
+        color: #777 !important;
+    }
+
+    .return-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 25px;
+        background: #2c3e50;
+        color: white;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .return-btn:hover {
+        background: #34495e;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    @media (max-width: 768px) {
+        .error-container {
+            flex-direction: column;
+        }
+        
+        .error-icon {
+            font-size: 3.5rem;
+        }
+        
+        .error-title {
+            font-size: 1.4rem;
+        }
+    }		
     </style>
 </head>
 <body>
@@ -472,15 +556,32 @@
 
     <!-- Main Content -->
     <main>
-        <div class="content-wrapper">
-            <section id="Content">
-            <h2>Settings</h2>
-             <h5> You can change the settings here..</h5>
-                <div class="card">
-                   			
-                </div>
-            </section>
-        </div>
+	        <div class="content-wrapper">
+			    <section id="Content">
+			        <h2>${errorCode} Error</h2>
+			        <h5>${errorMessage}</h5>
+			        <div class="card">
+			            <div class="error-container">
+			                <div class="error-icon">
+			                    <i class="fas fa-exclamation-triangle"></i>
+			                </div>
+			                <div class="error-content">
+			                    <h3 class="error-title">Oops! Something went wrong</h3>
+			                    <div class="error-details">
+			                        <p>We encountered an unexpected error while processing your request.</p>
+			                        <p class="error-code">Error Code: ${errorCode}</p>
+			                        <p class="timestamp">Timestamp: ${timestamp}</p>
+			                    </div>
+			                    <div class="error-actions">
+			                        <a href="/dashboard" class="return-btn">
+			                            <i class="fas fa-arrow-left"></i>Dashboard
+			                        </a>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </section>
+			</div>
     </main>
 
     <!-- Footer -->

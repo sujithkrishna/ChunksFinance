@@ -80,7 +80,7 @@ public class ApprovalsService {
 			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
 		}
 		
-		//Fetching Chits EMI List		
+		//Fetching Chits EMI List START		
 		 List<ChitsModel> currentRunningChitsByMyApprovals = chitsService.getChitsByFinanceOwnerAndStatus(currentUser.getNo());
 		// Calculate the current week's Monday and Sunday dates
 		 LocalDate startDate = givenDate.with(DayOfWeek.MONDAY);
@@ -103,7 +103,10 @@ public class ApprovalsService {
 				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, null);
 			}else {
 				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, emiDetailsInCurrentWeek);
-			}
+		 }
+		 
+			//Fetching Chits EMI List END
+		 
 		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
 	}

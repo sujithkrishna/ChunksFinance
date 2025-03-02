@@ -722,7 +722,11 @@
             <li><a href="expenses">Expenses</a></li>
             <li><a href="member" >Members</a></li>
             <li><a href="chits">Chits</a></li>
-            <li><a href="finance" class="active">Create Finance</a></li>
+             <c:choose>
+	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+	            	<li><a href="finance" class="active">Create Finance</a></li>
+	            </c:when>
+            </c:choose>
         </ul>
     </nav>
 

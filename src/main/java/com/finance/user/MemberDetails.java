@@ -29,7 +29,8 @@ public class MemberDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        // Convert user roles into Spring Security GrantedAuthorities
+        return List.of(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
     }
 
     @Override

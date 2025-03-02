@@ -1,6 +1,11 @@
 package com.finance.service;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +37,8 @@ public class MemberDetailsService  implements UserDetailsService {
     		        String errorMessage = "Login attempt failed for email: " + emailId + " - User not found!";
     		        return new UsernameNotFoundException(errorMessage);
     		    });
+    	List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
     	
     	 return new MemberDetails(member);
     }
