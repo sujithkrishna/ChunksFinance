@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
-import com.finance.model.RevenueModel.CurrentStatus;
 
 /**
  * @author Sujith Krishna
@@ -24,12 +23,14 @@ public interface RevenueRepository extends JpaRepository<RevenueModel, Integer> 
 	@Query("SELECT MAX(r.revenueNumber) FROM RevenueModel r")
 	Integer findMaxNo();
 	
-	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus = :currentStatus AND r.firstapproverName = :firstapproverName")
-	List<RevenueModel> findRevenueByDateRangeAndStatusAndApprover(LocalDate startDate, LocalDate endDate,CurrentStatus currentStatus, MemberModel firstapproverName);
+	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.firstapproverName = :firstapproverName AND r.firstApprovalTime IS NULL")
+	List<RevenueModel> findRevenueByDateRangeAndStatusAndApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<RevenueModel.CurrentStatus> statuses,@Param("firstapproverName") MemberModel firstapproverName);
+
+	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.secondapproverName IS NULL AND r.secondApprovalTime IS NULL")
+	List<RevenueModel> findRevenueByDateRangeAndStatusAndSuperAdminApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<RevenueModel.CurrentStatus> statuses);
+
 	
-	
-     @Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.secondApprovalTime IS NULL")
-     List<RevenueModel> findBySpendDateAndCurrentStatus(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<CurrentStatus> statuses);
+    
 	
 
 }

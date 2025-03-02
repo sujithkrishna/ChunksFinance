@@ -2,6 +2,9 @@ package com.finance.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +12,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
 import com.finance.exception.DateExpiredException;
+import com.finance.exception.FirstApprovalCannotbeSameException;
+import com.finance.model.ChitsEmiDetail;
+import com.finance.model.ChitsModel;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
+import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
 import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
 import com.finance.repository.RevenueRepository;
+import com.finance.user.MemberDetails;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -45,14 +54,70 @@ public class ApprovalsService {
 	@Autowired
     private FinanceRepository financeRepository;
 	
+	@Autowired
+	private RevenueService revenueService;
+	
+	@Autowired
+	private ExpensesService expensesService;
+	
+	@Autowired
+	private ChitsService chitsService;
+	
+	
+	public void revewnueAndExpensesList(Model model, LocalDate givenDate,MemberModel currentUser) {
+		List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(givenDate,currentUser);
+		if(null != nonApprovedRevenueList && nonApprovedRevenueList.size() == 0) {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, null);
+		}else {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, nonApprovedRevenueList);
+		}
+		
+		//Fetching Expenses List		
+		List<ExpensesModel> nonApprovedExpensesList = expensesService.getExpensesFromMondayToGivenDate(givenDate,currentUser);
+		if(null != nonApprovedExpensesList && nonApprovedExpensesList.size() == 0) {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, null);
+		}else {
+			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
+		}
+		
+		//Fetching Chits EMI List		
+		 List<ChitsModel> currentRunningChitsByMyApprovals = chitsService.getChitsByFinanceOwnerAndStatus(currentUser.getNo());
+		// Calculate the current week's Monday and Sunday dates
+		 LocalDate startDate = givenDate.with(DayOfWeek.MONDAY);
+		 LocalDate endDate = givenDate.plusDays(6); // End date is Sunday of the same week
+		 List<ChitsEmiDetail> emiDetailsInCurrentWeek = new ArrayList<ChitsEmiDetail>();
+
+		 for (ChitsModel chit : currentRunningChitsByMyApprovals) {
+		     List<ChitsEmiDetail> emiDetails = chit.getEmiDetails();
+		     if (emiDetails != null) {
+		         for (ChitsEmiDetail emi : emiDetails) {
+		             LocalDate emiDate = emi.getEmiDate();
+		             if (emiDate != null && !emiDate.isBefore(startDate) && !emiDate.isAfter(endDate)) {
+		                 emiDetailsInCurrentWeek.add(emi);
+		             }
+		         }
+		     }
+		 }
+		 
+		 if(null != emiDetailsInCurrentWeek && emiDetailsInCurrentWeek.size() == 0) {
+				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, null);
+			}else {
+				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, emiDetailsInCurrentWeek);
+			}
+		
+		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
+	}
+	
+	
 	 	 
 	 @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	 public boolean processApprovels(HttpServletRequest request) {
+	 public boolean processApprovels(HttpServletRequest request,MemberDetails currenUser) {
 		
 		 String currentType =request.getParameter(ChunksFinanceConstants.CURRENT_TYPE);
 		 String idNumber =request.getParameter(ChunksFinanceConstants.CURRENT_ID);
 		 String status =request.getParameter(ChunksFinanceConstants.STATUS);
 		 if(ChunksFinanceConstants.REVENUE.equals(currentType) && null != idNumber) {
+			 //  This is for only for processing of Revenue Items START
 			 try {
 				 	Integer revenueNum = Integer.parseInt(idNumber);
 				 	Optional<RevenueModel> revenueOptional = revenueRepository.findById(revenueNum);
@@ -61,61 +126,167 @@ public class ApprovalsService {
 	                    if(!isBussinessExipredRule(revenueModel.getSpendDate())) {
 	                    	throw new DateExpiredException(); 
 	                    }
-	                    if(revenueModel.getCurrentStatus().equals(ChunksFinanceConstants.COMPLETED)) {
+	                    if(revenueModel.getCurrentStatus().equals(RevenueModel.CurrentStatus.COMPLETED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
-	                    	revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.valueOf(status.toUpperCase()));
-	                    	revenueRepository.save(revenueModel);
-	                    	
-	                    	
-	  	                    if(null != status && ChunksFinanceConstants.APPROVED.equals(status)) {
-	  	                    	
-	  	                    	
-	  	                    	
-	  	                    	
-	  	                    	
-	  	                    	
-	  	                    	
-	  	                    	
-	  	                    }
-	  	                    return true;
-	                    }
+	                    	if(revenueModel.getCurrentStatus().equals(RevenueModel.CurrentStatus.INPROGRESS)) {
+	                    		if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.INITIAL_APPROVAL);
+		                    			revenueModel.setSecondapproverName(currenUser.getMember());
+		                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+		                    		}else {
+		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
+		                    			revenueModel.setSecondapproverName(currenUser.getMember());
+		                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+		                    		}
+	                    		}else {
+	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.INITIAL_APPROVAL);
+		                    			revenueModel.setFirstapproverName(currenUser.getMember());
+		                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+		                    		}else {
+		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
+		                    			revenueModel.setFirstapproverName(currenUser.getMember());
+		                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+		                    		}
+	                    		}
+	                    	}else if(revenueModel.getCurrentStatus().equals(RevenueModel.CurrentStatus.INITIAL_APPROVAL)){
+	                    		// Below condition is not written with appoved and reject cases...
+	                    		if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+			                    		if(revenueModel.getFirstapproverName().getNo().equals(currenUser.getMember().getNo())) {
+			                    			throw new FirstApprovalCannotbeSameException();  
+			                    		}else {
+			                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.COMPLETED);
+				                    		revenueModel.setSecondapproverName(currenUser.getMember());
+			                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+				                    		FinanceModel currentModel = revenueModel.getFinanceType();
+			  	                    		if(null != currentModel) {
+			  	                    			Double currentBalance = currentModel.getCurrentBalance() + revenueModel.getSpendAmount();
+			  	                    			currentModel.setCurrentBalance(currentBalance);
+			  	                    			financeRepository.save(currentModel);
+			  	                    		}
+			                    		}	                    				
+	                    				
+	                    			}else {
+	                    				revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
+		                    			revenueModel.setSecondapproverName(currenUser.getMember());
+		                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+	                    			}
+
+	                    		}else {
+		                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+		                    				revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.COMPLETED);
+				                    		revenueModel.setFirstapproverName(currenUser.getMember());
+			                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+				                    		FinanceModel currentModel = revenueModel.getFinanceType();
+			  	                    		if(null != currentModel) {
+			  	                    			Double currentBalance = currentModel.getCurrentBalance() + revenueModel.getSpendAmount();
+			  	                    			currentModel.setCurrentBalance(currentBalance);
+			  	                    			financeRepository.save(currentModel);
+			  	                    		}
+		                    			}else {
+		                    				revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
+			                    			revenueModel.setFirstapproverName(currenUser.getMember());
+			                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+		                    			}
+	                    		}
+	                      }
+	                   revenueRepository.save(revenueModel);
 	                }
-	            } catch (NumberFormatException exception) {
+	            } 
+	           }catch (NumberFormatException exception) {
 	                
-	            }
+	           }
+			 return true;
+			 //  This is for only for processing of Revenue Items END	 
+			 
 		 }else if(ChunksFinanceConstants.EXPENSES.equals(currentType) && null != idNumber) {
+			 //  This is for only for processing of Expenses Items START
 			 try {
 				 	Integer expensesNum = Integer.parseInt(idNumber);
-	                Optional<ExpensesModel> expensesOptional = expensesRepository.findById(expensesNum);
+				 	Optional<ExpensesModel> expensesOptional = expensesRepository.findById(expensesNum);
 	                if (expensesOptional.isPresent()) {
-	                	ExpensesModel expensesModel = expensesOptional.get();
-	                	if(!isBussinessExipredRule(expensesModel.getSpendDate())) {
+	                    ExpensesModel expensesModel = expensesOptional.get();
+	                    if(!isBussinessExipredRule(expensesModel.getSpendDate())) {
 	                    	throw new DateExpiredException(); 
 	                    }
-	                    if(expensesModel.getCurrentStatus().equals(ChunksFinanceConstants.APPROVED)) {
+	                    if(expensesModel.getCurrentStatus().equals(ExpensesModel.CurrentStatus.COMPLETED)) {
 	                    	throw new AlreadyApprovedException();  
 	                    }else {
-	                    	expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.valueOf(status.toUpperCase()));
-	                    	expensesRepository.save(expensesModel);
-	  	                    if(null != status && ChunksFinanceConstants.APPROVED.equals(status)) {
-	  	                    	// Process the amount from existing fund of the type he submitted.
-	  	                    	if(null != expensesModel.getFinanceType()) {
-	  	                    		FinanceModel currentModel = expensesModel.getFinanceType();
-	  	                    		if(null != currentModel) {
-	  	                    			Double currentBalance = currentModel.getCurrentBalance() - expensesModel.getSpendAmount();
-	  	                    			currentModel.setCurrentBalance(currentBalance);
-	  	                    			financeRepository.save(currentModel);
-	  	                    			// If this is approved then save this to approval Model.
-	  	                    		}
-	  	                    	}
-	  	                    }
-	  	                    return true;
-	                    }
+	                    	if(expensesModel.getCurrentStatus().equals(ExpensesModel.CurrentStatus.INPROGRESS)) {
+	                    		if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.INITIAL_APPROVAL);
+		                    			expensesModel.setSecondapproverName(currenUser.getMember());
+		                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+		                    		}else {
+		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
+		                    			expensesModel.setSecondapproverName(currenUser.getMember());
+		                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+		                    		}
+	                    		}else {
+	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.INITIAL_APPROVAL);
+		                    			expensesModel.setFirstapproverName(currenUser.getMember());
+		                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+		                    		}else {
+		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
+		                    			expensesModel.setFirstapproverName(currenUser.getMember());
+		                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+		                    		}
+	                    		}
+	                    	}else if(expensesModel.getCurrentStatus().equals(ExpensesModel.CurrentStatus.INITIAL_APPROVAL)){
+	                    		// Below condition is not written with appoved and reject cases...
+	                    		if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+			                    		if(expensesModel.getFirstapproverName().getNo().equals(currenUser.getMember().getNo())) {
+			                    			throw new FirstApprovalCannotbeSameException();  
+			                    		}else {
+			                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.COMPLETED);
+				                    		expensesModel.setSecondapproverName(currenUser.getMember());
+			                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+				                    		FinanceModel currentModel = expensesModel.getFinanceType();
+			  	                    		if(null != currentModel) {
+			  	                    			Double currentBalance = currentModel.getCurrentBalance() - expensesModel.getSpendAmount();
+			  	                    			currentModel.setCurrentBalance(currentBalance);
+			  	                    			financeRepository.save(currentModel);
+			  	                    		}
+			                    		}	                    				
+	                    				
+	                    			}else {
+	                    				expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
+		                    			expensesModel.setSecondapproverName(currenUser.getMember());
+		                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+	                    			}
+
+	                    		}else {
+		                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
+		                    				expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.COMPLETED);
+				                    		expensesModel.setFirstapproverName(currenUser.getMember());
+			                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+				                    		FinanceModel currentModel = expensesModel.getFinanceType();
+			  	                    		if(null != currentModel) {
+			  	                    			Double currentBalance = currentModel.getCurrentBalance() - expensesModel.getSpendAmount();
+			  	                    			currentModel.setCurrentBalance(currentBalance);
+			  	                    			financeRepository.save(currentModel);
+			  	                    		}
+		                    			}else {
+		                    				expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
+			                    			expensesModel.setFirstapproverName(currenUser.getMember());
+			                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+		                    			}
+	                    		}
+	                      }
+	                   expensesRepository.save(expensesModel);
 	                }
-	            } catch (NumberFormatException exception) {
+	            } 
+	           }catch (NumberFormatException exception) {
 	                
-	            }
+	           }
+			 return true;
+			 //  This is for only for processing of Expenses Items END	  
 		 }
 		 return false;
 	 }

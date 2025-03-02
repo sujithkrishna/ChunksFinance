@@ -675,7 +675,7 @@
                 <div class="user-role">
             	  <c:choose>
 				    <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
-				        <h4>SuperAdmin</h4>
+				        <h4><a href="settings" style="color: inherit; text-decoration: none;">SuperAdmin</a></h4>
 				    </c:when>
 				    <c:otherwise>
 				        Contributor

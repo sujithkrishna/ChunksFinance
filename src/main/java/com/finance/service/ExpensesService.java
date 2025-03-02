@@ -13,8 +13,10 @@ import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ExpensesModel;
+import com.finance.model.ExpensesModel.CurrentStatus;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
+
 import com.finance.repository.ExpensesRepository;
 import com.finance.user.MemberDetails;
 
@@ -77,7 +79,14 @@ public class ExpensesService {
 	
 	 public List<ExpensesModel> getExpensesFromMondayToGivenDate(LocalDate givenDate,MemberModel currentUser) {
 	        LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
-	        return expensesRepository.findExpensesByDateRangeAndStatusAndApprover(startOfWeek, givenDate,ExpensesModel.CurrentStatus.INPROGRESS,currentUser);
+	        LocalDate endOfWeek = givenDate.with(DayOfWeek.SUNDAY);
+	        List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
+			 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+				 return expensesRepository.findExpensesByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);
+			 }else {
+				 return expensesRepository.findExpensesByDateRangeAndStatusAndApprover(startOfWeek, endOfWeek,statusList,currentUser);
+			 }
+	        
 	    }
 	
 	

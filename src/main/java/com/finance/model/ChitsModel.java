@@ -24,7 +24,7 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@ToString
+@ToString(exclude = {"emiDetails", "chitsNameOf"})
 @Table(name = "chits")
 public class ChitsModel {
 

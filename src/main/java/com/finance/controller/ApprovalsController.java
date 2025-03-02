@@ -2,7 +2,6 @@ package com.finance.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,12 +14,9 @@ import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
 import com.finance.exception.DateExpiredException;
-import com.finance.model.ExpensesModel;
+import com.finance.exception.FirstApprovalCannotbeSameException;
 import com.finance.model.MemberModel;
-import com.finance.model.RevenueModel;
 import com.finance.service.ApprovalsService;
-import com.finance.service.ExpensesService;
-import com.finance.service.RevenueService;
 import com.finance.user.MemberDetails;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,15 +30,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ApprovalsController {
 	
 
-		
 	@Autowired
 	private ApprovalsService approvalsService;
-	
-	@Autowired
-	private RevenueService revenueService;
-	
-	@Autowired
-	private ExpensesService expensesService;
 	
 	@Autowired
 	private ChunksFinancePropertyService propertyService;
@@ -57,7 +46,7 @@ public class ApprovalsController {
 		}	
 		//Fetching Revenue List
 		LocalDate givenDate = LocalDate.now();
-		revewnueAndExpensesList(model,givenDate,currentUser);
+		approvalsService.revewnueAndExpensesList(model,givenDate,currentUser);
 		return "approvals";
 	}
 	
@@ -70,7 +59,7 @@ public class ApprovalsController {
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		LocalDate selectedDate = request.getParameter(ChunksFinanceConstants.APPROVAL_DATE) != null ? LocalDate.parse(request.getParameter(ChunksFinanceConstants.APPROVAL_DATE), DateTimeFormatter.ISO_LOCAL_DATE) : null;
-        revewnueAndExpensesList(model,selectedDate,currentUser);
+		approvalsService.revewnueAndExpensesList(model,selectedDate,currentUser);
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
 		return "approvals";
 	}
@@ -88,20 +77,25 @@ public class ApprovalsController {
 		}	
 		try {
 			selectedDate = request.getParameter(ChunksFinanceConstants.APPROVAL_DATE) != null ? LocalDate.parse(request.getParameter(ChunksFinanceConstants.APPROVAL_DATE), DateTimeFormatter.ISO_LOCAL_DATE) : null;
-			boolean status = approvalsService.processApprovels(request);
+			boolean status = approvalsService.processApprovels(request,currenUser);
 			if(status) {
 				model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getProperty(ChunksFinanceConstants.FINANCE_APPOVED_MESSAGE));
-				revewnueAndExpensesList(model, selectedDate,currentUser);
+				approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
 			}
 		}catch(DateExpiredException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_DATEEXPIRED_MESSAGE));
 			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
-			revewnueAndExpensesList(model, selectedDate,currentUser);
+			approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
 			return "approvals";
 		}catch(AlreadyApprovedException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_ALREADY_APPOVED_MESSAGE));
 			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
-			revewnueAndExpensesList(model, selectedDate,currentUser);
+			approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
+			return "approvals";
+		}catch(FirstApprovalCannotbeSameException exception) {
+			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_FIRSTAPPROVAL_CANNOTBE_SAME_APPOVED_MESSAGE));
+			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
+			approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
 			return "approvals";
 		}
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
@@ -109,23 +103,6 @@ public class ApprovalsController {
 	}
 
 
-	private void revewnueAndExpensesList(Model model, LocalDate givenDate,MemberModel currentUser) {
 	
-		List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(givenDate,currentUser);
-		if(null != nonApprovedRevenueList && nonApprovedRevenueList.size() == 0) {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, null);
-		}else {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, nonApprovedRevenueList);
-		}
-		
-		//Fetching Expenses List		
-		List<ExpensesModel> nonApprovedExpensesList = expensesService.getExpensesFromMondayToGivenDate(givenDate,currentUser);
-		if(null != nonApprovedExpensesList && nonApprovedExpensesList.size() == 0) {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, null);
-		}else {
-			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
-		}
-		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
-	}
 	
 }

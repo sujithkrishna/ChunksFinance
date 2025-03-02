@@ -665,7 +665,7 @@ input[type="date"]:focus {
                 <div class="user-role">
             	  <c:choose>
 				    <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
-				        <h4>SuperAdmin</h4>
+				        <h4><a href="settings" style="color: inherit; text-decoration: none;">SuperAdmin</a></h4>
 				    </c:when>
 				    <c:otherwise>
 				        Contributor
@@ -745,7 +745,7 @@ input[type="date"]:focus {
 						<div class="table-cell" style="text-align: center;">Authorization</div>
 					</div>
 					<c:choose>
-						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList}">
+						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList}">
 							<!-- Show empty state message -->
 							<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
 								<h3>You don't have any items to approve.</h3>
@@ -794,9 +794,32 @@ input[type="date"]:focus {
 											</div>
 										</div>
 									</div>
-
 								</c:forEach>
 							</c:if>
+							
+							<!-- Expenses Approvals -->
+							<c:if test="${not empty nonApprovedChitsList}">
+								<c:forEach items="${nonApprovedChitsList}" var="ChitsApprovalItem">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(213, 134, 134, 0.9), rgba(247, 156, 156, 0.9))">
+										<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber} </div>
+										<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} chits No: ${ChitsApprovalItem.chits.chitsNo}</div>
+										<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
+										<div class="table-cell">${ChitsApprovalItem.emiDate}</div>
+										<div class="table-cell">
+											<div class="button-group-approved">
+												<button onclick="validateForm('${ChitsApprovalItem.emiNumber}','CHITS','APPROVED')" aria-label="Approve request">
+													<i class="fas fa-check"></i> Approve
+												</button>
+												<button onclick="validateForm('${ChitsApprovalItem.emiNumber}','CHITS','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+													<i class="fas fa-times"></i> Reject
+												</button>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
+							</c:if>
+							
+							
 						</c:otherwise>
 					</c:choose>
 				</div>

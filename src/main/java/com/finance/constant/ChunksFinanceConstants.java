@@ -41,6 +41,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String NON_APPROVED_EXPENSES_LIST = "nonApprovedExpensesList";
 	
+	public static final String NON_APPROVED_CHITS_LIST = "nonApprovedChitsList";
+	
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	
 	public static final String IN_PROGRESS = "IN_PROGRESS";
@@ -54,6 +56,8 @@ public class ChunksFinanceConstants {
 	public static final String FINANCE_CREATE_NEWFINANCE_MESSAGE = "finance.create.message";
 	
 	public static final String FINANCE_ALREADY_APPOVED_MESSAGE = "finance.already.appoved.message";
+	
+	public static final String FINANCE_FIRSTAPPROVAL_CANNOTBE_SAME_APPOVED_MESSAGE = "finance.firstapproval.cannotbe.same.appoved.message";
 	
 	public static final String FINANCE_DATEEXPIRED_MESSAGE = "finance.dateexpired.message";
 	

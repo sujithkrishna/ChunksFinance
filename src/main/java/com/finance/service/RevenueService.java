@@ -79,12 +79,15 @@ public class RevenueService {
 	}
 	
 	 public List<RevenueModel> getRevenueFromMondayToGivenDate(LocalDate givenDate,MemberModel currentUser) {
-		 LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
-		    if (currentUser.getRole() == MemberModel.ROLE.SUPER_ADMIN) {
-		        List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
-		        return revenueRepository.findBySpendDateAndCurrentStatus(startOfWeek, givenDate, statusList);
-		    } 
-		    return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, givenDate, CurrentStatus.INPROGRESS, currentUser);
+			 LocalDate startOfWeek = givenDate.with(DayOfWeek.MONDAY);
+			 LocalDate endOfWeek = givenDate.with(DayOfWeek.SUNDAY);
+			 List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
+			 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+				 return revenueRepository.findRevenueByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);
+			 }else {
+				 return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, endOfWeek, statusList, currentUser);
+			 }
+	 	     
 	    }
 	
 }

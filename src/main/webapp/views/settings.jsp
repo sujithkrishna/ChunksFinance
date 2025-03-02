@@ -469,66 +469,13 @@
     <!-- Main Content -->
     <main>
         <div class="content-wrapper">
-        
-        <c:choose>
-		    <c:when test="${AllFinance == null}">
-		        <section id="Content">
-		            <p></p>
-		                <div class="card">
-		                    <div>
-		                        <div class="stat-title">Oops! It looks like you don’t have any funds to manage right now.</div>
-		                        <div class="stat-value">Chunks Finanace Team</div>
-		                    </div>
-		                    
-		                </div>
-		            </section>
-		    </c:when>
-		    <c:otherwise>
-		        <c:forEach items="${AllFinance}" var="financeItem">
-	             <section id="Content">
-		            <h2>${financeItem.financeName}</h2>
-		             <h5>The fund is managed by ${financeItem.financeOwner.memberName} started on <span class="formattedStartDate">${financeItem.financeCreationDate}</span> </h5>
-		                <div class="card">
-		                    <div>
-		                        <div class="stat-title">Total Revenue</div>
-		                        <div class="stat-value">&#8377;0</div>
-		                    </div>
-		                    <div>
-		                        <div class="stat-title">Total Expenses</div>
-		                        <div class="stat-value">&#8377;0</div>
-		                    </div>
-		                    <div>
-		                        <div class="stat-title">Pending Loans</div>
-		                        <div class="stat-value">&#8377;0</div>
-		                    </div>
-		                    <div>
-		                        <div class="stat-title">Current Balance</div>
-								<c:choose>
-								    <c:when test="${financeItem.currentBalance > 0}">
-								        <div class="stat-value positive">&#8377;${financeItem.currentBalance}</div>
-								    </c:when>
-								    <c:when test="${financeItem.currentBalance < 0}">
-								       <div class="stat-value negative">&#8377;${financeItem.currentBalance}</div>
-								    </c:when>
-								    <c:otherwise>
-								        <div class="stat-value">&#8377;${financeItem.currentBalance}</div>
-								    </c:otherwise>
-								</c:choose>		                        
-		                        
-		                    </div>
-		                </div>
-		            </section>
-	        </c:forEach> 
-		    </c:otherwise>
-		</c:choose>
-        
-        
-        
-	   		
-	        
-	        
-	        
-	        
+            <section id="Content">
+            <h2>Settings</h2>
+             <h5> You can change the settings here..</h5>
+                <div class="card">
+                   			HERE--------------
+                </div>
+            </section>
         </div>
     </main>
 
