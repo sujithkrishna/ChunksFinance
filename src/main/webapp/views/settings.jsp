@@ -284,10 +284,16 @@
 		 .form-container {
 		        flex-direction: column;
 		        align-items: stretch;
+		        padding: 15px;
 		    }
+		    
+		        .radio-group {
+			        flex-direction: column;
+			    }
 		    
 		    .form-group input {
 		        width: 100%;
+		        padding: 20px;
 		    }
 		    
 		    .button-group-view {
@@ -436,6 +442,10 @@
 		    flex-direction: column; /* Stack children vertically */
 		    gap: 25px; /* Increase spacing between form groups */
 		    margin-bottom: 20px;
+		    background: rgba(255, 255, 255, 0.95);
+		    border-radius: 12px;
+		    padding: 25px;
+		    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);		    
 		}
 		
 		/* Form Group */
@@ -444,11 +454,44 @@
 		    flex-direction: column; /* Stack label and radio group vertically */
 		    gap: 10px;
 		    width: 100%; /* Take full width */
+		    position: relative;
+		    padding: 25px;
+		    border: 1px solid rgba(163, 163, 163, 0.15);
+		    border-radius: 10px;
+		    margin-bottom: 25px;
+		    background: rgba(249, 249, 249, 0.9);
+		    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);		    
 		}
+		
+		
+		.form-group:hover {
+		    border-color: rgba(163, 163, 163, 0.3);
+		    box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.08);
+		    transform: translateY(-2px);
+		}
+		
+		
 		
 		.form-group label {
 		        min-width: auto; /* Remove fixed width */
    				 margin-bottom: 0;
+			    font-weight: 500;
+			    color: #334558;
+			    font-size: 15px;
+			    margin-bottom: 15px;
+			    display: block;
+			    position: relative;
+			    padding-left: 28px;   				 
+		}
+		
+		
+		.form-group label:before {
+		    position: absolute;
+		    left: 0;
+		    top: -2px;
+		    font-size: 18px;
+		    opacity: 0.8;
 		}
 		
 		
@@ -456,7 +499,10 @@
 		.radio-group {
 		       display: flex;
 			    gap: 15px;
-			    margin-top: 0 !important;
+				padding: 15px;
+			    border-radius: 8px;
+			    margin-top: 10px;
+			    border: 1px solid rgba(163, 163, 163, 0.1);			    
 		}
 		
 		.radio-option {
@@ -466,7 +512,15 @@
 		    cursor: pointer;
 		    position: relative;
 		    padding-left: 28px; /* Adjust checkmark position */
+		    padding: 12px 15px;
+		    border-radius: 6px;
+		    transition: all 0.2s ease;		    
 		}
+		
+		.radio-option:hover {
+		    background: rgba(240, 242, 245, 0.5);
+		}
+				
 		
 		.radio-checkmark {
 		    position: absolute;
@@ -525,23 +579,31 @@
 		
 		/* Button Group */
 		.button-group-view {
-		   margin-top: 20px;
+		    border-top: 1px solid rgba(163, 163, 163, 0.1);
+		    padding-top: 25px;
+		    margin-top: 25px !important;
    			 justify-content: flex-end; /* Keep button on the right */
 		}
 		
 		.button-group-view button {
-		    padding: 10px 25px;
 		    background-color: #3D3D3D;
 		    color: white;
-		    border: none;
 		    border-radius: 5px;
 		    cursor: pointer;
 		    transition: background-color 0.3s ease;
 		    height: 40px;
+		    background: linear-gradient(135deg, #3D3D3D, #2c2c2c);
+		    border: none;
+		    padding: 12px 30px;
+		    border-radius: 8px;
+		    font-weight: 500;
+		    transition: all 0.3s ease;		    
 		}
 		
 		.button-group-view button:hover {
 		    background-color: #2c2c2c;
+ 			transform: translateY(-2px);
+    		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);		    
 		}		
 		
     </style>
