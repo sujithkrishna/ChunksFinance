@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
-import com.finance.service.ApprovalsService;
 import com.finance.service.LoanService;
 import com.finance.service.MemberService;
 import com.finance.user.MemberDetails;

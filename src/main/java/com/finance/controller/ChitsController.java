@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ChitsModel;
 import com.finance.model.FinanceModel;
@@ -30,6 +31,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ChitsController {
 	
 
+	
+
 	@Autowired
 	private CreateFinanceService financeService;
 	
@@ -38,6 +41,9 @@ public class ChitsController {
 	
 	@Autowired
 	private ChitsService chitsService;
+	
+	@Autowired
+	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/chits"})
 	public String handleChits(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
@@ -91,6 +97,11 @@ public class ChitsController {
 			++currentChitsNumber;
 			model.addAttribute(ChunksFinanceConstants.CHITS_NUMBER,currentChitsNumber);
 		}
+		
+		if(status) {
+			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.CREATE_CHITS_MESSAGE,currenUser.getMember().getMemberName()));
+		}
+		
 		return "chits";
 	}
 }

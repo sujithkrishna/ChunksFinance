@@ -11,8 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.finance.config.ChunksFinancePropertyService;
+import com.finance.constant.ChunksFinanceConstants;
+import com.finance.exception.SecondaryLoginDisabledException;
 import com.finance.model.MemberModel;
+import com.finance.model.SettingsModel;
 import com.finance.repository.MemberRepository;
+import com.finance.repository.SettingsRepository;
 import com.finance.user.MemberDetails;
 
 /**
@@ -24,19 +29,32 @@ import com.finance.user.MemberDetails;
 @Service
 public class MemberDetailsService  implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
     
-    public MemberDetailsService(MemberRepository memberRepository) {
+    private final SettingsRepository settingsRepository;
+    
+	private ChunksFinancePropertyService propertyService;
+    
+    public MemberDetailsService(MemberRepository memberRepository,SettingsRepository settingsRepository,ChunksFinancePropertyService propertyService) {
         this.memberRepository = memberRepository;
+        this.settingsRepository = settingsRepository;
+        this.propertyService=propertyService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
     	MemberModel member = memberRepository.findByEmailId(emailId)
     		    .orElseThrow(() -> {
-    		        String errorMessage = "Login attempt failed for email: " + emailId + " - User not found!";
-    		        return new UsernameNotFoundException(errorMessage);
+    		        return new UsernameNotFoundException(propertyService.getFormattedProperty(ChunksFinanceConstants.USER_NOTFOUND_ERROR,emailId));
     		    });
+    	if(member.getMemberType().equals(MemberModel.MemberType.SECONDARY)) {
+    		SettingsModel settingModelData =settingsRepository.findSettingsByApprovalProcess("secondaryLogin");
+    		String secondaryLoginStatus = settingModelData.getSettings().get("secondaryLogin");
+    		if("loginStatusNo".equals(secondaryLoginStatus)) {
+    	        throw new SecondaryLoginDisabledException(propertyService.getFormattedProperty(ChunksFinanceConstants.USER_SECONDARY_LOGIN_ERROR,emailId) );
+    		}
+    	}
+    	
     	List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
     	

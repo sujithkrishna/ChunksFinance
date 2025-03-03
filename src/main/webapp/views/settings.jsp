@@ -280,6 +280,21 @@
                 gap: 20px;
             }
 
+
+		 .form-container {
+		        flex-direction: column;
+		        align-items: stretch;
+		    }
+		    
+		    .form-group input {
+		        width: 100%;
+		    }
+		    
+		    .button-group-view {
+		        justify-content: flex-start;
+		    }
+
+
             .user-profile {
                 width: auto;
                 justify-content: space-between;
@@ -414,6 +429,121 @@
 		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 		    font-weight: 500; /* Optional: Match dashboard header weight */
 		}
+		
+		/* Form Container */
+		.form-container {
+		   	display: flex;
+		    flex-direction: column; /* Stack children vertically */
+		    gap: 25px; /* Increase spacing between form groups */
+		    margin-bottom: 20px;
+		}
+		
+		/* Form Group */
+		.form-group {
+		     display: flex;
+		    flex-direction: column; /* Stack label and radio group vertically */
+		    gap: 10px;
+		    width: 100%; /* Take full width */
+		}
+		
+		.form-group label {
+		        min-width: auto; /* Remove fixed width */
+   				 margin-bottom: 0;
+		}
+		
+		
+		/* Radio Group */
+		.radio-group {
+		       display: flex;
+			    gap: 15px;
+			    margin-top: 0 !important;
+		}
+		
+		.radio-option {
+		    display: flex;
+		    align-items: center;
+		    gap: 8px;
+		    cursor: pointer;
+		    position: relative;
+		    padding-left: 28px; /* Adjust checkmark position */
+		}
+		
+		.radio-checkmark {
+		    position: absolute;
+		    left: 0;
+		    height: 18px;
+		    width: 18px;
+		    background-color: #f9f9f9;
+		    border: 2px solid #ccc;
+		    border-radius: 50%;
+		    transition: all 0.3s ease;
+		}
+		
+		.radio-option input:checked ~ .radio-checkmark {
+		    border-color: #2c3e50;
+		    background-color: #2c3e50;
+		    box-shadow: inset 0 0 0 3px white;
+		}
+		
+		.radio-option input {
+		    position: absolute;
+		    opacity: 0;
+		    cursor: pointer;
+		}
+		/* Input Field */
+		.input-field {
+		    width: 100%;
+		    padding: 10px;
+		    border: 1px solid #ddd;
+		    border-radius: 5px;
+		    font-size: 14px;
+		    background-color: #f9f9f9;
+		    transition: border-color 0.3s ease;
+		}
+		
+		.input-field:focus {
+		    border-color: #334558;
+		    outline: none;
+		}
+		
+		/* Error Message */
+		.error-message {
+		    color: #e74c3c;
+		    font-size: 0.8rem;
+		    margin-top: 0.25rem;
+		    display: none;
+		    opacity: 0;
+		    transform: translateY(-5px);
+		    transition: all 0.3s ease;
+		}
+		
+		.error-message.show {
+		    display: flex;
+		    opacity: 1;
+		    transform: translateY(0);
+		}
+		
+		/* Button Group */
+		.button-group-view {
+		   margin-top: 20px;
+   			 justify-content: flex-end; /* Keep button on the right */
+		}
+		
+		.button-group-view button {
+		    padding: 10px 25px;
+		    background-color: #3D3D3D;
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		    height: 40px;
+		}
+		
+		.button-group-view button:hover {
+		    background-color: #2c2c2c;
+		}		
+		
     </style>
 </head>
 <body>
@@ -469,16 +599,58 @@
             </c:choose>
         </ul>
     </nav>
-
+	
     <!-- Main Content -->
     <main>
         <div class="content-wrapper">
             <section id="Content">
             <h2>Settings</h2>
-             <h5> You can change the settings here..</h5>
-                <div class="card">
-                   			
-                </div>
+			 <form method="post"  action="settings" id="formsettings" name="formsettings">
+				 <div class="form-container">
+				        <div class="form-group">
+				            <label>Current Approval process :</label>
+				            <div class="radio-group">
+				                <label class="radio-option">
+				                    <input id="approvalProcessSequential" type="radio" name="approvalProcess" value="approvalProcessSequential">
+				                    <span class="radio-checkmark"></span>
+				                    Sequential approval
+				                </label>
+				                <label class="radio-option">
+				                    <input id="approvalProcessParallel" type="radio" name="approvalProcess" value="approvalProcessParallel">
+				                    <span class="radio-checkmark"></span>
+				                   Parallel processing
+				                </label>
+				            </div>
+				        </div>
+				        <!-- Process settings -->
+							<c:forEach items="${allSettings}" var="setting">
+							    <c:set var="approvalProcessValue" value="${setting.settings['approvalProcess']}" scope="page"/>
+							    <c:set var="secondaryLoginValue" value="${setting.settings['secondaryLogin']}" scope="page"/>
+							</c:forEach>
+	
+	 					 <div class="form-group">
+						    <label>Do you want to allow Secondary users to Login :</label>
+						    <div class="radio-group">
+						        <label class="radio-option">
+						            <input id="loginStatusYes" type="radio" name="secondaryLogin" value="loginStatusYes">
+						            <span class="radio-checkmark"></span>
+						            Yes  
+						        </label>
+						        <label class="radio-option">
+						            <input id="loginStatusNo" type="radio" name="secondaryLogin" value="loginStatusNo">
+						            <span class="radio-checkmark"></span>
+						            No
+						        </label>
+						    </div>
+						</div>
+				        <div class="button-group-view">
+				              <button type="button" onclick="saveSettings()">
+				                <i class="fas fa-save"></i> Save
+				            </button>
+				        </div>													
+				   </div>
+				   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>			
+				</form>   
             </section>
         </div>
     </main>
@@ -498,9 +670,53 @@
             <button class="confirm-btn no">Cancel</button>
         </div>
     </div>
-
+		
+		  
+			
     <!-- Script -->
     <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    	//var approvalProcess = '${approvalProcess}'; // Get from server-side
+        var approvalProcess = ''; 	
+        var secondaryLogin = ''; 	
+        
+     // Get values from server-side settings with proper escaping
+        var approvalProcess = '${fn:escapeXml(not empty approvalProcessValue ? approvalProcessValue : "approvalProcessSequential")}';
+    	var secondaryLogin = '${fn:escapeXml(not empty secondaryLoginValue ? secondaryLoginValue : "loginStatusNo")}';
+        
+      
+        if (approvalProcess === 'approvalProcessSequential') {
+            document.getElementById('approvalProcessSequential').checked = true;
+        } else if (approvalProcess === 'approvalProcessParallel') {
+            document.getElementById('approvalProcessParallel').checked = true;
+        }
+        if (secondaryLogin === 'loginStatusYes') {
+            document.getElementById('loginStatusYes').checked = true;
+        } else if (secondaryLogin === 'loginStatusNo') {
+            document.getElementById('loginStatusNo').checked = true;
+        }
+        
+        
+    });
+
+    
+    function saveSettings(){
+		 const form = document.getElementById('formsettings');
+		    form.method = 'POST';
+		    form.action = 'settings'; // Your endpoint URL
+		    // Add CSRF token (required for Spring Security)
+		    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+		    const csrfInput = document.createElement('input');
+		    csrfInput.type = 'hidden';
+		    csrfInput.name = '_csrf';
+		    csrfInput.value = csrfToken;
+		    form.appendChild(csrfInput);
+		    document.body.appendChild(form);
+		    form.submit();	
+	}
+    
+    
+    
         document.getElementById('logoutTrigger').addEventListener('click', function(e) {
             e.preventDefault();
             const dialog = document.querySelector('.logout-confirm');

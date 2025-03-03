@@ -2,6 +2,7 @@ package com.finance.exception;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -32,12 +33,21 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, 
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-        String errorMessage;
-        if (exception instanceof UsernameNotFoundException) {
+    	String errorMessage = propertyService.getProperty(ChunksFinanceConstants.USER_PASSWORD_WRONG_ERROR);
+
+        Throwable cause = exception.getCause();
+        if (exception instanceof InternalAuthenticationServiceException) {
+            while (cause != null) {
+                if (cause instanceof SecondaryLoginDisabledException) {
+                    errorMessage = cause.getMessage();
+                    break;
+                }
+                cause = cause.getCause();
+            }
+        } else if (exception instanceof UsernameNotFoundException) {
             errorMessage = exception.getMessage();
-        } else {
-            errorMessage = propertyService.getProperty(ChunksFinanceConstants.USER_PASSWORD_WRONG_ERROR);
         }
+
         request.getSession().setAttribute("loginError", errorMessage);
         response.sendRedirect("/financeLogin?error");
     }

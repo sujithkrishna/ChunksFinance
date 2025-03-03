@@ -1036,3 +1036,17 @@ INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, pa
 INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, paid_on_time, payment_date_time, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (58, 18, 14700, 3, '2026-03-01', null, null, 7, null, null, null, 'INPROGRESS');
 INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, paid_on_time, payment_date_time, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (59, 19, 14850, 3, '2026-04-01', null, null, 7, null, null, null, 'INPROGRESS');
 INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, paid_on_time, payment_date_time, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (60, 20, 15000, 3, '2026-05-01', null, null, 7, null, null, null, 'INPROGRESS');
+
+
+
+CREATE TABLE settings (
+    no INT NOT NULL PRIMARY KEY,
+    last_updated_member_no INT,
+    last_updated_date DATE,
+    settings TEXT
+);
+
+INSERT INTO settings (no, last_updated_member_no, last_updated_date, settings)
+VALUES (1, 12,'2025-03-03', '{"secondaryLogin":"loginStatusYes","approvalProcess":"approvalProcessParallel"}');
+
+

@@ -37,6 +37,12 @@ public class ChunksFinanceConstants {
 	
 	public static final String CURRENT_USER = "currentUser";
 	
+	public static final String ALL_SETTINGS = "allSettings";
+	
+	public static final String SECONDARY_LOGIN = "secondaryLogin";
+	
+	public static final String APPROVAL_PROCESS = "approvalProcess";
+	
 	public static final String ALL_LOANS = "allLoans";
 	
 	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";
@@ -59,6 +65,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String FINANCE_ALREADY_APPOVED_MESSAGE = "finance.already.appoved.message";
 	
+	public static final String USER_SECONDARY_LOGIN_ERROR = "user.secondary.login.error";
+	
 	public static final String FINANCE_FIRSTAPPROVAL_CANNOTBE_SAME_APPOVED_MESSAGE = "finance.firstapproval.cannotbe.same.appoved.message";
 	
 	public static final String FINANCE_DATEEXPIRED_MESSAGE = "finance.dateexpired.message";
@@ -76,6 +84,8 @@ public class ChunksFinanceConstants {
 	public static final String LOAN_CREATE_MESSAGE = "loan.create.message";
 	
 	public static final String USER_NOTFOUND_ERROR = "user.notfound.error";
+	
+	public static final String CREATE_CHITS_MESSAGE = "create.chits.message";
 	
 	public static final String USER_PASSWORD_WRONG_ERROR = "user.password.wrong.error";
 	
