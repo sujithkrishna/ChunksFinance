@@ -28,9 +28,10 @@ public interface RevenueRepository extends JpaRepository<RevenueModel, Integer> 
 
 	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.secondapproverName IS NULL AND r.secondApprovalTime IS NULL")
 	List<RevenueModel> findRevenueByDateRangeAndStatusAndSuperAdminApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<RevenueModel.CurrentStatus> statuses);
-
 	
-    
+	@Query("SELECT r FROM RevenueModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.secondapproverName IS NULL AND r.secondApprovalTime IS NULL AND r.firstApprovalTime IS NOT NULL")
+	List<RevenueModel> findRevenueByDateRangeAndStatusAndSuperAdminSequentialApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<RevenueModel.CurrentStatus> statuses);
+ 
 	
 
 }

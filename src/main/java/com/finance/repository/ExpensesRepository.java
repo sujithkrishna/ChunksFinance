@@ -28,8 +28,11 @@ public interface ExpensesRepository extends JpaRepository<ExpensesModel, Integer
 	@Query("SELECT e FROM ExpensesModel e WHERE e.spendDate BETWEEN :startDate AND :endDate AND e.currentStatus IN (:statuses) AND e.firstapproverName = :firstapproverName AND e.firstApprovalTime IS NULL")
 	List<ExpensesModel> findExpensesByDateRangeAndStatusAndApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<ExpensesModel.CurrentStatus> statuses,@Param("firstapproverName") MemberModel firstapproverName);
 
-	@Query("SELECT r FROM ExpensesModel r WHERE r.spendDate BETWEEN :startDate AND :endDate AND r.currentStatus IN (:statuses) AND r.secondapproverName IS NULL AND r.secondApprovalTime IS NULL")
+	@Query("SELECT e FROM ExpensesModel e WHERE e.spendDate BETWEEN :startDate AND :endDate AND e.currentStatus IN (:statuses) AND e.secondapproverName IS NULL AND e.secondApprovalTime IS NULL")
 	List<ExpensesModel> findExpensesByDateRangeAndStatusAndSuperAdminApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<ExpensesModel.CurrentStatus> statuses);
+	
+	@Query("SELECT e FROM ExpensesModel e WHERE e.spendDate BETWEEN :startDate AND :endDate AND e.currentStatus IN (:statuses) AND e.secondapproverName IS NULL AND e.secondApprovalTime IS NULL AND e.firstApprovalTime IS NOT NULL")
+	List<ExpensesModel> findExpensesByDateRangeAndStatusAndSuperAdminSequentialApprover(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate,@Param("statuses") List<ExpensesModel.CurrentStatus> statuses);
 	
 	
 	

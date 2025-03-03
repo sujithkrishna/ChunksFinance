@@ -16,8 +16,9 @@ import com.finance.model.ExpensesModel;
 import com.finance.model.ExpensesModel.CurrentStatus;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
-
+import com.finance.model.SettingsModel;
 import com.finance.repository.ExpensesRepository;
+import com.finance.repository.SettingsRepository;
 import com.finance.user.MemberDetails;
 
 /**
@@ -31,6 +32,9 @@ public class ExpensesService {
 	
 	@Autowired
 	private CreateFinanceService financeService;
+	
+	@Autowired
+    private SettingsRepository settingsRepository;
 	
 	@Autowired
     private ExpensesRepository expensesRepository;
@@ -82,7 +86,13 @@ public class ExpensesService {
 	        LocalDate endOfWeek = givenDate.with(DayOfWeek.SUNDAY);
 	        List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
 			 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-				 return expensesRepository.findExpensesByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);
+				 SettingsModel settingModelData =settingsRepository.findSettingsByApprovalProcess("approvalProcess");
+				 String approvalProcessStatus = settingModelData.getSettings().get("approvalProcess");
+				 if("approvalProcessSequential".equals(approvalProcessStatus)) {
+					 	return expensesRepository.findExpensesByDateRangeAndStatusAndSuperAdminSequentialApprover(startOfWeek, endOfWeek, statusList);
+				 }else {
+					 return expensesRepository.findExpensesByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);
+				 }
 			 }else {
 				 return expensesRepository.findExpensesByDateRangeAndStatusAndApprover(startOfWeek, endOfWeek,statusList,currentUser);
 			 }
