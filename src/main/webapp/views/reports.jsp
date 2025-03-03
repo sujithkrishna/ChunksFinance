@@ -369,6 +369,7 @@
             border-radius: 8px;
             padding: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
         .table-row.header {
@@ -1065,13 +1066,13 @@
 										            
 										             <c:forEach items="${allLoans}" var="loans">
 													            <!-- Example Data Row -->
-													            <div class="table-row">
+													            <div class="table-row" data-loan-ref-id="${loans.loanReferenceName.no}">
 													                <div class="table-cell">${loans.loanNo}</div>
 													                <div class="table-cell">${loans.loanApplicantName.memberName}</div>
-													                <div class="table-cell">${loans.loanAmount}</div>
-													                <div class="table-cell">${loans.interestAmount}</div>
+													                <div class="table-cell">&#8377;${loans.loanAmount}</div>
+													                <div class="table-cell">&#8377;${loans.interestAmount}</div>
 													                <div class="table-cell"><span class="status-active">Active</span></div>
-													                <div class="table-cell">2024-03-15</div>
+													                <div class="table-cell"><span class="formattedStartDate">${loans.loanDate}</span></div>
 													                <div class="table-cell">2024-03-15</div>
 													            </div>
 													  </c:forEach>
@@ -1371,6 +1372,44 @@
             }, 10000); // 10 seconds delay
         }
 
+        
+        
+        function filterLoans() {
+            // Get selected member ID from dropdown value
+            const select = document.getElementById('finance-source');
+            const selectedId = select.value; // Get the value attribute which should contain the member.no
+            
+            // Get all table rows (excluding header)
+            const rows = document.querySelectorAll('.table-container .table-row:not(.header)');
+
+            rows.forEach(row => {
+                // Get the data attribute containing the loan reference ID
+                const loanRefId = row.dataset.loanRefId; // Using data attribute
+                
+                if (selectedId === "" || loanRefId === selectedId) {
+                    row.style.display = 'flex';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }        
+        
+        function formatDate(date) {
+	          var d = new Date(date);
+	          var day = ("0" + d.getDate()).slice(-2);  // Pad single digit day
+	          var month = ("0" + (d.getMonth() + 1)).slice(-2);  // Pad single digit month
+	          var year = d.getFullYear();
+	          return day + '-' + month + '-' + year;
+	        }
+		 	
+		  const dateElements = document.getElementsByClassName('formattedStartDate');
+	        for (let i = 0; i < dateElements.length; i++) {
+	            const dateElement = dateElements[i];
+	            const rawDate = dateElement.innerText; // Get the raw date
+	            const formattedDate = formatDate(rawDate); // Format the date
+	            dateElement.innerText = formattedDate; // Set the formatted date back to the element
+	        }
+        
         // Add click event listeners to all buttons
         document.querySelectorAll('.button-group-approved button').forEach(button => {
             button.addEventListener('click', handleButtonClick);
