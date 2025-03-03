@@ -37,6 +37,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String CURRENT_USER = "currentUser";
 	
+	public static final String ALL_LOANS = "allLoans";
+	
 	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";
 	
 	public static final String NON_APPROVED_EXPENSES_LIST = "nonApprovedExpensesList";

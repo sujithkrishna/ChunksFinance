@@ -42,7 +42,7 @@ public class FinanceSecurityConfig {
              .requestMatchers("/views/**", "/financeLogin", "/css/**", "/js/**", "/images/**").permitAll()
              .requestMatchers("/test-ping").permitAll()
              .requestMatchers("/h2-console/**", "/secure/**", "/member/**").authenticated()
-             .requestMatchers("/finance/**").hasRole("SUPER_ADMIN")
+             .requestMatchers("/finance/**","/member/**","/chits/**","/settings/**").hasRole("SUPER_ADMIN")
              .anyRequest().authenticated() // Secure all other endpoints
          )
          .formLogin(form -> form

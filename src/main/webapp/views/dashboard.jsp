@@ -460,10 +460,10 @@
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
-            <li><a href="member">Members</a></li>
-            <li><a href="chits">Chits</a></li>
              <c:choose>
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+            		<li><a href="member">Members</a></li>	            
+	            	<li><a href="chits">Chits</a></li>
 	            	<li><a href="finance">Create Finance</a></li>
 	            </c:when>
             </c:choose>
@@ -569,7 +569,7 @@
           return day + '-' + month + '-' + year;
         }
         
-        const dateElements = document.getElementsByClassName('formattedStartDate');
+       const dateElements = document.getElementsByClassName('formattedStartDate');
         for (let i = 0; i < dateElements.length; i++) {
             const dateElement = dateElements[i];
             const rawDate = dateElement.innerText; // Get the raw date

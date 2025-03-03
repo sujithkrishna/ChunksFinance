@@ -110,5 +110,11 @@ public class LoanService {
 		}
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 	}
+	
+	 public List<LoanModel> getAllLoanRecords() {
+	        return loanRepository.findAll();
+	 }
+	
+	
 
 }

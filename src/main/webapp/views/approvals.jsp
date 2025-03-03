@@ -693,10 +693,10 @@ input[type="date"]:focus {
 			<li><a href="loan">Loans</a></li>
 			<li><a href="revenue">Revenue</a></li>
 			<li><a href="expenses">Expenses</a></li>
-			<li><a href="member">Members</a></li>
-			<li><a href="chits">Chits</a></li>
              <c:choose>
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+					<li><a href="member">Members</a></li>
+					<li><a href="chits">Chits</a></li>	            
 	            	<li><a href="finance">Create Finance</a></li>
 	            </c:when>
             </c:choose>
@@ -763,7 +763,7 @@ input[type="date"]:focus {
 										<div class="table-cell">${RevenueApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">${RevenueApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${RevenueApprovalItem.spendAmount}</div>
-										<div class="table-cell">${RevenueApprovalItem.spendDate}</div>
+										<div class="table-cell"><span class="formattedStartDate">${RevenueApprovalItem.spendDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
 												<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','REVENUE','APPROVED')" aria-label="Approve request">
@@ -786,7 +786,7 @@ input[type="date"]:focus {
 										<div class="table-cell">${ExpensesApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">${ExpensesApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${ExpensesApprovalItem.spendAmount}</div>
-										<div class="table-cell">${ExpensesApprovalItem.spendDate}</div>
+										<div class="table-cell"><span class="formattedStartDate">${ExpensesApprovalItem.spendDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
 												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','EXPENSES','APPROVED')" aria-label="Approve request">
@@ -808,7 +808,7 @@ input[type="date"]:focus {
 										<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber} </div>
 										<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} chits No: ${ChitsApprovalItem.chits.chitsNo}</div>
 										<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
-										<div class="table-cell">${ChitsApprovalItem.emiDate}</div>
+										<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.emiDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
 												<button onclick="validateForm('${ChitsApprovalItem.emiNumber}','CHITS','APPROVED')" aria-label="Approve request">
@@ -866,7 +866,22 @@ input[type="date"]:focus {
 	   		 </c:if>	             
 	    });
 	    
-	    
+		   function formatDate(date) {
+	          var d = new Date(date);
+	          var day = ("0" + d.getDate()).slice(-2);  // Pad single digit day
+	          var month = ("0" + (d.getMonth() + 1)).slice(-2);  // Pad single digit month
+	          var year = d.getFullYear();
+	          return day + '-' + month + '-' + year;
+	        }
+		 	
+		  const dateElements = document.getElementsByClassName('formattedStartDate');
+	        for (let i = 0; i < dateElements.length; i++) {
+	            const dateElement = dateElements[i];
+	            const rawDate = dateElement.innerText; // Get the raw date
+	            const formattedDate = formatDate(rawDate); // Format the date
+	            dateElement.innerText = formattedDate; // Set the formatted date back to the element
+	        }
+		        
 	    function showErrorMessage() {
 	        const errorMsg = document.getElementById('redErrorMessage');
 	        errorMsg.classList.add('show');

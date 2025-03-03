@@ -723,10 +723,10 @@
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue" class="active">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
-            <li><a href="member">Members</a></li>
-            <li><a href="chits">Chits</a></li>
              <c:choose>
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+		            <li><a href="member">Members</a></li>
+		            <li><a href="chits">Chits</a></li>	            
 	            	<li><a href="finance">Create Finance</a></li>
 	            </c:when>
             </c:choose>
@@ -773,7 +773,7 @@
                         <select name="financeType" id="ownerOfFund" class="input-field">
                             <option value="" disabled selected>Finance Type</option>
                             <c:forEach items="${AllFinance}" var="financeItem">
-                            	<option value="${financeItem.id}">${financeItem.financeName} owned by ${financeItem.financeOwner.memberName}</option> 
+                            	<option value="${financeItem.id}">${financeItem.financeName} by ${financeItem.financeOwner.memberName}</option> 
                             </c:forEach>
                         </select>
                         <div class="error-message" id="financeType-error">

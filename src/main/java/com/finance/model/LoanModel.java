@@ -47,11 +47,13 @@ public class LoanModel {
     @JoinColumn(name = "finance_id", referencedColumnName = "id")
     private FinanceModel financeType;
     
-    @Column(name = "loan_reference_name")
-    private String loanReferenceName;
+    @ManyToOne
+    @JoinColumn(name = "loan_reference_name", referencedColumnName = "no")       
+    private MemberModel loanReferenceName;
 
-    @Column(name = "loan_applicant_name")
-    private String loanApplicantName;
+    @ManyToOne
+    @JoinColumn(name = "loan_applicant_name", referencedColumnName = "no")    
+    private MemberModel loanApplicantName;
 
     @Column(name = "loan_amount", precision = 19, scale = 2)
     private BigDecimal loanAmount;

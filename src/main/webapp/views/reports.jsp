@@ -357,6 +357,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-top: 20px;
         }
 
         .table-row {
@@ -366,7 +367,7 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 15px;
+            padding: 5px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -381,10 +382,24 @@
         }
 
         .table-cell {
-            padding: 10px;
+            padding: 8px;
             flex: 1;
             text-align: left;
         }
+
+
+		/* Add this to your existing styles */
+		.table-row .table-cell:nth-child(2) {  /* Targets the Borrower column */
+		    flex: 3; /* Gives this column 3x more space than others */
+		    min-width: 200px; /* Ensures minimum width */
+		}
+		
+		/* Optional: Reduce other columns if needed */
+		.table-row .table-cell:not(:nth-child(2)) {
+		    flex: 1;
+		    min-width: 100px;
+		}
+
 
         .table-cell:last-child {
             text-align: right;
@@ -432,7 +447,59 @@
 			background-color: #c0392b;
 		}
 
-
+		/* Radio Button Styles */
+			.radio-group {
+			    display: flex;
+			    gap: 20px;
+			    margin-top: 8px;
+			}
+			
+			.radio-option {
+			    display: flex;
+			    align-items: center;
+			    gap: 8px;
+			    cursor: pointer;
+			    position: relative;
+			    padding-left: 25px;
+			}
+			
+			.radio-checkmark {
+			    position: absolute;
+			    left: 0;
+			    height: 18px;
+			    width: 18px;
+			    background-color: #f9f9f9;
+			    border: 2px solid #ccc;
+			    border-radius: 50%;
+			    transition: all 0.3s ease;
+			}
+			
+			.radio-option input {
+			    position: absolute;
+			    opacity: 0;
+			    cursor: pointer;
+			}
+			
+			.radio-option input:checked ~ .radio-checkmark {
+			    border-color: #2c3e50;
+			    background-color: #2c3e50;
+			    box-shadow: inset 0 0 0 3px white;
+			}
+			
+			/* Status Badges */
+			.status-active {
+			    color: #43a047;
+			    padding: 4px 8px;
+			    background: #e8f5e9;
+			    border-radius: 4px;
+			}
+			
+			.status-closed {
+			    color: #e53935;
+			    padding: 4px 8px;
+			    background: #ffebee;
+			    border-radius: 4px;
+			}
 
 
         /* Responsive Design */
@@ -485,11 +552,71 @@
 		}
 
 		.form-group label {
-			display: block;
-			margin-bottom: 5px;
-			font-size: 14px;
-			color: #555;
+		    flex: 0 0 150px;
+		    text-align: right;
+		    font-size: 14px;
+		    color: #555;
+		    margin-bottom: 0;
 		}
+
+		.input-field {
+			    flex: 1;
+			    padding: 10px;
+			    font-size: 14px;
+			    border: 1px solid #ccc;
+			    border-radius: 6px;
+			    background-color: #fafafa;
+			    color: #333;
+			    transition: border-color 0.3s ease;
+			    box-sizing: border-box;
+			    appearance: none;
+			    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+			    background-repeat: no-repeat;
+			    background-position: right 1rem center;
+			    background-size: 1em;
+			}	
+
+			.input-field:focus {
+			    border-color: #007bff;
+			    outline: none;
+			    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+			}
+
+			/* Error Message Styling */
+			.error-message {
+			    color: #e74c3c;
+			    font-size: 0.8rem;
+			    margin-top: 0.25rem;
+			    display: none;
+			    align-items: center;
+			    gap: 0.25rem;
+			    opacity: 0;
+			    transform: translateY(-5px);
+			    transition: all 0.3s ease;
+			    width: 100%;
+			}
+			
+			.error-message.show {
+			    display: flex;
+			    opacity: 1;
+			    transform: translateY(0);
+			}
+
+
+			/* Error State Styling */
+			.input-field.error {
+			    border-color: #e74c3c !important;
+			    animation: shake 0.4s ease;
+			}
+			
+			/* Shake Animation */
+				@keyframes shake {
+				    0%, 100% { transform: translateX(0); }
+				    25% { transform: translateX(-5px); }
+				    75% { transform: translateX(5px); }
+				}
+
+
 
 		.form-group input,
 		.form-group select {
@@ -516,7 +643,23 @@
 
 			.form-group {
 				width: 100%;
+				flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
 			}
+			
+			.form-group label {
+		        flex: none;
+		        width: 100%;
+		        text-align: left;
+		    }
+		    
+		    .input-field {
+		        width: 100%;
+		        flex: none;
+    }
+			
+			
 		}
     /* Tabbed Panel Styles */
     .tabbed-panel {
@@ -762,7 +905,22 @@
 		    margin: 0;
 		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 		    font-weight: 500; /* Optional: Match dashboard header weight */
-		}				        				
+		}
+			/* Add margin to the label */
+			#loan-reports .form-group label[for="finance-source"] {
+			    margin-right: 15px; /* Adjust this value as needed */
+			}
+			
+			/* Adjust the select width */
+			#loan-reports #finance-source {
+			    flex: 0 0 65%; /* Makes the select field take 65% of available space */
+			}
+			/* Shift the entire form group right */
+			#loan-reports .form-group {
+			    margin-left: 120px; /* Adjust this value as needed */
+			}
+  
+									        				
     </style>
     
 </head>
@@ -810,10 +968,10 @@
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
-            <li><a href="member">Members</a></li>
-            <li><a href="chits">Chits</a></li>
              <c:choose>
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+		            <li><a href="member">Members</a></li>
+		            <li><a href="chits">Chits</a></li>	            
 	            	<li><a href="finance">Create Finance</a></li>
 	            </c:when>
             </c:choose>
@@ -821,160 +979,216 @@
     </nav>
 
     <!-- Main Content -->
-    <!-- Main Content -->
-<main>
-<!-- Add this inside the <section id="finance-collection"> -->
-		<section id="finance-collection">
-		    <h2>Reports</h2>
-		    <div class="form-container">
-		        <!-- Tabbed Navigation -->
-		        <div class="tabbed-panel">
-		            <!-- Tab Headers -->
-		            <div class="tab-nav">
-		                <button class="tab-link active" data-tab="financial-summary">Financial Summary</button>
-		                <button class="tab-link" data-tab="loan-reports">Loan Reports</button>
-		                <button class="tab-link" data-tab="revenue-analysis">Revenue Analysis</button>
-		                <button class="tab-link" data-tab="expense-breakdown">Expense Breakdown</button>
-		                <button class="tab-link" data-tab="submission-breakdown">My Submission</button>
-		            </div>
-		
-		            <!-- Tab Content -->
-		            <div class="tab-content">
-						<!-- Update the Financial Summary Tab content -->
-						<div id="financial-summary" class="tab-pane active">
-						    <div class="report-card">
-						        <h3><i class="fas fa-chart-line"></i> Financial Overview</h3>
-						        <div class="chart-container">
-						            <canvas id="financialChart"></canvas>
-						        </div>
-						    </div>
-						</div>
-		
-		                <!-- Loan Reports Tab -->
-		                <div id="loan-reports" class="tab-pane">
-		                    <div class="report-card">
-		                        <h3><i class="fas fa-hand-holding-usd"></i> Loan Portfolio</h3>
-		                        <div class="loan-stats">
-		                            <div class="stat-item">
-		                                <div class="stat-value">15</div>
-		                                <div class="stat-label">Active Loans</div>
-		                            </div>
-		                            <div class="stat-item">
-		                                <div class="stat-value">₹ 85,000</div>
-		                                <div class="stat-label">Total Disbursed</div>
-		                            </div>
-		                            <div class="stat-item">
-		                                <div class="stat-value">₹ 23,500</div>
-		                                <div class="stat-label">Pending EMI</div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </div>
-		
-		                <!-- Revenue Analysis Tab -->
-		                <div id="revenue-analysis" class="tab-pane">
-		                    <div class="report-card">
-		                        <h3><i class="fas fa-money-bill-wave"></i> Revenue Sources</h3>
-		                        <div class="revenue-chart">
-		                            <!-- Add chart container here -->
-		                            <div class="chart-placeholder">Monthly Revenue Chart</div>
-		                        </div>
-		                    </div>
-		                </div>
-		
-		                <!-- Expense Breakdown Tab -->
-		                <div id="expense-breakdown" class="tab-pane">
-		                    <div class="report-card">
-		                        <h3><i class="fas fa-file-invoice-dollar"></i> Expense Categories</h3>
-		                        <div class="expense-categories">
-		                            <div class="category-item">
-		                                <div class="category-label">Operational</div>
-		                                <div class="category-amount">₹ 45,000</div>
-		                                <div class="category-progress" style="width: 60%"></div>
-		                            </div>
-		                            <div class="category-item">
-		                                <div class="category-label">Staff</div>
-		                                <div class="category-amount">₹ 32,000</div>
-		                                <div class="category-progress" style="width: 45%"></div>
-		                            </div>
-		                            <div class="category-item">
-		                                <div class="category-label">Miscellaneous</div>
-		                                <div class="category-amount">₹ 15,500</div>
-		                                <div class="category-progress" style="width: 25%"></div>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </div>
-
-		                <!-- Expense Breakdown Tab -->
-		                <div id="submission-breakdown" class="tab-pane">
-		                    <div class="report-card">
-		                        <h3><i class="fas fa-file-invoice-dollar"></i> My Submissions </h3>
-								<div class="form-container">
-									<div class="form-group">
-										<label for="approval-date">Filter Date:</label> <input type="date" id="approval-date" name="approval-date" required>
+			<main>
+			<!-- Add this inside the <section id="finance-collection"> -->
+					<section id="finance-collection">
+					    <h2>Reports</h2>
+					    <div class="form-container">
+					        <!-- Tabbed Navigation -->
+					        <div class="tabbed-panel">
+					            <!-- Tab Headers -->
+					            <div class="tab-nav">
+					                <button class="tab-link active" data-tab="financial-summary">Financial Summary</button>
+					                <button class="tab-link" data-tab="loan-reports">Loan Reports</button>
+					                <button class="tab-link" data-tab="revenue-analysis">Revenue Analysis</button>
+					                <button class="tab-link" data-tab="expense-breakdown">Expense Breakdown</button>
+					                <button class="tab-link" data-tab="submission-breakdown">My Submission</button>
+					            </div>
+					
+					            <!-- Tab Content -->
+					            <div class="tab-content">
+									<!-- Update the Financial Summary Tab content -->
+									<div id="financial-summary" class="tab-pane active">
+									    <div class="report-card">
+									        <h3><i class="fas fa-chart-line"></i> Financial Overview</h3>
+									        <div class="chart-container">
+									            <canvas id="financialChart"></canvas>
+									        </div>
+									    </div>
 									</div>
-									<div class="button-group-view">
-										<button onclick="validateViewForm()" aria-label="View request">
-											<i class="fas fa-eye"></i> View
-										</button>
-									</div>					
-								</div>
-							        <div class="table-container">
-							            <!-- Header Row -->
-							            <div class="table-row header">
-							                <div class="table-cell">Name</div>
-							                <div class="table-cell">Request Type</div>
-							                <div class="table-cell">Amount</div>
-							                <div class="table-cell">Date Submitted</div>
-							                <div class="table-cell">Current Status</div>
-							            </div>
-							            <!-- Data Rows -->
-							            <div class="table-row">
-							                <div class="table-cell">Sujith</div>
-							                <div class="table-cell">Bus Fare</div>
-							                <div class="table-cell">₹300</div>
-							                <div class="table-cell">2025-02-19</div>
-							                <div class="table-cell">Approved</div>
-							            </div>
-							        	<div class="table-row">
-							                <div class="table-cell">Jijin</div>
-							                <div class="table-cell">Bata Cash</div>
-							                <div class="table-cell">₹600</div>
-							                <div class="table-cell">2025-02-19</div>
-							                <div class="table-cell">In Progress</div>
-							            </div>
-							        	<div class="table-row">
-							                <div class="table-cell">Jeejo</div>
-							                <div class="table-cell">Bata Cash</div>
-							                <div class="table-cell">₹600</div>
-							                <div class="table-cell">2025-02-19</div>
-							                <div class="table-cell">Approved</div>
-							            </div>
-							        	<div class="table-row">
-							                <div class="table-cell">Saritha</div>
-							                <div class="table-cell">Miscellaneous  Cash</div>
-							                <div class="table-cell">₹600</div>
-							                <div class="table-cell">2025-02-19</div>
-							                <div class="table-cell">Rejected</div>
-							            </div>
-							            <div class="table-row">
-							                <div class="table-cell"></div>
-							                <div class="table-cell"></div>
-							                <div class="table-cell"><h4>Total Collection: ₹2100</h4></div>
-							            </div>
-							        </div>
-
-
-		                    </div>
-		                </div>		                
-		                
-		                
-		            </div>
-		        </div>
-		    </div>
-		</section>
-</main>
+					
+					                <!-- Loan Reports Tab -->
+					                <form>
+						                <div id="loan-reports" class="tab-pane">
+										    <div class="report-card">
+										        <h3><i class="fas fa-hand-holding-usd"></i> Loan Portfolio</h3>
+										        <!-- Loan Filter Form -->
+										        <div class="form-container">
+										            <div class="form-group">
+										                <label>Loan Status:</label>
+										                <div class="radio-group">
+										                    <label class="radio-option">
+										                        <input type="radio" name="loanStatus" value="running" checked>
+										                        <span class="radio-checkmark"></span>
+										                        Running Loans
+										                    </label>
+										                    <label class="radio-option">
+										                        <input type="radio" name="loanStatus" value="closed">
+										                        <span class="radio-checkmark"></span>
+										                        Closed Loans
+										                    </label>
+										                </div>
+										            </div>
+										            
+			            							<div class="form-group">
+														<label for="finance-source">Loan Reference Name</label>
+														<select id="finance-source" name="loanReferenceName" class="input-field" required>
+															<option value="" disabled selected>Loan Reference Name</option>
+													        <c:forEach items="${primaryMembers}" var="member">
+													            <option value="${member.no}">${member.memberName}</option>
+													        </c:forEach>
+														</select>
+														<div class="error-message" id="finance-source-error">
+															<i class="fas fa-exclamation-circle"></i>
+															<span>Reference Name is required</span>
+														</div>
+													</div>
+											            <div class="button-group-view">
+											                <button type="button" onclick="filterLoans()">
+											                    <i class="fas fa-filter"></i> Filter
+											                </button>
+											            </div>													
+										        </div>
+										
+										        <!-- Loan Data Table -->
+										        <div class="table-container">
+										            <div class="table-row header">
+										                <div class="table-cell">Loan ID</div>
+										                <div class="table-cell">Borrower</div>
+										                <div class="table-cell">Amount</div>
+										                <div class="table-cell">Interest Amout</div>
+										                <div class="table-cell">Status</div>
+										                 <div class="table-cell">Start Date</div>
+										                <div class="table-cell">Closed Date</div>
+										            </div>
+										           
+										            
+										             <c:forEach items="${allLoans}" var="loans">
+													            <!-- Example Data Row -->
+													            <div class="table-row">
+													                <div class="table-cell">${loans.loanNo}</div>
+													                <div class="table-cell">${loans.loanApplicantName.memberName}</div>
+													                <div class="table-cell">${loans.loanAmount}</div>
+													                <div class="table-cell">${loans.interestAmount}</div>
+													                <div class="table-cell"><span class="status-active">Active</span></div>
+													                <div class="table-cell">2024-03-15</div>
+													                <div class="table-cell">2024-03-15</div>
+													            </div>
+													  </c:forEach>
+										            
+										            
+										            
+										            
+										            <!-- Add more rows dynamically -->
+										        </div>
+										    </div>
+										</div>
+									</form>
+					
+					                <!-- Revenue Analysis Tab -->
+					                <div id="revenue-analysis" class="tab-pane">
+					                    <div class="report-card">
+					                        <h3><i class="fas fa-money-bill-wave"></i> Revenue Sources</h3>
+					                        <div class="revenue-chart">
+					                            <!-- Add chart container here -->
+					                            <div class="chart-placeholder">Monthly Revenue Chart</div>
+					                        </div>
+					                    </div>
+					                </div>
+					
+					                <!-- Expense Breakdown Tab -->
+					                <div id="expense-breakdown" class="tab-pane">
+					                    <div class="report-card">
+					                        <h3><i class="fas fa-file-invoice-dollar"></i> Expense Categories</h3>
+					                        <div class="expense-categories">
+					                            <div class="category-item">
+					                                <div class="category-label">Operational</div>
+					                                <div class="category-amount">₹ 45,000</div>
+					                                <div class="category-progress" style="width: 60%"></div>
+					                            </div>
+					                            <div class="category-item">
+					                                <div class="category-label">Staff</div>
+					                                <div class="category-amount">₹ 32,000</div>
+					                                <div class="category-progress" style="width: 45%"></div>
+					                            </div>
+					                            <div class="category-item">
+					                                <div class="category-label">Miscellaneous</div>
+					                                <div class="category-amount">₹ 15,500</div>
+					                                <div class="category-progress" style="width: 25%"></div>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+			
+					                <!-- Expense Breakdown Tab -->
+					                <div id="submission-breakdown" class="tab-pane">
+					                    <div class="report-card">
+					                        <h3><i class="fas fa-file-invoice-dollar"></i> My Submissions </h3>
+											<div class="form-container">
+												<div class="form-group">
+													<label for="approval-date">Filter Date:</label> <input type="date" id="approval-date" name="approval-date" required>
+												</div>
+												<div class="button-group-view">
+													<button onclick="validateViewForm()" aria-label="View request">
+														<i class="fas fa-eye"></i> View
+													</button>
+												</div>					
+											</div>
+										        <div class="table-container">
+										            <!-- Header Row -->
+										            <div class="table-row header">
+										                <div class="table-cell">Name</div>
+										                <div class="table-cell">Request Type</div>
+										                <div class="table-cell">Amount</div>
+										                <div class="table-cell">Date Submitted</div>
+										                <div class="table-cell">Current Status</div>
+										            </div>
+										            <!-- Data Rows -->
+										            <div class="table-row">
+										                <div class="table-cell">Sujith</div>
+										                <div class="table-cell">Bus Fare</div>
+										                <div class="table-cell">₹300</div>
+										                <div class="table-cell">2025-02-19</div>
+										                <div class="table-cell">Approved</div>
+										            </div>
+										        	<div class="table-row">
+										                <div class="table-cell">Jijin</div>
+										                <div class="table-cell">Bata Cash</div>
+										                <div class="table-cell">₹600</div>
+										                <div class="table-cell">2025-02-19</div>
+										                <div class="table-cell">In Progress</div>
+										            </div>
+										        	<div class="table-row">
+										                <div class="table-cell">Jeejo</div>
+										                <div class="table-cell">Bata Cash</div>
+										                <div class="table-cell">₹600</div>
+										                <div class="table-cell">2025-02-19</div>
+										                <div class="table-cell">Approved</div>
+										            </div>
+										        	<div class="table-row">
+										                <div class="table-cell">Saritha</div>
+										                <div class="table-cell">Miscellaneous  Cash</div>
+										                <div class="table-cell">₹600</div>
+										                <div class="table-cell">2025-02-19</div>
+										                <div class="table-cell">Rejected</div>
+										            </div>
+										            <div class="table-row">
+										                <div class="table-cell"></div>
+										                <div class="table-cell"></div>
+										                <div class="table-cell"><h4>Total Collection: ₹2100</h4></div>
+										            </div>
+										        </div>
+			
+			
+					                    </div>
+					                </div>		                
+					                
+					                
+					            </div>
+					        </div>
+					    </div>
+					</section>
+			</main>
     <!-- Footer -->
     <footer>
         &copy; 2025 Chunks Finance | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>

@@ -703,10 +703,10 @@
             <li><a href="loan" class="active">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
-            <li><a href="member">Members</a></li>
-            <li><a href="chits">Chits</a></li>
              <c:choose>
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+		            <li><a href="member">Members</a></li>
+		            <li><a href="chits">Chits</a></li>	            
 	            	<li><a href="finance">Create Finance</a></li>
 	            </c:when>
             </c:choose>
