@@ -842,9 +842,10 @@
 		 // Check for success message on page load
 	    document.addEventListener('DOMContentLoaded', function() {
 	    	
-	    	 const dateInput = document.getElementById('RevenueDate');
-	        const today = new Date();
-	        dateInput.value = today.toISOString().split('T')[0];
+	    	const dateInput = document.getElementById('RevenueDate');
+	        const options = { timeZone: 'Asia/Kolkata' };
+	        const today = new Date().toLocaleDateString('en-CA', options);
+	        dateInput.value = today;
 	    	
 	    	document.getElementById('RevenueNo').value = '${revenueNumber}';
 	    	document.getElementById('RevenueName').value = '${currentUser.memberName}';

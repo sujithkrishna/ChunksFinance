@@ -839,8 +839,9 @@
 	    document.addEventListener('DOMContentLoaded', function() {
 	    	
 	        const dateInput = document.getElementById('expensesdate');
-	        const today = new Date();
-	        dateInput.value = today.toISOString().split('T')[0];
+	        const options = { timeZone: 'Asia/Kolkata' };
+	        const today = new Date().toLocaleDateString('en-CA', options);
+	        dateInput.value = today;
 	        
 	    	document.getElementById('ExpensesNo').value = '${expensesNumber}';
 	    	document.getElementById('ExpensesName').value = '${currentUser.memberName}';

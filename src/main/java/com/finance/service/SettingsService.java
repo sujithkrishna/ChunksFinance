@@ -50,6 +50,12 @@ public class SettingsService {
 		 Map<String, String> config = new HashMap<String, String>();
    	     config.put(ChunksFinanceConstants.APPROVAL_PROCESS, request.getParameter(ChunksFinanceConstants.APPROVAL_PROCESS));
    	     config.put(ChunksFinanceConstants.SECONDARY_LOGIN, request.getParameter(ChunksFinanceConstants.SECONDARY_LOGIN));
+   	     
+   	     System.out.println("--------------approvalcutoff---------------"+request.getParameter("approvalcutoff"));
+   	     System.out.println("--------------approvaltime---------------"+request.getParameter("approvaltime"));
+   	     config.put(ChunksFinanceConstants.APPROVAL_CUTOFF_DAY, request.getParameter("approvalcutoff"));
+   	     config.put(ChunksFinanceConstants.APPROVAL_CUTOFF_TIME, request.getParameter("approvaltime"));
+   	     
 	   	  String searchTerm = "\"approvalProcess\":";
 	      SettingsModel currentSettings = settingsRepository.findSettingsByApprovalProcess(searchTerm);
 		   	  if(null != currentSettings) {

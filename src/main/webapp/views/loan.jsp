@@ -1073,8 +1073,9 @@
   	document.addEventListener('DOMContentLoaded', function() {
   	
   	    const dateInput = document.getElementById('loan-date');
-        const today = new Date();
-        dateInput.value = today.toISOString().split('T')[0];
+	  	  const options = { timeZone: 'Asia/Kolkata' };
+	      const today = new Date().toLocaleDateString('en-CA', options);
+	      dateInput.value = today;
         
         const dateRepaymentInput = document.getElementById('loan-repayment-date');
         const todayRepayment = new Date();

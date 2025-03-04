@@ -544,9 +544,29 @@
 		    opacity: 0;
 		    cursor: pointer;
 		}
+		
+		/* Add to existing CSS */
+			.day-time-group {
+			    display: flex;
+			    gap: 15px;
+			    align-items: center;
+			    width: 36%;
+			}
+			
+			#approval-cutoff {
+			    flex: 2;
+			}
+			
+			#approval-time {
+			    flex: 1;
+			    width: auto; /* Override previous input-field width */
+			}
+		
+		
+		
 		/* Input Field */
 		.input-field {
-		    width: 100%;
+		    width: 100%; /* Change from 23% to 100% */
 		    padding: 10px;
 		    border: 1px solid #ddd;
 		    border-radius: 5px;
@@ -688,6 +708,8 @@
 							<c:forEach items="${allSettings}" var="setting">
 							    <c:set var="approvalProcessValue" value="${setting.settings['approvalProcess']}" scope="page"/>
 							    <c:set var="secondaryLoginValue" value="${setting.settings['secondaryLogin']}" scope="page"/>
+							    <c:set var="approvalCutOffDayValue" value="${setting.settings['approvalCutOffDay']}" scope="page"/>
+							    <c:set var="approvalCutOffTimeValue" value="${setting.settings['approvalCutOffTime']}" scope="page"/>
 							</c:forEach>
 	
 	 					 <div class="form-group">
@@ -703,6 +725,26 @@
 						            <span class="radio-checkmark"></span>
 						            No
 						        </label>
+						    </div>
+						</div>
+					   <div class="form-group">
+						    <label> Approval Cut off Time:</label>
+						    <div class="day-time-group">
+						        <select id="approval-cutoff" name="approvalcutoff" class="input-field" required>
+						            <option value="" disabled selected>Select day</option>
+						            <c:set var="days" value="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday" />
+						            <c:forEach items="${fn:split(days, ',')}" var="day">
+						                <option value="${day}" 
+						                 ${day == approvalCutOffDayValue ? 'selected' : ''}>
+										  ${day}
+										</option>
+						            </c:forEach>
+						        </select>
+						        <input type="time" id="approval-time" name="approvaltime" class="input-field" required value="16:00">
+						    </div>
+						    <div class="error-message" id="approvalcutoff-error">
+						        <i class="fas fa-exclamation-circle"></i>
+						        <span>Both day and time are required</span>
 						    </div>
 						</div>
 				        <div class="button-group-view">
@@ -738,25 +780,34 @@
     <!-- Script -->
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-    	//var approvalProcess = '${approvalProcess}'; // Get from server-side
-        var approvalProcess = ''; 	
-        var secondaryLogin = ''; 	
-        
-     // Get values from server-side settings with proper escaping
-        var approvalProcess = '${fn:escapeXml(not empty approvalProcessValue ? approvalProcessValue : "approvalProcessSequential")}';
-    	var secondaryLogin = '${fn:escapeXml(not empty secondaryLoginValue ? secondaryLoginValue : "loginStatusNo")}';
-        
-      
+    	 // Get values from server-side with proper escaping
+        const approvalProcess = '${fn:escapeXml(not empty approvalProcessValue ? approvalProcessValue : "approvalProcessSequential")}';
+        const secondaryLogin = '${fn:escapeXml(not empty secondaryLoginValue ? secondaryLoginValue : "loginStatusNo")}';
+        const approvalCutOffDay = '${fn:escapeXml(not empty approvalCutOffDayValue ? approvalCutOffDayValue : "")}';
+        const approvalCutOffTime = '${fn:escapeXml(not empty approvalCutOffTimeValue ? approvalCutOffTimeValue : "")}';
+
+        // Set approval process radio button
         if (approvalProcess === 'approvalProcessSequential') {
             document.getElementById('approvalProcessSequential').checked = true;
         } else if (approvalProcess === 'approvalProcessParallel') {
             document.getElementById('approvalProcessParallel').checked = true;
         }
+
+        // Set secondary login radio button
         if (secondaryLogin === 'loginStatusYes') {
             document.getElementById('loginStatusYes').checked = true;
         } else if (secondaryLogin === 'loginStatusNo') {
             document.getElementById('loginStatusNo').checked = true;
         }
+
+        // Set cutoff day and time
+        const daySelect = document.getElementById('approval-cutoff');
+        if (approvalCutOffDay) {
+            daySelect.value = approvalCutOffDay;
+        }
+        const timeInput = document.getElementById('approval-time');
+        timeInput.value = approvalCutOffTime || '16:00'; // Fallback to 16:00
+        
         
         
     });

@@ -1041,8 +1041,9 @@
 	    document.addEventListener('DOMContentLoaded', function() {
 	    	
 	    	const dateInput = document.getElementById('start-date');
-	        const today = new Date();
-	        dateInput.value = today.toISOString().split('T')[0];
+	    	const options = { timeZone: 'Asia/Kolkata' };
+	        const today = new Date().toLocaleDateString('en-CA', options);
+	        dateInput.value = today;
 	    	
 	    	document.getElementById('chits-number').value = '${chitsNumber}';
 	    	document.getElementById('total-chits').value = 20;
