@@ -38,7 +38,7 @@ public class FinanceSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/views/**", "/financeLogin", "/index", "/about", "/services", "/contact", "/assets/**", "/vendor/**", "/assets/css/**", "/assets/fonts/**", "/assets/js/**", "/assets/images/**")
+				.requestMatchers("/", "/views/**", "/financeLogin", "/index", "/about", "/services", "/contact", "/assets/**", "/vendor/**", "/assets/css/**", "/assets/fonts/**", "/assets/js/**", "/assets/images/**")
 				.permitAll().requestMatchers("/test-ping").permitAll()
 				.requestMatchers("/h2-console/**", "/secure/**", "/member/**").authenticated()
 				.requestMatchers("/finance/**", "/member/**", "/chits/**", "/settings/**").hasRole("SUPER_ADMIN")

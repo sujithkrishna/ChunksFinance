@@ -24,4 +24,8 @@ public interface ChitsRepository extends JpaRepository<ChitsModel, Integer> {
     
     @Query("SELECT c FROM ChitsModel c WHERE c.financeType.financeOwner.no = :financeOwnerNo AND c.currentStatus = 'INPROGRESS'")
     List<ChitsModel> findByFinanceOwnerAndStatus(@Param("financeOwnerNo") Integer financeOwnerNo);
+    
+    
+    @Query("SELECT c FROM ChitsModel c WHERE c.financeType.financeOwner.no = :financeOwnerNo AND c.currentStatus IN ('REQUESTED', 'INITIAL_APPROVAL')")
+    List<ChitsModel> findByChitsNotApprovedANDByFinanceOwner(@Param("financeOwnerNo") Integer financeOwnerNo);
 }

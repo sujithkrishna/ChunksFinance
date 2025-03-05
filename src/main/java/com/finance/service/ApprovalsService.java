@@ -65,23 +65,41 @@ public class ApprovalsService {
 	
 	
 	public void revewnueAndExpensesList(Model model, LocalDate givenDate,MemberModel currentUser) {
+		
+		//Fetching Revenue List	START--
 		List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(givenDate,currentUser);
 		if(null != nonApprovedRevenueList && nonApprovedRevenueList.size() == 0) {
 			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, null);
 		}else {
 			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_REVENUE_LIST, nonApprovedRevenueList);
 		}
+		//Fetching Revenue List	END--
 		
-		//Fetching Expenses List		
+		//Fetching Expenses List	START--
 		List<ExpensesModel> nonApprovedExpensesList = expensesService.getExpensesFromMondayToGivenDate(givenDate,currentUser);
 		if(null != nonApprovedExpensesList && nonApprovedExpensesList.size() == 0) {
 			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, null);
 		}else {
 			model.addAttribute(ChunksFinanceConstants.NON_APPROVED_EXPENSES_LIST, nonApprovedExpensesList);
 		}
+		//Fetching Expenses List	END--
 		
-		//Fetching Chits EMI List START		
+		
+		//Fetching Chits List which is not started	START--
+		
+		List<ChitsModel> notApprovedChits =  chitsService.getAllChitsNotApproved(currentUser.getNo());
+		 if(null != notApprovedChits && notApprovedChits.size() == 0) {
+				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, null);
+			}else {
+				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, notApprovedChits);
+		 }
+		//Fetching Chits List which is not started	END--
+		 
+		 
+		
+		//Fetching Chits List  EMI Which is RUNNING------START
 		 List<ChitsModel> currentRunningChitsByMyApprovals = chitsService.getChitsByFinanceOwnerAndStatus(currentUser.getNo());
+		 System.out.println("--------------------------currentRunningChitsByMyApprovals-------------------------"+currentRunningChitsByMyApprovals);
 		// Calculate the current week's Monday and Sunday dates
 		 LocalDate startDate = givenDate.with(DayOfWeek.MONDAY);
 		 LocalDate endDate = givenDate.plusDays(6); // End date is Sunday of the same week
@@ -99,13 +117,15 @@ public class ApprovalsService {
 		     }
 		 }
 		 
+		 System.out.println("--------------------------emiDetailsInCurrentWeek-------------------------"+emiDetailsInCurrentWeek);
+
 		 if(null != emiDetailsInCurrentWeek && emiDetailsInCurrentWeek.size() == 0) {
-				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, null);
+				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, null);
 			}else {
-				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, emiDetailsInCurrentWeek);
+				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, emiDetailsInCurrentWeek);
 		 }
+			//Fetching Chits List  EMI Which is RUNNING------END
 		 
-			//Fetching Chits EMI List END
 		 
 		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);

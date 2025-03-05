@@ -66,4 +66,12 @@ public class ChitsService {
 		return chitsRepository.findByFinanceOwnerAndStatus(financeOwnerNo);
 	}
 
+	
+	public List<ChitsModel> getAllChitsNotApproved(Integer financeOwnerNo) {
+		return chitsRepository.findByChitsNotApprovedANDByFinanceOwner(financeOwnerNo);
+	}
+	
+	
+	
+	
 }
