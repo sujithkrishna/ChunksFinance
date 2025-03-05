@@ -33,7 +33,8 @@ public class MapToJsonConverter implements AttributeConverter<Map<String, String
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Map<String, String> convertToEntityAttribute(String dbData) {
         if (dbData == null || dbData.isEmpty()) {
             return new HashMap<>();
