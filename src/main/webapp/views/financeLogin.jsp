@@ -358,7 +358,7 @@
 
     <!-- Header -->
     <header>
-        <h1>Chunks Finance Dashboard</h1>
+        <h1><a href="index" style="color: inherit; text-decoration: none;">Chunks Finance Dashboard</a></h1>
         <p>Your financial overview at a glance</p>
     </header>
 

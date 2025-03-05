@@ -14,9 +14,22 @@ public class HomeController {
 	
 	@GetMapping(path = {"/", "/home", "/index"})
 	public String handleHome() {
-		return "financeLogin";
+		return "index";
 	}
 	
+	@GetMapping(path = {"/about"})
+	public String handleAbout() {
+		return "about";
+	}
+
+	@GetMapping(path = {"/services"})
+	public String handleServicest() {
+		return "services";
+	}
 	
 
+	@GetMapping(path = {"/contact"})
+	public String handleContact() {
+		return "contact";
+	}
 }
