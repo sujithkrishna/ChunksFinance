@@ -39,7 +39,7 @@ public class SettingsController {
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		List<SettingsModel> allSettings = settingsService.getAllSettings();
-		 model.addAttribute(ChunksFinanceConstants.ALL_SETTINGS, allSettings);
+		model.addAttribute(ChunksFinanceConstants.ALL_SETTINGS, allSettings);
 		
 		
 		

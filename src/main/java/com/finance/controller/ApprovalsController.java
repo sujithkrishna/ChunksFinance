@@ -81,6 +81,8 @@ public class ApprovalsController {
 			if(status) {
 				model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getProperty(ChunksFinanceConstants.FINANCE_APPOVED_MESSAGE));
 				approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
+				model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
+				return "approvals";
 			}
 		}catch(DateExpiredException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_DATEEXPIRED_MESSAGE));

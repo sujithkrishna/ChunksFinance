@@ -586,7 +586,7 @@
 
     <!-- Footer -->
     <footer>
-        &copy; 2025 Chunks Finance | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+        &copy; 2025 Chunks Finance | <a href="#" style="color: white; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: white; text-decoration: none;">Terms of Service</a>
     </footer>
 	<form action="${pageContext.request.contextPath}/perform_logout" method="post" id="financeLogout">
 	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

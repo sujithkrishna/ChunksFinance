@@ -8,8 +8,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ChitsEmiDetail;
 import com.finance.model.ChitsModel;
+import com.finance.model.MemberModel;
+import com.finance.model.SettingsModel;
 import com.finance.repository.ChitsRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,10 +28,19 @@ public class ChitsService {
 
 	@Autowired
 	private ChitsRepository chitsRepository;
+	
+	@Autowired
+	private SettingsService settingsService;
+	
 
 	public Integer getMaxChitsNumber() {
 		return chitsRepository.findMaxChitsNo();
 	}
+	
+	
+	public ChitsModel getChitByNo(Integer chitsNo) {
+        return chitsRepository.findByChitsNo(chitsNo);
+    }
 
 	public boolean createChits(ChitsModel chitsModel, HttpServletRequest request) {
 
@@ -58,17 +70,46 @@ public class ChitsService {
 			emiDetails.add(currentEMI);
 		}
 		chitsModel.setEmiDetails(emiDetails);
+		chitsModel.setFirstapproverName(chitsModel.getFinanceType().getFinanceOwner());
 		chitsRepository.save(chitsModel);
 		return true;
 	}
 
-	public List<ChitsModel> getChitsByFinanceOwnerAndStatus(Integer financeOwnerNo) {
-		return chitsRepository.findByFinanceOwnerAndStatus(financeOwnerNo);
+	public List<ChitsModel> getChitsByFinanceOwnerAndStatus(MemberModel currentUser) {
+		 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+			 String approvalProcessStatus = null;
+			 if(null != settingModelData) {
+				 approvalProcessStatus = settingModelData.getSettingsValue();
+			 }
+			 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+				 return chitsRepository.findByFinanceOwnerAndStatusSequential();
+			 }else {
+				 return chitsRepository.findByFinanceOwnerAndStatusParallel();
+			 }
+		 }else {
+			 return chitsRepository.findByFinanceOwnerAndStatus(currentUser.getNo());
+		 }
 	}
 
 	
-	public List<ChitsModel> getAllChitsNotApproved(Integer financeOwnerNo) {
-		return chitsRepository.findByChitsNotApprovedANDByFinanceOwner(financeOwnerNo);
+	public List<ChitsModel> getAllChitsNotApproved(MemberModel currentUser) {
+		if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			
+			 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+			 String approvalProcessStatus = null;
+			 if(null != settingModelData) {
+				 approvalProcessStatus = settingModelData.getSettingsValue();
+			 }
+			 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+				 return chitsRepository.findByChitsNotApprovedANDBySuperAdminSequential();
+			 }else {
+				 return chitsRepository.findByChitsNotApprovedANDBySuperAdminParallel();
+			 }
+		}else {
+			return chitsRepository.findByChitsNotApprovedANDByFinanceOwner(currentUser.getNo());
+		}
+		
 	}
 	
 	

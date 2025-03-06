@@ -29,6 +29,10 @@ public class ChunksFinanceConstants {
 	
 	public static final String EXPENSES = "EXPENSES";
 	
+	public static final String CHITS = "CHITS";
+	
+	public static final String CHITSEMI = "CHITSEMI";
+	
 	public static final String NUMBER_ONE = "1";
 	
 	public static final String FINANCETYPE_SPLIT_REGEX = "\\|";
@@ -44,6 +48,10 @@ public class ChunksFinanceConstants {
 	public static final String APPROVAL_CUTOFF_DAY = "approvalCutOffDay";
 	
 	public static final String APPROVAL_CUTOFF_TIME = "approvalCutOffTime";
+	
+	public static final String APPROVAL_CUTOFF = "approvalcutoff";
+	
+	public static final String APPROVAL_TIME = "approvaltime";
 	
 	public static final String APPROVAL_PROCESS = "approvalProcess";
 	
@@ -64,6 +72,10 @@ public class ChunksFinanceConstants {
 	public static final String MEMBER_TYPE = "memberType";
 
 	public static final String MEMBER_NAME = "memberName";
+	
+	public static final String APPROVAL_PROCESS_SEQUENTIAL = "approvalProcessSequential";
+	
+	public static final String LOGIN_STATUS_NO = "loginStatusNo";
 	
 	public static final String MEMBER_CREATE_NEWUSER_MESSAGE = "member.create.newuser.message";
 	
@@ -100,6 +112,8 @@ public class ChunksFinanceConstants {
 	public static final String ERROR = "error";
 	
 	public static final String CURRENT_ID = "currentId";
+	
+	public static final String CURRENT_EMI_ID = "currentEMIId";
 	
 	public static final String STATUS = "status";
 

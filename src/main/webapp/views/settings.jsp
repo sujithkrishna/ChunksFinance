@@ -704,13 +704,6 @@
 				                </label>
 				            </div>
 				        </div>
-				        <!-- Process settings -->
-							<c:forEach items="${allSettings}" var="setting">
-							    <c:set var="approvalProcessValue" value="${setting.settings['approvalProcess']}" scope="page"/>
-							    <c:set var="secondaryLoginValue" value="${setting.settings['secondaryLogin']}" scope="page"/>
-							    <c:set var="approvalCutOffDayValue" value="${setting.settings['approvalCutOffDay']}" scope="page"/>
-							    <c:set var="approvalCutOffTimeValue" value="${setting.settings['approvalCutOffTime']}" scope="page"/>
-							</c:forEach>
 	
 	 					 <div class="form-group">
 						    <label>Do you want to allow Secondary users to Login :</label>
@@ -761,7 +754,7 @@
 
     <!-- Footer -->
     <footer>
-        &copy; 2025 Chunks Finance | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+        &copy; 2025 Chunks Finance | <a href="#" style="color: white; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: white; text-decoration: none;">Terms of Service</a>
     </footer>
 	<form action="${pageContext.request.contextPath}/perform_logout" method="post" id="financeLogout">
 	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -779,12 +772,31 @@
 			
     <!-- Script -->
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    	 // Get values from server-side with proper escaping
-        const approvalProcess = '${fn:escapeXml(not empty approvalProcessValue ? approvalProcessValue : "approvalProcessSequential")}';
-        const secondaryLogin = '${fn:escapeXml(not empty secondaryLoginValue ? secondaryLoginValue : "loginStatusNo")}';
-        const approvalCutOffDay = '${fn:escapeXml(not empty approvalCutOffDayValue ? approvalCutOffDayValue : "")}';
-        const approvalCutOffTime = '${fn:escapeXml(not empty approvalCutOffTimeValue ? approvalCutOffTimeValue : "")}';
+	    document.addEventListener("DOMContentLoaded", function () {
+	    	 // Get values from server-side with proper escaping
+	 	let approvalProcess = 'approvalProcessSequential';
+	    let secondaryLogin = 'loginStatusNo';
+	    let approvalCutOffDay = 'Sunday';
+	    let approvalCutOffTime = '16:00';
+	
+	    // Process settings from server
+	    <c:forEach items="${allSettings}" var="setting">
+	        <c:choose>
+	            <c:when test="${setting.settingsName == 'approvalProcess'}">
+	                approvalProcess = '<c:out value="${setting.settingsValue}"/>';
+	            </c:when>
+	            <c:when test="${setting.settingsName == 'secondaryLogin'}">
+	                secondaryLogin = '<c:out value="${setting.settingsValue}"/>';
+	            </c:when>
+	            <c:when test="${setting.settingsName == 'approvalCutOffDay'}">
+	                approvalCutOffDay = '<c:out value="${setting.settingsValue}"/>';
+	            </c:when>
+	            <c:when test="${setting.settingsName == 'approvalCutOffTime'}">
+	                approvalCutOffTime = '<c:out value="${setting.settingsValue}"/>';
+	            </c:when>
+	        </c:choose>
+	    </c:forEach>
+
 
         // Set approval process radio button
         if (approvalProcess === 'approvalProcessSequential') {

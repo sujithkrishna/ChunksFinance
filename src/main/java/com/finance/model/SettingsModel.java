@@ -36,8 +36,10 @@ public class SettingsModel {
 	@Column(name = "last_updated_date")
 	private LocalDateTime lastUpdatedDate;
 	
-	@Column(name = "settings", columnDefinition = "TEXT") // Store as JSON in a TEXT column
-	@Convert(converter = MapToJsonConverter.class)
-	private Map<String,String> settings;
+	@Column(name = "settings_name") 
+	private String settingsName;
+	
+	@Column(name = "settings_value") 
+	private String settingsValue;
 
 }

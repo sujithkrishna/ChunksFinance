@@ -30,11 +30,16 @@ import com.finance.user.MemberDetails;
 @Service
 public class ExpensesService {
 	
+	
+
 	@Autowired
 	private CreateFinanceService financeService;
 	
 	@Autowired
     private SettingsRepository settingsRepository;
+	
+	@Autowired
+    private SettingsService settingsService;
 	
 	@Autowired
     private ExpensesRepository expensesRepository;
@@ -86,9 +91,12 @@ public class ExpensesService {
 	        LocalDate endOfWeek = givenDate.with(DayOfWeek.SUNDAY);
 	        List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
 			 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-				 SettingsModel settingModelData =settingsRepository.findSettingsByApprovalProcess("approvalProcess");
-				 String approvalProcessStatus = settingModelData.getSettings().get("approvalProcess");
-				 if("approvalProcessSequential".equals(approvalProcessStatus)) {
+				 SettingsModel approvalProcessModel = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+				 String approvalProcessStatus =  null;
+				 if(null != approvalProcessModel) {
+					 approvalProcessStatus = approvalProcessModel.getSettingsValue();
+				 }
+				 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
 					 	return expensesRepository.findExpensesByDateRangeAndStatusAndSuperAdminSequentialApprover(startOfWeek, endOfWeek, statusList);
 				 }else {
 					 return expensesRepository.findExpensesByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);

@@ -20,10 +20,13 @@ import com.finance.exception.DateExpiredException;
 import com.finance.exception.FirstApprovalCannotbeSameException;
 import com.finance.model.ChitsEmiDetail;
 import com.finance.model.ChitsModel;
+import com.finance.model.ChitsModel.CurrentStatus;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
+import com.finance.repository.ChitsEmiDetailRepository;
+import com.finance.repository.ChitsRepository;
 import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
 import com.finance.repository.RevenueRepository;
@@ -47,6 +50,13 @@ public class ApprovalsService {
 	
 	@Autowired
     private RevenueRepository revenueRepository;
+	
+	@Autowired
+    private ChitsRepository chitsRepository;
+	
+	
+	@Autowired
+    private ChitsEmiDetailRepository chitsEmiDetailRepository;
 	
 	@Autowired
     private ExpensesRepository expensesRepository;
@@ -86,8 +96,7 @@ public class ApprovalsService {
 		
 		
 		//Fetching Chits List which is not started	START--
-		
-		List<ChitsModel> notApprovedChits =  chitsService.getAllChitsNotApproved(currentUser.getNo());
+		List<ChitsModel> notApprovedChits =  chitsService.getAllChitsNotApproved(currentUser);
 		 if(null != notApprovedChits && notApprovedChits.size() == 0) {
 				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_LIST, null);
 			}else {
@@ -95,14 +104,13 @@ public class ApprovalsService {
 		 }
 		//Fetching Chits List which is not started	END--
 		 
-		 
+		 // Change below logic implement from the chitsEMI only instead of chits....
 		
-		//Fetching Chits List  EMI Which is RUNNING------START
-		 List<ChitsModel> currentRunningChitsByMyApprovals = chitsService.getChitsByFinanceOwnerAndStatus(currentUser.getNo());
-		 System.out.println("--------------------------currentRunningChitsByMyApprovals-------------------------"+currentRunningChitsByMyApprovals);
+		//Fetching Chits EMI List  EMI Which is RUNNING------START
+		 List<ChitsModel> currentRunningChitsByMyApprovals = chitsService.getChitsByFinanceOwnerAndStatus(currentUser);
 		// Calculate the current week's Monday and Sunday dates
-		 LocalDate startDate = givenDate.with(DayOfWeek.MONDAY);
-		 LocalDate endDate = givenDate.plusDays(6); // End date is Sunday of the same week
+		 LocalDate startDate = givenDate.with(DayOfWeek.MONDAY).minusWeeks(1);
+		 LocalDate endDate = givenDate.with(DayOfWeek.SATURDAY).plusWeeks(1);
 		 List<ChitsEmiDetail> emiDetailsInCurrentWeek = new ArrayList<ChitsEmiDetail>();
 
 		 for (ChitsModel chit : currentRunningChitsByMyApprovals) {
@@ -111,20 +119,22 @@ public class ApprovalsService {
 		         for (ChitsEmiDetail emi : emiDetails) {
 		             LocalDate emiDate = emi.getEmiDate();
 		             if (emiDate != null && !emiDate.isBefore(startDate) && !emiDate.isAfter(endDate)) {
-		                 emiDetailsInCurrentWeek.add(emi);
+		            	 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN) && null == emi.getSecondApprovalTime()) {
+		            		 emiDetailsInCurrentWeek.add(emi); 
+		            	 }else if(currentUser.getRole().equals(MemberModel.ROLE.USER) && null == emi.getFirstApprovalTime()){
+		            		 emiDetailsInCurrentWeek.add(emi); 
+		            	 }
+		                 
 		             }
 		         }
 		     }
 		 }
-		 
-		 System.out.println("--------------------------emiDetailsInCurrentWeek-------------------------"+emiDetailsInCurrentWeek);
-
 		 if(null != emiDetailsInCurrentWeek && emiDetailsInCurrentWeek.size() == 0) {
 				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, null);
 			}else {
 				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, emiDetailsInCurrentWeek);
 		 }
-			//Fetching Chits List  EMI Which is RUNNING------END
+			//Fetching Chits EMI List  EMI Which is RUNNING------END
 		 
 		 
 		
@@ -138,7 +148,10 @@ public class ApprovalsService {
 		
 		 String currentType =request.getParameter(ChunksFinanceConstants.CURRENT_TYPE);
 		 String idNumber =request.getParameter(ChunksFinanceConstants.CURRENT_ID);
+		 String idEMINumber =request.getParameter(ChunksFinanceConstants.CURRENT_EMI_ID);
 		 String status =request.getParameter(ChunksFinanceConstants.STATUS);
+		 
+		 
 		 if(ChunksFinanceConstants.REVENUE.equals(currentType) && null != idNumber) {
 			 //  This is for only for processing of Revenue Items START
 			 try {
@@ -310,6 +323,102 @@ public class ApprovalsService {
 	           }
 			 return true;
 			 //  This is for only for processing of Expenses Items END	  
+		 } else if(ChunksFinanceConstants.CHITS.equals(currentType) && null != idNumber) {
+			 
+			 if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+				//  This is for only for processing of Chits Items START	  
+				 ChitsModel chitsItem = chitsService.getChitByNo(Integer.parseInt(idNumber));
+				 if(null != chitsItem) {
+					 ChitsModel.CurrentStatus currentStatus = chitsItem.getCurrentStatus();
+					 if(null != currentStatus && (currentStatus.equals(ChitsModel.CurrentStatus.REQUESTED))){
+						 chitsItem.setCurrentStatus(ChitsModel.CurrentStatus.INITIAL_APPROVAL);
+						 List<ChitsEmiDetail> allEmiDetails = chitsItem.getEmiDetails();
+						 for (ChitsEmiDetail chitsEmiDetail : allEmiDetails) {
+							 chitsEmiDetail.setCurrentStatus(ChitsEmiDetail.CurrentStatus.INITIAL_APPROVAL);
+						 }
+						 chitsItem.setEmiDetails(allEmiDetails);
+						 
+					 } else if(null != currentStatus && (currentStatus.equals(ChitsModel.CurrentStatus.INITIAL_APPROVAL))) {
+						 chitsItem.setCurrentStatus(ChitsModel.CurrentStatus.INPROGRESS);
+						 List<ChitsEmiDetail> allEmiDetails = chitsItem.getEmiDetails();
+						 for (ChitsEmiDetail chitsEmiDetail : allEmiDetails) {
+							 chitsEmiDetail.setCurrentStatus(ChitsEmiDetail.CurrentStatus.INPROGRESS);
+						 }
+						 chitsItem.setEmiDetails(allEmiDetails);
+					 }
+					 chitsItem.setSecondApprovalTime(LocalDateTime.now());
+					 chitsItem.setSecondapproverName(currenUser.getMember());
+					 chitsRepository.save(chitsItem);
+				 }
+				//  This is for only for processing of Chits Items END	  
+			 }else {
+				//  This is for only for processing of Chits Items START	  
+				 ChitsModel chitsItem = chitsService.getChitByNo(Integer.parseInt(idNumber));
+				 if(null != chitsItem) {
+					 ChitsModel.CurrentStatus currentStatus = chitsItem.getCurrentStatus();
+					 if(null != currentStatus && (currentStatus.equals(ChitsModel.CurrentStatus.REQUESTED))){
+						 chitsItem.setCurrentStatus(ChitsModel.CurrentStatus.INITIAL_APPROVAL);
+						 List<ChitsEmiDetail> allEmiDetails = chitsItem.getEmiDetails();
+						 for (ChitsEmiDetail chitsEmiDetail : allEmiDetails) {
+							 chitsEmiDetail.setCurrentStatus(ChitsEmiDetail.CurrentStatus.INITIAL_APPROVAL);
+						 }
+						 chitsItem.setEmiDetails(allEmiDetails);
+					 } else if(null != currentStatus && (currentStatus.equals(ChitsModel.CurrentStatus.INITIAL_APPROVAL))) {
+						 chitsItem.setCurrentStatus(ChitsModel.CurrentStatus.INPROGRESS);
+						 List<ChitsEmiDetail> allEmiDetails = chitsItem.getEmiDetails();
+						 for (ChitsEmiDetail chitsEmiDetail : allEmiDetails) {
+							 chitsEmiDetail.setCurrentStatus(ChitsEmiDetail.CurrentStatus.INPROGRESS);
+						 }
+						 chitsItem.setEmiDetails(allEmiDetails);
+					 }
+					 chitsItem.setFirstApprovalTime(LocalDateTime.now());
+					 chitsItem.setFirstapproverName(currenUser.getMember());
+					 chitsRepository.save(chitsItem);
+				 }
+				//  This is for only for processing of Chits Items END	  		
+			}
+			 return true;	 
+		 }else if(ChunksFinanceConstants.CHITSEMI.equals(currentType) && null != idNumber) {
+				//  This is for only for processing of ChitsEMI Items START	  
+			 ChitsModel chitsItem = chitsService.getChitByNo(Integer.parseInt(idNumber));
+			 if(null != chitsItem) {
+				 List<ChitsEmiDetail> emiDetails = chitsItem.getEmiDetails();
+				 for (ChitsEmiDetail emiItem : emiDetails) {
+					 if(null != idEMINumber && emiItem.getEmiNumber().equals(Integer.parseInt(idEMINumber))) {
+						 ChitsEmiDetail.CurrentStatus currentStatus = emiItem.getCurrentStatus();
+						 if(null !=currentStatus && currentStatus.equals(ChitsEmiDetail.CurrentStatus.INPROGRESS)) {
+							 if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+								 emiItem.setSecondApprovalTime(LocalDateTime.now());
+								 emiItem.setSecondapproverName(currenUser.getMember());
+							 }else {
+								 emiItem.setFirstApprovalTime(LocalDateTime.now());
+								 emiItem.setFirstapproverName(currenUser.getMember());
+							 }
+							 emiItem.setCurrentStatus(ChitsEmiDetail.CurrentStatus.INITIAL_APPROVAL);
+							 
+						 }else if(null !=currentStatus && currentStatus.equals(ChitsEmiDetail.CurrentStatus.INITIAL_APPROVAL)) {
+							 // Update to the type..
+							    emiItem.setCurrentStatus(ChitsEmiDetail.CurrentStatus.PAID);
+							 	FinanceModel currentModel = chitsItem.getFinanceType();
+							 	Double currentBalance = currentModel.getCurrentBalance() - emiItem.getAmount().doubleValue();
+                   				currentModel.setCurrentBalance(currentBalance);
+                   				if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+   								 emiItem.setSecondApprovalTime(LocalDateTime.now());
+   								 emiItem.setSecondapproverName(currenUser.getMember());
+   							 }else {
+   								 emiItem.setFirstApprovalTime(LocalDateTime.now());
+   								 emiItem.setFirstapproverName(currenUser.getMember());
+   							 }
+                   				chitsEmiDetailRepository.save(emiItem);
+                   				financeRepository.save(currentModel);
+						 }
+					 }
+					
+				}
+			 }
+			 
+				//  This is for only for processing of ChitsEMI Items END
+			 return true;	 
 		 }
 		 return false;
 	 }

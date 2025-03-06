@@ -378,6 +378,43 @@ footer {
 	border-bottom: none;
 }
 
+
+.table-row.header .table-cell:nth-child(2) { /* Request Type */
+    flex: 1.75;  /* Increased from 3 to 4 */
+    text-align: left;
+}
+
+.table-row:not(.header) .table-cell:nth-child(2) {
+    flex: 1.5;  /* Increased from 3 to 4 */
+}
+
+
+.table-row.header .table-cell:nth-child(3) { /* Amount */
+    flex: 1;
+    text-align: center;
+}
+
+.table-row:not(.header) .table-cell:nth-child(3) {
+    flex: 1;
+    text-align: center;
+}
+
+.table-row.header .table-cell:nth-child(4) { /* Date Submitted */
+    flex: 1;
+    text-align: right;
+    padding-right: 15px;
+}
+
+.table-row:not(.header) .table-cell:nth-child(4) {
+    flex: 1;
+    text-align: right;
+    padding-right: 15px;
+}
+
+
+
+
+
 .table-cell {
 	padding: 10px;
 	flex: 1;
@@ -766,10 +803,10 @@ input[type="date"]:focus {
 										<div class="table-cell"><span class="formattedStartDate">${RevenueApprovalItem.spendDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
-												<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','REVENUE','APPROVED')" aria-label="Approve request">
+												<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','','REVENUE','APPROVED')" aria-label="Approve request">
 													<i class="fas fa-check"></i> Approve
 												</button>
-												<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','REVENUE','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<button onclick="validateForm('${RevenueApprovalItem.revenueNumber}','','REVENUE','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
 													<i class="fas fa-times"></i> Reject
 												</button>
 											</div>
@@ -789,10 +826,10 @@ input[type="date"]:focus {
 										<div class="table-cell"><span class="formattedStartDate">${ExpensesApprovalItem.spendDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
-												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','EXPENSES','APPROVED')" aria-label="Approve request">
+												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','','EXPENSES','APPROVED')" aria-label="Approve request">
 													<i class="fas fa-check"></i> Approve
 												</button>
-												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','EXPENSES','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<button onclick="validateForm('${ExpensesApprovalItem.expensesNumber}','','EXPENSES','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
 													<i class="fas fa-times"></i> Reject
 												</button>
 											</div>
@@ -806,15 +843,15 @@ input[type="date"]:focus {
 								<c:forEach items="${nonApprovedChitsList}" var="ChitsApprovalItem">
 									<div class="table-row" style="background: linear-gradient(135deg, rgba(216, 204, 36, 0.9), rgba(247, 234, 41, 0.9))">
 										<div class="table-cell"> Chits #  ${ChitsApprovalItem.chitsNo}</div>
-										<div class="table-cell"> New Chits requested by ${ChitsApprovalItem.chitsNameOf.memberName}</div>
+										<div class="table-cell"> New Chits joined by ${ChitsApprovalItem.chitsNameOf.memberName}</div>
 										<div class="table-cell">&#8377; ${ChitsApprovalItem.totalChitsAmount}</div>
 										<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.chitsStartDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
-												<button onclick="validateForm('${ChitsApprovalItem.chitsNo}','CHITS','APPROVED')" aria-label="Approve request">
+												<button onclick="validateForm('${ChitsApprovalItem.chitsNo}','','CHITS','APPROVED')" aria-label="Approve request">
 													<i class="fas fa-check"></i> Approve
 												</button>
-												<button onclick="validateForm('${ChitsApprovalItem.chitsNo}','CHITS','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<button onclick="validateForm('${ChitsApprovalItem.chitsNo}','','CHITS','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
 													<i class="fas fa-times"></i> Reject
 												</button>
 											</div>
@@ -833,10 +870,10 @@ input[type="date"]:focus {
 									<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.emiDate}</span></div>
 									<div class="table-cell">
 										<div class="button-group-approved">
-											<button onclick="validateForm('${ChitsApprovalItem.emiNumber}','CHITS','APPROVED')" aria-label="Approve request">
+											<button onclick="validateForm('${ChitsApprovalItem.chits.chitsNo}','${ChitsApprovalItem.emiNumber}','CHITSEMI','APPROVED')" aria-label="Approve request">
 												<i class="fas fa-check"></i> Approve
 											</button>
-											<button onclick="validateForm('${ChitsApprovalItem.emiNumber}','CHITS','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+											<button onclick="validateForm('${ChitsApprovalItem.chits.chitsNo}','${ChitsApprovalItem.emiNumber}','CHITSEMI','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
 												<i class="fas fa-times"></i> Reject
 											</button>
 										</div>
@@ -855,9 +892,9 @@ input[type="date"]:focus {
 	</main>
 
 	<!-- Footer -->
-	<footer>
-		&copy; 2025 Chunks Finance | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-	</footer>
+    <footer>
+        &copy; 2025 Chunks Finance | <a href="#" style="color: white; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: white; text-decoration: none;">Terms of Service</a>
+    </footer>
 	<form action="${pageContext.request.contextPath}/perform_logout" method="post" id="financeLogout">
 	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
@@ -946,7 +983,7 @@ input[type="date"]:focus {
 		
 		
 		
-        function validateForm(currentId,currentType,status) {
+        function validateForm(currentId,currentEMIId,currentType,status) {
         	// Create a hidden form
 		    const form = document.getElementById('formcreateApproval');
 		    form.method = 'POST';
@@ -965,6 +1002,15 @@ input[type="date"]:focus {
 		        idInput.name = 'currentId';
 		        idInput.value = currentId;
 		        form.appendChild(idInput);
+		    }
+		    
+		    let idEMIInput = form.querySelector('input[name="currentEMIId"]');
+		    if (!idEMIInput) {
+		    	idEMIInput = document.createElement('input');
+		    	idEMIInput.type = 'hidden';
+		    	idEMIInput.name = 'currentEMIId';
+		    	idEMIInput.value = currentEMIId;
+		        form.appendChild(idEMIInput);
 		    }
 		    
 		    let idTypeInput = form.querySelector('input[name="currentType"]');

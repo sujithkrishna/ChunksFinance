@@ -1,6 +1,7 @@
 package com.finance.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -63,5 +64,19 @@ public class ChitsModel {
     // EMI Details (1-17 EMIs)
     @OneToMany(mappedBy = "chits", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChitsEmiDetail> emiDetails;
+    
+    @ManyToOne
+    @JoinColumn(name = "first_approver_member_no", referencedColumnName = "no")
+    private MemberModel firstapproverName;
+    
+    @ManyToOne
+    @JoinColumn(name = "second_approver_member_no", referencedColumnName = "no")
+    private MemberModel secondapproverName;
+    
+    @Column(name = "first_approval_date_time")
+    private LocalDateTime firstApprovalTime;
+    
+    @Column(name = "second_approval_date_time")
+    private LocalDateTime secondApprovalTime;
         
 }

@@ -140,6 +140,10 @@ CREATE TABLE chits (
     finance_id INTEGER,
     total_chits_amount INTEGER,
     total_chits_number INTEGER,
+	first_approver_member_no INTEGER,
+	second_approver_member_no INTEGER,
+	first_approval_date_time TIMESTAMP(6),
+	second_approval_date_time TIMESTAMP(6),    
     current_status VARCHAR(20) CHECK (current_status IN ('CLOSED', 'INITIAL_APPROVAL', 'INPROGRESS', 'REJECTED', 'REQUESTED')) NOT NULL,
     PRIMARY KEY (chits_no)
 );
@@ -158,14 +162,14 @@ CREATE TABLE chits_emi_detail (
     second_approver_member_no INTEGER,
     first_approval_date_time TIMESTAMP(6),
     second_approval_date_time TIMESTAMP(6),
-    current_status VARCHAR(20) CHECK (current_status IN ('INITIAL_APPROVAL', 'INPROGRESS', 'PAID')) NOT NULL,
+    current_status VARCHAR(20) CHECK (current_status IN ('INITIAL_APPROVAL', 'INPROGRESS', 'PAID','REQUESTED')) NOT NULL,
     PRIMARY KEY (emi_id)
 );
 
 
-INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, current_status) VALUES (1, 7, '2023-10-21', 1, 300000, 20, 'REQUESTED');
-INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, current_status) VALUES (2, 4, '2024-01-04', 1, 300000, 20, 'INPROGRESS');
-INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, current_status) VALUES (3, 7, '2024-08-01', 1, 300000, 20, 'REQUESTED');
+INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (1, 7, '2023-10-21', 1, 300000, 20, 7, null, null, null, 'INPROGRESS');
+INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (2, 4, '2024-01-04', 1, 300000, 20, 7, null, null, null , 'INPROGRESS');
+INSERT INTO chits (chits_no, chits_name_of, chits_start_date, finance_id, total_chits_amount, total_chits_number, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (3, 7, '2024-08-01', 1, 300000, 20, 7, null, null, null ,'INPROGRESS');
 
 
 INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, paid_on_time, payment_date_time, first_approver_member_no, second_approver_member_no, first_approval_date_time, second_approval_date_time, current_status) VALUES (1, 1, 15000, 1, '2023-11-21', null, null, 7, null, null, null, 'INPROGRESS');
@@ -232,13 +236,23 @@ INSERT INTO chits_emi_detail (emi_id, emi_number, amount, chits_no, emi_date, pa
 
 
 CREATE TABLE settings (
-    no INT NOT NULL PRIMARY KEY,
-    last_updated_member_no INT,
-    last_updated_date DATE,
-    settings TEXT
+    no INTEGER NOT NULL PRIMARY KEY,
+    last_updated_date TIMESTAMP(6),
+    settings_name VARCHAR(255),
+    settings_value VARCHAR(255),
+    last_updated_member_no INTEGER
 );
 
-INSERT INTO settings (no, last_updated_member_no, last_updated_date, settings)
-VALUES (1, 12,'2025-03-03', '{"secondaryLogin":"loginStatusYes","approvalCutOffDay":"Sunday","approvalProcess":"approvalProcessParallel","approvalCutOffTime":"16:00"}');
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (1, '2025-03-06 02:22:37.0538', 'approvalProcess', 'approvalProcessParallel', 12);
+
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (2, '2025-03-06 02:22:37.0538', 'secondaryLogin', 'loginStatusNo', 12);
+
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (3, '2025-03-06 02:22:37.0538', 'approvalCutOffDay', 'Sunday', 12);
+
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (4, '2025-03-06 02:22:37.0538', 'approvalCutOffTime', '16:00', 12);
 
 

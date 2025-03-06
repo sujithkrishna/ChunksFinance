@@ -1,0 +1,3 @@
+2025-03-06 16:48:00.144520-06:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MEMBERS" already exists; SQL statement:
+CREATE TABLE members ( no INTEGER NOT NULL, member_name VARCHAR(255) NOT NULL, email_id VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, mobile_number VARCHAR(255), member_dob DATE, reference_member_no INTEGER, address1 VARCHAR(255), place VARCHAR(255), taluk VARCHAR(255), district VARCHAR(255), state VARCHAR(255), pincode VARCHAR(255), member_type ENUM('PRIMARY', 'SECONDARY') NOT NULL, role ENUM('SUPER_ADMIN', 'USER') NOT NULL, PRIMARY KEY (no), CONSTRAINT uniq_member_composite UNIQUE (member_name, member_type, reference_member_no) ) [42101-232]

@@ -424,9 +424,7 @@
 
     <!-- Footer -->
     <footer>
-        &copy; 2025 Chunks Finance | 
-        <a href="#">Privacy Policy</a> | 
-        <a href="#">Terms of Service</a>
+        &copy; 2025 Chunks Finance | <a href="#" style="color: white; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: white; text-decoration: none;">Terms of Service</a>
     </footer>
 
     <script>

@@ -31,14 +31,15 @@ public class MemberDetailsService  implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
     
-    private final SettingsRepository settingsRepository;
-    
 	private ChunksFinancePropertyService propertyService;
+	
+    private SettingsService settingsService;
+	
     
-    public MemberDetailsService(MemberRepository memberRepository,SettingsRepository settingsRepository,ChunksFinancePropertyService propertyService) {
+    public MemberDetailsService(MemberRepository memberRepository,SettingsRepository settingsRepository,ChunksFinancePropertyService propertyService,SettingsService settingsService) {
         this.memberRepository = memberRepository;
-        this.settingsRepository = settingsRepository;
         this.propertyService=propertyService;
+        this.settingsService=settingsService;
     }
 
     @Override
@@ -48,9 +49,12 @@ public class MemberDetailsService  implements UserDetailsService {
     		        return new UsernameNotFoundException(propertyService.getFormattedProperty(ChunksFinanceConstants.USER_NOTFOUND_ERROR,emailId));
     		    });
     	if(member.getMemberType().equals(MemberModel.MemberType.SECONDARY)) {
-    		SettingsModel settingModelData =settingsRepository.findSettingsByApprovalProcess("secondaryLogin");
-    		String secondaryLoginStatus = settingModelData.getSettings().get("secondaryLogin");
-    		if("loginStatusNo".equals(secondaryLoginStatus)) {
+    		SettingsModel settingModelData =settingsService.getSettingByName("secondaryLogin");
+    		String secondaryLoginStatus = null;
+    		if(null != settingModelData) {
+    			secondaryLoginStatus = settingModelData.getSettingsValue();
+    		}
+    		if(ChunksFinanceConstants.LOGIN_STATUS_NO.equals(secondaryLoginStatus)) {
     	        throw new SecondaryLoginDisabledException(propertyService.getFormattedProperty(ChunksFinanceConstants.USER_SECONDARY_LOGIN_ERROR,emailId) );
     		}
     	}

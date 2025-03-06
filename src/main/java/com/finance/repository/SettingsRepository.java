@@ -1,6 +1,7 @@
 package com.finance.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,7 +26,6 @@ public interface SettingsRepository extends JpaRepository<SettingsModel, Integer
 	 Integer findMaxSettingsNo();
 	 
 	 
-	 @Query(value = "SELECT * FROM settings WHERE settings LIKE %:searchTerm%", nativeQuery = true)
-	 SettingsModel findSettingsByApprovalProcess(@Param("searchTerm") String searchTerm);
+	 Optional<SettingsModel> findBySettingsName(String settingsName);
 	 
 }

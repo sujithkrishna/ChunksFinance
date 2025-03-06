@@ -18,6 +18,8 @@ import com.finance.model.ChitsModel;
 @Repository
 public interface ChitsRepository extends JpaRepository<ChitsModel, Integer> {
 
+	ChitsModel findByChitsNo(Integer chitsNo);
+	
     @Query("SELECT COALESCE(MAX(c.chitsNo), 0) FROM ChitsModel c")
     Integer findMaxChitsNo();
     
@@ -26,6 +28,21 @@ public interface ChitsRepository extends JpaRepository<ChitsModel, Integer> {
     List<ChitsModel> findByFinanceOwnerAndStatus(@Param("financeOwnerNo") Integer financeOwnerNo);
     
     
-    @Query("SELECT c FROM ChitsModel c WHERE c.financeType.financeOwner.no = :financeOwnerNo AND c.currentStatus IN ('REQUESTED', 'INITIAL_APPROVAL')")
+    @Query("SELECT c FROM ChitsModel c WHERE c.secondApprovalTime IS NULL AND c.firstApprovalTime IS NOT NULL AND c.currentStatus IN ('INPROGRESS', 'INITIAL_APPROVAL')")
+    List<ChitsModel> findByFinanceOwnerAndStatusSequential();
+    
+    @Query("SELECT c FROM ChitsModel c WHERE c.secondApprovalTime IS NULL AND c.currentStatus = 'INPROGRESS'")
+    List<ChitsModel> findByFinanceOwnerAndStatusParallel();
+    
+    
+    @Query("SELECT c FROM ChitsModel c WHERE c.financeType.financeOwner.no = :financeOwnerNo AND c.firstApprovalTime IS NULL AND c.currentStatus IN ('REQUESTED', 'INITIAL_APPROVAL')")
     List<ChitsModel> findByChitsNotApprovedANDByFinanceOwner(@Param("financeOwnerNo") Integer financeOwnerNo);
+    
+    @Query("SELECT c FROM ChitsModel c WHERE  c.secondApprovalTime IS NULL AND c.firstApprovalTime IS NOT NULL AND c.currentStatus IN ('REQUESTED', 'INITIAL_APPROVAL')")
+    List<ChitsModel> findByChitsNotApprovedANDBySuperAdminSequential();
+    
+    
+    @Query("SELECT c FROM ChitsModel c WHERE  c.secondApprovalTime IS NULL AND c.currentStatus IN ('REQUESTED', 'INITIAL_APPROVAL')")
+    List<ChitsModel> findByChitsNotApprovedANDBySuperAdminParallel();
+    
 }

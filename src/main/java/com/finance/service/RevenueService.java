@@ -36,7 +36,7 @@ public class RevenueService {
     private RevenueRepository revenueRepository;
 	
 	@Autowired
-    private SettingsRepository settingsRepository;
+	private SettingsService settingsService;
 	
 	@Autowired
 	private CreateFinanceService financeService;
@@ -87,13 +87,16 @@ public class RevenueService {
 			 LocalDate endOfWeek = givenDate.with(DayOfWeek.SUNDAY);
 			 List<CurrentStatus> statusList = List.of(CurrentStatus.INPROGRESS, CurrentStatus.INITIAL_APPROVAL);
 			 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-				 SettingsModel settingModelData =settingsRepository.findSettingsByApprovalProcess("approvalProcess");
-				 String approvalProcessStatus = settingModelData.getSettings().get("approvalProcess");
-					 if("approvalProcessSequential".equals(approvalProcessStatus)) {
-						 return revenueRepository.findRevenueByDateRangeAndStatusAndSuperAdminSequentialApprover(startOfWeek, endOfWeek, statusList);
-					 }else {
-						 return revenueRepository.findRevenueByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);
-					 }
+				 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+				 String approvalProcessStatus = null;
+				 if(null != settingModelData) {
+					 approvalProcessStatus = settingModelData.getSettingsValue();
+				 }
+				 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+					 return revenueRepository.findRevenueByDateRangeAndStatusAndSuperAdminSequentialApprover(startOfWeek, endOfWeek, statusList);
+				 }else {
+					 return revenueRepository.findRevenueByDateRangeAndStatusAndSuperAdminApprover(startOfWeek, endOfWeek, statusList);
+				 }
 			 }else {
 				 return revenueRepository.findRevenueByDateRangeAndStatusAndApprover(startOfWeek, endOfWeek, statusList, currentUser);
 			 }
