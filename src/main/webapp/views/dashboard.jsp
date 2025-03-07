@@ -500,21 +500,21 @@ footer {
 
 /* Add alternating background colors for enquiry items */
 .enquiry-item-1 {
-	background-color: #5fc867; /* Light green */
+	background-color: #8BB58C; /* Light green */
 	border-radius: 4px;
 	padding: 8px;
 	transition: background-color 0.3s ease;
 }
 
 .enquiry-item-2 {
-	background-color: #e9f009e8; /* Light yellow */
+	background-color: #C8E6C9; /* Light yellow */
 	border-radius: 4px;
 	padding: 8px;
 	transition: background-color 0.3s ease;
 }
 
 .enquiry-item-3 {
-	background-color: #fd7589; /* Light red */
+	background-color: #EEEEEE; /* Light red */
 	border-radius: 4px;
 	padding: 8px;
 	transition: background-color 0.3s ease;
@@ -648,30 +648,6 @@ footer {
 										<div class="enquiry-field">5000</div>
 										<div class="enquiry-field">09-03-2025</div>
 									</div>
-									<!-- Enquiry Items with alternating colors -->
-									<div class="enquiry-item enquiry-item-1">
-										<div class="enquiry-field">1</div>
-										<div class="enquiry-field">Joseph</div>
-										<div class="enquiry-field">Luis Jose</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">09-03-2025</div>
-									</div>
-									<!-- Enquiry Items with alternating colors -->
-									<div class="enquiry-item enquiry-item-1">
-										<div class="enquiry-field">1</div>
-										<div class="enquiry-field">Joseph</div>
-										<div class="enquiry-field">Luis Jose</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">09-03-2025</div>
-									</div>
-									<!-- Enquiry Items with alternating colors -->
-									<div class="enquiry-item enquiry-item-1">
-										<div class="enquiry-field">1</div>
-										<div class="enquiry-field">Joseph</div>
-										<div class="enquiry-field">Luis Jose</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">09-03-2025</div>
-									</div>
 
 									<div class="enquiry-item enquiry-item-2">
 										<div class="enquiry-field">2</div>
@@ -681,34 +657,6 @@ footer {
 										<div class="enquiry-field">16-03-2025</div>
 									</div>
 
-									<div class="enquiry-item enquiry-item-2">
-										<div class="enquiry-field">2</div>
-										<div class="enquiry-field">Roy</div>
-										<div class="enquiry-field">Sujith Krishna</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">16-03-2025</div>
-									</div>
-									<div class="enquiry-item enquiry-item-2">
-										<div class="enquiry-field">2</div>
-										<div class="enquiry-field">Roy</div>
-										<div class="enquiry-field">Sujith Krishna</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">16-03-2025</div>
-									</div>
-									<div class="enquiry-item enquiry-item-2">
-										<div class="enquiry-field">2</div>
-										<div class="enquiry-field">Roy</div>
-										<div class="enquiry-field">Sujith Krishna</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">16-03-2025</div>
-									</div>
-									<div class="enquiry-item enquiry-item-2">
-										<div class="enquiry-field">2</div>
-										<div class="enquiry-field">Roy</div>
-										<div class="enquiry-field">Sujith Krishna</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">16-03-2025</div>
-									</div>
 
 									<div class="enquiry-item enquiry-item-3">
 										<div class="enquiry-field">3</div>
