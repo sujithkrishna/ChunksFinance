@@ -753,7 +753,7 @@ footer {
 									<div class="upcomfing-events-field">3600</div>
 								</div>
 							
-								<div class="upcoming-events-item upcoming-events-item-1">
+								<div class="upcoming-events-item upcoming-events-item-2">
 									<div class="upcomfing-events-field">2</div>
 									<div class="upcomfing-events-field">Loan Return</div>
 									<div class="upcomfing-events-field"></div>
@@ -767,7 +767,7 @@ footer {
 									<div class="upcomfing-events-field">50000</div>
 								</div>
 								
-								<div class="upcoming-events-item upcoming-events-item-2">
+								<div class="upcoming-events-item upcoming-events-item-3">
 									<div class="upcomfing-events-field">4</div>
 									<div class="upcomfing-events-field">Projcted amount for Loan</div>
 									<div class="upcomfing-events-field"></div>
