@@ -380,29 +380,39 @@ footer {
 
 
 .table-row.header .table-cell:nth-child(2) { /* Request Type */
-    flex: 1.75;  /* Increased from 3 to 4 */
+    flex: 3;
     text-align: left;
+    padding-left: 30px; /* Increased from 20px */
 }
 
 .table-row:not(.header) .table-cell:nth-child(2) {
-    flex: 1.5;  /* Increased from 3 to 4 */
+    flex: 3;
+    text-align: left;
+    padding-left: 30px; /* Increased from 20px */
+    align-items: flex-start; /* Ensure content starts from left */
 }
 
 
 .table-row.header .table-cell:nth-child(3) { /* Amount */
-    flex: 1;
-    text-align: center;
+    flex: 0 1 150px;
+    text-align: right;
+    padding-right: 35px;
+    justify-content: flex-end; /* Add this line */
+    display: flex; /* Add this line */
 }
 
 .table-row:not(.header) .table-cell:nth-child(3) {
-    flex: 1;
-    text-align: center;
+    flex: 0 1 150px;
+    text-align: right;
+    padding-right: 35px;
+    justify-content: flex-end; /* Add this line */
+    display: flex; /* Add this line */
 }
 
 .table-row.header .table-cell:nth-child(4) { /* Date Submitted */
     flex: 1;
     text-align: right;
-    padding-right: 15px;
+    padding-right:  36px;
 }
 
 .table-row:not(.header) .table-cell:nth-child(4) {
@@ -411,14 +421,8 @@ footer {
     padding-right: 15px;
 }
 
-
-
-
-
 .table-cell {
-	padding: 10px;
-	flex: 1;
-	text-align: left;
+   padding: 8px 0; /* Adjust cell padding */
 }
 
 .table-cell:last-child {
@@ -426,27 +430,33 @@ footer {
 }
 
 .button-group-approved {
-	display: flex;
-	gap: 10px;
-	justify-content: flex-end;
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap; /* Prevent wrapping to new line */
+    padding: 2px 0;
+    justify-content: flex-end; /* Align to right */
+    width: 100%; /* Take full available width */
 }
 
 .button-group-approved button {
-	padding: 10px 20px;
-	background-color: #3D3D3D;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    height: 30px;
+    margin: 0; /* Remove any margin */
+    background-color: #3D3D3D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .button-group-approved button i {
-	font-size: 14px;
+	font-size: 12px;
 	transition: transform 0.2s ease;
+	margin-right: 5px;
 }
 
 .button-group-approved button:hover i {
@@ -684,6 +694,57 @@ input[type="date"]:focus {
 		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 		    font-weight: 500; /* Optional: Match dashboard header weight */
 		}
+		
+/* Updated Table Styles */
+.table-row.header .table-cell:nth-child(1), /* Requester */
+.table-row:not(.header) .table-cell:nth-child(1) {
+    flex: 1 0 18%; /* Minimum width for requester column */
+    min-width: 190px;
+    padding-left: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-row.header .table-cell:nth-child(2), /* Request Type */
+.table-row:not(.header) .table-cell:nth-child(2) {
+    flex: 2 0 32%; /* More flexible width */
+    min-width: 240px;
+    padding-left: 15px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-row.header .table-cell:nth-child(3), /* Amount */
+.table-row:not(.header) .table-cell:nth-child(3) {
+    flex: 1 0 150px; /* Fixed width for amount */
+    text-align: right;
+    padding-right: 25px;
+    white-space: nowrap; /* Prevent amount wrapping */
+}
+
+.table-row.header .table-cell:nth-child(4), /* Date */
+.table-row:not(.header) .table-cell:nth-child(4) {
+    flex: 1 0 120px;
+    text-align: right;
+    padding-right: 25px;
+}
+
+.table-row.header .table-cell:nth-child(5), /* Actions */
+.table-row:not(.header) .table-cell:nth-child(5) {
+    flex: 0 0 180px; /* Fixed width for action buttons */
+    text-align: center;
+    padding-right: 15px;
+}
+
+/* Ensure consistent vertical alignment */
+.table-cell {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 8px 0; /* Reduced vertical padding */
+}
+		
 </style>
 </head>
 <body>
@@ -864,8 +925,8 @@ input[type="date"]:focus {
 							<c:if test="${not empty nonApprovedChitsEMI}">
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(46, 135, 134, 0.9), rgba(60, 176, 174, 0.9))">
-									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber} </div>
-									<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} chits No: ${ChitsApprovalItem.chits.chitsNo}</div>
+									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber}</div>
+									<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} chits No: ${ChitsApprovalItem.chits.chitsNo}112</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
 									<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.emiDate}</span></div>
 									<div class="table-cell">
