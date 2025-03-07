@@ -15,6 +15,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String SILENT_WATCHER = "SilentWatcher";
 	
+	public static final String FINANCE_ENQUIRES = "FinanceEnquires";
+	
 	public static final String ALL_FINANCE = "AllFinance";
 	
 	public static final String CHITS_NUMBER = "chitsNumber";
@@ -40,6 +42,8 @@ public class ChunksFinanceConstants {
 	public static final String PRIMARY = "Primary";
 	
 	public static final String CURRENT_USER = "currentUser";
+	
+	public static final String LOANENQUIRES_NO = "loanenquiresNo";
 	
 	public static final String ALL_SETTINGS = "allSettings";
 	
@@ -73,6 +77,10 @@ public class ChunksFinanceConstants {
 
 	public static final String MEMBER_NAME = "memberName";
 	
+	public static final String SECONDARY_MEMBERS = "secondaryMembers";
+
+	public static final String PRIMARY_MEMBERS = "primaryMembers";
+	
 	public static final String APPROVAL_PROCESS_SEQUENTIAL = "approvalProcessSequential";
 	
 	public static final String LOGIN_STATUS_NO = "loginStatusNo";
@@ -101,6 +109,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String LOAN_CREATE_MESSAGE = "loan.create.message";
 	
+	public static final String LOAN_ENQUIRES_CREATE_MESSAGE = "loan.enquires.create.message";
+	
 	public static final String USER_NOTFOUND_ERROR = "user.notfound.error";
 	
 	public static final String CREATE_CHITS_MESSAGE = "create.chits.message";
@@ -118,4 +128,13 @@ public class ChunksFinanceConstants {
 	public static final String STATUS = "status";
 
 	public static final String CURRENT_TYPE = "currentType";
+	
+	public static final String LOAN_ENQUIRES_APPLICANT_NAME1 = "loanEnquiresApplicantName1";
+
+	public static final String OTHERS_NAME = "others-name";
+
+	public static final String OTHERS = "others";
+	
+	public static final String SELF = "Self";
+	
 }

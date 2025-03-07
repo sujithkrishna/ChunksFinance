@@ -1,5 +1,7 @@
 package com.finance.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,8 @@ public interface FinanceRepository extends JpaRepository<FinanceModel, Long>{
 	@Query("SELECT MAX(f.id) FROM FinanceModel f")
     Integer findMaxNo();
 
-	//FinanceModel findByFinanceTypeAndFinanceNameAndFinanceOwnerName(String financeType, String financeName, String financeOwnerName);
+	@Query("SELECT f FROM FinanceModel f ORDER BY f.loanPriorityOrderNumber ASC")
+	List<FinanceModel> findAllSortedByLoanPriorityOrderNumber();
 	
 	
 }

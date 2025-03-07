@@ -90,9 +90,9 @@ public class LoanService {
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		
+		
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
 		model.addAttribute("primaryMembers",primaryMembers);
-		
 		List<MemberModel> secondaryMembers = memberService.getAllSecondaryMemeber();
 		model.addAttribute("secondaryMembers",secondaryMembers);
 		

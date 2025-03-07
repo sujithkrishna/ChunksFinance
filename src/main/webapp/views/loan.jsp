@@ -1174,7 +1174,7 @@
         if (isValid) {
          // Submit the form or handle valid data
          
-        	 const form = document.getElementById('formloan');
+        		 const form = document.getElementById('formloan');
 			    form.method = 'POST';
 			    form.action = 'loan'; // Your endpoint URL
 

@@ -42,8 +42,14 @@ public class CreateFinanceService {
 	}
 	
 	
+	public List<FinanceModel> getAllSortedByLoanPriorityNum(){
+		return financeRepository.findAllSortedByLoanPriorityOrderNumber();
+	}
+	
 	 public List<FinanceModel> getAllFinanceRecords() {
 	        return financeRepository.findAll();
 	 }
 	
+	 
+	 
 }

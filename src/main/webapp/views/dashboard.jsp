@@ -698,22 +698,24 @@ footer {
 
 								<!-- Updated Loan Enquiries Section -->
 								<div class="loan-enquiries">
-									<h3><i class='fas fa-hand-holding-usd' style='font-size:21px;color:#196a19'></i>Loan Enquires</h3>
+									<h3><i class='fa-solid fa-bell' style='font-size:21px;color:#196a19'></i> Upcoming Events</h3>
 									<div class="enquiry-header">
-										<div class="enquiry-field">ID</div>
-										<div class="enquiry-field">Member Name</div>
+										<div class="enquiry-field"></div>
+										<div class="enquiry-field">Applicant Name</div>
 										<div class="enquiry-field">Member Name</div>
 										<div class="enquiry-field">Amount</div>
 										<div class="enquiry-field">Due Date</div>
 									</div>
 
 									<!-- Enquiry Items with alternating colors -->
+									
+								
 									<div class="enquiry-item enquiry-item-1">
-										<div class="enquiry-field">1</div>
-										<div class="enquiry-field">Joseph</div>
+										<div class="enquiry-field"></div>
+										<div class="enquiry-field"></div>
 										<div class="enquiry-field">Luis Jose</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">09-03-2025</div>
+										<div class="enquiry-field"></div>
+										<div class="enquiry-field"></div>
 									</div>
 
 									<div class="enquiry-item enquiry-item-2">
@@ -726,58 +728,39 @@ footer {
 
 									<div class="enquiry-item enquiry-item-3">
 										<div class="enquiry-field">3</div>
-										<div class="enquiry-field">Sheela</div>
-										<div class="enquiry-field">Jijin Francis</div>
+										<div class="enquiry-field"></div>
+										<div class="enquiry-field"></div>
 										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">23-03-2025</div>
+										<div class="enquiry-field"></div>
 									</div>
 								</div>
-								
-								
-								
 								<!-- Upcoming Events -->
-						    <div class="upcoming-events">
-						        <h3><i class='fa-solid fa-bell' style='font-size:21px;color:#196a19'></i> Upcoming Events</h3>
-						        <div class="upcoming-events-header">
-						            <div class="upcoming-events-field">ID</div>
-						            <div class="upcoming-events-field">Member Name</div>
-						            <div class="upcoming-events-field"></div>
-						            <div class="upcoming-events-field">Amount</div>
-						        </div>
-						        <!-- Items -->
-						        
-								<div class="upcoming-events-item upcoming-events-item-1">
-									<div class="upcomfing-events-field">1</div>
-									<div class="upcomfing-events-field">Weekly Collection</div>
-									<div class="upcomfing-events-field"></div>
-									<div class="upcomfing-events-field">3600</div>
-								</div>
-							
-								<div class="upcoming-events-item upcoming-events-item-2">
-									<div class="upcomfing-events-field">2</div>
-									<div class="upcomfing-events-field">Loan Return</div>
-									<div class="upcomfing-events-field"></div>
-									<div class="upcomfing-events-field">50000</div>
-								</div>
-							
-								<div class="upcoming-events-item upcoming-events-item-3">
-									<div class="upcomfing-events-field">3</div>
-									<div class="upcomfing-events-field">Return Amount back to Sujith</div>
-									<div class="upcomfing-events-field"></div>
-									<div class="upcomfing-events-field">50000</div>
-								</div>
-								
-								<div class="upcoming-events-item upcoming-events-item-3">
-									<div class="upcomfing-events-field">4</div>
-									<div class="upcomfing-events-field">Projcted amount for Loan</div>
-									<div class="upcomfing-events-field"></div>
-									<div class="upcomfing-events-field">50000</div>
-								</div>
-								
-						    </div>
-								
-								
-								
+								    <div class="upcoming-events">
+								    	<h3><i class='fas fa-hand-holding-usd' style='font-size:21px;color:#196a19'></i><a style="color: inherit; text-decoration: none;" href="loan-enquires">Loan Enquires(+)</a></h3>
+								        <div class="upcoming-events-header">
+								            <div class="upcoming-events-field">ID</div>
+								            <div class="upcoming-events-field">Applicant Name</div>
+								            <div class="upcoming-events-field">Member Name</div>
+								            <div class="upcoming-events-field">Amount</div>
+								            <div class="upcoming-events-field">Loan Date</div>
+								        </div>
+											<!-- 2. Get Loan List Using Finance Name -->
+   											<c:set var="loanList" value="${requestScope[financeItem.financeName]}" />
+   											<c:choose>
+     											<c:when test="${not empty loanList}"> 
+     													<c:forEach items="${loanList}" var="loan">
+     															<div class="upcoming-events-item upcoming-events-item-${loan.id}">
+																<div class="upcomfing-events-field">${loan.id} ${loan.status}</div>
+																<div class="upcomfing-events-field">${loan.applicantName}</div>
+																<div class="upcomfing-events-field">${loan.loanEnquiresReferenceName.memberName}</div>
+																<div class="upcomfing-events-field">${loan.loanAmount}</div>
+																<div class="upcomfing-events-field">${loan.loanEnquiresDate}</div>
+															</div>
+     													 </c:forEach>
+     											 </c:when>
+   												<c:otherwise></c:otherwise>
+   											</c:choose>	
+								    </div>
 							</div>
 						</section>
 					</c:forEach>

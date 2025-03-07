@@ -57,6 +57,9 @@ public class FinanceModel {
 
     @Column(name = "current_balance")
     private Double currentBalance;
+    
+    @Column(name = "loan_priority_order_number")
+    private Integer loanPriorityOrderNumber;
 
     
 }

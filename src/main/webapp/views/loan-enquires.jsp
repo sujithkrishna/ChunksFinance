@@ -6,21 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Finance Account | Chunks Finance Management System</title>
-    <meta name="description" content="Create new financial accounts and manage fund types through Chunks Finance comprehensive financial management interface">
-    <meta name="keywords" content="finance creation, account setup, fund management, chunks finance, financial administration">
-    <meta name="author" content="Chunks Finance">
-    
-    <!-- Open Graph Tags -->
-    <meta property="og:title" content="Financial Account Creation - Chunks Finance">
-    <meta property="og:description" content="Professional interface for creating and managing financial accounts">
-    <meta property="og:type" content="website">
-    
-    <!-- Preconnected Resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    
-    <!-- External Resources -->
+    <meta name="description" content="Chunks Finance Upload Portal - Secure financial document management system for administrators">
+    <meta name="keywords" content="finance upload, chunks finance, document management, financial records, admin portal">
+    <title>Financial Document Upload | Chunks Finance Admin</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -329,6 +317,7 @@
             .user-profile > div:first-child {
                 padding-top: 8px;
             }
+
 			.user-role h4 {
 				text-align: center; /* Center align on mobile */
 			}
@@ -360,38 +349,38 @@
 					margin-right: 40px; /* Optional: Add right margin for balance */
 				}
 			}
+			
+			/* === Add Error Styles === */
+			.error-message {
+				color: #e74c3c;
+				font-size: 0.8rem;
+				margin-top: 0.25rem;
+				display: none;
+				align-items: center;
+				gap: 0.25rem;
+				opacity: 0;
+				transform: translateY(-5px);
+				transition: all 0.3s ease;
+				width: 100%;
+			}
 
-        /* === Add Error Styles === */
-        .error-message {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            display: none;
-            align-items: center;
-            gap: 0.25rem;
-            opacity: 0;
-            transform: translateY(-5px);
-            transition: all 0.3s ease;
-            width: 100%;
-        }
+			.error-message.show {
+				display: flex;
+				opacity: 1;
+				transform: translateY(0);
+			}
 
-        .error-message.show {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
+			.input-field.error {
+				border-color: #e74c3c !important;
+				animation: shake 0.4s ease;
+			}
 
-        .input-field.error {
-            border-color: #e74c3c !important;
-            animation: shake 0.4s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
+			@keyframes shake {
+				0%, 100% { transform: translateX(0); }
+				25% { transform: translateX(-5px); }
+				75% { transform: translateX(5px); }
+			}
+			
 			/* Update the CSS for success message */
 			.green-success-message {
 				background: #4CAF50;
@@ -471,10 +460,9 @@
 
 			.close-btn:hover {
 				background: rgba(255,255,255,0.2);
-			}		
-
-        /* === Error Styles END === */
+			}
 			
+			/* === Error Styles END === */			
 			
         /* === Common END here === */
 
@@ -518,25 +506,26 @@
             gap: 5px;
         }
 
-        .form-group label {
-            flex: 1;
-            margin-right: 10px;
-            text-align: left;
-            font-size: 14px;
-            color: #555;
-        }
+		.form-group label {
+			flex: 1;
+			margin-right: 10px;
+			text-align: left;
+			font-size: 14px;
+			color: #555;
+		}
 
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background-color: #fafafa;
-            color: #333;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box;
-        }
+			.input-field {
+			flex: 1.025; /* Changed from 2 to 1.5 for 3:2 ratio */
+			width: 100%;
+			padding: 10px;
+			font-size: 14px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			background-color: #fafafa;
+			color: #333;
+			transition: border-color 0.3s ease;
+			box-sizing: border-box;
+		}
 
         .input-field:focus {
             border-color: #007bff;
@@ -612,6 +601,7 @@
                 width: 100%;
             }
         }
+
 		/* Add desktop-specific adjustment */
         @media (min-width: 769px) {
             header {
@@ -659,12 +649,15 @@
 				justify-content: flex-start;
             }
         }
-        .user-role h4 {
-		    text-align: center;
-		    margin: 0;
-		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
-		    font-weight: 500; /* Optional: Match dashboard header weight */
-		}        
+	        .user-role h4 {
+			    text-align: center;
+			    margin: 0;
+			    font-size: 14px; /* Optional: Increase font size for better hierarchy */
+			    font-weight: 500; /* Optional: Match dashboard header weight */
+			}         
+			.hidden {
+			    display: none !important;
+			}        
     </style>
 </head>
 <body>
@@ -680,7 +673,7 @@
         </div>
     </div>
 
-    <!-- Modified Header Section -->
+    <!-- Corrected Header Section -->
     <header>
         <div>
             <h1>Chunks Finance Dashboard</h1>
@@ -715,16 +708,16 @@
         <ul>
             <li><a href="dashboard">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
-            <li><a href="finance-uploads">Finance Upload</a></li>
+            <li><a href="finance-uploads" class="active">Finance Upload</a></li>
             <li><a href="reports">Reports</a></li>
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
             <li><a href="expenses">Expenses</a></li>
              <c:choose>
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
-		            <li><a href="member" >Members</a></li>
+		            <li><a href="member">Members</a></li>
 		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance" class="active">Create Finance</a></li>
+	            	<li><a href="finance">Create Finance</a></li>
 	            </c:when>
             </c:choose>
         </ul>
@@ -734,7 +727,7 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2>Create Finance</h2>
+                <h2>Loan Enquires</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
@@ -746,93 +739,91 @@
 					</div>
 				</div>
 				<!-- Error Message -->
-                <div class="red-error-message" id="redErrorMessage">
-                    <i class="fas fa-check-circle"></i>
+				<div class="red-error-message" id="redErrorMessage">
+					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
 						<span><c:out value="${error}" /></span>
 					</div>
-                    <div class="close-btn" onclick="closeRedErrorMessage()">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>	
-                <form action="finance" id="formcreateFinance" name="formcreateFinance"	>
-                    <!-- Finance Type -->
-                    <div class="form-group">
-                        <label for="finance-type">Finance Type</label>
-                        <select id="finance-type" name="financeType" class="input-field" required>
-                            <option value="" disabled selected>Select Finance Type</option>
-                            <option value="PRIMARY">Primary</option>
-                            <option value="SECONDARY">Secondary</option>
-                        </select>
-                        <div class="error-message" id="finance-type-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Type is required</span>
-                        </div>
-                    </div>
-
-                    <!-- Finance Name -->
-                    <div class="form-group">
-                        <label for="finance-name">Finance Name</label>
-                        <input type="text" id="finance-name" name="financeName" class="input-field" placeholder="Enter finance Name" required>
-                        <div class="error-message" id="finance-name-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Name is required</span>
-                        </div>
-                    </div>
-                    <!-- Finance Owner Name -->
-                    <div class="form-group">
-                        <label for="finance-owner">Finance Owner Name</label>
-                        <select id="finance-owner" name="financeOwner" class="input-field" required>
-                            <option value="" disabled selected>Select Person</option>
+					<div class="close-btn" onclick="closeRedErrorMessage()">
+						<i class="fas fa-times"></i>
+					</div>
+				</div>				
+              	<form method="post" action="loan-enquires" id="loan-enquires" name="loan-enquires">
+              	
+              		 <!-- Loan No -->
+                            <div class="form-group">
+                                <label for="loan-enquires-no">Loan Enquires No</label>
+                                <input type="text" id="loan-enquires-no" name="id" class="input-field" placeholder="LoanNo" required readonly>
+								<div class="error-message" id="loan-enquires-number-error">
+									<i class="fas fa-exclamation-circle"></i>
+									<span>Loan Enquires Number is required</span>
+								</div>								
+                            </div>
+              	
+                    <!-- Finance Source Name -->
+					<div class="form-group">
+						<label for="finance-source">Loan Reference Name</label>
+						<select id="finance-source" name="loanEnquiresReferenceName" class="input-field" required>
+							<option value="" disabled selected>Loan Reference Name</option>
 					        <c:forEach items="${primaryMembers}" var="member">
 					            <option value="${member.no}">${member.memberName}</option>
-					        </c:forEach>  
-                        </select>
-                        
-                        <div class="error-message" id="finance-owner-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Owner Name is required</span>
-                        </div>
-                    </div>
+					        </c:forEach>
+						</select>
+						<div class="error-message" id="finance-source-error">
+							<i class="fas fa-exclamation-circle"></i>
+							<span>Reference Name is required</span>
+						</div>
+					</div>
 
                     <!-- Finance Date -->
                     <div class="form-group">
-                        <label for="finance-date">Finance Creation Date</label>
-                        <input type="date" id="finance-date"  name="financeCreationDate" class="input-field" required>
-                        <div class="error-message" id="finance-date-error">
+                        <label for="finance-date">Proposed Loan Date</label>
+                        <input type="date" id="finance-date" name="loanEnquiresDate" class="input-field" required>
+                        <div class="error-message" id="financeDate-error">
                             <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Date is required</span>
-                        </div>
+                            <span>Please select a date</span>
+                        </div>						
                     </div>
 
-                    <!-- Finance Amount (Optional) -->
+                     <!-- Loan Applicant Name -->
+                          <div class="form-group">
+                              <label for="applicant-name">Loan Applicant Name</label>
+						 <select id="applicant-name" name="loanEnquiresApplicantName1" class="input-field" required>
+        					<option value="" disabled selected>Select Applicant</option>
+   						 </select>	
+						<div class="error-message" id="applicant-name-error">
+							<i class="fas fa-exclamation-circle"></i>
+							<span>Applicant Name is required</span>
+						</div>								
+                          </div>
+					
+						<div class="form-group hidden" id="others-name-group">
+						    <label for="others-name">Persons Name</label>
+						    <input type="text" id="others-name" name="others-name" class="input-field" placeholder="Enter person name">
+						    <div class="error-message" id="others-name-error">
+						        <i class="fas fa-exclamation-circle"></i>
+						        <span>PersonName is required</span>
+						    </div>
+						</div>
+                    
+                    
+                    <!-- Finance Amount -->
                     <div class="form-group">
                         <label for="finance-amount">Finance Amount</label>
-                        <input type="number" id="finance-amount"  name="financeAmount" class="input-field" placeholder="Enter finance amount">
-					    <!-- Add this error message -->
-					    <div class="error-message" id="finance-amount-error">
-					        <i class="fas fa-exclamation-circle"></i>
-					        <span>Finance Amount is required for Primary accounts</span>
-					    </div>                        
+                        <input type="number" id="finance-amount" name="loanAmount" class="input-field" placeholder="Enter finance amount" required>
+                        <div class="error-message" id="finance-amount-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Amount is required</span>
+                        </div>						
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="loan-priority-order-number">Loan Priority Order</label>
-                        <input type="number" id="loanPriorityOrderNumber"  name="loanPriorityOrderNumber" class="input-field" placeholder="Enter loan Priority Order Number">
-					    <!-- Add this error message -->
-					    <div class="error-message" id="finance-loan-priority-order-number-error">
-					        <i class="fas fa-exclamation-circle"></i>
-					        <span>loan Priority Order Number is required</span>
-					    </div>                        
-                    </div>                    
 
                     <!-- Submit Button -->
-                    <div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fa-solid fa-receipt"></i> Add Finance</button>
-                        <button type="button"><i class="fas fa-edit"></i> Edit</button>
-                        <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>
-                    </div>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					<div class="button-group">
+                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Add Loan Enquires</button>
+                        <button type="button"> <i class="fas fa-edit"></i>Edit</button>
+                        <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
+					</div>
+					 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>	
                 </form>
             </section>
         </div>
@@ -846,87 +837,70 @@
 	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
     <script>
-	
-			 // Check for success message on page load
-		    document.addEventListener('DOMContentLoaded', function() {
-		    	
-		    	const dateInput = document.getElementById('finance-date');
-		    	const options = { timeZone: 'Asia/Kolkata' };
-		        const today = new Date().toLocaleDateString('en-CA', options);
-		        dateInput.value = today;
-		    	
-		        <c:if test="${not empty success}">
-		            showSuccessMessage();
-		        </c:if>	  
-		        <c:if test="${not empty error}">
-		        showErrorMessage();
-		    </c:if>	             
-		    });    
     
-        function validateForm() {
-
-            const financeType = document.getElementById("finance-type");
-            const financeName = document.getElementById("finance-name");
-            const financeOwner = document.getElementById("finance-owner");
-            const financeDate = document.getElementById("finance-date");
-            const financeAmount = document.getElementById("finance-amount"); 
-            let isValid = true;
-
-            // Clear previous errors
-            clearError(financeType, 'finance-type-error');
-            clearError(financeName, 'finance-name-error');
-            clearError(financeOwner, 'finance-owner-error');
-            clearError(financeDate, 'finance-date-error');
-
-            // Validate Finance Type
-            if (!financeType.value.trim()) {
-                showError(financeType, 'finance-type-error');
-                isValid = false;
-            }
-
-            // Validate Finance Name
-            if (!financeName.value.trim()) {
-                showError(financeName, 'finance-name-error');
-                isValid = false;
-            }
-
-            // Validate Finance Owner Name
-            if (!financeOwner.value.trim()) {
-                showError(financeOwner, 'finance-owner-error');
-                isValid = false;
-            }
-
-            // Validate Finance Date
-            if (!financeDate.value.trim()) {
-                showError(financeDate, 'finance-date-error');
-                isValid = false;
-            }
-            if (financeType.value === "PRIMARY" && !financeAmount.value.trim()) {
-                showError(financeAmount, 'finance-amount-error');
-                isValid = false;
-            }
-
-            if (isValid) {
-                // You can add form submission logic here			
-               // showSuccessMessage();
-				//showErrorMessage();
-				// Create a hidden form
-			    const form = document.getElementById('formcreateFinance');
-			    form.method = 'POST';
-			    form.action = 'finance'; // Your endpoint URL
-
-			    // Add CSRF token (required for Spring Security)
-			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
-			    const csrfInput = document.createElement('input');
-			    csrfInput.type = 'hidden';
-			    csrfInput.name = '_csrf';
-			    csrfInput.value = csrfToken;
-			    form.appendChild(csrfInput);
-			    document.body.appendChild(form);
-			    form.submit();					
-				
-            }
+	 // Check for success message on page load
+    document.addEventListener('DOMContentLoaded', function() {
+    	
+    	  const dateInput = document.getElementById('finance-date');
+    	  const options = { timeZone: 'Asia/Kolkata' };
+	        const today = new Date().toLocaleDateString('en-CA', options);
+	        dateInput.value = today;
+			
+	        document.getElementById('loan-enquires-no').value = '${loanenquiresNo}';
+    	
+	        <c:if test="${not empty success}">
+	            showSuccessMessage();
+	        </c:if>	  
+	        <c:if test="${not empty error}">
+	       		 showErrorMessage();
+	   		 </c:if>	             
+    	});
+	 
+    document.getElementById('applicant-name').addEventListener('change', function() {
+        const othersGroup = document.getElementById('others-name-group');
+        const hiddenInput = document.getElementById('loanEnquiresApplicantName');
+        
+        if (this.value === 'others') {
+            othersGroup.classList.remove('hidden');
+            hiddenInput.value = ''; // Clear the hidden input
+        } else {
+            othersGroup.classList.add('hidden');
+            hiddenInput.value = this.value; // Set member ID to hidden input
         }
+    });
+	 
+    const secondaryMembers = [
+	      <c:forEach items="${secondaryMembers}" var="secMember" varStatus="loop">
+	          { 
+	              no: "${secMember.referenceMember.no}", 
+	              memberNo: "${secMember.no}",
+	              memberName: "${secMember.memberName}" 
+	          }<c:if test="${not loop.last}">,</c:if>
+	      </c:forEach>
+	  ];
+
+
+	  document.getElementById('finance-source').addEventListener('change', function() {
+	        const primaryMemberNo = this.value;
+	        const primaryMemberName = this.options[this.selectedIndex].text;
+	        const applicantSelect = document.getElementById('applicant-name');
+	        
+	        // Clear existing options
+	        applicantSelect.innerHTML = '<option value="" disabled selected>Select Applicant</option> <option value="'+primaryMemberNo+'">'+primaryMemberName+'</option>';
+	        
+	        // Filter and populate secondary members
+	        secondaryMembers
+	            .filter(member => member.no === primaryMemberNo)
+	            .forEach(member => {
+	                const option = new Option(member.memberName, member.memberNo);
+	                applicantSelect.add(option);
+	            });
+	        const othersOption = new Option("Others", "others");
+	        applicantSelect.add(othersOption);
+	    });
+	 
+	 
+	 
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
             errorMsg.classList.add('show');
@@ -938,10 +912,6 @@
 		function closeRedErrorMessage() {
             document.getElementById('redErrorMessage').classList.remove('show');
         }
-		
-		document.getElementById('finance-amount').addEventListener('input', function() {
-		    clearError(this, 'finance-amount-error');
-		});
 
         function showSuccessMessage() {
             const successMsg = document.getElementById('greenSuccessMessage');
@@ -951,39 +921,100 @@
             }, 5000); // Auto-hide after 5 seconds
         }
 		
-		function closeGreenSuccessMessage() {
+        function closeGreenSuccessMessage() {
             document.getElementById('greenSuccessMessage').classList.remove('show');
         }
-        // Function to show error message
+
+// Updated JavaScript
+        function validateForm() {
+            const fields = [
+                { id: 'finance-source', errorId: 'finance-source-error' },
+                { id: 'applicant-name', errorId: 'applicant-name-error' },
+                { id: 'finance-date', errorId: 'financeDate-error' },    
+                { id: 'finance-amount', errorId: 'finance-amount-error' } 
+            ];
+
+            let isValid = true;
+
+            fields.forEach(({ id, errorId }) => {
+                const field = document.getElementById(id);
+                clearError(field, errorId);
+
+                if (field.tagName === 'SELECT') {
+                    if (field.value === "" || field.value === null) {
+                        showError(field, errorId);
+                        isValid = false;
+                    }
+                } else {
+                    if (!field.value.trim()) {
+                        showError(field, errorId);
+                        isValid = false;
+                    }
+                }
+            });
+
+            const applicantValue = document.getElementById('applicant-name').value;
+            if (applicantValue === 'others') {
+                const othersName = document.getElementById('others-name');
+                if (!othersName.value.trim()) {
+                    showError(othersName, 'others-name-error');
+                    isValid = false;
+                }
+            }
+            
+            
+            
+            if (isValid) {
+            	
+            	 const form = document.getElementById('loan-enquires');
+ 			    form.method = 'POST';
+ 			    form.action = 'loan-enquires'; // Your endpoint URL
+
+ 			    // Add CSRF token (required for Spring Security)
+ 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+ 			    const csrfInput = document.createElement('input');
+ 			    csrfInput.type = 'hidden';
+ 			    csrfInput.name = '_csrf';
+ 			    csrfInput.value = csrfToken;
+ 			    form.appendChild(csrfInput);
+ 			    document.body.appendChild(form);
+ 			    form.submit();		
+            	
+            	
+            // Submit the form or handle valid data			
+              // showSuccessMessage();
+				//showErrorMessage();
+            }
+        }
+
         function showError(input, errorId) {
             const errorMessage = document.getElementById(errorId);
             input.classList.add('error');
             errorMessage.classList.add('show');
         }
 
-        // Function to clear error message
         function clearError(input, errorId) {
             const errorMessage = document.getElementById(errorId);
             input.classList.remove('error');
             errorMessage.classList.remove('show');
         }
 
-        // Add input event listeners to clear errors when typing
-        document.getElementById('finance-type').addEventListener('input', function() {
-            clearError(this, 'finance-type-error');
+        // Add input event listeners to clear errors
+        document.querySelectorAll('.input-field').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorId = `${this.id}-error`;
+                clearError(this, errorId);
+            });
         });
 
-        document.getElementById('finance-name').addEventListener('input', function() {
-            clearError(this, 'finance-name-error');
+        // Add change listeners for select elements
+        document.querySelectorAll('select.input-field').forEach(select => {
+            select.addEventListener('change', function() {
+                const errorId = `${this.id}-error`;
+                clearError(this, errorId);
+            });
         });
 
-        document.getElementById('finance-owner').addEventListener('input', function() {
-            clearError(this, 'finance-owner-error');
-        });
-
-        document.getElementById('finance-date').addEventListener('input', function() {
-            clearError(this, 'finance-date-error');
-        });
 		
         // Function to handle button click
         function handleButtonClick(event) {
@@ -1026,12 +1057,11 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 if(this.classList.contains('yes')) {
-                    // Replace with actual logout logic
                 	const form = document.getElementById('financeLogout');
      			    form.method = 'POST';
      			    form.action = 'perform_logout'; // Your endpoint URL
 
-     			    // Add CSRF token (required for Spring Security)
+	     			    // Add CSRF token (required for Spring Security)
 	     			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
 	     			    const csrfInput = document.createElement('input');
 	     			    csrfInput.type = 'hidden';
