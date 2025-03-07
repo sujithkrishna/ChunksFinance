@@ -61,9 +61,10 @@ header p {
 }
 /* Add new styles */
 .main-card {
-	display: flex;
-	gap: 30px;
-	margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 30px;
+    margin-top: 20px;
 }
 
 .stats-container {
@@ -524,6 +525,72 @@ footer {
 .enquiry-item:hover {
 	filter: brightness(97%);
 }
+
+/* Upcoming Events Section */
+.upcoming-events {
+    flex: 1 0 100%; /* Take full width of container */
+    background: #f4f7fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 0; /* Remove previous margin */
+    order: 3; /* Ensure it appears after other elements */
+}
+
+.upcoming-events h3 {
+    font-size: 18px;
+    color: #334558;
+    margin-bottom: 15px;
+}
+
+.upcoming-events-header, 
+.upcoming-events-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.upcoming-events-header {
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.upcoming-events-field {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Alternating background colors */
+.upcoming-events-item-1 {
+    background-color: #8BB58C;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.upcoming-events-item-2 {
+    background-color: #C8E6C9;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.upcoming-events-item-3 {
+    background-color: #EEEEEE;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+/* Hover effects */
+.upcoming-events-item:hover {
+    filter: brightness(97%);
+    cursor: pointer;
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+
 </style>
 </head>
 <body>
@@ -593,7 +660,7 @@ footer {
 				<c:otherwise>
 					<c:forEach items="${AllFinance}" var="financeItem">
 						<section id="Content">
-							<h2>${financeItem.financeName}</h2>
+							<h2><i class='fa-brands fa-btc' style='font-size:20px;color:#196a19'></i> ${financeItem.financeName}</h2>
 							<h5>
 								The fund is managed by ${financeItem.financeOwner.memberName} started on <span class="formattedStartDate">${financeItem.financeCreationDate}</span>
 							</h5>
@@ -631,7 +698,7 @@ footer {
 
 								<!-- Updated Loan Enquiries Section -->
 								<div class="loan-enquiries">
-									<h3>📋 Loan Enquires</h3>
+									<h3><i class='fas fa-hand-holding-usd' style='font-size:21px;color:#196a19'></i>Loan Enquires</h3>
 									<div class="enquiry-header">
 										<div class="enquiry-field">ID</div>
 										<div class="enquiry-field">Member Name</div>
@@ -657,7 +724,6 @@ footer {
 										<div class="enquiry-field">16-03-2025</div>
 									</div>
 
-
 									<div class="enquiry-item enquiry-item-3">
 										<div class="enquiry-field">3</div>
 										<div class="enquiry-field">Sheela</div>
@@ -665,9 +731,53 @@ footer {
 										<div class="enquiry-field">5000</div>
 										<div class="enquiry-field">23-03-2025</div>
 									</div>
-
-									<!-- Add more items with enquiry-item-3 for red background -->
 								</div>
+								
+								
+								
+								<!-- Upcoming Events -->
+						    <div class="upcoming-events">
+						        <h3><i class='fa-solid fa-bell' style='font-size:21px;color:#196a19'></i> Upcoming Events</h3>
+						        <div class="upcoming-events-header">
+						            <div class="upcoming-events-field">ID</div>
+						            <div class="upcoming-events-field">Member Name</div>
+						            <div class="upcoming-events-field"></div>
+						            <div class="upcoming-events-field">Amount</div>
+						        </div>
+						        <!-- Items -->
+						        
+								<div class="upcoming-events-item upcoming-events-item-1">
+									<div class="upcomfing-events-field">1</div>
+									<div class="upcomfing-events-field">Weekly Collection</div>
+									<div class="upcomfing-events-field"></div>
+									<div class="upcomfing-events-field">3600</div>
+								</div>
+							
+								<div class="upcoming-events-item upcoming-events-item-1">
+									<div class="upcomfing-events-field">2</div>
+									<div class="upcomfing-events-field">Loan Return</div>
+									<div class="upcomfing-events-field"></div>
+									<div class="upcomfing-events-field">50000</div>
+								</div>
+							
+								<div class="upcoming-events-item upcoming-events-item-3">
+									<div class="upcomfing-events-field">3</div>
+									<div class="upcomfing-events-field">Return Amount back to Sujith</div>
+									<div class="upcomfing-events-field"></div>
+									<div class="upcomfing-events-field">50000</div>
+								</div>
+								
+								<div class="upcoming-events-item upcoming-events-item-2">
+									<div class="upcomfing-events-field">4</div>
+									<div class="upcomfing-events-field">Projcted amount for Loan</div>
+									<div class="upcomfing-events-field"></div>
+									<div class="upcomfing-events-field">50000</div>
+								</div>
+								
+						    </div>
+								
+								
+								
 							</div>
 						</section>
 					</c:forEach>

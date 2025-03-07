@@ -796,7 +796,7 @@ input[type="date"]:focus {
 							<!-- Revenue Approvals -->
 							<c:if test="${not empty nonApprovedRevenueList}">
 								<c:forEach items="${nonApprovedRevenueList}" var="RevenueApprovalItem">
-									<div class="table-row" style="background: linear-gradient(135deg, rgba(147, 208, 131, 0.9), rgba(187, 242, 172, 0.9))">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
 										<div class="table-cell">${RevenueApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">${RevenueApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${RevenueApprovalItem.spendAmount}</div>
@@ -819,7 +819,7 @@ input[type="date"]:focus {
 							<!-- Expenses Approvals -->
 							<c:if test="${not empty nonApprovedExpensesList}">
 								<c:forEach items="${nonApprovedExpensesList}" var="ExpensesApprovalItem">
-									<div class="table-row" style="background: linear-gradient(135deg, rgba(213, 134, 134, 0.9), rgba(247, 156, 156, 0.9))">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(189, 126, 126, 0.9), rgba(219, 147, 147, 0.9))">
 										<div class="table-cell">${ExpensesApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">${ExpensesApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${ExpensesApprovalItem.spendAmount}</div>
@@ -841,7 +841,7 @@ input[type="date"]:focus {
 							<!-- Expenses Approvals -->
 							<c:if test="${not empty nonApprovedChitsList}">
 								<c:forEach items="${nonApprovedChitsList}" var="ChitsApprovalItem">
-									<div class="table-row" style="background: linear-gradient(135deg, rgba(216, 204, 36, 0.9), rgba(247, 234, 41, 0.9))">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(156, 148, 39, 0.9), rgba(196, 187, 50, 0.9))">
 										<div class="table-cell"> Chits #  ${ChitsApprovalItem.chitsNo}</div>
 										<div class="table-cell"> New Chits joined by ${ChitsApprovalItem.chitsNameOf.memberName}</div>
 										<div class="table-cell">&#8377; ${ChitsApprovalItem.totalChitsAmount}</div>
@@ -863,7 +863,7 @@ input[type="date"]:focus {
 							
 							<c:if test="${not empty nonApprovedChitsEMI}">
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(36, 150, 148, 0.9), rgba(51, 214, 211, 0.9))">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(46, 135, 134, 0.9), rgba(60, 176, 174, 0.9))">
 									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber} </div>
 									<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} chits No: ${ChitsApprovalItem.chits.chitsNo}</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
