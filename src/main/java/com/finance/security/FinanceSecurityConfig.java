@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import com.finance.exception.CustomAuthenticationFailureHandler;
 import com.finance.handler.LoginSuccessHandler;
@@ -49,7 +50,8 @@ public class FinanceSecurityConfig {
 				.failureHandler(customFailureHandler).permitAll())
 				.logout(logout -> logout.logoutUrl("/perform_logout").logoutSuccessUrl("/financeLogin?logout")
 						.deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll())
-				.csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+				.csrf(csrf -> csrf
+						.csrfTokenRepository(new HttpSessionCsrfTokenRepository()) // Changed here
 						.ignoringRequestMatchers("/h2-console/**"))
 				.headers(headers -> headers.frameOptions().disable()).userDetailsService(memberDetailsService); // Use
 																												// custom

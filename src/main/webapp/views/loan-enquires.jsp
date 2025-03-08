@@ -708,7 +708,7 @@
         <ul>
             <li><a href="dashboard">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
-            <li><a href="finance-uploads" class="active">Finance Upload</a></li>
+            <li><a href="finance-uploads">Finance Upload</a></li>
             <li><a href="reports">Reports</a></li>
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
@@ -749,7 +749,7 @@
 					</div>
 				</div>				
               	<form method="post" action="loan-enquires" id="loan-enquires" name="loan-enquires">
-              	
+              		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
               		 <!-- Loan No -->
                             <div class="form-group">
                                 <label for="loan-enquires-no">Loan Enquires No</label>
@@ -823,7 +823,7 @@
                         <button type="button"> <i class="fas fa-edit"></i>Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
 					</div>
-					 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>	
+					 
                 </form>
             </section>
         </div>
@@ -833,9 +833,7 @@
     <footer>
         &copy; 2025 Chunks Finance | <a href="#" style="color: white; text-decoration: none;">Privacy Policy</a> | <a href="#" style="color: white; text-decoration: none;">Terms of Service</a>
     </footer>
-	<form action="${pageContext.request.contextPath}/perform_logout" method="post" id="financeLogout">
-	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	</form>
+	
     <script>
     
 	 // Check for success message on page load
@@ -966,19 +964,7 @@
             
             if (isValid) {
             	
-            	 const form = document.getElementById('loan-enquires');
- 			    form.method = 'POST';
- 			    form.action = 'loan-enquires'; // Your endpoint URL
-
- 			    // Add CSRF token (required for Spring Security)
- 			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
- 			    const csrfInput = document.createElement('input');
- 			    csrfInput.type = 'hidden';
- 			    csrfInput.name = '_csrf';
- 			    csrfInput.value = csrfToken;
- 			    form.appendChild(csrfInput);
- 			    document.body.appendChild(form);
- 			    form.submit();		
+            	document.getElementById('loan-enquires').submit();
             	
             	
             // Submit the form or handle valid data			
