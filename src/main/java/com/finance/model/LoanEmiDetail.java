@@ -26,6 +26,7 @@ import lombok.Data;
 public class LoanEmiDetail {
 
 	public enum CurrentStatus {
+		REQUESTED, 
 	    INPROGRESS, 
 	    INITIAL_APPROVAL,
 	    PAID,   
@@ -47,7 +48,7 @@ public class LoanEmiDetail {
     
     @Enumerated(EnumType.STRING)
     @Column(name = "current_status", nullable = false)
-    private CurrentStatus currentStatus = CurrentStatus.INPROGRESS;       
+    private CurrentStatus currentStatus = CurrentStatus.REQUESTED;       
     
     @Column(name = "emi_date")
     private LocalDate emiDate;    

@@ -61,8 +61,14 @@ public class LoanModel {
     @Column(name = "loan_date")
     private LocalDate loanDate;
     
-    @Column(name = "loan_repayment_date")
-    private LocalDate loanRepaymentDate;
+    @Column(name = "loan_start_date")
+    private LocalDate loanStartDate;
+    
+    @Column(name = "loan_end_date")
+    private LocalDate loanEndDate;
+    
+    @Column(name = "loan_preclosure_date")
+    private LocalDate loanPreclosureDate;
 
     // Disbursement section
     @Column(name = "disbursement_amount", precision = 19, scale = 2)
@@ -74,8 +80,12 @@ public class LoanModel {
     @Column(name = "received_amount", precision = 19, scale = 2)
     private BigDecimal receivedAmount;
     
-    @Column(name = "yet_to_receive_amount", precision = 19, scale = 2)
-    private BigDecimal yetToReceiveAmount;
+    @Column(name = "remaining_balance", precision = 19, scale = 2)
+    private BigDecimal remainingBalance;
+    
+    @Column(name = "preclosure_amount", precision = 19, scale = 2)
+    private BigDecimal preclosureAmount;
+    
     
     @Enumerated(EnumType.STRING)
     @Column(name = "current_status", nullable = false)

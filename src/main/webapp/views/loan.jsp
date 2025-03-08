@@ -819,7 +819,7 @@
                             <!-- Loan Date -->
                             <div class="form-group">
                                 <label for="loan-repayment-date">Loan repayment start date</label>
-                                <input type="date" id="loan-repayment-date" name="loanRepaymentDate" class="input-field" required>
+                                <input type="date" id="loan-repayment-date" name="loanStartDate" class="input-field" required>
 								<div class="error-message" id="loan-repayment-date-error">
 									<i class="fas fa-exclamation-circle"></i>
 									<span>Loan repayment date is required</span>
@@ -851,7 +851,7 @@
 
                             <div class="form-group">
                                 <label for="pending-amount">Yet to Receive Amount</label>
-                                <input type="number" id="pending-amount" name="yetToReceiveAmount" class="input-field" placeholder="Enter yet to receive amount" readonly>
+                                <input type="number" id="pending-amount" name="remainingBalance" class="input-field" placeholder="Enter yet to receive amount" readonly>
                             </div>
                         </div>
                     </div>

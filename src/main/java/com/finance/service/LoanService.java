@@ -56,7 +56,7 @@ public class LoanService {
         if (currentLoanNumber != null) {
             startEmiId = currentLoanNumber * 17 + 1; // For example, loan #1 starts at ID 18, loan #2 at ID 35, etc.
         }
-        LocalDate loanRepaymentDate = loanModel.getLoanRepaymentDate();
+        LocalDate loanRepaymentDate = loanModel.getLoanStartDate();
         loanRepaymentDate = loanRepaymentDate.minusDays(7);
         for (int i = 1; i <= 17; i++) {
             LoanEmiDetail emi = new LoanEmiDetail();
@@ -77,6 +77,7 @@ public class LoanService {
 		} else {
 			loanModel.setLoanNo(++currentLoanNumber);
 		}
+        loanModel.setLoanEndDate(emiDetails.get(16).getEmiDate());
         loanModel.setEmiDetails(emiDetails);
         loanModel.setFirstapproverName(loanModel.getFinanceType().getFinanceOwner());
 		loanRepository.save(loanModel);
