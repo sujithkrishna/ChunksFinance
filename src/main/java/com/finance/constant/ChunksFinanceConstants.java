@@ -57,6 +57,14 @@ public class ChunksFinanceConstants {
 	
 	public static final String APPROVAL_TIME = "approvaltime";
 	
+	public static final String EXPENSES_STATUS = "expensesStatus";
+	
+	public static final String REVENUE_STATUS = "revenueStatus";
+	
+	public static final String REVENUE_STATUS_YES = "revenueStatusYes";
+	
+	public static final String EXPENSES_STATUS_YES = "expensesStatusYes";
+	
 	public static final String APPROVAL_PROCESS = "approvalProcess";
 	
 	public static final String ALL_LOANS = "allLoans";

@@ -754,10 +754,12 @@
  							<div class="form-group">
 								<label for="chits-name">Chits in the name of:</label>
 								<select id="chits-name" name="chitsNameOf" class="input-field" required>
-									<option value="" disabled selected>Chits in the name of</option>
-							        <c:forEach items="${primaryMembers}" var="member">
-							            <option value="${member.no}">${member.memberName}</option>
-							        </c:forEach>
+								    <option value="" disabled ${empty param.chitsNameOf ? 'selected' : ''}>Chits in the name of</option>
+								    <c:forEach items="${primaryMembers}" var="member">
+								        <option value="${member.no}" ${param.chitsNameOf eq member.no ? 'selected' : ''}>
+								            ${member.memberName}
+								        </option>
+								    </c:forEach>
 								</select>
 								<div class="error-message" id="chits-name-error">
 									<i class="fas fa-exclamation-circle"></i>
@@ -1047,7 +1049,6 @@
 	    	
 	    	document.getElementById('chits-number').value = '${chitsNumber}';
 	    	document.getElementById('total-chits').value = 20;
-	    	document.getElementById('chits-name').value =   '${currentUser.memberName}';
 	    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();

@@ -660,7 +660,7 @@ footer {
 				<c:otherwise>
 					<c:forEach items="${AllFinance}" var="financeItem">
 						<section id="Content">
-							<h2><i class='fa-brands fa-btc' style='font-size:20px;color:#196a19'></i> ${financeItem.financeName}</h2>
+							<h2>${financeItem.financeName}</h2>
 							<h5>
 								The fund is managed by ${financeItem.financeOwner.memberName} started on <span class="formattedStartDate">${financeItem.financeCreationDate}</span>
 							</h5>
@@ -736,7 +736,7 @@ footer {
 								</div>
 								<!-- Upcoming Events -->
 								    <div class="upcoming-events">
-								    	<h3><i class='fas fa-hand-holding-usd' style='font-size:21px;color:#196a19'></i><a style="color: inherit; text-decoration: none;" href="loan-enquires">Loan Enquires(+)</a></h3>
+								    	<h3><i class='fas fa-hand-holding-usd' style='font-size:21px;color:#196a19'></i><a style="color: inherit; text-decoration: none;" href="loan-enquires">  Loan Enquires   <i class='fa-regular fa-square-plus' style='font-size:21px;color:#196a19'></i></a></h3>
 								        <div class="upcoming-events-header">
 								            <div class="upcoming-events-field">ID</div>
 								            <div class="upcoming-events-field">Applicant Name</div>
@@ -750,7 +750,7 @@ footer {
      											<c:when test="${not empty loanList}"> 
      													<c:forEach items="${loanList}" var="loan">
      															<div class="upcoming-events-item upcoming-events-item-${loan.id}">
-																<div class="upcomfing-events-field">${loan.id} ${loan.status}</div>
+																<div class="upcomfing-events-field">${loan.id} <c:choose><c:when test="${loan.status}"><i style='color:green;' class="fa-solid fa-square-check"></i></c:when><c:otherwise><i style='color:red;' class="fa-solid fa-square-xmark"></i></c:otherwise></c:choose></div>
 																<div class="upcomfing-events-field">${loan.applicantName}</div>
 																<div class="upcomfing-events-field">${loan.loanEnquiresReferenceName.memberName}</div>
 																<div class="upcomfing-events-field">${loan.loanAmount}</div>

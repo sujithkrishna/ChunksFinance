@@ -440,7 +440,7 @@
 		.form-container {
 		   	display: flex;
 		    flex-direction: column; /* Stack children vertically */
-		    gap: 25px; /* Increase spacing between form groups */
+		    gap: 0px; /* Increase spacing between form groups */
 		    margin-bottom: 20px;
 		    background: rgba(255, 255, 255, 0.95);
 		    border-radius: 12px;
@@ -452,10 +452,10 @@
 		.form-group {
 		     display: flex;
 		    flex-direction: column; /* Stack label and radio group vertically */
-		    gap: 10px;
+		    gap: 0px;
 		    width: 100%; /* Take full width */
 		    position: relative;
-		    padding: 25px;
+		    padding: 5px;
 		    border: 1px solid rgba(163, 163, 163, 0.15);
 		    border-radius: 10px;
 		    margin-bottom: 25px;
@@ -498,10 +498,11 @@
 		/* Radio Group */
 		.radio-group {
 		       display: flex;
-			    gap: 15px;
-				padding: 15px;
+			    gap: 0px;
+				padding: 0px;
 			    border-radius: 8px;
-			    margin-top: 10px;
+			    margin-left: 24px;
+			    margin-top: -24px;
 			    border: 1px solid rgba(163, 163, 163, 0.1);			    
 		}
 		
@@ -720,8 +721,43 @@
 						        </label>
 						    </div>
 						</div>
+						
+						 <div class="form-group">
+						    <label>Expenses approval time process disabled time line :</label>
+						    <div class="radio-group">
+						        <label class="radio-option">
+						            <input id="expensesStatusYes" type="radio" name="expensesStatus" value="expensesStatusYes">
+						            <span class="radio-checkmark"></span>
+						            Yes  
+						        </label>
+						        <label class="radio-option">
+						            <input id="expensesStatusNo" type="radio" name="expensesStatus" value="expensesStatusNo">
+						            <span class="radio-checkmark"></span>
+						            No ( Default Monday to Coming Sunday )
+						        </label>
+						    </div>
+						</div>
+						
+						 <div class="form-group">
+						    <label>Revenue approval time process disabled time line :</label>
+						    <div class="radio-group">
+						        <label class="radio-option">
+						            <input id="revenueStatusYes" type="radio" name="revenueStatus" value="revenueStatusYes">
+						            <span class="radio-checkmark"></span>
+						            Yes  
+						        </label>
+						        <label class="radio-option">
+						            <input id="revenueStatusNo" type="radio" name="revenueStatus" value="revenueStatusNo">
+						            <span class="radio-checkmark"></span>
+						            No ( Default Monday to Coming Sunday )
+						        </label>
+						    </div>
+						</div>
+						
+						
+						
 					   <div class="form-group">
-						    <label> Approval Cut off Time:</label>
+						    <label> Loan repayment approval Cut off Time:</label>
 						    <div class="day-time-group">
 						        <select id="approval-cutoff" name="approvalcutoff" class="input-field" required>
 						            <option value="" disabled selected>Select day</option>
@@ -776,6 +812,11 @@
 	    	 // Get values from server-side with proper escaping
 	 	let approvalProcess = 'approvalProcessSequential';
 	    let secondaryLogin = 'loginStatusNo';
+	    
+	    let expensesStatus = 'expensesStatusYes';
+	    let revenueStatus = 'revenueStatusYes';
+	    
+	    
 	    let approvalCutOffDay = 'Sunday';
 	    let approvalCutOffTime = '16:00';
 	
@@ -794,6 +835,16 @@
 	            <c:when test="${setting.settingsName == 'approvalCutOffTime'}">
 	                approvalCutOffTime = '<c:out value="${setting.settingsValue}"/>';
 	            </c:when>
+	            
+	            <c:when test="${setting.settingsName == 'expensesStatus'}">
+	            expensesStatus = '<c:out value="${setting.settingsValue}"/>';
+            	</c:when>
+            
+	            <c:when test="${setting.settingsName == 'revenueStatus'}">
+	            	revenueStatus = '<c:out value="${setting.settingsValue}"/>';
+	       	 	</c:when>
+		            
+	            
 	        </c:choose>
 	    </c:forEach>
 
@@ -812,6 +863,22 @@
             document.getElementById('loginStatusNo').checked = true;
         }
 
+        // Set secondary login radio button
+        if (expensesStatus === 'expensesStatusYes') {
+            document.getElementById('expensesStatusYes').checked = true;
+        } else if (expensesStatus === 'expensesStatusNo') {
+            document.getElementById('expensesStatusNo').checked = true;
+        }
+        
+        // Set secondary login radio button
+        if (revenueStatus === 'revenueStatusYes') {
+            document.getElementById('revenueStatusYes').checked = true;
+        } else if (revenueStatus === 'revenueStatusNo') {
+            document.getElementById('revenueStatusNo').checked = true;
+        }
+        
+        
+        
         // Set cutoff day and time
         const daySelect = document.getElementById('approval-cutoff');
         if (approvalCutOffDay) {

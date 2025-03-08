@@ -1,7 +1,7 @@
 package com.finance.service;
 
 import java.math.BigDecimal;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ChitsEmiDetail;
 import com.finance.model.ChitsModel;
+import com.finance.model.LoanEmiDetail;
 import com.finance.model.MemberModel;
 import com.finance.model.SettingsModel;
+import com.finance.repository.ChitsEmiDetailRepository;
 import com.finance.repository.ChitsRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +33,9 @@ public class ChitsService {
 	
 	@Autowired
 	private SettingsService settingsService;
+	
+	@Autowired
+	private ChitsEmiDetailRepository chitsEmiDetailRepository;
 	
 
 	public Integer getMaxChitsNumber() {
@@ -75,23 +80,6 @@ public class ChitsService {
 		return true;
 	}
 
-	public List<ChitsModel> getChitsByFinanceOwnerAndStatus(MemberModel currentUser) {
-		 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-			 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
-			 String approvalProcessStatus = null;
-			 if(null != settingModelData) {
-				 approvalProcessStatus = settingModelData.getSettingsValue();
-			 }
-			 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
-				 return chitsRepository.findByFinanceOwnerAndStatusSequential();
-			 }else {
-				 return chitsRepository.findByFinanceOwnerAndStatusParallel();
-			 }
-		 }else {
-			 return chitsRepository.findByFinanceOwnerAndStatus(currentUser.getNo());
-		 }
-	}
-
 	
 	public List<ChitsModel> getAllChitsNotApproved(MemberModel currentUser) {
 		if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
@@ -112,6 +100,26 @@ public class ChitsService {
 		
 	}
 	
+	
+	
+	
+	public List<ChitsEmiDetail> findPendingApprovals(List<LoanEmiDetail.CurrentStatus> statusList,MemberModel currentUser,LocalDate startDate,LocalDate endDate){
+		if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+			 String approvalProcessStatus = null;
+			 if(null != settingModelData) {
+				 approvalProcessStatus = settingModelData.getSettingsValue();
+			 }
+			 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+				 return chitsEmiDetailRepository.findByStatusAndDateRangeAndApprovalTimes(statusList,startDate,endDate,ChitsModel.CurrentStatus.INPROGRESS);
+			 }else {
+				 return chitsEmiDetailRepository.findByStatusAndDateRangeAndSecondApprovalTimeIsNull(statusList,startDate,endDate,ChitsModel.CurrentStatus.INPROGRESS);
+			 }
+		}else {
+			return chitsEmiDetailRepository.findPendingApprovals(statusList,currentUser,startDate,endDate,ChitsModel.CurrentStatus.INPROGRESS);
+		}
+		
+	}
 	
 	
 	

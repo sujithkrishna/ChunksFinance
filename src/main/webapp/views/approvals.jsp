@@ -698,7 +698,7 @@ input[type="date"]:focus {
 /* Updated Table Styles */
 .table-row.header .table-cell:nth-child(1), /* Requester */
 .table-row:not(.header) .table-cell:nth-child(1) {
-    flex: 1 0 18%; /* Minimum width for requester column */
+    flex: 1 0 19%; /* Minimum width for requester column */
     min-width: 190px;
     padding-left: 3px;
     overflow: hidden;
@@ -926,7 +926,7 @@ input[type="date"]:focus {
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(46, 135, 134, 0.9), rgba(60, 176, 174, 0.9))">
 									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber}</div>
-									<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} chits No: ${ChitsApprovalItem.chits.chitsNo}112</div>
+									<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} Chits No# ${ChitsApprovalItem.chits.chitsNo}</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
 									<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.emiDate}</span></div>
 									<div class="table-cell">

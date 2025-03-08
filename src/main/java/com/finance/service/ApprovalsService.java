@@ -3,7 +3,6 @@ package com.finance.service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +19,12 @@ import com.finance.exception.DateExpiredException;
 import com.finance.exception.FirstApprovalCannotbeSameException;
 import com.finance.model.ChitsEmiDetail;
 import com.finance.model.ChitsModel;
-import com.finance.model.ChitsModel.CurrentStatus;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
+import com.finance.model.LoanEmiDetail;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
+import com.finance.model.SettingsModel;
 import com.finance.repository.ChitsEmiDetailRepository;
 import com.finance.repository.ChitsRepository;
 import com.finance.repository.ExpensesRepository;
@@ -54,7 +54,6 @@ public class ApprovalsService {
 	@Autowired
     private ChitsRepository chitsRepository;
 	
-	
 	@Autowired
     private ChitsEmiDetailRepository chitsEmiDetailRepository;
 	
@@ -72,6 +71,9 @@ public class ApprovalsService {
 	
 	@Autowired
 	private ChitsService chitsService;
+	
+	@Autowired
+	private SettingsService settingsService;
 	
 	
 	public void revewnueAndExpensesList(Model model, LocalDate givenDate,MemberModel currentUser) {
@@ -104,37 +106,18 @@ public class ApprovalsService {
 		 }
 		//Fetching Chits List which is not started	END--
 		 
-		 // Change below logic implement from the chitsEMI only instead of chits....
 		
 		//Fetching Chits EMI List  EMI Which is RUNNING------START
-		 List<ChitsModel> currentRunningChitsByMyApprovals = chitsService.getChitsByFinanceOwnerAndStatus(currentUser);
-		// Calculate the current week's Monday and Sunday dates
+		 List<LoanEmiDetail.CurrentStatus> statusList = List.of(LoanEmiDetail.CurrentStatus.INPROGRESS, LoanEmiDetail.CurrentStatus.INITIAL_APPROVAL);
 		 LocalDate startDate = givenDate.with(DayOfWeek.MONDAY).minusWeeks(1);
-		 LocalDate endDate = givenDate.with(DayOfWeek.SATURDAY).plusWeeks(1);
-		 List<ChitsEmiDetail> emiDetailsInCurrentWeek = new ArrayList<ChitsEmiDetail>();
-
-		 for (ChitsModel chit : currentRunningChitsByMyApprovals) {
-		     List<ChitsEmiDetail> emiDetails = chit.getEmiDetails();
-		     if (emiDetails != null) {
-		         for (ChitsEmiDetail emi : emiDetails) {
-		             LocalDate emiDate = emi.getEmiDate();
-		             if (emiDate != null && !emiDate.isBefore(startDate) && !emiDate.isAfter(endDate)) {
-		            	 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN) && null == emi.getSecondApprovalTime()) {
-		            		 emiDetailsInCurrentWeek.add(emi); 
-		            	 }else if(currentUser.getRole().equals(MemberModel.ROLE.USER) && null == emi.getFirstApprovalTime()){
-		            		 emiDetailsInCurrentWeek.add(emi); 
-		            	 }
-		                 
-		             }
-		         }
-		     }
-		 }
-		 if(null != emiDetailsInCurrentWeek && emiDetailsInCurrentWeek.size() == 0) {
-				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, null);
-			}else {
-				model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, emiDetailsInCurrentWeek);
-		 }
-			//Fetching Chits EMI List  EMI Which is RUNNING------END
+		 LocalDate nextSunday = givenDate.with(DayOfWeek.SUNDAY);
+	        if (!nextSunday.isAfter(givenDate)) {
+	            nextSunday = nextSunday.plusWeeks(1);
+	        }
+		 LocalDate endDate = nextSunday.plusWeeks(1);
+		 List<ChitsEmiDetail> runningEMIList = chitsService.findPendingApprovals(statusList,currentUser,startDate,endDate);
+		 model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, runningEMIList);
+		//Fetching Chits EMI List  EMI Which is RUNNING------END
 		 
 		 
 		
@@ -159,7 +142,7 @@ public class ApprovalsService {
 				 	Optional<RevenueModel> revenueOptional = revenueRepository.findById(revenueNum);
 	                if (revenueOptional.isPresent()) {
 	                    RevenueModel revenueModel = revenueOptional.get();
-	                    if(!isBussinessExipredRule(revenueModel.getSpendDate())) {
+	                    if(!isBussinessExipredRule(revenueModel.getSpendDate(),ChunksFinanceConstants.REVENUE_STATUS)) {
 	                    	throw new DateExpiredException(); 
 	                    }
 	                    if(revenueModel.getCurrentStatus().equals(RevenueModel.CurrentStatus.COMPLETED)) {
@@ -245,7 +228,7 @@ public class ApprovalsService {
 				 	Optional<ExpensesModel> expensesOptional = expensesRepository.findById(expensesNum);
 	                if (expensesOptional.isPresent()) {
 	                    ExpensesModel expensesModel = expensesOptional.get();
-	                    if(!isBussinessExipredRule(expensesModel.getSpendDate())) {
+	                    if(!isBussinessExipredRule(expensesModel.getSpendDate(),ChunksFinanceConstants.EXPENSES_STATUS)) {
 	                    	throw new DateExpiredException(); 
 	                    }
 	                    if(expensesModel.getCurrentStatus().equals(ExpensesModel.CurrentStatus.COMPLETED)) {
@@ -423,12 +406,21 @@ public class ApprovalsService {
 		 return false;
 	 }
 	 
-	 private boolean isBussinessExipredRule(LocalDate spendDate) {
+	 private boolean isBussinessExipredRule(LocalDate spendDate,String settingName) {
 		 if(null != spendDate) {
 			 LocalDate today = LocalDate.now();
              LocalDate lastMonday = today.with(DayOfWeek.MONDAY);
              LocalDate upcomingSunday = today.with(DayOfWeek.SUNDAY);
-             return (spendDate.isEqual(lastMonday) || spendDate.isAfter(lastMonday)) && (spendDate.isEqual(upcomingSunday) || spendDate.isBefore(upcomingSunday));
+             SettingsModel settingModelData = settingsService.getSettingByName(settingName);
+             if(null != settingModelData) {
+            	 String settingsValue = settingModelData.getSettingsValue();
+            	 if(settingName.equals(ChunksFinanceConstants.REVENUE_STATUS) && settingsValue.equals(ChunksFinanceConstants.REVENUE_STATUS_YES)) {
+            		 return true;
+            	 }else if(settingName.equals(ChunksFinanceConstants.EXPENSES_STATUS) && settingsValue.equals(ChunksFinanceConstants.EXPENSES_STATUS_YES)) {
+            		 return true;
+            	 }
+             }
+           	 return (spendDate.isEqual(lastMonday) || spendDate.isAfter(lastMonday)) && (spendDate.isEqual(upcomingSunday) || spendDate.isBefore(upcomingSunday));
 		 }else {
 			 return false;
 		 }

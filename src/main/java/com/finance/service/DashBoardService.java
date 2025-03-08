@@ -79,7 +79,6 @@ public class DashBoardService {
 
 		    // Update the list of loan inquiries that are still pending for the next finance model
 		    remainingLoanEnquiries = new ArrayList<>(stillUnprocessedLoans);
-		    System.out.println("----------------------stillUnprocessedLoans----------------------------"+stillUnprocessedLoans);	
 		    // If all loans are processed, break early
 		    if (remainingLoanEnquiries.isEmpty()) {
 		        break;
@@ -91,7 +90,6 @@ public class DashBoardService {
         	String key = entry.getKey();
             List<LoanEnquiresModel> value = entry.getValue();
             model.addAttribute(key, value);
-            System.out.println("Finance: " + key + ", Processed Loans: " + value);
         }
 		
 		

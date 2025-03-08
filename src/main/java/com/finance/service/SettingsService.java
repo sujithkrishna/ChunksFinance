@@ -56,7 +56,15 @@ public class SettingsService {
 			saveSettings(currenUser, ChunksFinanceConstants.APPROVAL_CUTOFF_DAY,approvalcutoffValue);
 			
 			String approvaltimeValue = request.getParameter(ChunksFinanceConstants.APPROVAL_TIME);
-			saveSettings(currenUser, ChunksFinanceConstants.APPROVAL_CUTOFF_TIME,approvaltimeValue);			
+			saveSettings(currenUser, ChunksFinanceConstants.APPROVAL_CUTOFF_TIME,approvaltimeValue);
+			
+			String expensesStatusValue = request.getParameter(ChunksFinanceConstants.EXPENSES_STATUS);
+			saveSettings(currenUser, ChunksFinanceConstants.EXPENSES_STATUS,expensesStatusValue);
+			
+			String revenueStatusValue = request.getParameter(ChunksFinanceConstants.REVENUE_STATUS);
+			saveSettings(currenUser, ChunksFinanceConstants.REVENUE_STATUS,revenueStatusValue);
+			
+			
 		return true;
 	}
 
