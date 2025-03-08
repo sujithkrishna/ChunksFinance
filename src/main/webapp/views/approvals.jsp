@@ -847,7 +847,7 @@ input[type="date"]:focus {
 						<div class="table-cell" style="text-align: center;">Authorization</div>
 					</div>
 					<c:choose>
-						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI}">
+						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval}">
 							<!-- Show empty state message -->
 							<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
 								<h3>You don't have any items to approve.</h3>
@@ -859,7 +859,7 @@ input[type="date"]:focus {
 								<c:forEach items="${nonApprovedRevenueList}" var="RevenueApprovalItem">
 									<div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
 										<div class="table-cell">${RevenueApprovalItem.spenderName.memberName}</div>
-										<div class="table-cell">${RevenueApprovalItem.spenderDetails}</div>
+										<div class="table-cell">REVENUE ${RevenueApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${RevenueApprovalItem.spendAmount}</div>
 										<div class="table-cell"><span class="formattedStartDate">${RevenueApprovalItem.spendDate}</span></div>
 										<div class="table-cell">
@@ -873,7 +873,6 @@ input[type="date"]:focus {
 											</div>
 										</div>
 									</div>
-
 								</c:forEach>
 							</c:if>
 
@@ -882,7 +881,7 @@ input[type="date"]:focus {
 								<c:forEach items="${nonApprovedExpensesList}" var="ExpensesApprovalItem">
 									<div class="table-row" style="background: linear-gradient(135deg, rgba(189, 126, 126, 0.9), rgba(219, 147, 147, 0.9))">
 										<div class="table-cell">${ExpensesApprovalItem.spenderName.memberName}</div>
-										<div class="table-cell">${ExpensesApprovalItem.spenderDetails}</div>
+										<div class="table-cell">EXPENSE ${ExpensesApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${ExpensesApprovalItem.spendAmount}</div>
 										<div class="table-cell"><span class="formattedStartDate">${ExpensesApprovalItem.spendDate}</span></div>
 										<div class="table-cell">
@@ -903,9 +902,9 @@ input[type="date"]:focus {
 							<c:if test="${not empty nonApprovedChitsList}">
 								<c:forEach items="${nonApprovedChitsList}" var="ChitsApprovalItem">
 									<div class="table-row" style="background: linear-gradient(135deg, rgba(156, 148, 39, 0.9), rgba(196, 187, 50, 0.9))">
-										<div class="table-cell"> Chits #  ${ChitsApprovalItem.chitsNo}</div>
-										<div class="table-cell"> New Chits joined by ${ChitsApprovalItem.chitsNameOf.memberName}</div>
-										<div class="table-cell">&#8377; ${ChitsApprovalItem.totalChitsAmount}</div>
+										<div class="table-cell">Chits #  ${ChitsApprovalItem.chitsNo}</div>
+										<div class="table-cell">NEW CHITS ${ChitsApprovalItem.chitsNameOf.memberName}</div>
+										<div class="table-cell">&#8377;${ChitsApprovalItem.totalChitsAmount}</div>
 										<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.chitsStartDate}</span></div>
 										<div class="table-cell">
 											<div class="button-group-approved">
@@ -926,7 +925,7 @@ input[type="date"]:focus {
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(46, 135, 134, 0.9), rgba(60, 176, 174, 0.9))">
 									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber}</div>
-									<div class="table-cell"> Upcoming Chits ${ChitsApprovalItem.chits.chitsNameOf.memberName} Chits No# ${ChitsApprovalItem.chits.chitsNo}</div>
+									<div class="table-cell">CHITS EMI ${ChitsApprovalItem.chits.chitsNameOf.memberName} Chits No# ${ChitsApprovalItem.chits.chitsNo}</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
 									<div class="table-cell"><span class="formattedStartDate">${ChitsApprovalItem.emiDate}</span></div>
 									<div class="table-cell">
@@ -942,6 +941,29 @@ input[type="date"]:focus {
 								</div>
 							</c:forEach>
 						</c:if>
+						
+						<c:if test="${not empty currentLoanWaitforApproval}">
+							<c:forEach items="${currentLoanWaitforApproval}" var="LoanApprovalItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(79, 79, 79, 0.9), rgba(133, 133, 133, 0.9))">
+									<div class="table-cell">${LoanApprovalItem.loanReferenceName.memberName} Loan # ${LoanApprovalItem.loanNo}</div>
+									<div class="table-cell">NEW LOAN ${LoanApprovalItem.loanApplicantName.memberName}Loan No# ${LoanApprovalItem.loanNo}</div>
+									<div class="table-cell">&#8377;${LoanApprovalItem.loanAmount}</div>
+									<div class="table-cell"><span class="formattedStartDate">${LoanApprovalItem.loanDate}</span></div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${LoanApprovalItem.loanNo}','${LoanApprovalItem.loanNo}','LOAN','APPROVED')" aria-label="Approve request">
+												<i class="fas fa-check"></i> Approve
+											</button>
+											<button onclick="validateForm('${LoanApprovalItem.loanNo}','${LoanApprovalItem.loanNo}','LOAN','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<i class="fas fa-times"></i> Reject
+											</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+												
+						
 							
 							
 						</c:otherwise>

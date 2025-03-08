@@ -77,6 +77,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String NON_APPROVED_CHITS_EMI = "nonApprovedChitsEMI";
 	
+	public static final String CURRENT_LOAN_WAITFOR_APPROVAL = "currentLoanWaitforApproval";
+	
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	
 	public static final String IN_PROGRESS = "IN_PROGRESS";

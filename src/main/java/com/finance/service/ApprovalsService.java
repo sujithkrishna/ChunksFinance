@@ -22,6 +22,7 @@ import com.finance.model.ChitsModel;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
 import com.finance.model.LoanEmiDetail;
+import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
 import com.finance.model.SettingsModel;
@@ -29,6 +30,7 @@ import com.finance.repository.ChitsEmiDetailRepository;
 import com.finance.repository.ChitsRepository;
 import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
+import com.finance.repository.LoanRepository;
 import com.finance.repository.RevenueRepository;
 import com.finance.user.MemberDetails;
 
@@ -53,6 +55,9 @@ public class ApprovalsService {
 	
 	@Autowired
     private ChitsRepository chitsRepository;
+	
+	@Autowired
+    private LoanRepository loanRepository;
 	
 	@Autowired
     private ChitsEmiDetailRepository chitsEmiDetailRepository;
@@ -118,6 +123,14 @@ public class ApprovalsService {
 		 List<ChitsEmiDetail> runningEMIList = chitsService.findPendingApprovals(statusList,currentUser,startDate,endDate);
 		 model.addAttribute(ChunksFinanceConstants.NON_APPROVED_CHITS_EMI, runningEMIList);
 		//Fetching Chits EMI List  EMI Which is RUNNING------END
+		 
+		
+		//Fetching All the new Chits created Just now and waiting for Approvals.------START
+		 
+		 List<LoanModel> bycurrentLoanWaitingforApprovals = loanRepository.findLoansByStatusAndApprover(LoanModel.CurrentStatus.REQUESTED,currentUser.getNo());
+		 model.addAttribute(ChunksFinanceConstants.CURRENT_LOAN_WAITFOR_APPROVAL, bycurrentLoanWaitingforApprovals);
+		 
+		//Fetching All the new Chits created Just now and waiting for Approvals.------END
 		 
 		 
 		
