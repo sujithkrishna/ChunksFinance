@@ -23,6 +23,7 @@ import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
 import com.finance.model.LoanEmiDetail;
 import com.finance.model.LoanModel;
+import com.finance.model.LoanModel.CurrentStatus;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
 import com.finance.model.SettingsModel;
@@ -30,6 +31,7 @@ import com.finance.repository.ChitsEmiDetailRepository;
 import com.finance.repository.ChitsRepository;
 import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
+import com.finance.repository.LoanEmiDetailRepository;
 import com.finance.repository.LoanRepository;
 import com.finance.repository.RevenueRepository;
 import com.finance.user.MemberDetails;
@@ -60,6 +62,9 @@ public class ApprovalsService {
     private LoanRepository loanRepository;
 	
 	@Autowired
+	private LoanEmiDetailRepository emiDetailRepository;
+	
+	@Autowired
     private ChitsEmiDetailRepository chitsEmiDetailRepository;
 	
 	@Autowired
@@ -70,6 +75,10 @@ public class ApprovalsService {
 	
 	@Autowired
 	private RevenueService revenueService;
+	
+	@Autowired
+	private LoanService loanService;
+	
 	
 	@Autowired
 	private ExpensesService expensesService;
@@ -126,10 +135,8 @@ public class ApprovalsService {
 		 
 		
 		//Fetching All the new Chits created Just now and waiting for Approvals.------START
-		 
-		 List<LoanModel> bycurrentLoanWaitingforApprovals = loanRepository.findLoansByStatusAndApprover(LoanModel.CurrentStatus.REQUESTED,currentUser.getNo());
+		 List<LoanModel> bycurrentLoanWaitingforApprovals = loanService.findLoansByStatusAndApprover(LoanModel.CurrentStatus.REQUESTED,currentUser);
 		 model.addAttribute(ChunksFinanceConstants.CURRENT_LOAN_WAITFOR_APPROVAL, bycurrentLoanWaitingforApprovals);
-		 
 		//Fetching All the new Chits created Just now and waiting for Approvals.------END
 		 
 		 
@@ -415,6 +422,65 @@ public class ApprovalsService {
 			 
 				//  This is for only for processing of ChitsEMI Items END
 			 return true;	 
+		 }else if(ChunksFinanceConstants.LOANS.equals(currentType) && null != idNumber) {
+			 	Optional<LoanModel> loanItem = loanRepository.findByLoanNo(Integer.parseInt(idNumber));
+			 	if(loanItem.isPresent()) {
+			 		if(loanItem.get().getCurrentStatus().equals(CurrentStatus.REQUESTED)) {
+			 			if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			 				loanItem.get().setSecondApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setSecondapproverName(currenUser.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.INITIAL_APPROVAL);
+			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
+			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
+			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INITIAL_APPROVAL);
+			 					loanEmiItem.setSecondApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setSecondapproverName(currenUser.getMember());
+			 					emiDetailRepository.save(loanEmiItem);
+							}
+			 				loanRepository.save(loanItem.get());
+			 			}else {
+			 				loanItem.get().setFirstApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setFirstapproverName(currenUser.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.INITIAL_APPROVAL);
+			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
+			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
+			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INITIAL_APPROVAL);
+			 					loanEmiItem.setFirstApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setFirstapproverName(currenUser.getMember());
+			 					emiDetailRepository.save(loanEmiItem);
+							}
+			 				loanRepository.save(loanItem.get());
+			 			}
+			 		}else if(loanItem.get().getCurrentStatus().equals(CurrentStatus.INITIAL_APPROVAL)) {
+			 			if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			 				loanItem.get().setSecondApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setSecondapproverName(currenUser.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.INPROGRESS);
+			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
+			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
+			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INPROGRESS);
+			 					loanEmiItem.setSecondApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setSecondapproverName(currenUser.getMember());
+			 					emiDetailRepository.save(loanEmiItem);
+							}
+			 				loanRepository.save(loanItem.get());
+			 			}else {
+			 				loanItem.get().setFirstApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setFirstapproverName(currenUser.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.INPROGRESS);
+			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
+			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
+			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INPROGRESS);
+			 					loanEmiItem.setFirstApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setFirstapproverName(currenUser.getMember());
+			 					emiDetailRepository.save(loanEmiItem);
+							}
+			 				loanRepository.save(loanItem.get());
+			 			}
+			 		}
+			 		
+			 	}
+			return true;	 
 		 }
 		 return false;
 	 }

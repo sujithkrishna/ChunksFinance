@@ -14,6 +14,12 @@
 
     <style>
 
+        .sectionh2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #334558;
+            margin-bottom: 15px;
+        }
         /* === Common Start here === */
         /* === Common Global Styles === */
         * {
@@ -698,7 +704,7 @@
         <ul>
             <li><a href="dashboard">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
-            <li><a href="finance-uploads">Finance Upload</a></li>
+            <li><a href="payments">Payments</a></li>
             <li><a href="reports">Reports</a></li>
             <li><a href="loan" class="active">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
@@ -707,7 +713,7 @@
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 		            <li><a href="member">Members</a></li>
 		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Create Finance</a></li>
+	            	<li><a href="finance">Finance</a></li>
 	            </c:when>
             </c:choose>
         </ul>
@@ -717,7 +723,7 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2>Loan Details</h2>
+                <h2 class="sectionh2">Loans</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>

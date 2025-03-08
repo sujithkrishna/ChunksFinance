@@ -707,20 +707,21 @@ input[type="date"]:focus {
 
 .table-row.header .table-cell:nth-child(2), /* Request Type */
 .table-row:not(.header) .table-cell:nth-child(2) {
-    flex: 2 0 32%; /* More flexible width */
+    flex: 2 1 32%; /* Allow flex-shrink */
     min-width: 240px;
     padding-left: 15px;
     text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    /* Remove these properties if present */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
 }
 
 .table-row.header .table-cell:nth-child(3), /* Amount */
 .table-row:not(.header) .table-cell:nth-child(3) {
-    flex: 1 0 150px; /* Fixed width for amount */
-    text-align: right;
     padding-right: 25px;
-    white-space: nowrap; /* Prevent amount wrapping */
 }
 
 .table-row.header .table-cell:nth-child(4), /* Date */
@@ -742,7 +743,8 @@ input[type="date"]:focus {
     display: flex;
     align-items: center;
     height: 100%;
-    padding: 8px 0; /* Reduced vertical padding */
+    padding: 8px 0;
+    min-width: 0; /* Crucial for flex item shrinking */
 }
 		
 </style>
@@ -786,7 +788,7 @@ input[type="date"]:focus {
 		<ul>
 			<li><a href="dashboard">Dashboard</a></li>
 			<li><a href="approvals" class="active">Approvals</a></li>
-			<li><a href="finance-uploads">Finance Upload</a></li>
+			<li><a href="payments">Payments</a></li>
 			<li><a href="reports">Reports</a></li>
 			<li><a href="loan">Loans</a></li>
 			<li><a href="revenue">Revenue</a></li>
@@ -795,7 +797,7 @@ input[type="date"]:focus {
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 					<li><a href="member">Members</a></li>
 					<li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Create Finance</a></li>
+	            	<li><a href="finance">Finance</a></li>
 	            </c:when>
             </c:choose>
 		</ul>
@@ -804,7 +806,7 @@ input[type="date"]:focus {
 	<!-- Main Content -->
 	<main>
 		<section id="approvals">
-			<h2>Pending Approvals</h2>
+			<h2 class="sectionh2">Approvals</h2>
 			<!-- Update the success message section -->
 			<div class="green-success-message" id="greenSuccessMessage">
 				<i class="fas fa-check-circle"></i>

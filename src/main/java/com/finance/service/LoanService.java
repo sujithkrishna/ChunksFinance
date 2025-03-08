@@ -13,10 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.LoanEmiDetail;
 import com.finance.model.FinanceModel;
+import com.finance.model.LoanEmiDetail;
 import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
+import com.finance.model.SettingsModel;
 import com.finance.repository.LoanRepository;
 import com.finance.user.MemberDetails;
 
@@ -34,6 +35,9 @@ public class LoanService {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private SettingsService settingsService;
 	
 	@Autowired
 	private CreateFinanceService financeService;
@@ -90,8 +94,6 @@ public class LoanService {
             MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
-		
-		
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
 		model.addAttribute("primaryMembers",primaryMembers);
 		List<MemberModel> secondaryMembers = memberService.getAllSecondaryMemeber();
@@ -110,6 +112,26 @@ public class LoanService {
 			financeModel = null;
 		}
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
+	}
+	
+	
+	public List<LoanModel> findLoansByStatusAndApprover(LoanModel.CurrentStatus currentStatus, MemberModel currentUser){
+		 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+			 String approvalProcessStatus = null;
+			 if(null != settingModelData) {
+				 approvalProcessStatus = settingModelData.getSettingsValue();
+			 }
+			 List<LoanModel.CurrentStatus> statusList = List.of(LoanModel.CurrentStatus.REQUESTED, LoanModel.CurrentStatus.INITIAL_APPROVAL);
+			 if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+				 return loanRepository.findLoansByStatusWithBothApprovals(statusList);
+			 }else {
+				 return loanRepository.findLoansByStatusWithSecondApproval(statusList);
+			 }
+		 }else {
+			 List<LoanModel.CurrentStatus> statusList = List.of(LoanModel.CurrentStatus.REQUESTED, LoanModel.CurrentStatus.INITIAL_APPROVAL);
+			 return loanRepository.findLoansByStatusesAndApprover(statusList,currentUser.getNo());
+		 }
 	}
 	
 	 public List<LoanModel> getAllLoanRecords() {

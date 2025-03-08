@@ -539,7 +539,7 @@
         <ul>
             <li><a href="dashboard" class="active">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
-            <li><a href="finance-uploads">Finance Upload</a></li>
+            <li><a href="payments">Payments</a></li>
             <li><a href="reports">Reports</a></li>
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
@@ -548,7 +548,7 @@
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 		            <li><a href="member">Members</a></li>
 		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Create Finance</a></li>
+	            	<li><a href="finance">Finance</a></li>
 	            </c:when>
             </c:choose>
         </ul>

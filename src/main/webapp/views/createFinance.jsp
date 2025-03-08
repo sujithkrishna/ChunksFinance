@@ -144,7 +144,12 @@
             margin-bottom: 20px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
-
+        .sectionh2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #334558;
+            margin-bottom: 15px;
+        }
         section h2 {
             font-size: 24px;
             font-weight: 600;
@@ -715,7 +720,7 @@
         <ul>
             <li><a href="dashboard">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
-            <li><a href="finance-uploads">Finance Upload</a></li>
+            <li><a href="payments">Payments</a></li>
             <li><a href="reports">Reports</a></li>
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
@@ -724,7 +729,7 @@
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 		            <li><a href="member" >Members</a></li>
 		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance" class="active">Create Finance</a></li>
+	            	<li><a href="finance" class="active">Finance</a></li>
 	            </c:when>
             </c:choose>
         </ul>
@@ -734,7 +739,7 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2>Create Finance</h2>
+                <h2 class="sectionh2">Finance</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>

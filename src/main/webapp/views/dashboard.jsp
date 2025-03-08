@@ -197,11 +197,18 @@ section {
 }
 
 section h2 {
-	font-size: 24px;
-	font-weight: 600;
-	color: #334558;
-	margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #334558;
+    margin-bottom: 15px;
 }
+
+.sectionh2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #334558;
+            margin-bottom: 15px;
+        }   
 
 section p {
 	font-size: 14px;
@@ -635,7 +642,7 @@ footer {
 		<ul>
 			<li><a href="dashboard" class="active">Dashboard</a></li>
 			<li><a href="approvals">Approvals</a></li>
-			<li><a href="finance-uploads">Finance Upload</a></li>
+			<li><a href="payments">Payments</a></li>
 			<li><a href="reports">Reports</a></li>
 			<li><a href="loan">Loans</a></li>
 			<li><a href="revenue">Revenue</a></li>
@@ -644,7 +651,7 @@ footer {
 				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 					<li><a href="member">Members</a></li>
 					<li><a href="chits">Chits</a></li>
-					<li><a href="finance">Create Finance</a></li>
+					<li><a href="finance">Finance</a></li>
 				</c:when>
 			</c:choose>
 		</ul>
@@ -660,7 +667,7 @@ footer {
 				<c:otherwise>
 					<c:forEach items="${AllFinance}" var="financeItem">
 						<section id="Content">
-							<h2>${financeItem.financeName}</h2>
+							<h2 class="sectionh2">${financeItem.financeName}</h2>
 							<h5>
 								The fund is managed by ${financeItem.financeOwner.memberName} started on <span class="formattedStartDate">${financeItem.financeCreationDate}</span>
 							</h5>

@@ -15,14 +15,14 @@ import com.finance.user.MemberDetails;
  * @date 19 Feb 2025
  */
 @Controller
-public class FinanceUploadController {
+public class PaymentsController {
 
-	@GetMapping(path = {"/finance-uploads"})
-	public String handleFinanceUploads(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+	@GetMapping(path = {"/payments"})
+	public String handlePayments(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
 		if (currenUser != null) {
             MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
-		return "financeUploads";
+		return "payments";
 	}
 }

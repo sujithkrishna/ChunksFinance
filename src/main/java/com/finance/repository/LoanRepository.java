@@ -21,8 +21,18 @@ public interface LoanRepository extends JpaRepository<LoanModel, Integer> {
     @Query("SELECT MAX(l.loanNo) FROM LoanModel l")
 	Integer findMaxNo();
     
-    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus = :currentStatus AND l.firstapproverName.no = :firstApproverMemberNo ORDER BY l.loanDate ASC")
-    List<LoanModel> findLoansByStatusAndApprover(LoanModel.CurrentStatus currentStatus, Integer firstApproverMemberNo);
+    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstapproverName.no = :firstApproverMemberNo AND l.firstApprovalTime IS NULL ORDER BY l.loanDate ASC")
+    List<LoanModel> findLoansByStatusesAndApprover(List<LoanModel.CurrentStatus> currentStatuses, Integer firstApproverMemberNo);
+    
+    
+    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.secondApprovalTime IS NULL ORDER BY l.loanDate ASC")
+    List<LoanModel> findLoansByStatusWithSecondApproval(List<LoanModel.CurrentStatus> currentStatuses);
+    
+    
+    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstApprovalTime IS NOT NULL AND l.secondApprovalTime IS NULL ORDER BY l.loanDate ASC")
+    List<LoanModel> findLoansByStatusWithBothApprovals(List<LoanModel.CurrentStatus> currentStatuses);
+
+
 
    
 }

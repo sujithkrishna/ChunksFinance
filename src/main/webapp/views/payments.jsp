@@ -139,6 +139,13 @@
             color: #334558;
             margin-bottom: 15px;
         }
+        
+        .sectionh2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #334558;
+            margin-bottom: 15px;
+        }        
 
         section p {
             font-size: 14px;
@@ -654,7 +661,175 @@
 			    margin: 0;
 			    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 			    font-weight: 500; /* Optional: Match dashboard header weight */
-			}         
+			} 
+/* Div-based Table Styles */
+.table-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.table-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 0px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-row.header {
+	background-color: #334558;
+	color: white;
+	font-weight: bold;
+}
+
+.table-row.header .table-cell {
+	border-bottom: none;
+}
+
+
+.table-row.header .table-cell:nth-child(2) { /* Request Type */
+    flex: 3;
+    text-align: left;
+    padding-left: 30px; /* Increased from 20px */
+}
+
+.table-row:not(.header) .table-cell:nth-child(2) {
+    flex: 3;
+    text-align: left;
+    padding-left: 30px; /* Increased from 20px */
+    align-items: flex-start; /* Ensure content starts from left */
+}
+
+
+.table-row.header .table-cell:nth-child(3) { /* Amount */
+    flex: 0 1 150px;
+    text-align: right;
+    padding-right: 35px;
+    justify-content: flex-end; /* Add this line */
+    display: flex; /* Add this line */
+}
+
+.table-row:not(.header) .table-cell:nth-child(3) {
+    flex: 0 1 150px;
+    text-align: right;
+    padding-right: 35px;
+    justify-content: flex-end; /* Add this line */
+    display: flex; /* Add this line */
+}
+
+.table-row.header .table-cell:nth-child(4) { /* Date Submitted */
+    flex: 1;
+    text-align: right;
+    padding-right:  36px;
+}
+
+.table-row:not(.header) .table-cell:nth-child(4) {
+    flex: 1;
+    text-align: right;
+    padding-right: 15px;
+}
+
+.table-cell {
+   padding: 8px 0; /* Adjust cell padding */
+}
+
+.table-cell:last-child {
+	text-align: right;
+}
+
+.button-group-approved {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap; /* Prevent wrapping to new line */
+    padding: 2px 0;
+    justify-content: flex-end; /* Align to right */
+    width: 100%; /* Take full available width */
+}
+
+.button-group-approved button {
+    padding: 6px 12px;
+    font-size: 12px;
+    height: 30px;
+    margin: 0; /* Remove any margin */
+    background-color: #3D3D3D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.button-group-approved button i {
+	font-size: 12px;
+	transition: transform 0.2s ease;
+	margin-right: 5px;
+}
+
+.button-group-approved button:hover i {
+	transform: scale(1.1);
+}
+
+.button-group-approved button:hover {
+	background-color: #2c2c2c;
+}
+
+/* Specific style for delete button */
+.button-group-approved button.delete-btn {
+	background-color: #e74c3c;
+}
+
+.button-group-approved button.delete-btn:hover {
+	background-color: #c0392b;
+}
+
+.button-group-view {
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+}
+
+.button-group-view button {
+	padding: 10px 25px;
+	background-color: #3D3D3D;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	white-space: nowrap;
+	height: 40px; /* Match input height */
+}
+
+.button-group-view button i {
+	font-size: 14px;
+	transition: transform 0.2s ease;
+}
+
+.button-group-view button:hover i {
+	transform: scale(1.1);
+}
+
+.button-group-view button:hover {
+	background-color: #2c2c2c;
+}
+
+/* Specific style for delete button */
+.button-group-view button.delete-btn {
+	background-color: #e74c3c;
+}
+
+.button-group-view button.delete-btn:hover {
+	background-color: #c0392b;
+}		        
         
     </style>
 </head>
@@ -706,7 +881,7 @@
         <ul>
             <li><a href="dashboard">Dashboard</a></li>
             <li><a href="approvals">Approvals</a></li>
-            <li><a href="finance-uploads" class="active">Finance Upload</a></li>
+            <li><a href="payments" class="active">Payments</a></li>
             <li><a href="reports">Reports</a></li>
             <li><a href="loan">Loans</a></li>
             <li><a href="revenue">Revenue</a></li>
@@ -715,7 +890,7 @@
 	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 		            <li><a href="member">Members</a></li>
 		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Create Finance</a></li>
+	            	<li><a href="finance">Finance</a></li>
 	            </c:when>
             </c:choose>
         </ul>
@@ -725,13 +900,12 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2>Finance Upload</h2>
+                <h2 class="sectionh2">Payments</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
 						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -742,76 +916,52 @@
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
 						<span>Finance created successfully!</span>
-						<span>Finance created by Sujith!</span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
 					</div>
 				</div>				
                 <form>
-                    <!-- Finance Type -->
-                    <div class="form-group">
-                        <label for="finance-type">Finance Type</label>
-                        <select id="finance-type" class="input-field">
-                            <option value="" disabled selected>Finance Type</option>
-                            <option value="chunksFinance">Chunks Finance</option>
-                            <option value="onamFund">Onam Fund</option>
-                        </select>
-                        <div class="error-message" id="financeType-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Please select a finance type</span>
-                        </div>						
-                    </div>
-
-                    <!-- Person's Name -->
-                    <div class="form-group">
-                        <label for="persons-name">Person's Name</label>
-                        <select id="persons-name" class="input-field">
-                            <option value="" disabled selected>Select Person</option>
-                            <option value="sujithKrishna">Sujith Krishna</option>
-                            <option value="frJaison">Fr Jaison</option>
-                            <option value="manesh">Manesh</option>
-                            <option value="jijin">Jijin</option>
-                        </select>
-                       <div class="error-message" id="personName-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Please select a person</span>
-                        </div>						
-                    </div>
-
-                    <!-- Finance Date -->
-                    <div class="form-group">
-                        <label for="finance-date">Finance Date</label>
-                        <input type="date" id="finance-date" name="finance-date" class="input-field" required>
-                        <div class="error-message" id="financeDate-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Please select a date</span>
-                        </div>						
-                    </div>
-
-                    <!-- Reference Number -->
-                    <div class="form-group">
-                        <label for="reference-number">Reference Number</label>
-                        <input type="number" id="reference-number" name="reference-number" class="input-field" placeholder="Reference Number" required>
-                        <div class="error-message" id="referenceNumber-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Reference number is required</span>
-                        </div>						
-                    </div>
-
-                    <!-- Finance Amount -->
-                    <div class="form-group">
-                        <label for="finance-amount">Finance Amount</label>
-                        <input type="number" id="finance-amount" name="finance-amount" class="input-field" placeholder="Enter finance amount" required>
-                        <div class="error-message" id="financeAmount-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Amount is required</span>
-                        </div>						
-                    </div>
+                    
+                          <div class="table-container">
+						            <!-- Header Row -->
+						            <div class="table-row header">
+						                <div class="table-cell">Name</div>
+						                <div class="table-cell">Amount</div>
+						                <div class="table-cell">Paid</div>
+						            </div>
+						            <!-- Data Rows -->
+						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
+						                <div class="table-cell">Sujith</div>
+						                <div class="table-cell">₹300</div>
+						                <div class="table-cell"><input type="checkbox" checked></div>
+						            </div>
+						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
+						                <div class="table-cell">Manesh</div>
+						                <div class="table-cell">₹300</div>
+						                <div class="table-cell"><input type="checkbox" checked></div>
+						            </div>
+						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
+						                <div class="table-cell">Sijin</div>
+						                <div class="table-cell">₹300</div>
+						                <div class="table-cell"><input type="checkbox" checked></div>
+						            </div>
+						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
+						                <div class="table-cell">Jijin</div>
+						                <div class="table-cell">₹300</div>
+						                <div class="table-cell"><input type="checkbox" checked></div>
+						            </div>
+						            <div class="table-row">
+						                <div class="table-cell"></div>
+						                <div class="table-cell"></div>
+						                <div class="table-cell"><h4>Total Collection: ₹900</h4></div>
+						            </div>
+						     </div>  
+                    
 
                     <!-- Submit Button -->
 					<div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Add Upload</button>
+                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Pay</button>
                         <button type="button"> <i class="fas fa-edit"></i>Edit</button>
                         <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
 					</div>
