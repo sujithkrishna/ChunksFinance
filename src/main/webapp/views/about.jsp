@@ -135,7 +135,7 @@
           </div>
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/Sujith1.jpg" alt="">
+              <img src="assets/images/Sujith.png" alt="">
               <div class="down-content">
                 <h4>Sujith Krishna</h4>
                 <span>Co-Founder</span>
@@ -145,7 +145,7 @@
           </div>
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/Jijin1.jpg" alt="">
+              <img src="assets/images/Jijin.jpg" alt="">
               <div class="down-content">
                 <h4>Jijin Francis</h4>
                 <span>Co-Founder</span>
@@ -155,7 +155,7 @@
           </div>
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/Jaison.jpg" alt="">
               <div class="down-content">
                  <h4>Fr. Jaison</h4>
                 <span>Co-Founder</span>
@@ -165,7 +165,7 @@
           </div>
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/Manesh.jpg" alt="">
+              <img src="assets/images/Manesh.jpeg" alt="">
               <div class="down-content">
                  <h4>Manesh Michael</h4>
                 <span>Co-Founder</span>
@@ -177,7 +177,7 @@
 		  
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/JijoJohn.jpg" alt="">
               <div class="down-content">
                  <h4>Jijo John</h4>
                 <span>Co-Founder</span>
@@ -188,7 +188,7 @@
 
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/AbhilashKP.jpg" alt="">
               <div class="down-content">
                  <h4>Abhilash KP</h4>
                 <span>Co-Founder</span>
@@ -199,7 +199,7 @@
 
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/JeejoJacob.jpeg" alt="">
               <div class="down-content">
                  <h4>Jeejo Jacob</h4>
                 <span>Co-Founder</span>
@@ -210,7 +210,7 @@
 
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/Luie1.jpg" alt="">
+              <img src="assets/images/Luie.jpeg" alt="">
               <div class="down-content">
                  <h4>Luie Joseph</h4>
                 <span>Co-Founder</span>
@@ -222,7 +222,7 @@
 
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/Rajesh.jpg" alt="">
               <div class="down-content">
                  <h4>Rajesh Dhamodharan</h4>
                 <span>Co-Founder</span>
@@ -234,7 +234,7 @@
 
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/Shabeena.jpg" alt="">
               <div class="down-content">
                  <h4>Shabeena Bhasheer</h4>
                 <span>Co-Founder</span>
@@ -245,7 +245,7 @@
 
           <div class="col-md-4">
             <div class="team-item">
-              <img src="assets/images/team_03.jpg" alt="">
+              <img src="assets/images/saritha.jpeg" alt="">
               <div class="down-content">
                  <h4>Saritha Raphael</h4>
                 <span>Co-Founder</span>
@@ -331,7 +331,7 @@
                 <div class="inner-content">
                   <h4>Jijin Francis</h4>
                   <span>Chief Executive Officer</span>
-                  <p>"Operating a global business in a fast-changing world, you have to be grounded real-time in the external environment, have complete transparency, be fact-based and working with a great, collaborative team."</p>
+                  <p>"Success in global finance requires agility, transparency, and a team that thrives on collaboration. This company excels in all three, making them a true leader in the industry."</p>
                 </div>
                 <img src="assets/images/Jijin1.jpg" alt="">
               </div>
@@ -340,7 +340,7 @@
                 <div class="inner-content">
                   <h4>Sujith Krishna</h4>
                   <span>Chief technology officer</span>
-                  <p>"The first step to move past impostor syndrome is similar to self-awareness. It’s about observing what thoughts you’re having, and how they impact how you operate. Then, you need to start reframing those negative thoughts. In a nutshell, what you're doing is trying to change your belief system."</p>
+                  <p>"In a world where markets shift overnight, having a finance partner that is data-driven, transparent, and deeply engaged is invaluable. This company delivers on all fronts."</p>
                 </div>
                 <img src="assets/images/Sujith1.jpg" alt="">
               </div>
@@ -351,7 +351,7 @@
                 <div class="inner-content">
                   <h4>Fr. Jaison</h4>
                   <span>Chief Accountant</span>
-                  <p>"Ut ultricies maximus turpis, in sollicitudin ligula posuere vel. Donec finibus maximus neque, vitae egestas quam imperdiet nec. Proin nec mauris eu tortor consectetur tristique."</p>
+                  <p>"Trust, innovation, and real-time decision-making define this firm. Their commitment to accuracy and teamwork makes all the difference."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div>
@@ -360,7 +360,7 @@
                 <div class="inner-content">
                   <h4>Manesh Michael</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"Finance is about more than just numbers; it's about strategy, vision, and execution. This company embodies all of these, ensuring long-term success."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div>
@@ -369,7 +369,7 @@
                 <div class="inner-content">
                   <h4>Jijo John</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"A truly world-class finance company-grounded in facts, committed to transparency, and powered by collaboration. They set the standard for the industry."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 
@@ -379,7 +379,7 @@
                 <div class="inner-content">
                   <h4>Abhilash KP</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"Navigating the complexities of global finance requires expertise and adaptability. This firm provides both, with a relentless focus on precision and partnership."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 			  
@@ -388,7 +388,7 @@
                 <div class="inner-content">
                   <h4>Jeejo Jacob</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"Markets evolve, but this company stays ahead-leveraging data, insight, and a highly skilled team to drive results."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 
@@ -397,7 +397,7 @@
                 <div class="inner-content">
                   <h4>Jijo John</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"Integrity and innovation go hand in hand here. They understand the financial landscape like no other and help businesses thrive."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 		
@@ -406,7 +406,7 @@
                 <div class="inner-content">
                   <h4>Luie Joseph</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"A finance partner that is proactive, insightful, and always a step ahead. Their ability to analyze and act in real-time is unmatched."</p>
                 </div>
                 <img src="assets/images/Luie.jpg" alt="">
               </div> 	
@@ -416,7 +416,7 @@
                 <div class="inner-content">
                   <h4>Rajesh Dhamodharan</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"In finance, every decision counts. This company ensures those decisions are informed, strategic, and built for the future."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 
@@ -425,7 +425,7 @@
                 <div class="inner-content">
                   <h4>Shabeena Bhasheer</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"With transparency at their core and a collaborative mindset, they are redefining financial excellence. A trusted partner for any business."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 
@@ -434,7 +434,7 @@
                 <div class="inner-content">
                   <h4>Saritha Raphael</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"Precision, performance, and partnership-this company embodies what modern finance should be. A game-changer in the industry."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 
@@ -443,7 +443,7 @@
                 <div class="inner-content">
                   <h4>Sijin TV</h4>
                   <span>Marketing Head</span>
-                  <p>"Curabitur sollicitudin, tortor at suscipit volutpat, nisi arcu aliquet dui, vitae semper sem turpis quis libero. Quisque vulputate lacinia nisl ac lobortis."</p>
+                  <p>"In a rapidly evolving financial world, having a partner that is data-driven, transparent, and forward-thinking is essential. This company excels in all aspects, delivering confidence and results."</p>
                 </div>
                 <img src="http://placehold.it/60x60" alt="">
               </div> 

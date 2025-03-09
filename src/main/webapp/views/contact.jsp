@@ -121,7 +121,7 @@
             <div class="contact-item">
               <i class="fa fa-map-marker"></i>
               <h4>Location</h4>
-              <p>Kaithavalappil House,Parayakad PO, Cherthala, Alappuzha</p>
+              <p>"Exciting things ahead! We're in the process of finding a new office space to near Ezhupunna/ Near Eramalloor better serve our clients. Location details coming soon!"</p>
               <a href="https://maps.app.goo.gl/pS5TVwCSrGsev7ek9">View on Google Maps</a>
             </div>
           </div>
@@ -135,7 +135,7 @@
           <div class="col-md-12">
             <div class="section-heading">
               <h2>Send us a <em>message</em></h2>
-              <span>Suspendisse a ante in neque iaculis lacinia</span>
+              <span>Move forward with strength and stability.</span>
             </div>
           </div>
           <div class="col-md-12">
