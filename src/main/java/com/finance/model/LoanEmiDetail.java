@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author Sujith Krishna
@@ -23,6 +24,7 @@ import lombok.Data;
 @Entity
 @Table(name = "loan_emi_detail")
 @Data
+@ToString(exclude = "loan") // Add this
 public class LoanEmiDetail {
 
 	public enum CurrentStatus {

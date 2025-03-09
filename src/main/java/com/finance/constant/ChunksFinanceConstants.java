@@ -69,6 +69,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String ALL_LOANS = "allLoans";
 	
+	public static final String ALL_LOANS_EMI = "allLoansEMI";
+	
 	public static final String LOANS = "LOAN";
 	
 	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";

@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author Sujith Krishna
@@ -20,6 +21,7 @@ import lombok.Data;
  *
  */
 @Data
+@ToString(exclude = {"loans"})
 @Entity
 @Table(name = "finance",
 uniqueConstraints = {

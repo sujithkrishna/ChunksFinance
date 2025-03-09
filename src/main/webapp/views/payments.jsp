@@ -1,8 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ page isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page isELIgnored="false"%>
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -349,6 +349,9 @@
 				header > div:first-child {
 					margin-left: 40px; /* Adjust this value to move title right */
 				}
+				 .table-row input[type="text"] {
+     			   max-width: 150px;
+    			}
 
 				/* Remove the old user-profile margin */
 				.user-profile {
@@ -708,7 +711,7 @@
 .table-row.header .table-cell:nth-child(3) { /* Amount */
     flex: 0 1 150px;
     text-align: right;
-    padding-right: 35px;
+    padding-right: 61px;
     justify-content: flex-end; /* Add this line */
     display: flex; /* Add this line */
 }
@@ -721,10 +724,13 @@
     display: flex; /* Add this line */
 }
 
+.table-row.header .table-cell:nth-child(5) {
+	padding-right: 22px;
+}
 .table-row.header .table-cell:nth-child(4) { /* Date Submitted */
     flex: 1;
     text-align: right;
-    padding-right:  36px;
+    padding-right:  68px;
 }
 
 .table-row:not(.header) .table-cell:nth-child(4) {
@@ -830,7 +836,47 @@
 .button-group-view button.delete-btn:hover {
 	background-color: #c0392b;
 }		        
-        
+
+/* Apply consistent input field styling */
+.table-row input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    background-color: #fafafa;
+    color: #333;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+    max-width: 120px; /* Adjust based on your needs */
+    text-align: right;
+}
+
+/* Focus state */
+.table-row input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Error states */
+.table-row input.error {
+    border-color: #e74c3c !important;
+    animation: shake 0.4s ease;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .table-row input[type="text"] {
+        width: 100%;
+        max-width: none;
+    }
+    
+    .table-row .table-cell:nth-child(5) {
+        flex: 1;
+        justify-content: flex-start;
+    }
+}        
     </style>
 </head>
 <body>
@@ -900,7 +946,7 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2 class="sectionh2">Payments</h2>
+                <h2 class="sectionh2">Loan Payments on 09 March 2025</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
@@ -922,48 +968,31 @@
 					</div>
 				</div>				
                 <form>
-                    
                           <div class="table-container">
 						            <!-- Header Row -->
 						            <div class="table-row header">
+						                <div class="table-cell">Loan No</div>
 						                <div class="table-cell">Name</div>
+						                <div class="table-cell">Finance</div>
+						                <div class="table-cell">EMI AMT</div>
 						                <div class="table-cell">Amount</div>
-						                <div class="table-cell">Paid</div>
 						            </div>
 						            <!-- Data Rows -->
-						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
-						                <div class="table-cell">Sujith</div>
-						                <div class="table-cell">₹300</div>
-						                <div class="table-cell"><input type="checkbox" checked></div>
-						            </div>
-						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
-						                <div class="table-cell">Manesh</div>
-						                <div class="table-cell">₹300</div>
-						                <div class="table-cell"><input type="checkbox" checked></div>
-						            </div>
-						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
-						                <div class="table-cell">Sijin</div>
-						                <div class="table-cell">₹300</div>
-						                <div class="table-cell"><input type="checkbox" checked></div>
-						            </div>
-						            <div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
-						                <div class="table-cell">Jijin</div>
-						                <div class="table-cell">₹300</div>
-						                <div class="table-cell"><input type="checkbox" checked></div>
-						            </div>
-						            <div class="table-row">
-						                <div class="table-cell"></div>
-						                <div class="table-cell"></div>
-						                <div class="table-cell"><h4>Total Collection: ₹900</h4></div>
-						            </div>
+						           <c:forEach items="${allLoansEMI}" var="loanEMI">
+										  <div class="table-row" style="background: linear-gradient(135deg, rgba(139, 181, 140, 0.9), rgba(147, 191, 127, 0.9))">
+												<div class="table-cell">${loanEMI.loan.loanNo}</div>
+												<div class="table-cell">${loanEMI.loan.loanApplicantName.memberName}</div>
+												<div class="table-cell">${loanEMI.loan.financeType.financeName}</div>
+												<div class="table-cell">₹${loanEMI.amount}</div>
+												<div class="table-cell"><input type="text" value="${loanEMI.amount}"></div>
+											</div>
+									</c:forEach>
 						     </div>  
                     
 
                     <!-- Submit Button -->
 					<div class="button-group">
                         <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Pay</button>
-                        <button type="button"> <i class="fas fa-edit"></i>Edit</button>
-                        <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>	
 					</div>
                 </form>
             </section>

@@ -1,7 +1,9 @@
 package com.finance.service;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import com.finance.model.LoanEmiDetail;
 import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
 import com.finance.model.SettingsModel;
+import com.finance.repository.LoanEmiDetailRepository;
 import com.finance.repository.LoanRepository;
 import com.finance.user.MemberDetails;
 
@@ -32,6 +35,9 @@ public class LoanService {
 	
 	@Autowired
 	private LoanRepository loanRepository;
+	
+	@Autowired
+	private LoanEmiDetailRepository loanEmiDetailRepository; 
 	
 	@Autowired
 	private MemberService memberService;
@@ -114,6 +120,11 @@ public class LoanService {
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 	}
 	
+	public List<LoanEmiDetail> findAllLoansForCurrentUser(MemberDetails currenUser){
+		LocalDate currentDate = LocalDate.now();
+	    LocalDate givenDate = currentDate.getDayOfWeek() == DayOfWeek.SUNDAY ? currentDate : currentDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+		return loanEmiDetailRepository.findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(currenUser.getMember().getNo(),givenDate);
+	}
 	
 	public List<LoanModel> findLoansByStatusAndApprover(LoanModel.CurrentStatus currentStatus, MemberModel currentUser){
 		 if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
