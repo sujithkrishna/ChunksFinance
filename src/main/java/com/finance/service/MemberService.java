@@ -26,6 +26,10 @@ import com.finance.user.MemberDetails;
 @Service
 public class MemberService {
 
+	
+
+	
+
 	@Autowired
 	private MemberRepository memberRepository;
 
@@ -47,6 +51,9 @@ public class MemberService {
 				}
 				Integer currentValue = getMaxMemberNo();
 				member.setNo(++currentValue);
+				if(member.getMemberType().equals(MemberModel.MemberType.PRIMARY)) {
+					member.setUserType(null);
+				}
 				memberRepository.save(member);
 		}
 		return true;
@@ -76,23 +83,6 @@ public class MemberService {
 	public List<MemberModel> getAllSecondaryMemeber() {
 		List<MemberModel> secondaryMembers = memberRepository.findByMemberType(MemberModel.MemberType.SECONDARY);
 		return secondaryMembers;
-	}
-	
-	
-	public List<String> getEligibleLoanMembers() {
-		/*
-		List<MemberModel> primaryMembersMemMdl = memberRepository.findAllPrimaryMembers();
-		List<MemberModel> secondaryMembersMemMdl = memberRepository.findAllSecondaryMembers();
-		List<String> eligibleLoanMembers = new ArrayList<String>();
-		for (MemberModel memberModel : primaryMembersMemMdl) {
-			eligibleLoanMembers.add(memberModel.getId().getMemberName());
-		}
-		for (MemberModel memberModel : secondaryMembersMemMdl) {
-			eligibleLoanMembers.add(memberModel.getId().getMemberName());
-		}
-		return eligibleLoanMembers;
-		*/
-		return null;
 	}
 	
 

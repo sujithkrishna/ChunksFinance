@@ -669,7 +669,19 @@
 			    margin: 0;
 			    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 			    font-weight: 500; /* Optional: Match dashboard header weight */
-			}			
+			}
+			
+			#userGroupContainer {
+			    transition: opacity 0.3s ease, height 0.3s ease;
+			    opacity: 0;
+			    height: 0;
+			    overflow: hidden;
+			}
+			
+			#userGroupContainer.show {
+			    opacity: 1;
+			    height: auto;
+			}						
     </style>
 </head>
 <body>
@@ -763,6 +775,21 @@
                         <span>Please select a member type</span>
                     </div>					
                 </div>
+                 <div class="form-group" id="userGroupContainer">
+				    <label>Is it a Loan User :</label>
+				    <div class="radio-group">
+				        <label class="radio-option">
+				            <input id="userGroupLoan" type="radio" name="userType" value="LOANUSER">
+				            <span class="radio-checkmark"></span>
+				            Yes
+				        </label>
+				        <label class="radio-option">
+				            <input id="userGroupDeposit" type="radio" name="userType" value="DEPOSITUSER">
+				            <span class="radio-checkmark"></span>
+				            No(Deposit User)
+				        </label>
+				    </div>
+				</div>
 				<div class="form-group" id="referenceMemberGroup" style="display: none;">
 				    <label for="referenceMember">Reference Member:</label>
 				    <select id="referenceMember" name="referenceMember" class="input-field" required>
@@ -877,20 +904,28 @@
 	    document.addEventListener('DOMContentLoaded', function() {
             const memberTypeSelect = document.getElementById('memberType');
             const referenceMemberGroup = document.getElementById('referenceMemberGroup');
+            const userGroupContainer = document.getElementById('userGroupContainer');
 
             memberTypeSelect.addEventListener('change', function() {
                 if (this.value === 'SECONDARY') {
-                    referenceMemberGroup.style.display = ''; // Fix: Remove inline display:none
-                    setTimeout(() => {
-                        referenceMemberGroup.classList.add('show');
-                    }, 10);
+                    // Show both containers
+                    [referenceMemberGroup, userGroupContainer].forEach(container => {
+                        container.style.display = '';
+                        setTimeout(() => container.classList.add('show'), 10);
+                    });
                 } else {
-                    referenceMemberGroup.classList.remove('show');
-                    setTimeout(() => {
-                        referenceMemberGroup.style.display = 'none';
-                    }, 300);
+                    // Hide both containers
+                    [referenceMemberGroup, userGroupContainer].forEach(container => {
+                        container.classList.remove('show');
+                        setTimeout(() => container.style.display = 'none', 300);
+                    });
                 }
             });
+
+            const loanUserRadio = document.querySelector('input[name="userType"][value="LOANUSER"]');
+            if (loanUserRadio) {
+                loanUserRadio.checked = true;
+            }
             
             memberTypeSelect.dispatchEvent(new Event('change'));
             
@@ -1016,6 +1051,14 @@
         // Add input listeners for real-time validation
         document.getElementById('memberType').addEventListener('change', function() {
             clearError(this, 'memberType-error');
+        });
+        
+        document.getElementById('memberType').addEventListener('change', function() {
+            const isSecondary = this.value === 'SECONDARY';
+            document.getElementById('referenceMemberGroup').style.display = isSecondary ? 'block' : 'none';
+            document.getElementById('userGroupContainer').style.display = isSecondary ? 'block' : 'none';
+            // Clear reference member if not secondary
+            if (!isSecondary) document.getElementById('referenceMember').value = '';
         });
 
         document.getElementById('referenceMember').addEventListener('change', function() {

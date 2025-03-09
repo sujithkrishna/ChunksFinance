@@ -49,6 +49,10 @@ public class ChunksFinanceConstants {
 	
 	public static final String SECONDARY_LOGIN = "secondaryLogin";
 	
+	public static final String SECONDARY = "SECONDARY";
+	
+	public static final String USER_GROUP_LOAN = "userGroupLoan";
+	
 	public static final String APPROVAL_CUTOFF_DAY = "approvalCutOffDay";
 	
 	public static final String APPROVAL_CUTOFF_TIME = "approvalCutOffTime";

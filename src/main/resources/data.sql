@@ -1,36 +1,37 @@
 CREATE TABLE members (
     no INTEGER NOT NULL,
-	member_name VARCHAR(255) NOT NULL,
-	email_id VARCHAR(255) NOT NULL UNIQUE,
-	password VARCHAR(255) NOT NULL,
-	mobile_number VARCHAR(255),
-	member_dob DATE,
+    member_name VARCHAR(255) NOT NULL,
+    email_id VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    mobile_number VARCHAR(255),
+    member_dob DATE,
     reference_member_no INTEGER,
     address1 VARCHAR(255),
-    place VARCHAR(255),	
-    taluk VARCHAR(255),	
+    place VARCHAR(255),
+    taluk VARCHAR(255),
     district VARCHAR(255),
-    state VARCHAR(255),	
+    state VARCHAR(255),
     pincode VARCHAR(255),
     member_type ENUM('PRIMARY', 'SECONDARY') NOT NULL,
     role ENUM('SUPER_ADMIN', 'USER') NOT NULL,
+    user_type ENUM('DEPOSITUSER', 'LOANUSER'),
     PRIMARY KEY (no),
     CONSTRAINT uniq_member_composite UNIQUE (member_name, member_type, reference_member_no)
 );
 
 
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (1, 'അഭിലാഷ്  KP', 'kannandevoos@gmail.com', 'a2FubmFuZGV2b29z', '8893840092', '2025-09-12', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (2, 'ജെയ്‌സൺ  കൊളുത്തുവള്ളി', 'jkraphy@gmail.com', 'amtyYXBoeQ==', '9496017942', '2025-06-03', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (3, 'ജിജിൻ ഫ്രാൻസിസ്', 'jijinfrancisanna@gmail.com', 'amlqaW5mcmFuY2lzYW5uYQ==', '9846417927', '2025-11-18', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'SUPER_ADMIN');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (4, 'ജീജോ ജേക്കബ്', 'jeejo1441@gmail.com', 'amVlam8xNDQx', '9809523060', '2025-09-06', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'SUPER_ADMIN');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (5, 'ജിജോ ജോൺ', 'jijojohn777@gmail.com', 'amlqb2pvaG43Nzc=', '9895415828', '2025-12-20', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'SUPER_ADMIN');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (6, 'ലൂയിസ് ജോസഫ്', 'luisjoseph6551@gmail.com', 'bHVpc2pvc2VwaDY1NTE=', '9947886919', '2025-05-17', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (7, 'മനേഷ് മൈക്കിൽ', 'manesh.micheal@gmail.com', 'bWFuZXNoLm1pY2hlYWw=', '9995227002', '2025-11-07', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (8, 'രാജേഷ്  ദാമോദരൻ', 'rajeshdhamodharan', 'cmFqZXNoZGhhbW9kaGFyYW4=', '9995950402', '2025-12-28', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (9, 'ഷബീന ബഷീർ', 'aalimzayan@gmail.com', 'YWFsaW16YXlhbg==', '9946107720', '2025-11-25', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (10, 'സരിത റഫയൽ', 'saritharaphel@gmail.com', 'c2FyaXRoYXJhcGhlbA==', '7736544685', '2025-05-16', null, null, null, 'Kottayam', 'Kottayam', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (11, 'സിജിൻ  TV', 'sijin.celine@gmail.com', 'c2lqaW4uY2VsaW5l', '8304081488', '2025-12-18', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');
-INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (12, 'സുജിത്ത് കൃഷ്ണാ', 'sujithskrishna@gmail.com', 'c3VqaXRoc2tyaXNobmE=', '9845375129', '2025-07-06', null, 'Kaithavalappil House', 'Parayakad PO', 'Cherthala', 'Alappuzha', 'Kerala', '688540', 'PRIMARY', 'SUPER_ADMIN');
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (1, 'അഭിലാഷ്  KP', 'kannandevoos@gmail.com', 'a2FubmFuZGV2b29z', '8893840092', '2025-09-12', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (2, 'ജെയ്‌സൺ  കൊളുത്തുവള്ളി', 'jkraphy@gmail.com', 'amtyYXBoeQ==', '9496017942', '2025-06-03', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (3, 'ജിജിൻ ഫ്രാൻസിസ്', 'jijinfrancisanna@gmail.com', 'amlqaW5mcmFuY2lzYW5uYQ==', '9846417927', '2025-11-18', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'SUPER_ADMIN',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (4, 'ജീജോ ജേക്കബ്', 'jeejo1441@gmail.com', 'amVlam8xNDQx', '9809523060', '2025-09-06', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'SUPER_ADMIN',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (5, 'ജിജോ ജോൺ', 'jijojohn777@gmail.com', 'amlqb2pvaG43Nzc=', '9895415828', '2025-12-20', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'SUPER_ADMIN',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (6, 'ലൂയിസ് ജോസഫ്', 'luisjoseph6551@gmail.com', 'bHVpc2pvc2VwaDY1NTE=', '9947886919', '2025-05-17', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (7, 'മനേഷ് മൈക്കിൽ', 'manesh.micheal@gmail.com', 'bWFuZXNoLm1pY2hlYWw=', '9995227002', '2025-11-07', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (8, 'രാജേഷ്  ദാമോദരൻ', 'rajeshdhamodharan', 'cmFqZXNoZGhhbW9kaGFyYW4=', '9995950402', '2025-12-28', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (9, 'ഷബീന ബഷീർ', 'aalimzayan@gmail.com', 'YWFsaW16YXlhbg==', '9946107720', '2025-11-25', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (10, 'സരിത റഫയൽ', 'saritharaphel@gmail.com', 'c2FyaXRoYXJhcGhlbA==', '7736544685', '2025-05-16', null, null, null, 'Kottayam', 'Kottayam', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (11, 'സിജിൻ  TV', 'sijin.celine@gmail.com', 'c2lqaW4uY2VsaW5l', '8304081488', '2025-12-18', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER',null);
+INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (12, 'സുജിത്ത് കൃഷ്ണാ', 'sujithskrishna@gmail.com', 'c3VqaXRoc2tyaXNobmE=', '9845375129', '2025-07-06', null, 'Kaithavalappil House', 'Parayakad PO', 'Cherthala', 'Alappuzha', 'Kerala', '688540', 'PRIMARY', 'SUPER_ADMIN',null);
 
 
 CREATE TABLE LOAN_ENQUIRES (
