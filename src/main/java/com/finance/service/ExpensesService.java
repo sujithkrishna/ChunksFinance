@@ -18,7 +18,6 @@ import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.model.SettingsModel;
 import com.finance.repository.ExpensesRepository;
-import com.finance.repository.SettingsRepository;
 import com.finance.user.MemberDetails;
 
 /**
@@ -29,14 +28,9 @@ import com.finance.user.MemberDetails;
  */
 @Service
 public class ExpensesService {
-	
-	
 
 	@Autowired
 	private CreateFinanceService financeService;
-	
-	@Autowired
-    private SettingsRepository settingsRepository;
 	
 	@Autowired
     private SettingsService settingsService;

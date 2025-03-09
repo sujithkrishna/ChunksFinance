@@ -40,7 +40,7 @@ public class ReportsController {
 		model.addAttribute(ChunksFinanceConstants.ALL_LOANS, allLoans);
 		
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		model.addAttribute("primaryMembers",primaryMembers);
+		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);
 		
 		
 		return "reports";

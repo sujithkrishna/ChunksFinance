@@ -667,7 +667,7 @@ footer {
 				<c:otherwise>
 					<c:forEach items="${AllFinance}" var="financeItem">
 						<section id="Content">
-							<h2 class="sectionh2">${financeItem.financeName}</h2>
+							<h2 class="sectionh2">${financeItem.financeName} <c:choose><c:when test="${currentUser.role == 'SUPER_ADMIN'}"><c:choose><c:when test="${financeItem.financeType == 'SECONDARY'}"><a style="color: inherit; text-decoration: none;" href="enrolment"><i class='fa-regular fa-square-plus' style='font-size:20px;color:#196a19'></i></a></c:when></c:choose></c:when></c:choose></h2>
 							<h5>
 								The fund is managed by ${financeItem.financeOwner.memberName} started on <span class="formattedStartDate">${financeItem.financeCreationDate}</span>
 							</h5>

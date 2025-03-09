@@ -18,7 +18,6 @@ import com.finance.model.RevenueModel;
 import com.finance.model.RevenueModel.CurrentStatus;
 import com.finance.model.SettingsModel;
 import com.finance.repository.RevenueRepository;
-import com.finance.repository.SettingsRepository;
 import com.finance.user.MemberDetails;
 
 /**
@@ -29,8 +28,6 @@ import com.finance.user.MemberDetails;
  */
 @Service
 public class RevenueService {
-	
-	
 
 	@Autowired
     private RevenueRepository revenueRepository;

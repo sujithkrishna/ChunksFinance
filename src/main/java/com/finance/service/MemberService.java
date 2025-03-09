@@ -26,10 +26,6 @@ import com.finance.user.MemberDetails;
 @Service
 public class MemberService {
 
-	
-
-	
-
 	@Autowired
 	private MemberRepository memberRepository;
 
@@ -61,7 +57,7 @@ public class MemberService {
 	
 	public void loadPrimaryMemCurrentUser(Model model,MemberDetails currenUserDetails) {
 		List<MemberModel> primaryMembers = getAllPrimaryMemeber();
-        model.addAttribute("primaryMembers", primaryMembers);
+        model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS, primaryMembers);
         if (currenUserDetails != null) {
             MemberModel currentUser = currenUserDetails.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);

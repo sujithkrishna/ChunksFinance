@@ -27,7 +27,6 @@ import com.finance.user.MemberDetails;
 @Controller
 public class CreateFinanceController {
 	
-	
 	@Autowired
 	private CreateFinanceService createFinanceService ;
 
@@ -45,7 +44,7 @@ public class CreateFinanceController {
             MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}		
-		model.addAttribute("primaryMembers",primaryMembers);
+		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);
         return "createFinance";
 	}
 	
@@ -54,7 +53,7 @@ public class CreateFinanceController {
 	public String handleCreateFinance(Model model,@ModelAttribute FinanceModel finance,RedirectAttributes redirectAttributes) {
 		boolean status = createFinanceService.creatFinance(finance);
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		model.addAttribute("primaryMembers",primaryMembers);
+		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);
 		if(status) {
 		 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.FINANCE_CREATE_NEWFINANCE_MESSAGE,finance.getFinanceName()));
 		}

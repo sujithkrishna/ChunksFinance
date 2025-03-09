@@ -28,7 +28,6 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Controller
 public class ApprovalsController {
-	
 
 	@Autowired
 	private ApprovalsService approvalsService;

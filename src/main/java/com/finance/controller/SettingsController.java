@@ -25,11 +25,9 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Controller
 public class SettingsController {
-	
 
 	@Autowired
 	private SettingsService settingsService;  
-	
 	
 	@GetMapping(path = {"/settings"})
 	public String handleSetting(@AuthenticationPrincipal MemberDetails currenUser,@ModelAttribute SettingsModel settingModel ,Model model) {

@@ -23,5 +23,8 @@ public interface FinanceRepository extends JpaRepository<FinanceModel, Long>{
 	@Query("SELECT f FROM FinanceModel f ORDER BY f.loanPriorityOrderNumber ASC")
 	List<FinanceModel> findAllSortedByLoanPriorityOrderNumber();
 	
+	@Query("SELECT f FROM FinanceModel f WHERE f.status = 'ACTIVE'")
+	List<FinanceModel> findActiveFinances();
+	
 	
 }

@@ -40,6 +40,7 @@ public class DashBoardService {
 		if(financeModel.size()==0) {
 			financeModel = null;
 		}
+		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 		List<LoanEnquiresModel> loanEnquiresModel = loanEnquiresService.getLoanEnquiresForDashboard();
 		// Calculate this should go to CHunks or Onam Fund.
 		
@@ -93,7 +94,7 @@ public class DashBoardService {
         }
 		
 		
-		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
+		
 	}
    
 }

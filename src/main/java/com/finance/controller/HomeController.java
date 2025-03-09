@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class HomeController {
 	
-	
 	@GetMapping(path = {"/", "/home", "/index"})
 	public String handleHome(HttpServletRequest request) {
 		System.out.println("Home Page called from "+request.getRemoteAddr());

@@ -20,7 +20,6 @@ public class DashBoardController {
 	@Autowired
 	private DashBoardService boardService;
 	
-	
 	@GetMapping(path = {"/dashboard"})
 	public String handleDashboard(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
 		boardService.populateDashboardData(currenUser, model);

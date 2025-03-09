@@ -35,6 +35,10 @@ public class FinanceModel {
     public enum FinanceType {
         PRIMARY, SECONDARY
     }
+    
+    public enum FinanceStatus {
+        ACTIVE, CLOSED
+    }
 
     @Id
     @Column(nullable = false)
@@ -43,6 +47,10 @@ public class FinanceModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "finance_type", nullable = false)
     private FinanceType financeType;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private FinanceStatus status  = FinanceStatus.ACTIVE;
 
     @Column(name = "finance_name", nullable = false)
     private String financeName;
@@ -63,5 +71,7 @@ public class FinanceModel {
     @Column(name = "loan_priority_order_number")
     private Integer loanPriorityOrderNumber;
 
+    @Column(name = "interest_amount")
+    private Double interestAmount;
     
 }

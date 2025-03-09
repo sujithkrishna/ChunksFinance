@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.MemberModel;
 
 /**
@@ -16,6 +17,7 @@ import com.finance.model.MemberModel;
  *
  */
 public class MemberDetails implements UserDetails {
+	
 	private static final long serialVersionUID = 1L;
 	private final MemberModel member;
 
@@ -30,7 +32,7 @@ public class MemberDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Convert user roles into Spring Security GrantedAuthorities
-        return List.of(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
+        return List.of(new SimpleGrantedAuthority(ChunksFinanceConstants.ROLE + member.getRole()));
     }
 
     @Override

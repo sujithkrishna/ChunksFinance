@@ -34,6 +34,50 @@ INSERT INTO members (no, member_name, email_id, password, mobile_number, member_
 INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role,user_type) VALUES (12, 'സുജിത്ത് കൃഷ്ണാ', 'sujithskrishna@gmail.com', 'c3VqaXRoc2tyaXNobmE=', '9845375129', '2025-07-06', null, 'Kaithavalappil House', 'Parayakad PO', 'Cherthala', 'Alappuzha', 'Kerala', '688540', 'PRIMARY', 'SUPER_ADMIN',null);
 
 
+
+CREATE TABLE finance (
+    id INTEGER NOT NULL PRIMARY KEY,
+	finance_name VARCHAR(255) NOT NULL,
+	finance_owner_no INTEGER,
+	finance_creationdate DATE NOT NULL,
+	finance_amount DOUBLE PRECISION,
+	current_balance DOUBLE PRECISION,
+    interest_amount DOUBLE PRECISION,
+    loan_priority_order_number INTEGER,
+    finance_type ENUM('PRIMARY', 'SECONDARY') NOT NULL,
+    status ENUM('ACTIVE', 'CLOSED') NOT NULL,
+    CONSTRAINT uniq_finance_composite UNIQUE (finance_type, finance_name, finance_owner_no)
+);
+
+
+insert into finance (loan_priority_order_number,current_balance,interest_amount,finance_amount,finance_creationdate,finance_name,finance_owner_no,status,finance_type,id) values (2,0,0,300,'2023-12-17','Chunks Finance',7,'ACTIVE','PRIMARY',1);
+insert into finance (loan_priority_order_number,current_balance,interest_amount,finance_amount,finance_creationdate,finance_name,finance_owner_no,status,finance_type,id) values (1,0,15,0,'2024-09-01','Onam Fund',2,'ACTIVE','SECONDARY',2);
+
+CREATE TABLE account (
+	account_id INTEGER NOT NULL PRIMARY KEY,
+    account_holder_name INTEGER,
+    balance_amount NUMERIC(19,2),
+    balance_amount_including_interest NUMERIC(19,2),
+    finance_id INTEGER,
+    current_status ENUM('ACTIVE', 'CLOSED') NOT NULL,
+    UNIQUE (account_holder_name, finance_id)
+);
+
+
+CREATE TABLE account_transactions (
+    account_transactions_id INTEGER NOT NULL PRIMARY KEY,
+    account_holder_name INTEGER,
+    amount NUMERIC(19,2),
+    finance_id INTEGER,
+    payment_date DATE,
+    first_approver_member_no INTEGER,
+    first_approval_date_time TIMESTAMP(6),    
+    second_approver_member_no INTEGER,
+    second_approval_date_time TIMESTAMP(6)
+);
+
+
+
 CREATE TABLE LOAN_ENQUIRES (
     LOAN_ENQUIRES_ID INTEGER NOT NULL, 
 	LOAN_ENQUIRES_REFERENCE_NAME INTEGER, 
@@ -57,21 +101,6 @@ INSERT INTO LOAN_ENQUIRES (LOAN_ENQUIRES_ID, LOAN_ENQUIRES_REFERENCE_NAME, ENQUI
 
 
 
-CREATE TABLE finance (
-	id INTEGER NOT NULL,	
-	finance_name VARCHAR(255) NOT NULL,
-	finance_owner_no INTEGER,
-	finance_creationdate DATE NOT NULL,
-	finance_amount DOUBLE PRECISION,
-	current_balance DOUBLE PRECISION,    
-    loan_priority_order_number INTEGER,
-    finance_type ENUM('PRIMARY', 'SECONDARY') NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT uniq_finance_composite UNIQUE (finance_type, finance_name, finance_owner_no)
-);
-
-insert into finance (loan_priority_order_number,current_balance,finance_amount,finance_creationdate,finance_name,finance_owner_no,finance_type,id) values (2,16000,300,'2023-12-17','Chunks Finance',7,'PRIMARY',1);
-insert into finance (loan_priority_order_number,current_balance,finance_amount,finance_creationdate,finance_name,finance_owner_no,finance_type,id) values (1,60000,0,'2024-09-01','Onam Fund',2,'SECONDARY',2);
 
 
 CREATE TABLE revenue (

@@ -8,6 +8,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.finance.constant.ChunksFinanceConstants;
+
 import jakarta.annotation.PostConstruct;
 
 @SpringBootApplication
@@ -16,7 +18,7 @@ public class ChunksFinanceApplication  extends SpringBootServletInitializer {
 
 	@PostConstruct
     void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Kolkata"));
+        TimeZone.setDefault(TimeZone.getTimeZone(ChunksFinanceConstants.ASIA_KOLKATA));
     }
 	
 	 @Override

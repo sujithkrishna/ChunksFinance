@@ -669,7 +669,20 @@
 		    margin: 0;
 		    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 		    font-weight: 500; /* Optional: Match dashboard header weight */
-		}        
+		}
+		#interest-group {
+		    display: none;
+		    overflow: hidden;
+		    transition: all 0.3s ease;
+		    opacity: 0;
+		    height: 0;
+		}
+		
+		#interest-group.visible {
+		    display: block;
+		    opacity: 1;
+		    height: auto;
+		}				        
     </style>
 </head>
 <body>
@@ -829,7 +842,18 @@
 					        <i class="fas fa-exclamation-circle"></i>
 					        <span>loan Priority Order Number is required</span>
 					    </div>                        
-                    </div>                    
+                    </div>  
+                    
+                    <div id="interest-group">
+					    <div class="form-group">
+					        <label for="finance-interest">Interest providing</label>
+					        <input type="number" id="interest-amount" name="interestAmount" class="input-field"  placeholder="Enter the interest Amount">
+					        <div class="error-message" id="interest-amount-error">
+					            <i class="fas fa-exclamation-circle"></i>
+					            <span>Interest amount is required for Secondary accounts</span>
+					        </div>
+					    </div>
+					</div>                                     
 
                     <!-- Submit Button -->
                     <div class="button-group">
@@ -855,11 +879,14 @@
 			 // Check for success message on page load
 		    document.addEventListener('DOMContentLoaded', function() {
 		    	
+		    	handleFinanceType();
 		    	const dateInput = document.getElementById('finance-date');
 		    	const options = { timeZone: 'Asia/Kolkata' };
 		        const today = new Date().toLocaleDateString('en-CA', options);
 		        dateInput.value = today;
 		    	
+		        document.getElementById('finance-type').addEventListener('change', handleFinanceType);
+		        
 		        <c:if test="${not empty success}">
 		            showSuccessMessage();
 		        </c:if>	  
@@ -867,10 +894,31 @@
 		        showErrorMessage();
 		    </c:if>	             
 		    });    
+			 
+		    function handleFinanceType() {
+		    	 const financeTypeSelect = document.getElementById('finance-type');
+		    	    const selectedValue = financeTypeSelect.value;
+		    	    const interestGroup = document.getElementById('interest-group');
+		    	    const interestInput = document.getElementById('interest-amount');
+
+		    	    if (selectedValue === 'SECONDARY') {
+		    	        interestGroup.classList.add('visible');
+		    	        interestInput.required = true;
+		    	    } else {
+		    	        interestGroup.classList.remove('visible');
+		    	        interestInput.required = false;
+		    	        interestInput.value = '';
+		    	        clearError(interestInput, 'interest-amount-error');
+		    	    }
+		    }
+		    
+		 document.getElementById('finance-type').addEventListener('change', handleFinanceType);		    
     
         function validateForm() {
 
-            const financeType = document.getElementById("finance-type");
+        	 const financeTypeElement = document.getElementById("finance-type"); 
+        	 const selectedFinanceType = financeTypeElement.value; // Get the value here
+            
             const financeName = document.getElementById("finance-name");
             const financeOwner = document.getElementById("finance-owner");
             const financeDate = document.getElementById("finance-date");
@@ -878,14 +926,14 @@
             let isValid = true;
 
             // Clear previous errors
-            clearError(financeType, 'finance-type-error');
+            clearError(financeTypeElement, 'finance-type-error');
             clearError(financeName, 'finance-name-error');
             clearError(financeOwner, 'finance-owner-error');
             clearError(financeDate, 'finance-date-error');
 
             // Validate Finance Type
-            if (!financeType.value.trim()) {
-                showError(financeType, 'finance-type-error');
+            if (!financeTypeElement.value.trim()) {
+                showError(financeTypeElement, 'finance-type-error');
                 isValid = false;
             }
 
@@ -906,11 +954,19 @@
                 showError(financeDate, 'finance-date-error');
                 isValid = false;
             }
-            if (financeType.value === "PRIMARY" && !financeAmount.value.trim()) {
+            if (selectedFinanceType === "PRIMARY" && !financeAmount.value.trim()) {
                 showError(financeAmount, 'finance-amount-error');
                 isValid = false;
             }
-
+            
+            const interestAmount = document.getElementById('interest-amount');
+            
+            if (selectedFinanceType === 'SECONDARY' && !interestAmount.value.trim()) {
+                showError(interestAmount, 'interest-amount-error');
+                isValid = false;
+            }
+            
+            
             if (isValid) {
                 // You can add form submission logic here			
                // showSuccessMessage();

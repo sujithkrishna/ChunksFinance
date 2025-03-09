@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chunks Finance Upload Portal - Secure financial document management system for administrators">
     <meta name="keywords" content="finance upload, chunks finance, document management, financial records, admin portal">
-    <title>Financial Document Upload | Chunks Finance Admin</title>
+    <title>Financial Entrolment | Chunks Finance Admin</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -946,7 +946,7 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2 class="sectionh2">Loan Payments on 09 March 2025</h2>
+                <h2 class="sectionh2">Finance enrolment</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
@@ -968,29 +968,10 @@
 					</div>
 				</div>				
                		 <form>
-	                    <div class="table-container">
-			            <!-- Header Row -->
-			            <div class="table-row header">
-			                <div class="table-cell">Loan No</div>
-			                <div class="table-cell">Name</div>
-			                <div class="table-cell">Finance</div>
-			                <div class="table-cell">EMI AMT</div>
-			                <div class="table-cell">Amount</div>
-			            </div>
-			            <!-- Data Rows -->
-			           <c:forEach items="${allLoansEMI}" var="loanEMI">
-							  <div class="table-row" style="background: linear-gradient(135deg, rgba(139, 181, 140, 0.9), rgba(147, 191, 127, 0.9))">
-									<div class="table-cell">${loanEMI.loan.loanNo}</div>
-									<div class="table-cell">${loanEMI.loan.loanApplicantName.memberName}</div>
-									<div class="table-cell">${loanEMI.loan.financeType.financeName}</div>
-									<div class="table-cell">₹${loanEMI.amount}</div>
-									<div class="table-cell"><input type="text" value="${loanEMI.amount}"></div>
-								</div>
-						</c:forEach>
-	     			</div>  
+	                    
                     <!-- Submit Button -->
 					<div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Pay</button>
+                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Enrolment</button>
 					</div>
                 </form>
             </section>

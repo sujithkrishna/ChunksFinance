@@ -29,13 +29,14 @@ import com.finance.user.MemberDetails;
 @Service
 public class MemberDetailsService  implements UserDetailsService {
 
+	
+
 	private final MemberRepository memberRepository;
     
 	private ChunksFinancePropertyService propertyService;
 	
     private SettingsService settingsService;
 	
-    
     public MemberDetailsService(MemberRepository memberRepository,SettingsRepository settingsRepository,ChunksFinancePropertyService propertyService,SettingsService settingsService) {
         this.memberRepository = memberRepository;
         this.propertyService=propertyService;
@@ -49,7 +50,7 @@ public class MemberDetailsService  implements UserDetailsService {
     		        return new UsernameNotFoundException(propertyService.getFormattedProperty(ChunksFinanceConstants.USER_NOTFOUND_ERROR,emailId));
     		    });
     	if(member.getMemberType().equals(MemberModel.MemberType.SECONDARY)) {
-    		SettingsModel settingModelData =settingsService.getSettingByName("secondaryLogin");
+    		SettingsModel settingModelData =settingsService.getSettingByName(ChunksFinanceConstants.SECONDARY_LOGIN);
     		String secondaryLoginStatus = null;
     		if(null != settingModelData) {
     			secondaryLoginStatus = settingModelData.getSettingsValue();
@@ -60,7 +61,7 @@ public class MemberDetailsService  implements UserDetailsService {
     	}
     	
     	List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + member.getRole()));
+        authorities.add(new SimpleGrantedAuthority(ChunksFinanceConstants.ROLE + member.getRole()));
     	
     	 return new MemberDetails(member);
     }

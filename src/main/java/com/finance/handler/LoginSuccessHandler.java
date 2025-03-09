@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.MemberModel;
 import com.finance.user.MemberDetails;
 
@@ -27,7 +28,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) {
         MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
         MemberModel currentUser = memberDetails.getMember();
-        request.getSession().setAttribute("currentUser", currentUser);
+        request.getSession().setAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
         try {
 			response.sendRedirect("/dashboard");
 		} catch (IOException e) {

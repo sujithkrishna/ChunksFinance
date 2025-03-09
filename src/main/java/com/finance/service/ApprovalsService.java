@@ -51,7 +51,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class ApprovalsService {
 
-	
 	@Autowired
     private RevenueRepository revenueRepository;
 	
@@ -78,7 +77,6 @@ public class ApprovalsService {
 	
 	@Autowired
 	private LoanService loanService;
-	
 	
 	@Autowired
 	private ExpensesService expensesService;

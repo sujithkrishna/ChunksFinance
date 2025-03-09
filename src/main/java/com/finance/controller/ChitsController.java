@@ -29,9 +29,6 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Controller
 public class ChitsController {
-	
-
-	
 
 	@Autowired
 	private CreateFinanceService financeService;
@@ -59,7 +56,7 @@ public class ChitsController {
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 		
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		model.addAttribute("primaryMembers",primaryMembers);
+		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);
 		
 		Integer currentChitsNumber = chitsService.getMaxChitsNumber();
 		if(null == currentChitsNumber) {
@@ -88,7 +85,7 @@ public class ChitsController {
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 		
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		model.addAttribute("primaryMembers",primaryMembers);
+		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);
 		
 		Integer currentChitsNumber = chitsService.getMaxChitsNumber();
 		if(null == currentChitsNumber) {

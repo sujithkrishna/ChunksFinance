@@ -30,7 +30,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class LoanEnquiresService {
 	
-
 	@Autowired
 	private MemberService memberService;
 	

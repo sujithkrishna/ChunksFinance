@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import com.finance.exception.CustomAuthenticationFailureHandler;
@@ -42,8 +41,8 @@ public class FinanceSecurityConfig {
 				.requestMatchers("/", "/views/**", "/financeLogin", "/index", "/about", "/services", "/contact", "/assets/**", "/vendor/**", "/assets/css/**", "/assets/fonts/**", "/assets/js/**", "/assets/images/**")
 				.permitAll().requestMatchers("/test-ping").permitAll()
 				.requestMatchers("/h2-console/**", "/secure/**", "/member/**").authenticated()
-				.requestMatchers("/finance/**", "/member/**", "/chits/**", "/settings/**").hasRole("SUPER_ADMIN")
-				.anyRequest().authenticated() // Secure all other endpoints
+				.requestMatchers("/finance/**","/enrolment/**", "/member/**", "/chits/**", "/settings/**").hasRole("SUPER_ADMIN")
+				.anyRequest().authenticated() // Secure all other endpoints  
 		
 				).formLogin(form -> form.loginPage("/index") // UNCOMMENTED: Custom login page
 				.loginProcessingUrl("/perform_login").successHandler(loginSuccessHandler)

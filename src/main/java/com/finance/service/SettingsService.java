@@ -22,12 +22,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class SettingsService {
 	
-
 	@Autowired
     private SettingsRepository settingsRepository;
-	
-	
-	
 	
 	public Integer getMaxSettingsNumber() {
 		return settingsRepository.findMaxSettingsNo();
@@ -36,7 +32,6 @@ public class SettingsService {
 	public SettingsModel getSettingByName(String settingsName) {
 	    return settingsRepository.findBySettingsName(settingsName).orElse(null);
 	}
-	
 	
 	public List<SettingsModel> getAllSettings() {
         return settingsRepository.findAll();

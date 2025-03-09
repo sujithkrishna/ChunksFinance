@@ -33,6 +33,8 @@ import com.finance.user.MemberDetails;
 @Service
 public class LoanService {
 	
+	
+
 	@Autowired
 	private LoanRepository loanRepository;
 	
@@ -101,16 +103,16 @@ public class LoanService {
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
-		model.addAttribute("primaryMembers",primaryMembers);
+		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);
 		List<MemberModel> secondaryMembers = memberService.getAllSecondaryMemeber();
-		model.addAttribute("secondaryMembers",secondaryMembers);
+		model.addAttribute(ChunksFinanceConstants.SECONDARY_MEMBERS,secondaryMembers);
 		
 		Integer currentLonNumber = getMaxLoanNumber();
 		if(null == currentLonNumber) {
-			model.addAttribute("loanNumber",ChunksFinanceConstants.NUMBER_ONE);
+			model.addAttribute(ChunksFinanceConstants.LOAN_NUMBER,ChunksFinanceConstants.NUMBER_ONE);
 		}else {
 			++currentLonNumber;
-			model.addAttribute("loanNumber",currentLonNumber);
+			model.addAttribute(ChunksFinanceConstants.LOAN_NUMBER,currentLonNumber);
 		}
 		
 		List<FinanceModel> financeModel = financeService.getAllFinanceRecords();

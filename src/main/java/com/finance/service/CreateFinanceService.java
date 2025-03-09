@@ -47,7 +47,7 @@ public class CreateFinanceService {
 	}
 	
 	 public List<FinanceModel> getAllFinanceRecords() {
-	        return financeRepository.findAll();
+	        return financeRepository.findActiveFinances();
 	 }
 	
 	 

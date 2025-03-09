@@ -7,6 +7,8 @@ package com.finance.constant;
  */
 public class ChunksFinanceConstants {
 
+	public static final String ASIA_KOLKATA = "Asia/Kolkata";
+	
 	public static final String APPROVED = "APPROVED";
 	
 	public static final String COMPLETED = "COMPLETED";
@@ -51,6 +53,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String SECONDARY = "SECONDARY";
 	
+	public static final String ROLE = "ROLE_";
+	
 	public static final String USER_GROUP_LOAN = "userGroupLoan";
 	
 	public static final String APPROVAL_CUTOFF_DAY = "approvalCutOffDay";
@@ -90,6 +94,8 @@ public class ChunksFinanceConstants {
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	
 	public static final String IN_PROGRESS = "IN_PROGRESS";
+	
+	public static final String LOAN_NUMBER = "loanNumber";
 	
 	public static final String MEMBER_TYPE = "memberType";
 

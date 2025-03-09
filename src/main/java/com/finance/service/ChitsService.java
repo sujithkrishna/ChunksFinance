@@ -37,7 +37,6 @@ public class ChitsService {
 	@Autowired
 	private ChitsEmiDetailRepository chitsEmiDetailRepository;
 	
-
 	public Integer getMaxChitsNumber() {
 		return chitsRepository.findMaxChitsNo();
 	}
