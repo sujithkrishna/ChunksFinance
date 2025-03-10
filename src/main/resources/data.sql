@@ -50,7 +50,7 @@ CREATE TABLE finance (
 );
 
 
-insert into finance (loan_priority_order_number,current_balance,interest_amount,finance_amount,finance_creationdate,finance_name,finance_owner_no,status,finance_type,id) values (2,0,0,300,'2023-12-17','Chunks Finance',7,'ACTIVE','PRIMARY',1);
+insert into finance (loan_priority_order_number,current_balance,interest_amount,finance_amount,finance_creationdate,finance_name,finance_owner_no,status,finance_type,id) values (2,60000,0,300,'2023-12-17','Chunks Finance',7,'ACTIVE','PRIMARY',1);
 insert into finance (loan_priority_order_number,current_balance,interest_amount,finance_amount,finance_creationdate,finance_name,finance_owner_no,status,finance_type,id) values (1,0,15,0,'2024-09-01','Onam Fund',2,'ACTIVE','SECONDARY',2);
 
 CREATE TABLE account (

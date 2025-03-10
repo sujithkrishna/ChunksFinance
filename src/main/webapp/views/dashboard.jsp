@@ -68,7 +68,7 @@ header p {
 }
 
 .stats-container {
-	flex: 2;
+	flex: 1.5;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 15px;
@@ -81,7 +81,7 @@ header p {
 	padding: 20px;
 	border-radius: 8px;
 	position: relative;
-	left: 12px; /* Fine-tune left position */
+	left: 9px; /* Fine-tune left position */
 	top: 0px; /* Fine-tune left position */
 }
 
@@ -535,12 +535,19 @@ footer {
 
 /* Upcoming Events Section */
 .upcoming-events {
-    flex: 1 0 100%; /* Take full width of container */
+    margin-top: -20px;
+    position: relative;
+    top: -20px;
+    flex: 1 0 101%; /* Take full width of container */
     background: #f4f7fa;
     padding: 20px;
     border-radius: 8px;
     margin-top: 0; /* Remove previous margin */
     order: 3; /* Ensure it appears after other elements */
+    width: 120%; /* Increase the width */
+    max-width: 120%; /* Ensure it doesn't overflow */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    margin-left: 0; /* Ensure it doesn't shift left */
 }
 
 .upcoming-events h3 {
