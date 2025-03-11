@@ -768,7 +768,7 @@ footer {
 																<div class="upcomfing-events-field">${loan.applicantName}</div>
 																<div class="upcomfing-events-field">${loan.loanEnquiresReferenceName.memberName}</div>
 																<div class="upcomfing-events-field">${loan.loanAmount}</div>
-																<div class="upcomfing-events-field">${loan.loanEnquiresDate}</div>
+																<div class="upcomfing-events-field"><span class="formattedStartDate">${loan.loanEnquiresDate}</span></div>
 															</div>
      													 </c:forEach>
      											 </c:when>
