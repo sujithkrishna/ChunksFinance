@@ -951,7 +951,7 @@
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -961,19 +961,63 @@
 				<div class="red-error-message" id="redErrorMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
 					</div>
 				</div>				
-               		 <form>
+               		 <form method="post" action="enrolment" id="formenrolment" name="formenrolment">
+               		 
+               		 	     <div class="form-group">
+		                        <label for="finance-type">Finance Type</label>
+		                        <select name="financeType" id="finance-type" class="input-field">
+		                            <option value="" disabled selected>Finance Type</option>
+		                            <c:forEach items="${secondaryFinance}" var="financeItem">
+		                            	<option value="${financeItem.id}">${financeItem.financeName} by ${financeItem.financeOwner.memberName}</option> 
+		                            </c:forEach>
+		                        </select>
+		                        <div class="error-message" id="financeType-error">
+		                            <i class="fas fa-exclamation-circle"></i>
+		                            <span>Please select a finance type</span>
+		                        </div>
+		                    </div>  
+		                    
+		                    <!-- Finance Source -->
+							<div class="form-group">
+								<label for="finance-source">Primary Member Name</label>
+								<select id="finance-source" name="loanReferenceName" class="input-field" required>
+									<option value="" disabled selected>Primary Member Name</option>
+							        <c:forEach items="${primaryMembers}" var="member">
+							            <option value="${member.no}">${member.memberName}</option>
+							        </c:forEach>
+								</select>
+								<div class="error-message" id="finance-source-error">
+									<i class="fas fa-exclamation-circle"></i>
+									<span>Primary Member is required</span>
+								</div>
+							</div>
+							
+							<!-- Loan Applicant Name -->
+                            <div class="form-group">
+                                <label for="applicant-name">Applicant Name</label>
+								 <select id="applicant-name" name="AccountHolderName" class="input-field" required>
+		        					<option value="" disabled selected>Select Applicant</option>
+		   						 </select>	
+								<div class="error-message" id="applicant-name-error">
+									<i class="fas fa-exclamation-circle"></i>
+									<span>Applicant Name is required</span>
+								</div>								
+																
+                            </div>
+							
 	                    
-                    <!-- Submit Button -->
-					<div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Enrolment</button>
-					</div>
-                </form>
+	                    <!-- Submit Button -->
+						<div class="button-group">
+	                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Enrolment</button>
+						</div>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                   </form>
             </section>
         </div>
     </main>
@@ -989,13 +1033,6 @@
     
 	 // Check for success message on page load
     document.addEventListener('DOMContentLoaded', function() {
-    	
-    	  const dateInput = document.getElementById('finance-date');
-    	  const options = { timeZone: 'Asia/Kolkata' };
-	        const today = new Date().toLocaleDateString('en-CA', options);
-	        dateInput.value = today;
-	
-    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();
 	        </c:if>	  
@@ -1003,6 +1040,34 @@
 	       		 showErrorMessage();
 	   		 </c:if>	             
     	});
+	 
+    // Convert secondary members to JS array
+	  const secondaryMembers = [
+	      <c:forEach items="${secondaryMembers}" var="secMember" varStatus="loop">
+	          { 
+	              no: "${secMember.referenceMember.no}", 
+	              memberNo: "${secMember.no}",
+	              memberName: "${secMember.memberName}" 
+	          }<c:if test="${not loop.last}">,</c:if>
+	      </c:forEach>
+	  ];
+
+	  document.getElementById('finance-source').addEventListener('change', function() {
+	        const primaryMemberNo = this.value;
+	        const primaryMemberName = this.options[this.selectedIndex].text;
+	        const applicantSelect = document.getElementById('applicant-name');
+	        
+	        // Clear existing options
+	        applicantSelect.innerHTML = '<option value="" disabled selected>Select Applicant</option>';
+	        
+	        // Filter and populate secondary members
+	        secondaryMembers
+	            .filter(member => member.no === primaryMemberNo)
+	            .forEach(member => {
+	                const option = new Option(member.memberName, member.memberNo);
+	                applicantSelect.add(option);
+	            });
+	    });
 	 
 
         function showErrorMessage() {
@@ -1031,13 +1096,11 @@
 
 // Updated JavaScript
         function validateForm() {
-            const fields = [
-                { id: 'finance-type', errorId: 'financeType-error' },
-                { id: 'persons-name', errorId: 'personName-error' },
-                { id: 'finance-date', errorId: 'financeDate-error' },
-                { id: 'reference-number', errorId: 'referenceNumber-error' },
-                { id: 'finance-amount', errorId: 'financeAmount-error' }
-            ];
+        	const fields = [
+        	    { id: 'finance-type', errorId: 'financeType-error' }, // Now matches HTML id
+        	    { id: 'finance-source', errorId: 'finance-source-error' },
+        	    { id: 'applicant-name', errorId: 'applicant-name-error' }
+        	];
 
             let isValid = true;
 
@@ -1057,11 +1120,24 @@
                     }
                 }
             });
-
             if (isValid) {
             // Submit the form or handle valid data			
-               showSuccessMessage();
+              // showSuccessMessage();
 				//showErrorMessage();
+            	const form = document.getElementById('formenrolment');
+  			    form.method = 'POST';
+  			    form.action = 'enrolment'; // Your endpoint URL
+
+  			    // Add CSRF token (required for Spring Security)
+  			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+  			    const csrfInput = document.createElement('input');
+  			    csrfInput.type = 'hidden';
+  			    csrfInput.name = '_csrf';
+  			    csrfInput.value = csrfToken;
+  			    form.appendChild(csrfInput);
+  			    document.body.appendChild(form);
+  			    form.submit();		
+				
             }
         }
 

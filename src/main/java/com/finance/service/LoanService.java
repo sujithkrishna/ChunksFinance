@@ -32,8 +32,6 @@ import com.finance.user.MemberDetails;
  */
 @Service
 public class LoanService {
-	
-	
 
 	@Autowired
 	private LoanRepository loanRepository;
@@ -57,9 +55,9 @@ public class LoanService {
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean createLoan(LoanModel loanModel) {
 		BigDecimal loanAmount = loanModel.getLoanAmount();
-		BigDecimal percentage = new BigDecimal("0.06");
+		BigDecimal percentage = new BigDecimal(ChunksFinanceConstants.SIX_HUNDREDTHS);
 		BigDecimal emiAmt = loanAmount.multiply(percentage);
-		BigDecimal total16EMI = new BigDecimal("16");
+		BigDecimal total16EMI = new BigDecimal(ChunksFinanceConstants.SIXTEEN);
 		BigDecimal EmiAmtfor16 = emiAmt.multiply(total16EMI);
 		BigDecimal lastEmiAmt = loanAmount.subtract(EmiAmtfor16);
         List<LoanEmiDetail> emiDetails = new ArrayList<LoanEmiDetail>();
@@ -77,11 +75,12 @@ public class LoanService {
             emi.setEmiDate(loanRepaymentDate.plusDays(i * 7));
             emi.setFirstapproverName(loanModel.getFinanceType().getFinanceOwner());
             if(i!=17) {
-            	emi.setAmount(emiAmt);
+            	emi.setEmiAmount(emiAmt);
             }else {
-            	emi.setAmount(lastEmiAmt);
+            	emi.setEmiAmount(lastEmiAmt);
             }
-            emi.setLoan(loanModel); 
+            emi.setLoan(loanModel);
+            emi.setPaidAmount(new BigDecimal(0));
             emiDetails.add(emi);
         }
         if(null == currentLoanNumber) {

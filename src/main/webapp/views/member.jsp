@@ -263,11 +263,6 @@
 
         /* === Common Responsive Design === */
         @media (max-width: 768px) {
-        
-		        #userGroupContainer .radio-group {
-		    	   gap: 15px; /* Reduce spacing between radio buttons */
-   				 	margin-left: 0; /* Remove left margin */
-		    }
             .form-group {
                 align-items: flex-start;
             }		
@@ -359,21 +354,6 @@
 						margin-left: 0;
 						margin-right: 40px; /* Optional: Add right margin for balance */
 					}
-					 #userGroupContainer .radio-group {
-					         gap: 10px;
-        					 margin-left: -8px; /* Compensate for grid padding */
-					    }
-					    
-					    /* Specific adjustment for second radio button */
-					    #userGroupContainer .radio-option:last-child {
-					        margin-left: -12px; /* Increased negative margin for second button */
-					        position: relative;
-					        left: -264px /* Additional positional adjustment */
-					    }
-						/* Compensate for grid column alignment */
-						    #userGroupContainer .form-group > label {
-						        padding-right: 25px; /* Add more padding to label */
-						    }					    					
 			}
 			
 			/* === Added Error Message Styles === */
@@ -689,61 +669,7 @@
 			    margin: 0;
 			    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 			    font-weight: 500; /* Optional: Match dashboard header weight */
-			}
-			
-			#userGroupContainer {
-			    transition: opacity 0.3s ease, height 0.3s ease;
-			    opacity: 0;
-			    height: 0;
-			    overflow: hidden;
-			}
-			
-			#userGroupContainer.show {
-			    opacity: 1;
-			    height: auto;
-			}
-			/* Radio Button Styles */
-			.radio-group {
-			    display: flex;
-			    gap: 20px;
-			    margin-top: 8px;
-			}
-			
-			.radio-option {
-			    display: flex;
-			    align-items: center;
-			    gap: 8px;
-			    cursor: pointer;
-			    position: relative;
-			    padding-left: 25px;
-			}
-			
-			.radio-checkmark {
-			    position: absolute;
-			    left: 0;
-			    height: 18px;
-			    width: 18px;
-			    background-color: #f9f9f9;
-			    border: 2px solid #ccc;
-			    border-radius: 50%;
-			    transition: all 0.3s ease;
-			}
-			
-			.radio-option input {
-			    position: absolute;
-			    opacity: 0;
-			    cursor: pointer;
-			}
-			
-			.radio-option input:checked ~ .radio-checkmark {
-			    border-color: #2c3e50;
-			    background-color: #2c3e50;
-			    box-shadow: inset 0 0 0 3px white;
-			}
-			#userGroupContainer .radio-group {
-			    gap: 12px; /* Even tighter spacing for desktop */
-        		padding-left: 10px; /* Add slight padding for better alignment */
-			}												
+			}			
     </style>
 </head>
 <body>
@@ -837,21 +763,6 @@
                         <span>Please select a member type</span>
                     </div>					
                 </div>
-                <div class="form-group" id="userGroupContainer">
-				  <label>Is it a Loan User:</label>
-				  <div class="radio-group">
-				    <label class="radio-option">
-				      <input id="userGroupLoan" type="radio" name="userType" value="LOANUSER">
-				      <span class="radio-checkmark"></span>
-				      Yes
-				    </label>
-				    <label class="radio-option">
-				      <input id="userGroupDeposit" type="radio" name="userType" value="DEPOSITUSER">
-				      <span class="radio-checkmark"></span>
-				      No (Deposit User)
-				    </label>
-				  </div>
-				</div>
 				<div class="form-group" id="referenceMemberGroup" style="display: none;">
 				    <label for="referenceMember">Reference Member:</label>
 				    <select id="referenceMember" name="referenceMember" class="input-field" required>
@@ -966,28 +877,20 @@
 	    document.addEventListener('DOMContentLoaded', function() {
             const memberTypeSelect = document.getElementById('memberType');
             const referenceMemberGroup = document.getElementById('referenceMemberGroup');
-            const userGroupContainer = document.getElementById('userGroupContainer');
 
             memberTypeSelect.addEventListener('change', function() {
                 if (this.value === 'SECONDARY') {
-                    // Show both containers
-                    [referenceMemberGroup, userGroupContainer].forEach(container => {
-                        container.style.display = '';
-                        setTimeout(() => container.classList.add('show'), 10);
-                    });
+                    referenceMemberGroup.style.display = ''; // Fix: Remove inline display:none
+                    setTimeout(() => {
+                        referenceMemberGroup.classList.add('show');
+                    }, 10);
                 } else {
-                    // Hide both containers
-                    [referenceMemberGroup, userGroupContainer].forEach(container => {
-                        container.classList.remove('show');
-                        setTimeout(() => container.style.display = 'none', 300);
-                    });
+                    referenceMemberGroup.classList.remove('show');
+                    setTimeout(() => {
+                        referenceMemberGroup.style.display = 'none';
+                    }, 300);
                 }
             });
-
-            const loanUserRadio = document.querySelector('input[name="userType"][value="LOANUSER"]');
-            if (loanUserRadio) {
-                loanUserRadio.checked = true;
-            }
             
             memberTypeSelect.dispatchEvent(new Event('change'));
             
@@ -1113,14 +1016,6 @@
         // Add input listeners for real-time validation
         document.getElementById('memberType').addEventListener('change', function() {
             clearError(this, 'memberType-error');
-        });
-        
-        document.getElementById('memberType').addEventListener('change', function() {
-            const isSecondary = this.value === 'SECONDARY';
-            document.getElementById('referenceMemberGroup').style.display = isSecondary ? 'block' : 'none';
-            document.getElementById('userGroupContainer').style.display = isSecondary ? 'block' : 'none';
-            // Clear reference member if not secondary
-            if (!isSecondary) document.getElementById('referenceMember').value = '';
         });
 
         document.getElementById('referenceMember').addEventListener('change', function() {

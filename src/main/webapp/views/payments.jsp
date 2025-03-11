@@ -946,7 +946,7 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2 class="sectionh2">Loan Payments on 09 March 2025</h2>
+                <h2 class="sectionh2">Payments on <span class="formattedStartDate">${upcomgingPaymentDate}</span></h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
@@ -975,18 +975,38 @@
 			                <div class="table-cell">Name</div>
 			                <div class="table-cell">Finance</div>
 			                <div class="table-cell">EMI AMT</div>
-			                <div class="table-cell">Amount</div>
+			                <div class="table-cell">Payment</div>
 			            </div>
 			            <!-- Data Rows -->
 			           <c:forEach items="${allLoansEMI}" var="loanEMI">
-							  <div class="table-row" style="background: linear-gradient(135deg, rgba(139, 181, 140, 0.9), rgba(147, 191, 127, 0.9))">
+							  <c:choose>
+							 	 <c:when test="${loanEMI.loan.financeType.id == '1'}"><div class="table-row" style="background: linear-gradient(135deg, rgba(139, 181, 140, 0.9), rgba(147, 191, 127, 0.9))"></c:when>
+							  	 <c:when test="${loanEMI.loan.financeType.id == '2'}"><div class="table-row" style="background: linear-gradient(135deg, rgba(184, 212, 185, 0.9), rgba(206, 237, 207, 0.9))"></c:when>
+							  </c:choose>
 									<div class="table-cell">${loanEMI.loan.loanNo}</div>
 									<div class="table-cell">${loanEMI.loan.loanApplicantName.memberName}</div>
 									<div class="table-cell">${loanEMI.loan.financeType.financeName}</div>
-									<div class="table-cell">₹${loanEMI.amount}</div>
-									<div class="table-cell"><input type="text" value="${loanEMI.amount}"></div>
+									<div class="table-cell">₹${loanEMI.emiAmount}</div>
+									<div class="table-cell"><input type="text" value="${loanEMI.emiAmount}"></div>
 								</div>
 						</c:forEach>
+						<div class="table-row header">
+			                <div class="table-cell">Finance No</div>
+			                <div class="table-cell">Name</div>
+			                <div class="table-cell">Finance</div>
+			                <div class="table-cell">Finance AMT</div>
+			                <div class="table-cell">Payment</div>
+			            </div>
+						<c:forEach items="${pendingPayment}" var="pendingPaymentFin">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
+									<div class="table-cell">${pendingPaymentFin.id}</div>
+									<div class="table-cell">${currentUser.memberName}</div>
+									<div class="table-cell">${pendingPaymentFin.financeName}</div>
+									<div class="table-cell">₹${pendingPaymentFin.financeAmount}</div>
+									<div class="table-cell"><input type="text" value="${pendingPaymentFin.financeAmount}"></div>
+								</div>
+						</c:forEach>
+						
 	     			</div>  
                     <!-- Submit Button -->
 					<div class="button-group">
@@ -1023,6 +1043,22 @@
 	   		 </c:if>	             
     	});
 	 
+	 
+    function formatDate(date) {
+        var d = new Date(date);
+        var day = ("0" + d.getDate()).slice(-2);  // Pad single digit day
+        var month = ("0" + (d.getMonth() + 1)).slice(-2);  // Pad single digit month
+        var year = d.getFullYear();
+        return day + '-' + month + '-' + year;
+      }
+      
+     const dateElements = document.getElementsByClassName('formattedStartDate');
+      for (let i = 0; i < dateElements.length; i++) {
+          const dateElement = dateElements[i];
+          const rawDate = dateElement.innerText; // Get the raw date
+          const formattedDate = formatDate(rawDate); // Format the date
+          dateElement.innerText = formattedDate; // Set the formatted date back to the element
+      }
 
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');

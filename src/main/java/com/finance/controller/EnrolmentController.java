@@ -1,12 +1,18 @@
 package com.finance.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.finance.config.ChunksFinancePropertyService;
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.MemberModel;
+import com.finance.model.AccountModel;
+import com.finance.service.EnrolmentService;
 import com.finance.user.MemberDetails;
 
 /**
@@ -18,13 +24,36 @@ import com.finance.user.MemberDetails;
 @Controller
 public class EnrolmentController {
 	
+	@Autowired
+	private EnrolmentService enrolmentService;
+	
+	@Autowired
+	private ChunksFinancePropertyService propertyService;
+	
+	
 	@GetMapping(path = {"/enrolment"})
-	public String handlePayments(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
-            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
-		}
+	public String handleEnrolment(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+		enrolmentService.populateEnrolmentData(currenUser, model);
 		return "enrolment";
 	}
+
+	@PostMapping(path = {"/enrolment"})
+	public String handleCreateEnrolment(@AuthenticationPrincipal MemberDetails currenUser,@ModelAttribute AccountModel accountModel, Model model) {
+		try {
+		boolean status = enrolmentService.createEnrolment(accountModel);
+			if(status) {
+				 enrolmentService.populateEnrolmentData(currenUser, model);
+				 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.ENROLMENT_CREATE_MESSAGE,accountModel.getAccountHolderName().getMemberName(),accountModel.getFinanceType().getFinanceName()));
+			}
+		}catch(DataIntegrityViolationException exception) {
+			StringBuffer errorMessage = new StringBuffer(propertyService.getFormattedProperty(ChunksFinanceConstants.ENROLMENT_CREATE_NEWUSER_ERROR_EXISTING_USER_MESSAGE,accountModel.getAccountHolderName().getMemberName()));
+			model.addAttribute(ChunksFinanceConstants.ERROR, errorMessage);
+			enrolmentService.populateEnrolmentData(currenUser, model);
+		}
+		
+		return "enrolment";
+	}
+
+	
 
 }

@@ -1,5 +1,7 @@
 package com.finance.controller;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.finance.constant.ChunksFinanceConstants;
+import com.finance.model.FinanceModel;
 import com.finance.model.LoanEmiDetail;
 import com.finance.model.MemberModel;
 import com.finance.service.PaymentsService;
@@ -31,9 +34,9 @@ public class PaymentsController {
             MemberModel currentUser = currenUser.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
-		List<LoanEmiDetail> emiDetails = paymentsService.loadEMI(currenUser);
-		model.addAttribute(ChunksFinanceConstants.ALL_LOANS_EMI, emiDetails);
-		 
+		paymentsService.populatePaymentDetails(currenUser, model);
 		return "payments";
 	}
+
+	
 }

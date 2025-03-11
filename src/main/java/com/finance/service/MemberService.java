@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,11 @@ import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.DuplicateMemberEmailIdException;
+import com.finance.model.AccountModel;
+import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
+import com.finance.repository.AccountRepository;
+import com.finance.repository.FinanceRepository;
 import com.finance.repository.MemberRepository;
 import com.finance.user.MemberDetails;
 
@@ -28,6 +33,12 @@ public class MemberService {
 
 	@Autowired
 	private MemberRepository memberRepository;
+	
+	@Autowired
+	private FinanceRepository financeRepository;
+	
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -47,10 +58,25 @@ public class MemberService {
 				}
 				Integer currentValue = getMaxMemberNo();
 				member.setNo(++currentValue);
-				if(member.getMemberType().equals(MemberModel.MemberType.PRIMARY)) {
-					member.setUserType(null);
-				}
 				memberRepository.save(member);
+				// Adding Primary members to Primary Finance Account
+				if(MemberModel.MemberType.PRIMARY.equals(member.getMemberType())) {
+					// Find all the primary Finance
+					List<FinanceModel> finModels = financeRepository.findActivePrimaryFinances( FinanceModel.FinanceType.PRIMARY,FinanceModel.FinanceStatus.ACTIVE);
+					Integer currentAccountMaxId = accountRepository.findMaxAccountNo();
+					++currentAccountMaxId;
+					for (FinanceModel financeModel : finModels) {
+						AccountModel aModel = new AccountModel();
+						aModel.setId(currentAccountMaxId++);
+						aModel.setAccountHolderName(member);
+						aModel.setFinanceType(financeModel);
+						aModel.setCurrentBalance(BigDecimal.ZERO);
+						aModel.setBalanceIncludingInterest(BigDecimal.ZERO);
+						accountRepository.save(aModel);
+					}
+					
+				}
+				
 		}
 		return true;
 	}
@@ -80,6 +106,8 @@ public class MemberService {
 		List<MemberModel> secondaryMembers = memberRepository.findByMemberType(MemberModel.MemberType.SECONDARY);
 		return secondaryMembers;
 	}
+	
+	
 	
 
 }

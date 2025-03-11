@@ -12,6 +12,10 @@ public class ChunksFinanceConstants {
 	public static final String APPROVED = "APPROVED";
 	
 	public static final String COMPLETED = "COMPLETED";
+	
+	public static final String CHITS_DASH = "chits-";
+
+	public static final String ZERO = "0";
 		
 	public static final String SELCTED_APPROVAL_DATE = "selctedapprovaldate";
 	
@@ -77,7 +81,11 @@ public class ChunksFinanceConstants {
 	
 	public static final String ALL_LOANS = "allLoans";
 	
+	public static final String UPCOMING_PAYMENT_DATE = "upcomgingPaymentDate";
+	
 	public static final String ALL_LOANS_EMI = "allLoansEMI";
+	
+	public static final String PENDING_PAYMENT = "pendingPayment";
 	
 	public static final String LOANS = "LOAN";
 	
@@ -102,12 +110,18 @@ public class ChunksFinanceConstants {
 	public static final String MEMBER_NAME = "memberName";
 	
 	public static final String SECONDARY_MEMBERS = "secondaryMembers";
+	
+	public static final String SECONDARY_FINANCE = "secondaryFinance";
 
 	public static final String PRIMARY_MEMBERS = "primaryMembers";
 	
 	public static final String APPROVAL_PROCESS_SEQUENTIAL = "approvalProcessSequential";
 	
 	public static final String LOGIN_STATUS_NO = "loginStatusNo";
+	
+	public static final String SIXTEEN = "16";
+	
+	public static final String SIX_HUNDREDTHS = "0.06";
 	
 	public static final String MEMBER_CREATE_NEWUSER_MESSAGE = "member.create.newuser.message";
 	
@@ -127,11 +141,15 @@ public class ChunksFinanceConstants {
 	
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_SAMENAME_TYPE_MESSAGE = "member.create.newuser.error.samename.type.message";
 	
+	public static final String ENROLMENT_CREATE_NEWUSER_ERROR_EXISTING_USER_MESSAGE = "enrolment.create.newuser.error.existing.user.message";
+	
 	public static final String FINANCE_CREATE_REVENUE_MESSAGE = "finance.create.revenue.message";
 	
 	public static final String FINANCE_CREATE_EXPENSES_MESSAGE = "finance.create.expenses.message";
 	
 	public static final String LOAN_CREATE_MESSAGE = "loan.create.message";
+	
+	public static final String ENROLMENT_CREATE_MESSAGE = "enrolment.create.message";
 	
 	public static final String LOAN_ENQUIRES_CREATE_MESSAGE = "loan.enquires.create.message";
 	
@@ -140,6 +158,10 @@ public class ChunksFinanceConstants {
 	public static final String CREATE_CHITS_MESSAGE = "create.chits.message";
 	
 	public static final String USER_PASSWORD_WRONG_ERROR = "user.password.wrong.error";
+	
+	public static final String FINANCE_LOGIN_ERROR = "/financeLogin?error";
+	
+	public static final String LOGIN_ERROR = "loginError";
 	
 	public static final String SUCCESS = "success";
 	

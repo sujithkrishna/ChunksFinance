@@ -23,6 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 	
+	
+	
 	private ChunksFinancePropertyService propertyService;
 	
 	public CustomAuthenticationFailureHandler(ChunksFinancePropertyService propertyService) {
@@ -48,7 +50,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             errorMessage = exception.getMessage();
         }
 
-        request.getSession().setAttribute("loginError", errorMessage);
-        response.sendRedirect("/financeLogin?error");
+        request.getSession().setAttribute(ChunksFinanceConstants.LOGIN_ERROR, errorMessage);
+        response.sendRedirect(ChunksFinanceConstants.FINANCE_LOGIN_ERROR);
     }
 }

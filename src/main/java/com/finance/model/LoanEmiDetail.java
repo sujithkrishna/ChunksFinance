@@ -31,6 +31,8 @@ public class LoanEmiDetail {
 		REQUESTED, 
 	    INPROGRESS, 
 	    INITIAL_APPROVAL,
+	    PAYMENT_SUBMITTED,
+	    PAYMENT_INITIAL_APPROVAL,
 	    PAID,   
 	    PRECLOSE,   
 	}
@@ -55,8 +57,11 @@ public class LoanEmiDetail {
     @Column(name = "emi_date")
     private LocalDate emiDate;    
 
-    @Column(name = "amount", precision = 19, scale = 2)
-    private BigDecimal amount;
+    @Column(name = "emi_amount", precision = 19, scale = 2)
+    private BigDecimal emiAmount;
+    
+    @Column(name = "paid_amount", precision = 19, scale = 2)
+    private BigDecimal paidAmount;    
 
     @ManyToOne
     @JoinColumn(name = "loan_no", referencedColumnName = "loan_no")

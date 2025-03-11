@@ -36,10 +36,6 @@ public class MemberModel {
         PRIMARY, SECONDARY
     }
     
-    public enum UserType {
-        LOANUSER, DEPOSITUSER
-    }
-    
     public enum ROLE {
     	USER, SUPER_ADMIN
     }
@@ -60,10 +56,6 @@ public class MemberModel {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MemberType memberType;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "user_type")
-    private UserType userType = UserType.LOANUSER;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -454,6 +454,13 @@ public class ApprovalsService {
 			 				loanItem.get().setSecondApprovalTime(LocalDateTime.now());
 			 				loanItem.get().setSecondapproverName(currenUser.getMember());
 			 				loanItem.get().setCurrentStatus(CurrentStatus.INPROGRESS);
+			 				// Update the Finance with current balance should subtract from Disbursement amt
+			 				FinanceModel financeItem =  loanItem.get().getFinanceType();
+			 				Double currentFinBal = financeItem.getCurrentBalance();
+			 				currentFinBal = currentFinBal - loanItem.get().getDisbursementAmount().doubleValue();
+			 				financeItem.setCurrentBalance(currentFinBal);
+			 				financeRepository.save(financeItem);
+			 				
 			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
 			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
 			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INPROGRESS);
@@ -466,6 +473,14 @@ public class ApprovalsService {
 			 				loanItem.get().setFirstApprovalTime(LocalDateTime.now());
 			 				loanItem.get().setFirstapproverName(currenUser.getMember());
 			 				loanItem.get().setCurrentStatus(CurrentStatus.INPROGRESS);
+			 				// Update the Finance with current balance should subtract from Disbursement amt
+			 				FinanceModel financeItem =  loanItem.get().getFinanceType();
+			 				Double currentFinBal = financeItem.getCurrentBalance();
+			 				currentFinBal = currentFinBal - loanItem.get().getDisbursementAmount().doubleValue();
+			 				financeItem.setCurrentBalance(currentFinBal);
+			 				financeRepository.save(financeItem);
+			 				
+			 				
 			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
 			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
 			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INPROGRESS);

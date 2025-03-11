@@ -28,6 +28,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class ChitsService {
 
+
+
 	@Autowired
 	private ChitsRepository chitsRepository;
 	
@@ -69,8 +71,8 @@ public class ChitsService {
 			currentEMI.setEmiNumber(i);
 			currentEMI.setFirstapproverName(chitsModel.getFinanceType().getFinanceOwner());
 			currentEMI.setEmiDate(chitsModel.getChitsStartDate().plusMonths(i * 1));
-			String paramValue = request.getParameter("chits-" + i);
-			currentEMI.setAmount(new BigDecimal(paramValue != null ? paramValue : "0"));
+			String paramValue = request.getParameter(ChunksFinanceConstants.CHITS_DASH + i);
+			currentEMI.setAmount(new BigDecimal(paramValue != null ? paramValue : ChunksFinanceConstants.ZERO));
 			emiDetails.add(currentEMI);
 		}
 		chitsModel.setEmiDetails(emiDetails);

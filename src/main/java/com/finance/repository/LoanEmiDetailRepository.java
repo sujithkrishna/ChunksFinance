@@ -19,6 +19,6 @@ import com.finance.model.LoanEmiDetail;
 @Repository
 public interface LoanEmiDetailRepository extends JpaRepository<LoanEmiDetail, Integer> {
 	
-	@Query("SELECT e FROM LoanEmiDetail e WHERE e.loan.loanReferenceName.no = :loanReferenceNo AND e.currentStatus = 'INPROGRESS' AND e.emiDate = :emiDate ORDER BY e.amount ASC")
+	@Query("SELECT e FROM LoanEmiDetail e WHERE e.loan.loanReferenceName.no = :loanReferenceNo AND e.currentStatus = 'INPROGRESS' AND e.emiDate = :emiDate ORDER BY e.loan.financeType ,e.emiAmount ASC")
     List<LoanEmiDetail> findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(@Param("loanReferenceNo") Integer loanReferenceNo, @Param("emiDate") LocalDate emiDate);
 }
