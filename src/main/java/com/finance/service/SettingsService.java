@@ -1,6 +1,7 @@
 package com.finance.service;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,14 +77,14 @@ public class SettingsService {
 			if(null != settingsItem) {
 				settingsItem.setSettingsName(settingsName);
 				settingsItem.setSettingsValue(settingsValue);
-				settingsItem.setLastUpdatedDate(LocalDateTime.now());
+				settingsItem.setLastUpdatedDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				settingsItem.setLastUpdatedBy(currenUser.getMember());
 				settingsRepository.save(settingsItem);
 			}else {
 				SettingsModel newSettings = new SettingsModel();
 				newSettings.setSettingsName(settingsName);
 				newSettings.setSettingsValue(settingsValue);
-				newSettings.setLastUpdatedDate(LocalDateTime.now());
+				newSettings.setLastUpdatedDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				newSettings.setLastUpdatedBy(currenUser.getMember());
 				newSettings.setNo(maxSettingsNumber);
 				settingsRepository.save(newSettings);

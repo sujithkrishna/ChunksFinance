@@ -2,6 +2,9 @@ package com.finance.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,7 +106,8 @@ public class LoanEnquiresService {
 	
 	
 	public List<LoanEnquiresModel> getLoanEnquiresForDashboard(){
-		 LocalDate currentDate = LocalDate.now();
+		 LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+		 LocalDate currentDate = localDateTimeInIST.toLocalDate();		 
 		 LocalDate startDate = currentDate.with(DayOfWeek.MONDAY);
 	     if (currentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
 	        startDate = startDate.minusWeeks(1); 

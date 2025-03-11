@@ -1,12 +1,8 @@
 package com.finance.model;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-
-import com.finance.config.MapToJsonConverter;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;

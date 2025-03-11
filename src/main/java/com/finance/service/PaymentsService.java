@@ -2,6 +2,9 @@ package com.finance.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +58,9 @@ public class PaymentsService {
 	}
 	
 	public void populatePaymentDetails(MemberDetails currenUser, Model model) {
-		LocalDate today = LocalDate.now();
+		
+		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+		LocalDate today = localDateTimeInIST.toLocalDate();
 		LocalDate upcomingSunday = null;
 		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
 			upcomingSunday= today;
@@ -65,6 +70,7 @@ public class PaymentsService {
             daysUntilSunday += 7; // Move to the next week's Sunday
         }
         upcomingSunday= today.plusDays(daysUntilSunday);
+        
 		model.addAttribute(ChunksFinanceConstants.UPCOMING_PAYMENT_DATE, upcomingSunday);
 		// Displaying upcoming Loan EMI
 		List<LoanEmiDetail> emiDetails = loadEMI(currenUser);

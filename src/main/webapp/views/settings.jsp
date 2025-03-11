@@ -917,20 +917,19 @@
 
        
         function formatDate(date) {
-          var d = new Date(date);
-          var day = ("0" + d.getDate()).slice(-2);  // Pad single digit day
-          var month = ("0" + (d.getMonth() + 1)).slice(-2);  // Pad single digit month
-          var year = d.getFullYear();
-          return day + '-' + month + '-' + year;
-        }
-        
-        const dateElements = document.getElementsByClassName('formattedStartDate');
-        for (let i = 0; i < dateElements.length; i++) {
-            const dateElement = dateElements[i];
-            const rawDate = dateElement.innerText; // Get the raw date
-            const formattedDate = formatDate(rawDate); // Format the date
-            dateElement.innerText = formattedDate; // Set the formatted date back to the element
-        }
+	        var d = new Date(date);
+	        // Format using specific locale and time zone (e.g., 'en-US' for USA and 'Asia/Kolkata' for IST)
+	        var formattedDate = d.toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' });
+	        return formattedDate.replace(/\//g, '-');
+		}
+	
+		const dateElements = document.getElementsByClassName('formattedStartDate');
+		for (let i = 0; i < dateElements.length; i++) {
+			const dateElement = dateElements[i];
+			const rawDate = dateElement.innerText; // Get the raw date
+			const formattedDate = formatDate(rawDate); // Format the date
+			dateElement.innerText = formattedDate; // Set the formatted date back to the element
+		}
         
         
         

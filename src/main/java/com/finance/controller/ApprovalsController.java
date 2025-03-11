@@ -1,6 +1,9 @@
 package com.finance.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +47,8 @@ public class ApprovalsController {
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		//Fetching Revenue List
-		LocalDate givenDate = LocalDate.now();
+		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+		LocalDate givenDate = localDateTimeInIST.toLocalDate();
 		approvalsService.revewnueAndExpensesList(model,givenDate,currentUser);
 		return "approvals";
 	}

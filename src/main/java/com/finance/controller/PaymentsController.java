@@ -1,9 +1,5 @@
 package com.finance.controller;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,8 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.finance.constant.ChunksFinanceConstants;
-import com.finance.model.FinanceModel;
-import com.finance.model.LoanEmiDetail;
 import com.finance.model.MemberModel;
 import com.finance.service.PaymentsService;
 import com.finance.user.MemberDetails;

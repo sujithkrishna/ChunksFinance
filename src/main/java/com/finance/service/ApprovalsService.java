@@ -3,6 +3,8 @@ package com.finance.service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -171,21 +173,21 @@ public class ApprovalsService {
 	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
 		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.INITIAL_APPROVAL);
 		                    			revenueModel.setSecondapproverName(currenUser.getMember());
-		                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+		                    			revenueModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}else {
 		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
 		                    			revenueModel.setSecondapproverName(currenUser.getMember());
-		                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+		                    			revenueModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}
 	                    		}else {
 	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
 		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.INITIAL_APPROVAL);
 		                    			revenueModel.setFirstapproverName(currenUser.getMember());
-		                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+		                    			revenueModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}else {
 		                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
 		                    			revenueModel.setFirstapproverName(currenUser.getMember());
-		                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+		                    			revenueModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}
 	                    		}
 	                    	}else if(revenueModel.getCurrentStatus().equals(RevenueModel.CurrentStatus.INITIAL_APPROVAL)){
@@ -197,7 +199,7 @@ public class ApprovalsService {
 			                    		}else {
 			                    			revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.COMPLETED);
 				                    		revenueModel.setSecondapproverName(currenUser.getMember());
-			                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+			                    			revenueModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				                    		FinanceModel currentModel = revenueModel.getFinanceType();
 			  	                    		if(null != currentModel) {
 			  	                    			Double currentBalance = currentModel.getCurrentBalance() + revenueModel.getSpendAmount();
@@ -209,14 +211,14 @@ public class ApprovalsService {
 	                    			}else {
 	                    				revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
 		                    			revenueModel.setSecondapproverName(currenUser.getMember());
-		                    			revenueModel.setSecondApprovalTime(LocalDateTime.now());
+		                    			revenueModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 	                    			}
 
 	                    		}else {
 		                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
 		                    				revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.COMPLETED);
 				                    		revenueModel.setFirstapproverName(currenUser.getMember());
-			                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+			                    			revenueModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				                    		FinanceModel currentModel = revenueModel.getFinanceType();
 			  	                    		if(null != currentModel) {
 			  	                    			Double currentBalance = currentModel.getCurrentBalance() + revenueModel.getSpendAmount();
@@ -226,7 +228,7 @@ public class ApprovalsService {
 		                    			}else {
 		                    				revenueModel.setCurrentStatus(RevenueModel.CurrentStatus.REJECTED);
 			                    			revenueModel.setFirstapproverName(currenUser.getMember());
-			                    			revenueModel.setFirstApprovalTime(LocalDateTime.now());
+			                    			revenueModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    			}
 	                    		}
 	                      }
@@ -257,21 +259,21 @@ public class ApprovalsService {
 	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
 		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.INITIAL_APPROVAL);
 		                    			expensesModel.setSecondapproverName(currenUser.getMember());
-		                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+		                    			expensesModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}else {
 		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
 		                    			expensesModel.setSecondapproverName(currenUser.getMember());
-		                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+		                    			expensesModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}
 	                    		}else {
 	                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
 		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.INITIAL_APPROVAL);
 		                    			expensesModel.setFirstapproverName(currenUser.getMember());
-		                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+		                    			expensesModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}else {
 		                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
 		                    			expensesModel.setFirstapproverName(currenUser.getMember());
-		                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+		                    			expensesModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    		}
 	                    		}
 	                    	}else if(expensesModel.getCurrentStatus().equals(ExpensesModel.CurrentStatus.INITIAL_APPROVAL)){
@@ -283,7 +285,7 @@ public class ApprovalsService {
 			                    		}else {
 			                    			expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.COMPLETED);
 				                    		expensesModel.setSecondapproverName(currenUser.getMember());
-			                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+			                    			expensesModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				                    		FinanceModel currentModel = expensesModel.getFinanceType();
 			  	                    		if(null != currentModel) {
 			  	                    			Double currentBalance = currentModel.getCurrentBalance() - expensesModel.getSpendAmount();
@@ -295,14 +297,14 @@ public class ApprovalsService {
 	                    			}else {
 	                    				expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
 		                    			expensesModel.setSecondapproverName(currenUser.getMember());
-		                    			expensesModel.setSecondApprovalTime(LocalDateTime.now());
+		                    			expensesModel.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 	                    			}
 
 	                    		}else {
 		                    			if(status.equalsIgnoreCase(ChunksFinanceConstants.APPROVED)) {
 		                    				expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.COMPLETED);
 				                    		expensesModel.setFirstapproverName(currenUser.getMember());
-			                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+			                    			expensesModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				                    		FinanceModel currentModel = expensesModel.getFinanceType();
 			  	                    		if(null != currentModel) {
 			  	                    			Double currentBalance = currentModel.getCurrentBalance() - expensesModel.getSpendAmount();
@@ -312,7 +314,7 @@ public class ApprovalsService {
 		                    			}else {
 		                    				expensesModel.setCurrentStatus(ExpensesModel.CurrentStatus.REJECTED);
 			                    			expensesModel.setFirstapproverName(currenUser.getMember());
-			                    			expensesModel.setFirstApprovalTime(LocalDateTime.now());
+			                    			expensesModel.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 		                    			}
 	                    		}
 	                      }
@@ -347,7 +349,7 @@ public class ApprovalsService {
 						 }
 						 chitsItem.setEmiDetails(allEmiDetails);
 					 }
-					 chitsItem.setSecondApprovalTime(LocalDateTime.now());
+					 chitsItem.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 					 chitsItem.setSecondapproverName(currenUser.getMember());
 					 chitsRepository.save(chitsItem);
 				 }
@@ -372,7 +374,7 @@ public class ApprovalsService {
 						 }
 						 chitsItem.setEmiDetails(allEmiDetails);
 					 }
-					 chitsItem.setFirstApprovalTime(LocalDateTime.now());
+					 chitsItem.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 					 chitsItem.setFirstapproverName(currenUser.getMember());
 					 chitsRepository.save(chitsItem);
 				 }
@@ -389,10 +391,10 @@ public class ApprovalsService {
 						 ChitsEmiDetail.CurrentStatus currentStatus = emiItem.getCurrentStatus();
 						 if(null !=currentStatus && currentStatus.equals(ChitsEmiDetail.CurrentStatus.INPROGRESS)) {
 							 if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-								 emiItem.setSecondApprovalTime(LocalDateTime.now());
+								 emiItem.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 								 emiItem.setSecondapproverName(currenUser.getMember());
 							 }else {
-								 emiItem.setFirstApprovalTime(LocalDateTime.now());
+								 emiItem.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 								 emiItem.setFirstapproverName(currenUser.getMember());
 							 }
 							 emiItem.setCurrentStatus(ChitsEmiDetail.CurrentStatus.INITIAL_APPROVAL);
@@ -404,10 +406,10 @@ public class ApprovalsService {
 							 	Double currentBalance = currentModel.getCurrentBalance() - emiItem.getAmount().doubleValue();
                    				currentModel.setCurrentBalance(currentBalance);
                    				if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-   								 emiItem.setSecondApprovalTime(LocalDateTime.now());
+   								 emiItem.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
    								 emiItem.setSecondapproverName(currenUser.getMember());
    							 }else {
-   								 emiItem.setFirstApprovalTime(LocalDateTime.now());
+   								 emiItem.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
    								 emiItem.setFirstapproverName(currenUser.getMember());
    							 }
                    				chitsEmiDetailRepository.save(emiItem);
@@ -425,25 +427,25 @@ public class ApprovalsService {
 			 	if(loanItem.isPresent()) {
 			 		if(loanItem.get().getCurrentStatus().equals(CurrentStatus.REQUESTED)) {
 			 			if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-			 				loanItem.get().setSecondApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 				loanItem.get().setSecondapproverName(currenUser.getMember());
 			 				loanItem.get().setCurrentStatus(CurrentStatus.INITIAL_APPROVAL);
 			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
 			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
 			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INITIAL_APPROVAL);
-			 					loanEmiItem.setSecondApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 					loanEmiItem.setSecondapproverName(currenUser.getMember());
 			 					emiDetailRepository.save(loanEmiItem);
 							}
 			 				loanRepository.save(loanItem.get());
 			 			}else {
-			 				loanItem.get().setFirstApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 				loanItem.get().setFirstapproverName(currenUser.getMember());
 			 				loanItem.get().setCurrentStatus(CurrentStatus.INITIAL_APPROVAL);
 			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
 			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
 			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INITIAL_APPROVAL);
-			 					loanEmiItem.setFirstApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 					loanEmiItem.setFirstapproverName(currenUser.getMember());
 			 					emiDetailRepository.save(loanEmiItem);
 							}
@@ -451,7 +453,7 @@ public class ApprovalsService {
 			 			}
 			 		}else if(loanItem.get().getCurrentStatus().equals(CurrentStatus.INITIAL_APPROVAL)) {
 			 			if(currenUser.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
-			 				loanItem.get().setSecondApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 				loanItem.get().setSecondapproverName(currenUser.getMember());
 			 				loanItem.get().setCurrentStatus(CurrentStatus.INPROGRESS);
 			 				// Update the Finance with current balance should subtract from Disbursement amt
@@ -464,13 +466,13 @@ public class ApprovalsService {
 			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
 			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
 			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INPROGRESS);
-			 					loanEmiItem.setSecondApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 					loanEmiItem.setSecondapproverName(currenUser.getMember());
 			 					emiDetailRepository.save(loanEmiItem);
 							}
 			 				loanRepository.save(loanItem.get());
 			 			}else {
-			 				loanItem.get().setFirstApprovalTime(LocalDateTime.now());
+			 				loanItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 				loanItem.get().setFirstapproverName(currenUser.getMember());
 			 				loanItem.get().setCurrentStatus(CurrentStatus.INPROGRESS);
 			 				// Update the Finance with current balance should subtract from Disbursement amt
@@ -484,7 +486,7 @@ public class ApprovalsService {
 			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
 			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
 			 					loanEmiItem.setCurrentStatus(LoanEmiDetail.CurrentStatus.INPROGRESS);
-			 					loanEmiItem.setFirstApprovalTime(LocalDateTime.now());
+			 					loanEmiItem.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 			 					loanEmiItem.setFirstapproverName(currenUser.getMember());
 			 					emiDetailRepository.save(loanEmiItem);
 							}
@@ -500,7 +502,8 @@ public class ApprovalsService {
 	 
 	 private boolean isBussinessExipredRule(LocalDate spendDate,String settingName) {
 		 if(null != spendDate) {
-			 LocalDate today = LocalDate.now();
+			 LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+			 LocalDate today = localDateTimeInIST.toLocalDate();
              LocalDate lastMonday = today.with(DayOfWeek.MONDAY);
              LocalDate upcomingSunday = today.with(DayOfWeek.SUNDAY);
              SettingsModel settingModelData = settingsService.getSettingByName(settingName);

@@ -3,6 +3,9 @@ package com.finance.service;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +125,8 @@ public class LoanService {
 	}
 	
 	public List<LoanEmiDetail> findAllLoansForCurrentUser(MemberDetails currenUser){
-		LocalDate currentDate = LocalDate.now();
+		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+		LocalDate currentDate = localDateTimeInIST.toLocalDate();		
 	    LocalDate givenDate = currentDate.getDayOfWeek() == DayOfWeek.SUNDAY ? currentDate : currentDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
 		return loanEmiDetailRepository.findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(currenUser.getMember().getNo(),givenDate);
 	}
