@@ -987,7 +987,7 @@
 									<div class="table-cell">${loanEMI.loan.loanApplicantName.memberName}</div>
 									<div class="table-cell">${loanEMI.loan.financeType.financeName}</div>
 									<div class="table-cell">₹${loanEMI.emiAmount}</div>
-									<div class="table-cell"><input type="text" value="${loanEMI.emiAmount}"></div>
+									<div class="table-cell"><input name="loanEMITxt" type="text" value="${loanEMI.emiAmount}"></div>
 								</div>
 						</c:forEach>
 						<div class="table-row header">
@@ -1001,11 +1001,31 @@
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
 									<div class="table-cell">${pendingPaymentFin.id}</div>
 									<div class="table-cell">${currentUser.memberName}</div>
-									<div class="table-cell">${pendingPaymentFin.financeName}</div>
-									<div class="table-cell">₹${pendingPaymentFin.financeAmount}</div>
-									<div class="table-cell"><input type="text" value="${pendingPaymentFin.financeAmount}"></div>
+									<div class="table-cell">${pendingPaymentFin.financeType.financeName}</div>
+									<div class="table-cell">₹${pendingPaymentFin.totalAmount}</div>
+									<div class="table-cell"><input name="pendingAmountPrimaryTxt"  type="text" value="${pendingPaymentFin.totalAmount}"></div>
 								</div>
 						</c:forEach>
+						
+						<c:forEach items="${pendingSecondaryPayment}" var="pendingSecondaryPaymentFin">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
+									<div class="table-cell">${pendingSecondaryPaymentFin.id}</div>
+									<div class="table-cell">${pendingSecondaryPaymentFin.accountHolderName.memberName}</div>
+									<div class="table-cell">${pendingSecondaryPaymentFin.financeType.financeName}</div>
+									<div class="table-cell">₹${pendingSecondaryPaymentFin.totalAmount}</div>
+									<div class="table-cell"><input name="pendingAmountSecondaryTxt" type="text" value="${pendingSecondaryPaymentFin.totalAmount}"></div>
+								</div>								
+						</c:forEach>
+						
+						<!-- Total Row -->
+						<div class="table-row header" style="background: #2c3e50;">
+						    <div class="table-cell"></div>
+						    <div class="table-cell"></div>
+						    <div class="table-cell"></div>
+						    <div class="table-cell">Total</div>
+						    <div class="table-cell" id="totalAmount">₹0.00</div>
+						</div>
+
 						
 	     			</div>  
                     <!-- Submit Button -->
@@ -1042,6 +1062,56 @@
 	       		 showErrorMessage();
 	   		 </c:if>	             
     	});
+	 
+
+    function calculateTotal() {
+        let total = 0;
+        
+        // Get all input values
+        const loanInputs = document.getElementsByName('loanEMITxt');
+        const primaryInputs = document.getElementsByName('pendingAmountPrimaryTxt');
+        const secondaryInputs = document.getElementsByName('pendingAmountSecondaryTxt');
+
+        // Sum loan inputs
+        Array.from(loanInputs).forEach(input => {
+            total += parseFloat(input.value) || 0;
+        });
+
+        // Sum primary inputs
+        Array.from(primaryInputs).forEach(input => {
+            total += parseFloat(input.value) || 0;
+        });
+
+        // Sum secondary inputs
+        Array.from(secondaryInputs).forEach(input => {
+            total += parseFloat(input.value) || 0;
+        });
+
+        // Update total display
+        document.getElementById('totalAmount').textContent = " \u20B9 "+ total;
+    }
+
+    // Add event listeners to all inputs
+    function addInputListeners() {
+        const allInputs = [
+            ...document.getElementsByName('loanEMITxt'),
+            ...document.getElementsByName('pendingAmountPrimaryTxt'),
+            ...document.getElementsByName('pendingAmountSecondaryTxt')
+        ];
+
+        allInputs.forEach(input => {
+            input.addEventListener('input', calculateTotal);
+        });
+    }
+
+    // Initial calculation and setup
+    document.addEventListener('DOMContentLoaded', function() {
+        calculateTotal();
+        addInputListeners();
+    });
+	 
+	 
+	 
 	 
 	 
 	    function formatDate(date) {

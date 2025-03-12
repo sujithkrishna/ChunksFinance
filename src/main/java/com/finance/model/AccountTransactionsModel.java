@@ -35,8 +35,11 @@ public class AccountTransactionsModel {
     @JoinColumn(name = "finance_id", referencedColumnName = "id")
     private FinanceModel financeType;   
     
-    @Column(name = "amount", precision = 19, scale = 2)
-    private BigDecimal amount;    
+    @Column(name = "total_amount", precision = 19, scale = 2)
+    private BigDecimal totalAmount;   
+    
+    @Column(name = "paid_amount", precision = 19, scale = 2)
+    private BigDecimal paidAmount;     
     
     @Column(name = "payment_date")
     private LocalDate paymentDate;

@@ -887,7 +887,7 @@
         // Function to set the current date in the date input field
         function setCurrentDate() {
             const dateInput = document.getElementById('expensesdate');
-            const today = new Date();
+            const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
             const day = String(today.getDate()).padStart(2, '0');

@@ -1058,7 +1058,7 @@
 	        const applicantSelect = document.getElementById('applicant-name');
 	        
 	        // Clear existing options
-	        applicantSelect.innerHTML = '<option value="" disabled selected>Select Applicant</option>';
+	        applicantSelect.innerHTML = '<option value="" disabled selected>Select Applicant</option><option value="'+primaryMemberNo+'">'+primaryMemberName+'</option>';
 	        
 	        // Filter and populate secondary members
 	        secondaryMembers

@@ -1007,19 +1007,21 @@
 		    const dateRepaymentInput = document.getElementById('loan-repayment-date');
 
 		    const selectedLoanDate = new Date(loandateInput.value);
-		    if (isNaN(selectedLoanDate)) {
+		    let istLoanDate = new Date(selectedLoanDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+
+		    if (isNaN(istLoanDate)) {
 		        console.error("Invalid loan date selected");
 		        return;
 		    }
 
-		    const dayOfWeek = selectedLoanDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-		    let repaymentDate = new Date(selectedLoanDate); // Clone the selected date
+		    const dayOfWeek = istLoanDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+		    let repaymentDate = new Date(istLoanDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })); // Clone the selected date
 
 		    
 		    if (dayOfWeek === 1 || dayOfWeek === 2) {
-	    		repaymentDate.setDate((selectedLoanDate.getDate() - dayOfWeek)+7);
+	    		repaymentDate.setDate((istLoanDate.getDate() - dayOfWeek)+7);
 	    	} else {
-	    		repaymentDate.setDate((selectedLoanDate.getDate() + (7 - dayOfWeek) % 7)+7);
+	    		repaymentDate.setDate((istLoanDate.getDate() + (7 - dayOfWeek) % 7)+7);
 	    	}
 		    dateRepaymentInput.value = repaymentDate.toISOString().split('T')[0];
 		}
@@ -1084,7 +1086,7 @@
 	      dateInput.value = today;
         
         const dateRepaymentInput = document.getElementById('loan-repayment-date');
-        const todayRepayment = new Date();
+        const todayRepayment = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
     	const dayOfWeek = todayRepayment.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
     	let repaymentDate = new Date(todayRepayment); // Clone todayRepayment's date
     	if (dayOfWeek === 1 || dayOfWeek === 2) {

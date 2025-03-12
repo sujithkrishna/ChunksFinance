@@ -87,6 +87,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String PENDING_PAYMENT = "pendingPayment";
 	
+	public static final String PENDING_SECONDAY_PAYMENT = "pendingSecondaryPayment";
+	
 	public static final String LOANS = "LOAN";
 	
 	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";

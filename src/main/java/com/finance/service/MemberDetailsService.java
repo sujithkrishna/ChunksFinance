@@ -4,6 +4,7 @@ package com.finance.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,8 +30,6 @@ import com.finance.user.MemberDetails;
 @Service
 public class MemberDetailsService  implements UserDetailsService {
 
-	
-
 	private final MemberRepository memberRepository;
     
 	private ChunksFinancePropertyService propertyService;
@@ -45,6 +44,7 @@ public class MemberDetailsService  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
+    	
     	MemberModel member = memberRepository.findByEmailId(emailId)
     		    .orElseThrow(() -> {
     		        return new UsernameNotFoundException(propertyService.getFormattedProperty(ChunksFinanceConstants.USER_NOTFOUND_ERROR,emailId));

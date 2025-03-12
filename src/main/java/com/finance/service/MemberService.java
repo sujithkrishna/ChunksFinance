@@ -107,7 +107,9 @@ public class MemberService {
 		return secondaryMembers;
 	}
 	
-	
+	public List<MemberModel> getSecondaryMembers(MemberModel referenceMember) {
+	    return memberRepository.findSecondaryMembers(referenceMember);
+	}
 	
 
 }
