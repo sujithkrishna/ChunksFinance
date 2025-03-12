@@ -1,6 +1,11 @@
 package com.finance.service;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +48,22 @@ public class DashBoardService {
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 		List<LoanEnquiresModel> loanEnquiresModel = loanEnquiresService.getLoanEnquiresForDashboard();
 		// Calculate this should go to CHunks or Onam Fund.
+		
+		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+		LocalDate today = localDateTimeInIST.toLocalDate();
+		LocalDate upcomingSunday = null;
+		if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			upcomingSunday= today;
+        }
+		int daysUntilSunday = DayOfWeek.SUNDAY.getValue() - today.getDayOfWeek().getValue();
+        if (daysUntilSunday < 0) {
+            daysUntilSunday += 7; // Move to the next week's Sunday
+        }
+        upcomingSunday= today.plusDays(daysUntilSunday);
+        
+		model.addAttribute(ChunksFinanceConstants.UPCOMING_PAYMENT_DATE, upcomingSunday);
+		
+		
 		
 		Map<String, List<LoanEnquiresModel>> loanFinalMap = new HashMap<>();
 

@@ -712,40 +712,40 @@ footer {
 
 								<!-- Updated Loan Enquiries Section -->
 								<div class="loan-enquiries">
-									<h3><i class='fa-solid fa-bell' style='font-size:21px;color:#196a19'></i> Upcoming Events</h3>
+									<h3><i class='fa-solid fa-bell' style='font-size:21px;color:#196a19'></i> Proposed Plan for <span class="formattedStartDate">${upcomgingPaymentDate}</span></h3>
 									<div class="enquiry-header">
+										<div class="enquiry-field">Sl No</div>
+										<div class="enquiry-field">Details</div>
 										<div class="enquiry-field"></div>
-										<div class="enquiry-field">Applicant Name</div>
-										<div class="enquiry-field">Member Name</div>
+										<div class="enquiry-field"></div>
 										<div class="enquiry-field">Amount</div>
-										<div class="enquiry-field">Due Date</div>
 									</div>
 
 									<!-- Enquiry Items with alternating colors -->
 									
 								
 									<div class="enquiry-item enquiry-item-1">
+										<div class="enquiry-field">1</div>
+										<div class="enquiry-field">Weekly Collection</div>
 										<div class="enquiry-field"></div>
 										<div class="enquiry-field"></div>
-										<div class="enquiry-field">Luis Jose</div>
-										<div class="enquiry-field"></div>
-										<div class="enquiry-field"></div>
+										<div class="enquiry-field">3600</div>
 									</div>
 
 									<div class="enquiry-item enquiry-item-2">
 										<div class="enquiry-field">2</div>
-										<div class="enquiry-field">Roy</div>
-										<div class="enquiry-field">Sujith Krishna</div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field">16-03-2025</div>
+										<div class="enquiry-field">Loan Collection</div>
+										<div class="enquiry-field"></div>
+										<div class="enquiry-field"></div>
+										<div class="enquiry-field">56000</div>
 									</div>
 
 									<div class="enquiry-item enquiry-item-3">
 										<div class="enquiry-field">3</div>
+										<div class="enquiry-field">Chits #1</div>
 										<div class="enquiry-field"></div>
 										<div class="enquiry-field"></div>
-										<div class="enquiry-field">5000</div>
-										<div class="enquiry-field"></div>
+										<div class="enquiry-field">13500</div>
 									</div>
 								</div>
 								<!-- Upcoming Events -->
