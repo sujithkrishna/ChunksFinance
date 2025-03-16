@@ -30,9 +30,9 @@ public class ReportsController {
 	private MemberService memberService;
 	
 	@GetMapping(path = {"/reports"})
-	public String handleReports(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+	public String handleReports(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		

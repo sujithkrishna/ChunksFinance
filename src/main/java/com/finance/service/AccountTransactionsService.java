@@ -27,4 +27,9 @@ public class AccountTransactionsService {
         return repository.findTransactions(financeType, accountHolderName, paymentDate);
     }
 
+    
+    public List<AccountTransactionsModel> getTransactionsForDisplay(FinanceModel financeType, MemberModel accountHolderName, LocalDate paymentDate) {
+        return repository.findTransactionsForDisplay(financeType, accountHolderName, paymentDate);
+    }
+    
 }

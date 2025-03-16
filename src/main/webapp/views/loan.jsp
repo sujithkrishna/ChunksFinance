@@ -129,7 +129,7 @@
         /* === Common Main Content Styles === */
         main {
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1377px;
             margin: 0 auto;
         }
 
@@ -475,7 +475,7 @@
 
         main {
             padding: 2rem;
-            max-width: 1200px;
+            max-width: 1377px;
             margin: 0 auto;
         }
 
@@ -699,25 +699,27 @@
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="dashboard">Dashboard</a></li>
-            <li><a href="approvals">Approvals</a></li>
-            <li><a href="payments">Payments</a></li>
-            <li><a href="reports">Reports</a></li>
-            <li><a href="loan" class="active">Loans</a></li>
-            <li><a href="revenue">Revenue</a></li>
-            <li><a href="expenses">Expenses</a></li>
-             <c:choose>
-	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
-		            <li><a href="member">Members</a></li>
-		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Finance</a></li>
-	            </c:when>
-            </c:choose>
-        </ul>
-    </nav>
+	<!-- Navigation -->
+	<nav>
+		<ul>
+			<li><a href="dashboard">Dashboard</a></li>
+			<li><a href="approvals">Approvals</a></li>
+			<li><a href="payments">Payments</a></li>
+			<li><a href="reports">Reports</a></li>
+			<li><a href="loan" class="active">Loans</a></li>
+			<li><a href="loan-enquires">Enquires</a></li>
+			<li><a href="revenue">Revenue</a></li>
+			<li><a href="expenses">Expenses</a></li>
+			<c:choose>
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+					<li><a href="member">Members</a></li>
+					<li><a href="chits">Chits</a></li>
+					<li><a href="finance">Finance</a></li>
+					<li><a href="enrolment">Enrolment</a></li>
+				</c:when>
+			</c:choose>
+		</ul>
+	</nav>
 
     <!-- Main Content -->
     <main>
@@ -748,7 +750,17 @@
                     <!-- Split into two columns -->
                     <div class="form-container">
                         <div class="form-left">
-
+							<!-- Loan No -->
+                            <div class="form-group">
+                                <label for="loan-no">Loan No</label>
+                                <input type="text" id="loan-no" name="loanNo" class="input-field" placeholder="LoanNo" required readonly>
+								<div class="error-message" id="loan-number-error">
+									<i class="fas fa-exclamation-circle"></i>
+									<span>Loan Number is required</span>
+								</div>								
+                            </div>
+                            
+                            
 		                    <div class="form-group">
 		                        <label for="finance-type">Finance Type</label>
 		                        <select name="financeType" id="ownerOfFund" class="input-field">
@@ -777,16 +789,6 @@
 									<span>Reference Name is required</span>
 								</div>
 							</div>
-
-                            <!-- Loan No -->
-                            <div class="form-group">
-                                <label for="loan-no">Loan No</label>
-                                <input type="text" id="loan-no" name="loanNo" class="input-field" placeholder="LoanNo" required readonly>
-								<div class="error-message" id="loan-number-error">
-									<i class="fas fa-exclamation-circle"></i>
-									<span>Loan Number is required</span>
-								</div>								
-                            </div>
 
                             <!-- Loan Applicant Name -->
                             <div class="form-group">

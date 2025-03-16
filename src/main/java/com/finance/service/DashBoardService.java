@@ -36,10 +36,10 @@ public class DashBoardService {
 	@Autowired
 	private LoanEnquiresService loanEnquiresService;
 
-	public void populateDashboardData(MemberDetails currenUser, Model model) {
+	public void populateDashboardData(MemberDetails currentUserModel, Model model) {
 		List<FinanceModel> financeModel = financeService.getAllFinanceRecords();
-		if (currenUser != null) {
-	            MemberModel currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+	            MemberModel currentUser = currentUserModel.getMember();
 	            model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 	    }
 		if(financeModel.size()==0) {

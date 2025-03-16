@@ -99,9 +99,9 @@ public class LoanService {
 		
 	}
 	
-	public void populateLoanPageDetails(MemberDetails currenUser, Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+	public void populateLoanPageDetails(MemberDetails currentUserModel, Model model) {
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
@@ -124,11 +124,12 @@ public class LoanService {
 		model.addAttribute(ChunksFinanceConstants.ALL_FINANCE, financeModel);
 	}
 	
-	public List<LoanEmiDetail> findAllLoansForCurrentUser(MemberDetails currenUser){
+	public List<LoanEmiDetail> findAllLoansForCurrentUser(MemberDetails currentUserModel){
 		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
 		LocalDate currentDate = localDateTimeInIST.toLocalDate();		
 	    LocalDate givenDate = currentDate.getDayOfWeek() == DayOfWeek.SUNDAY ? currentDate : currentDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-		return loanEmiDetailRepository.findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(currenUser.getMember().getNo(),givenDate);
+	    // Issue here...
+		return loanEmiDetailRepository.findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(currentUserModel.getMember().getNo(),givenDate);
 	}
 	
 	public List<LoanModel> findLoansByStatusAndApprover(LoanModel.CurrentStatus currentStatus, MemberModel currentUser){

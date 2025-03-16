@@ -40,10 +40,10 @@ public class ApprovalsController {
 	
 	
 	@GetMapping(path = {"/approvals"})
-	public String handleApprovals(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
+	public String handleApprovals(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
 		 MemberModel currentUser = null;
-		if (currenUser != null) {
-			currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+			currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		//Fetching Revenue List
@@ -55,10 +55,10 @@ public class ApprovalsController {
 	
 	
 	@PostMapping(path = {"/view-approval"})
-	public String handleViewApprovals(@AuthenticationPrincipal MemberDetails currenUser,HttpServletRequest request, Model model) {
+	public String handleViewApprovals(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request, Model model) {
 	 MemberModel currentUser = null;
-		if (currenUser != null) {
-			currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+			currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		LocalDate selectedDate = request.getParameter(ChunksFinanceConstants.APPROVAL_DATE) != null ? LocalDate.parse(request.getParameter(ChunksFinanceConstants.APPROVAL_DATE), DateTimeFormatter.ISO_LOCAL_DATE) : null;
@@ -71,16 +71,16 @@ public class ApprovalsController {
 	
 	
 	@PostMapping(path = {"/create-approval"})
-	public String handleCreateApproval(Model model, HttpServletRequest request,@AuthenticationPrincipal MemberDetails currenUser) {
+	public String handleCreateApproval(Model model, HttpServletRequest request,@AuthenticationPrincipal MemberDetails currentUserModel) {
 		LocalDate selectedDate = null;
 		MemberModel currentUser = null;
-		if (currenUser != null) {
-			currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+			currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		try {
 			selectedDate = request.getParameter(ChunksFinanceConstants.APPROVAL_DATE) != null ? LocalDate.parse(request.getParameter(ChunksFinanceConstants.APPROVAL_DATE), DateTimeFormatter.ISO_LOCAL_DATE) : null;
-			boolean status = approvalsService.processApprovels(request,currenUser);
+			boolean status = approvalsService.processApprovels(request,currentUserModel);
 			if(status) {
 				model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getProperty(ChunksFinanceConstants.FINANCE_APPOVED_MESSAGE));
 				approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);

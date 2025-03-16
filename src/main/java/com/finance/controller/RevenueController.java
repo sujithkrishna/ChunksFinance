@@ -30,9 +30,9 @@ public class RevenueController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/revenue"})
-	public String handleRevenue(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+	public String handleRevenue(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}		
 		revenueService.populatingFields(model);

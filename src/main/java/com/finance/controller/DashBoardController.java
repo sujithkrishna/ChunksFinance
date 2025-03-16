@@ -21,8 +21,8 @@ public class DashBoardController {
 	private DashBoardService boardService;
 	
 	@GetMapping(path = {"/dashboard"})
-	public String handleDashboard(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		boardService.populateDashboardData(currenUser, model);
+	public String handleDashboard(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		boardService.populateDashboardData(currentUserModel, model);
         return "dashboard";
 	}
 

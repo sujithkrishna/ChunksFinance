@@ -43,9 +43,9 @@ public class ChitsController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/chits"})
-	public String handleChits(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+	public String handleChits(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		
@@ -69,12 +69,12 @@ public class ChitsController {
 	}
 	
 	@PostMapping(path = {"/chits"})
-	public String handleCreateChits(@AuthenticationPrincipal MemberDetails currenUser,HttpServletRequest request,@ModelAttribute ChitsModel chitsModel, Model model) {
+	public String handleCreateChits(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request,@ModelAttribute ChitsModel chitsModel, Model model) {
 		
 		boolean status = chitsService.createChits(chitsModel,request);
 		
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		
@@ -96,7 +96,7 @@ public class ChitsController {
 		}
 		
 		if(status) {
-			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.CREATE_CHITS_MESSAGE,currenUser.getMember().getMemberName()));
+			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.CREATE_CHITS_MESSAGE,currentUserModel.getMember().getMemberName()));
 		}
 		
 		return "chits";

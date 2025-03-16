@@ -21,8 +21,12 @@ public class AccountService {
 	@Autowired
     private AccountRepository accountRepository;
 	
-	 public List<AccountModel> getActiveAccountsByHolder(MemberModel accountHolder) {
-	        return accountRepository.findActiveAccountsByHolder(accountHolder);
+	 public List<AccountModel> getPrimaryActiveAccountsByHolder(MemberModel accountHolder) {
+	        return accountRepository.findPrimaryActiveAccountsByHolder(accountHolder);
+	 }
+	 
+	 public List<AccountModel> getSecondaryActiveAccountsByHolder(MemberModel accountHolder) {
+	        return accountRepository.findSecondaryActiveAccountsByHolder(accountHolder);
 	 }
 
 }

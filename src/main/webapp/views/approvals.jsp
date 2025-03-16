@@ -134,7 +134,7 @@ nav ul li a:hover {
 /* === Common Main Content Styles === */
 main {
 	padding: 20px;
-	max-width: 1200px;
+	max-width: 1377px;
 	margin: 0 auto;
 }
 
@@ -791,15 +791,17 @@ input[type="date"]:focus {
 			<li><a href="payments">Payments</a></li>
 			<li><a href="reports">Reports</a></li>
 			<li><a href="loan">Loans</a></li>
+			<li><a href="loan-enquires">Enquires</a></li>
 			<li><a href="revenue">Revenue</a></li>
 			<li><a href="expenses">Expenses</a></li>
-             <c:choose>
-	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+			<c:choose>
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 					<li><a href="member">Members</a></li>
-					<li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Finance</a></li>
-	            </c:when>
-            </c:choose>
+					<li><a href="chits">Chits</a></li>
+					<li><a href="finance">Finance</a></li>
+					<li><a href="enrolment">Enrolment</a></li>
+				</c:when>
+			</c:choose>
 		</ul>
 	</nav>
 

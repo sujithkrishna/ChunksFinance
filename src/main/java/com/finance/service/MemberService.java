@@ -81,11 +81,11 @@ public class MemberService {
 		return true;
 	}
 	
-	public void loadPrimaryMemCurrentUser(Model model,MemberDetails currenUserDetails) {
+	public void loadPrimaryMemCurrentUser(Model model,MemberDetails currentUserDetails) {
 		List<MemberModel> primaryMembers = getAllPrimaryMemeber();
         model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS, primaryMembers);
-        if (currenUserDetails != null) {
-            MemberModel currentUser = currenUserDetails.getMember();
+        if (currentUserDetails != null) {
+            MemberModel currentUser = currentUserDetails.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 	}

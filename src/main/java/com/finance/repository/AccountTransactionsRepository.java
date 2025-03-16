@@ -21,7 +21,13 @@ import com.finance.model.MemberModel;
 @Repository
 public interface AccountTransactionsRepository extends JpaRepository<AccountTransactionsModel, Integer> {
 	
+	@Query("SELECT COALESCE(MAX(a.id), 0) FROM AccountTransactionsModel a")
+	Integer findMaxTransactionId();
+	   
 	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.paymentDate = :paymentDate")
     List<AccountTransactionsModel> findTransactions(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("paymentDate") LocalDate paymentDate);
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.paymentDate = :paymentDate AND a.totalAmount >= a.paidAmount")
+    List<AccountTransactionsModel> findTransactionsForDisplay(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("paymentDate") LocalDate paymentDate);
 	
 }

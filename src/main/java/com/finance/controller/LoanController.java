@@ -29,18 +29,18 @@ public class LoanController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/loan"})
-	public String handleLoan(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		loanService.populateLoanPageDetails(currenUser, model);
+	public String handleLoan(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		loanService.populateLoanPageDetails(currentUserModel, model);
 		return "loan";
 	}
 	
 	@PostMapping(path = {"/loan"})
-	public String handleCreateLoan(@AuthenticationPrincipal MemberDetails currenUser,@ModelAttribute LoanModel loanModel, Model model) {
+	public String handleCreateLoan(@AuthenticationPrincipal MemberDetails currentUserModel,@ModelAttribute LoanModel loanModel, Model model) {
 		boolean status = loanService.createLoan(loanModel);
 			if(status) {
-				 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_CREATE_MESSAGE,currenUser.getMember().getMemberName()));
+				 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_CREATE_MESSAGE,currentUserModel.getMember().getMemberName()));
 			}
-		loanService.populateLoanPageDetails(currenUser, model);
+		loanService.populateLoanPageDetails(currentUserModel, model);
 		return "loan";
 	}
 	

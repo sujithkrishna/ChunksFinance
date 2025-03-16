@@ -132,7 +132,7 @@
         /* === Common Main Content Styles === */
         main {
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1377px;
             margin: 0 auto;
         }
 
@@ -663,25 +663,27 @@
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="dashboard" class="active">Dashboard</a></li>
-            <li><a href="approvals">Approvals</a></li>
-            <li><a href="payments">Payments</a></li>
-            <li><a href="reports">Reports</a></li>
-            <li><a href="loan">Loans</a></li>
-            <li><a href="revenue">Revenue</a></li>
-            <li><a href="expenses">Expenses</a></li>
-             <c:choose>
-	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
-		            <li><a href="member">Members</a></li>
-		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Finance</a></li>
-	            </c:when>
-            </c:choose>
-        </ul>
-    </nav>
+	<!-- Navigation -->
+	<nav>
+		<ul>
+			<li><a href="dashboard">Dashboard</a></li>
+			<li><a href="approvals">Approvals</a></li>
+			<li><a href="payments">Payments</a></li>
+			<li><a href="reports">Reports</a></li>
+			<li><a href="loan">Loans</a></li>
+			<li><a href="loan-enquires" >Enquires</a></li>
+			<li><a href="revenue">Revenue</a></li>
+			<li><a href="expenses">Expenses</a></li>
+			<c:choose>
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+					<li><a href="member">Members</a></li>
+					<li><a href="chits">Chits</a></li>
+					<li><a href="finance">Finance</a></li>
+					<li><a href="enrolment">Enrolment</a></li>
+				</c:when>
+			</c:choose>
+		</ul>
+	</nav>
 	
     <!-- Main Content -->
     <main>
@@ -776,6 +778,57 @@
 						        <span>Both day and time are required</span>
 						    </div>
 						</div>
+						
+						
+						
+						 <div class="form-group">
+						    <label> Primary payment approval Cut off Time:</label>
+						    <div class="day-time-group">
+						        <select id="primary-approval-cutoff" name="primaryapprovalcutoff" class="input-field" required>
+						            <option value="" disabled selected>Select day</option>
+						            <c:set var="days" value="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday" />
+						            <c:forEach items="${fn:split(days, ',')}" var="day">
+						                <option value="${day}" 
+						                 ${day == approvalCutOffDayValue ? 'selected' : ''}>
+										  ${day}
+										</option>
+						            </c:forEach>
+						        </select>
+						        <input type="time" id="primary-approval-time" name="primaryapprovaltime" class="input-field" required value="16:00">
+						    </div>
+						    <div class="error-message" id="primary-approvalcutoff-error">
+						        <i class="fas fa-exclamation-circle"></i>
+						        <span>Both day and time are required</span>
+						    </div>
+						</div>
+						
+						
+						
+						 <div class="form-group">
+						    <label> Secondary payment approval Cut off Time:</label>
+						    <div class="day-time-group">
+						        <select id="secondary-approval-cutoff" name="secondaryapprovalcutoff" class="input-field" required>
+						            <option value="" disabled selected>Select day</option>
+						            <c:set var="days" value="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday" />
+						            <c:forEach items="${fn:split(days, ',')}" var="day">
+						                <option value="${day}" 
+						                 ${day == approvalCutOffDayValue ? 'selected' : ''}>
+										  ${day}
+										</option>
+						            </c:forEach>
+						        </select>
+						        <input type="time" id="secondary-approval-time" name="secondaryapprovaltime" class="input-field" required value="16:00">
+						    </div>
+						    <div class="error-message" id="secondary-approvalcutoff-error">
+						        <i class="fas fa-exclamation-circle"></i>
+						        <span>Both day and time are required</span>
+						    </div>
+						</div>
+						
+						
+						
+						
+						
 				        <div class="button-group-view">
 				              <button type="button" onclick="saveSettings()">
 				                <i class="fas fa-save"></i> Save
@@ -819,6 +872,13 @@
 	    
 	    let approvalCutOffDay = 'Sunday';
 	    let approvalCutOffTime = '16:00';
+	    
+	    
+	    let primaryapprovalCutOffDay = 'Sunday';
+	    let primaryapprovalCutOffTime = '16:00';
+	    
+	    let secondaryapprovalCutOffDay = 'Sunday';
+	    let secondaryapprovalCutOffTime = '16:00';
 	
 	    // Process settings from server
 	    <c:forEach items="${allSettings}" var="setting">
@@ -843,7 +903,23 @@
 	            <c:when test="${setting.settingsName == 'revenueStatus'}">
 	            	revenueStatus = '<c:out value="${setting.settingsValue}"/>';
 	       	 	</c:when>
-		            
+
+		       	 <c:when test="${setting.settingsName == 'primaryApprovalCutOffDay'}">
+		       		primaryapprovalCutOffDay = '<c:out value="${setting.settingsValue}"/>';
+		         </c:when>
+	
+		         <c:when test="${setting.settingsName == 'primaryApprovalCutOffTime'}">
+		         	primaryapprovalCutOffTime = '<c:out value="${setting.settingsValue}"/>';
+		         </c:when>	 
+		         
+	
+		    	 <c:when test="${setting.settingsName == 'secondaryApprovalCutOffDay'}">
+		    	 	secondaryapprovalCutOffDay = '<c:out value="${setting.settingsValue}"/>';
+		         </c:when>
+	
+		         <c:when test="${setting.settingsName == 'secondaryApprovalCutOffTime'}">
+		         secondaryapprovalCutOffTime = '<c:out value="${setting.settingsValue}"/>';
+		         </c:when>	  		         
 	            
 	        </c:choose>
 	    </c:forEach>
@@ -887,7 +963,25 @@
         const timeInput = document.getElementById('approval-time');
         timeInput.value = approvalCutOffTime || '16:00'; // Fallback to 16:00
         
+        //--------------------------------------------------------------------
         
+        // Set cutoff day and time
+        const primarydaySelect = document.getElementById('primary-approval-cutoff');
+        if (primaryapprovalCutOffDay) {
+        	primarydaySelect.value = primaryapprovalCutOffDay;
+        }
+        const primarytimeInput = document.getElementById('primary-approval-time');
+        primarytimeInput.value = primaryapprovalCutOffTime || '16:00'; // Fallback to 16:00
+
+        //--------------------------------------------------------------------        
+        
+        // Set cutoff day and time
+        const secondarydaySelect = document.getElementById('secondary-approval-cutoff');
+        if (secondaryapprovalCutOffDay) {
+        	secondarydaySelect.value = secondaryapprovalCutOffDay;
+        }
+        const secondarytimeInput = document.getElementById('secondary-approval-time');
+        secondarytimeInput.value = secondaryapprovalCutOffTime || '16:00'; // Fallback to 16:00        
         
     });
 

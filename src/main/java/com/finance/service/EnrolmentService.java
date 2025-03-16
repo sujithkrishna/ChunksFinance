@@ -32,9 +32,9 @@ public class EnrolmentService {
 	@Autowired
 	private AccountRepository accountRepository;
 
-	public void populateEnrolmentData(MemberDetails currenUser, Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+	public void populateEnrolmentData(MemberDetails currentUserModel, Model model) {
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		

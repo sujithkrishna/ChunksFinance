@@ -121,7 +121,7 @@
         /* === Common Main Content Styles === */
         main {
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1377px;
             margin: 0 auto;
         }
 
@@ -478,7 +478,7 @@
 
         main {
             padding: 2rem;
-            max-width: 1200px;
+            max-width: 1377px;
             margin: 0 auto;
         }
 
@@ -922,25 +922,27 @@
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="dashboard">Dashboard</a></li>
-            <li><a href="approvals">Approvals</a></li>
-            <li><a href="payments" class="active">Payments</a></li>
-            <li><a href="reports">Reports</a></li>
-            <li><a href="loan">Loans</a></li>
-            <li><a href="revenue">Revenue</a></li>
-            <li><a href="expenses">Expenses</a></li>
-             <c:choose>
-	            <c:when test="${currentUser.role == 'SUPER_ADMIN'}">
-		            <li><a href="member">Members</a></li>
-		            <li><a href="chits">Chits</a></li>	            
-	            	<li><a href="finance">Finance</a></li>
-	            </c:when>
-            </c:choose>
-        </ul>
-    </nav>
+	<!-- Navigation -->
+	<nav>
+		<ul>
+			<li><a href="dashboard">Dashboard</a></li>
+			<li><a href="approvals">Approvals</a></li>
+			<li><a href="payments" class="active">Payments</a></li>
+			<li><a href="reports">Reports</a></li>
+			<li><a href="loan">Loans</a></li>
+			<li><a href="loan-enquires">Enquires</a></li>
+			<li><a href="revenue">Revenue</a></li>
+			<li><a href="expenses">Expenses</a></li>
+			<c:choose>
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
+					<li><a href="member">Members</a></li>
+					<li><a href="chits">Chits</a></li>
+					<li><a href="finance">Finance</a></li>
+					<li><a href="enrolment">Enrolment</a></li>
+				</c:when>
+			</c:choose>
+		</ul>
+	</nav>
 
     <!-- Main Content Section -->
     <main>
@@ -967,16 +969,21 @@
 						<i class="fas fa-times"></i>
 					</div>
 				</div>				
-               		 <form>
+               		 <form method="post"  action="payments" id="formpayments" name="formpayments">
 	                    <div class="table-container">
 			            <!-- Header Row -->
-			            <div class="table-row header">
-			                <div class="table-cell">Loan No</div>
-			                <div class="table-cell">Name</div>
-			                <div class="table-cell">Finance</div>
-			                <div class="table-cell">EMI AMT</div>
-			                <div class="table-cell">Payment</div>
-			            </div>
+						<c:choose>
+						    <c:when test="${fn:length(allLoansEMI) > 0}">
+						         <div class="table-row header">
+					                <div class="table-cell">Loan No</div>
+					                <div class="table-cell">Name</div>
+					                <div class="table-cell">Finance</div>
+					                <div class="table-cell">EMI AMT</div>
+					                <div class="table-cell">Payment</div>
+					            </div>
+						    </c:when>
+						    <c:otherwise><input name="loanEMIName" type="hidden" value="${loanEMI.id}"><input name="loanEMITxt" type="hidden" value="${loanEMI.emiAmount - loanEMI.paidAmount}"></c:otherwise>
+						</c:choose>			            
 			            <!-- Data Rows -->
 			           <c:forEach items="${allLoansEMI}" var="loanEMI">
 							  <c:choose>
@@ -987,7 +994,7 @@
 									<div class="table-cell">${loanEMI.loan.loanApplicantName.memberName}</div>
 									<div class="table-cell">${loanEMI.loan.financeType.financeName}</div>
 									<div class="table-cell">₹${loanEMI.emiAmount}</div>
-									<div class="table-cell"><input name="loanEMITxt" type="text" value="${loanEMI.emiAmount}"></div>
+									<div class="table-cell"><input name="loanEMIName" type="hidden" value="${loanEMI.id}"><input name="loanEMITxt" type="text" value="${loanEMI.emiAmount - loanEMI.paidAmount}"></div>
 								</div>
 						</c:forEach>
 						<div class="table-row header">
@@ -997,13 +1004,18 @@
 			                <div class="table-cell">Finance AMT</div>
 			                <div class="table-cell">Payment</div>
 			            </div>
-						<c:forEach items="${pendingPayment}" var="pendingPaymentFin">
+			            <c:choose>
+						    <c:when test="${fn:length(pendingPrimaryPayment) > 0}">
+						    </c:when>
+						    <c:otherwise><input name="pendingAmountPrimaryName"  type="hidden" value="${pendingPaymentFin.id}"><input name="pendingAmountPrimaryTxt"  type="hidden" value="${pendingPaymentFin.totalAmount - pendingPaymentFin.paidAmount}"></c:otherwise>
+						</c:choose>	
+						<c:forEach items="${pendingPrimaryPayment}" var="pendingPaymentFin">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
 									<div class="table-cell">${pendingPaymentFin.id}</div>
 									<div class="table-cell">${currentUser.memberName}</div>
 									<div class="table-cell">${pendingPaymentFin.financeType.financeName}</div>
 									<div class="table-cell">₹${pendingPaymentFin.totalAmount}</div>
-									<div class="table-cell"><input name="pendingAmountPrimaryTxt"  type="text" value="${pendingPaymentFin.totalAmount}"></div>
+									<div class="table-cell"><input name="pendingAmountPrimaryName"  type="hidden" value="${pendingPaymentFin.id}"><input name="pendingAmountPrimaryTxt"  type="text" value="${pendingPaymentFin.totalAmount - pendingPaymentFin.paidAmount}"></div>
 								</div>
 						</c:forEach>
 						
@@ -1013,7 +1025,7 @@
 									<div class="table-cell">${pendingSecondaryPaymentFin.accountHolderName.memberName}</div>
 									<div class="table-cell">${pendingSecondaryPaymentFin.financeType.financeName}</div>
 									<div class="table-cell">₹${pendingSecondaryPaymentFin.totalAmount}</div>
-									<div class="table-cell"><input name="pendingAmountSecondaryTxt" type="text" value="${pendingSecondaryPaymentFin.totalAmount}"></div>
+									<div class="table-cell"><input name="pendingAmountSecondaryName" type="hidden" value="${pendingSecondaryPaymentFin.id}"><input name="pendingAmountSecondaryTxt" type="text" value="${pendingSecondaryPaymentFin.totalAmount}"></div>
 								</div>								
 						</c:forEach>
 						
@@ -1032,6 +1044,7 @@
 					<div class="button-group">
                         <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Pay</button>
 					</div>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>		
                 </form>
             </section>
         </div>
@@ -1155,37 +1168,42 @@
 
 // Updated JavaScript
         function validateForm() {
-            const fields = [
-                { id: 'finance-type', errorId: 'financeType-error' },
-                { id: 'persons-name', errorId: 'personName-error' },
-                { id: 'finance-date', errorId: 'financeDate-error' },
-                { id: 'reference-number', errorId: 'referenceNumber-error' },
-                { id: 'finance-amount', errorId: 'financeAmount-error' }
-            ];
-
+			          
             let isValid = true;
-
-            fields.forEach(({ id, errorId }) => {
-                const field = document.getElementById(id);
-                clearError(field, errorId);
-
-                if (field.tagName === 'SELECT') {
-                    if (field.value === "" || field.value === null) {
-                        showError(field, errorId);
-                        isValid = false;
-                    }
+            const paymentInputs = [
+                ...document.getElementsByName('loanEMITxt'),
+                ...document.getElementsByName('pendingAmountPrimaryTxt'),
+                ...document.getElementsByName('pendingAmountSecondaryTxt'),
+            ];
+            
+            paymentInputs.forEach(input => {
+                const value = parseFloat(input.value);
+                if (isNaN(value) || value < 0) {
+                    input.classList.add('error');
+                    isValid = false;
                 } else {
-                    if (!field.value.trim()) {
-                        showError(field, errorId);
-                        isValid = false;
-                    }
+                    input.classList.remove('error');
                 }
             });
-
+            
             if (isValid) {
-            // Submit the form or handle valid data			
-               showSuccessMessage();
-				//showErrorMessage();
+            // Submit the form or handle valid data
+                const form = document.getElementById('formpayments');
+			    form.method = 'POST';
+			    form.action = 'payments'; // Your endpoint URL
+
+			    // Add CSRF token (required for Spring Security)
+			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+			    const csrfInput = document.createElement('input');
+			    csrfInput.type = 'hidden';
+			    csrfInput.name = '_csrf';
+			    csrfInput.value = csrfToken;
+			    form.appendChild(csrfInput);
+			    document.body.appendChild(form);
+			    form.submit();		
+            
+               //showSuccessMessage();
+			   //showErrorMessage();
             }
         }
 

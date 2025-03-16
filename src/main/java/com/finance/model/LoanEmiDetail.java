@@ -29,10 +29,12 @@ public class LoanEmiDetail {
 
 	public enum CurrentStatus {
 		REQUESTED, 
+		INITIAL_APPROVAL,
 	    INPROGRESS, 
-	    INITIAL_APPROVAL,
+	    PAYMENT_INITIATED,
 	    PAYMENT_SUBMITTED,
 	    PAYMENT_INITIAL_APPROVAL,
+	    PAYMENT_SECOND_APPROVAL,
 	    PAID,   
 	    PRECLOSE,   
 	}

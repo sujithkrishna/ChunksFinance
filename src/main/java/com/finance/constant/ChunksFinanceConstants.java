@@ -65,9 +65,25 @@ public class ChunksFinanceConstants {
 	
 	public static final String APPROVAL_CUTOFF_TIME = "approvalCutOffTime";
 	
+	public static final String PRIMARY_APPROVAL_CUTOFF_DAY = "primaryApprovalCutOffDay";
+	
+	public static final String PRIMARY_APPROVAL_CUTOFF_TIME = "primaryApprovalCutOffTime";
+	
+	public static final String SECONDARY_APPROVAL_CUTOFF_DAY = "secondaryApprovalCutOffDay";
+	
+	public static final String SECONDARY_APPROVAL_CUTOFF_TIME = "secondaryApprovalCutOffTime";
+	
 	public static final String APPROVAL_CUTOFF = "approvalcutoff";
 	
 	public static final String APPROVAL_TIME = "approvaltime";
+	
+	public static final String PRIMARY_APPROVAL_CUTOFF = "primaryapprovalcutoff";
+	
+	public static final String PRIMARY_APPROVAL_TIME = "primaryapprovaltime";
+	
+	public static final String SECONDARY_APPROVAL_CUTOFF = "secondaryapprovalcutoff";
+	
+	public static final String SECONDARY_APPROVAL_TIME = "secondaryapprovaltime";
 	
 	public static final String EXPENSES_STATUS = "expensesStatus";
 	
@@ -85,7 +101,7 @@ public class ChunksFinanceConstants {
 	
 	public static final String ALL_LOANS_EMI = "allLoansEMI";
 	
-	public static final String PENDING_PAYMENT = "pendingPayment";
+	public static final String PENDING_PRIMARY_PAYMENT = "pendingPrimaryPayment";
 	
 	public static final String PENDING_SECONDAY_PAYMENT = "pendingSecondaryPayment";
 	

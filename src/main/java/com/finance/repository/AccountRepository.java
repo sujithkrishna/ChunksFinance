@@ -22,6 +22,9 @@ public interface AccountRepository extends JpaRepository<AccountModel, Integer> 
     @Query("SELECT COALESCE(MAX(a.id), 0) FROM AccountModel a")
     Integer findMaxAccountNo();
 
-    @Query("SELECT a FROM AccountModel a WHERE a.accountHolderName = :accountHolderName AND a.currentStatus = 'ACTIVE'")
-    List<AccountModel> findActiveAccountsByHolder(@Param("accountHolderName") MemberModel accountHolderName);
+    @Query("SELECT a FROM AccountModel a WHERE a.accountHolderName = :accountHolderName AND a.currentStatus = 'ACTIVE' AND a.financeType.financeType = 'PRIMARY'")
+    List<AccountModel> findPrimaryActiveAccountsByHolder(@Param("accountHolderName") MemberModel accountHolderName);
+    
+    @Query("SELECT a FROM AccountModel a WHERE a.accountHolderName = :accountHolderName AND a.currentStatus = 'ACTIVE' AND a.financeType.financeType = 'SECONDARY'")
+    List<AccountModel> findSecondaryActiveAccountsByHolder(@Param("accountHolderName") MemberModel accountHolderName);
 }

@@ -32,23 +32,23 @@ public class EnrolmentController {
 	
 	
 	@GetMapping(path = {"/enrolment"})
-	public String handleEnrolment(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		enrolmentService.populateEnrolmentData(currenUser, model);
+	public String handleEnrolment(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		enrolmentService.populateEnrolmentData(currentUserModel, model);
 		return "enrolment";
 	}
 
 	@PostMapping(path = {"/enrolment"})
-	public String handleCreateEnrolment(@AuthenticationPrincipal MemberDetails currenUser,@ModelAttribute AccountModel accountModel, Model model) {
+	public String handleCreateEnrolment(@AuthenticationPrincipal MemberDetails currentUserModel,@ModelAttribute AccountModel accountModel, Model model) {
 		try {
 		boolean status = enrolmentService.createEnrolment(accountModel);
 			if(status) {
-				 enrolmentService.populateEnrolmentData(currenUser, model);
+				 enrolmentService.populateEnrolmentData(currentUserModel, model);
 				 model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.ENROLMENT_CREATE_MESSAGE,accountModel.getAccountHolderName().getMemberName(),accountModel.getFinanceType().getFinanceName()));
 			}
 		}catch(DataIntegrityViolationException exception) {
 			StringBuffer errorMessage = new StringBuffer(propertyService.getFormattedProperty(ChunksFinanceConstants.ENROLMENT_CREATE_NEWUSER_ERROR_EXISTING_USER_MESSAGE,accountModel.getAccountHolderName().getMemberName()));
 			model.addAttribute(ChunksFinanceConstants.ERROR, errorMessage);
-			enrolmentService.populateEnrolmentData(currenUser, model);
+			enrolmentService.populateEnrolmentData(currentUserModel, model);
 		}
 		
 		return "enrolment";

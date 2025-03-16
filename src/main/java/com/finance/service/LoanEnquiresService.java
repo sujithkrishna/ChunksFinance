@@ -46,10 +46,10 @@ public class LoanEnquiresService {
         return loanEnquiresRepository.findMaxNo(); 
     }
 	
-	public void populateLoanEnquiresPageDetails(MemberDetails currenUser, Model model) {
+	public void populateLoanEnquiresPageDetails(MemberDetails currentUserModel, Model model) {
 		MemberModel currentUser = null;
-		if (currenUser != null) {
-			currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+			currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
@@ -68,7 +68,7 @@ public class LoanEnquiresService {
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
-	public boolean createLoanEnquires(MemberDetails currenUser, HttpServletRequest request ,LoanEnquiresModel loanEnquiresModel) {
+	public boolean createLoanEnquires(MemberDetails currentUserModel, HttpServletRequest request ,LoanEnquiresModel loanEnquiresModel) {
 		Integer currentMaxNumber = getMaxLoanNumber();
 		if(null == currentMaxNumber) {
 			loanEnquiresModel.setId(1);

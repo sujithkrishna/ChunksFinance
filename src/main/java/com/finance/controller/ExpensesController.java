@@ -30,9 +30,9 @@ public class ExpensesController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/expenses"})
-	public String handleExpenses(@AuthenticationPrincipal MemberDetails currenUser,Model model) {
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+	public String handleExpenses(@AuthenticationPrincipal MemberDetails currentUserModel,Model model) {
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		expensesService.populatingFields(model);

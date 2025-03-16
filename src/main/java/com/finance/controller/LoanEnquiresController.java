@@ -32,18 +32,18 @@ public class LoanEnquiresController {
 	private ChunksFinancePropertyService propertyService;
 	
 	@GetMapping(path = {"/loan-enquires"})
-	public String handleLoanEnquires(@AuthenticationPrincipal MemberDetails currenUser, Model model) {
-		loanEnquiresService.populateLoanEnquiresPageDetails(currenUser, model);
+	public String handleLoanEnquires(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
+		loanEnquiresService.populateLoanEnquiresPageDetails(currentUserModel, model);
 		return "loan-enquires";
 	}
 	
 	
 	@PostMapping(path = {"/loan-enquires"})
-	public String handleCreateLoanEnquires(@AuthenticationPrincipal MemberDetails currenUser,HttpServletRequest request, @ModelAttribute LoanEnquiresModel loanEnquiresModel, Model model) {
-		boolean status = loanEnquiresService.createLoanEnquires(currenUser,request, loanEnquiresModel);
+	public String handleCreateLoanEnquires(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request, @ModelAttribute LoanEnquiresModel loanEnquiresModel, Model model) {
+		boolean status = loanEnquiresService.createLoanEnquires(currentUserModel,request, loanEnquiresModel);
 		if(status) {
-			loanEnquiresService.populateLoanEnquiresPageDetails(currenUser, model);
-			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_ENQUIRES_CREATE_MESSAGE,currenUser.getMember().getMemberName()));
+			loanEnquiresService.populateLoanEnquiresPageDetails(currentUserModel, model);
+			model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_ENQUIRES_CREATE_MESSAGE,currentUserModel.getMember().getMemberName()));
 		}
 		
 		return "loan-enquires";

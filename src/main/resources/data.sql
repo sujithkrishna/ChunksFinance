@@ -162,13 +162,15 @@ second_approver_member_no INT,
 second_approval_date_time TIMESTAMP(6),
 payment_date_time TIMESTAMP(6),
 current_status ENUM(
-	'INITIAL_APPROVAL', 
-	'INPROGRESS', 
-	'PAID', 
-	'PAYMENT_INITIAL_APPROVAL', 
-	'PAYMENT_SUBMITTED', 
-	'PRECLOSE', 
-	'REQUESTED'
+		'INITIAL_APPROVAL', 
+        'INPROGRESS', 
+        'PAID', 
+        'PAYMENT_INITIAL_APPROVAL', 
+        'PAYMENT_INITIATED', 
+        'PAYMENT_SECOND_APPROVAL', 
+        'PAYMENT_SUBMITTED', 
+        'PRECLOSE', 
+        'REQUESTED'
 ) NOT NULL
 );
 
@@ -234,6 +236,17 @@ VALUES (5, '2025-03-06 02:22:37.0538', 'expensesStatus', 'expensesStatusNo', 12)
 INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
 VALUES (6, '2025-03-06 02:22:37.0538', 'revenueStatus', 'revenueStatusNo', 12);
 
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (7, '2025-03-06 02:22:37.0538', 'primaryApprovalCutOffDay', 'Sunday', 12);
+
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (8, '2025-03-06 02:22:37.0538', 'primaryApprovalCutOffTime', '16:00', 12);
+
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (9, '2025-03-06 02:22:37.0538', 'secondaryApprovalCutOffDay', 'Sunday', 12);
+
+INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
+VALUES (10, '2025-03-06 02:22:37.0538', 'secondaryApprovalCutOffTime', '16:00', 12);
 
 
 INSERT INTO members (no, member_name, email_id, password, mobile_number, member_dob, reference_member_no, address1, place, taluk, district, state, pincode, member_type, role) VALUES (1, 'അഭിലാഷ്  KP', 'kannandevoos@gmail.com', 'a2FubmFuZGV2b29z', '8893840092', '2025-09-12', null, null, null, 'Cherthala', 'Alappuzha', 'Kerala', '688537', 'PRIMARY', 'USER');

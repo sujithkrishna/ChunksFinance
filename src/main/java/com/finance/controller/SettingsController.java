@@ -30,10 +30,10 @@ public class SettingsController {
 	private SettingsService settingsService;  
 	
 	@GetMapping(path = {"/settings"})
-	public String handleSetting(@AuthenticationPrincipal MemberDetails currenUser,@ModelAttribute SettingsModel settingModel ,Model model) {
+	public String handleSetting(@AuthenticationPrincipal MemberDetails currentUserModel,@ModelAttribute SettingsModel settingModel ,Model model) {
 		
-		if (currenUser != null) {
-            MemberModel currentUser = currenUser.getMember();
+		if (currentUserModel != null) {
+            MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}
 		List<SettingsModel> allSettings = settingsService.getAllSettings();
@@ -46,8 +46,8 @@ public class SettingsController {
 	
 	
 	@PostMapping(path = {"/settings"})
-	public String handleCreateSetting(@AuthenticationPrincipal MemberDetails currenUser,HttpServletRequest request, @ModelAttribute SettingsModel settingModel ,Model model) {
-		settingsService.saveSettings(currenUser,settingModel,request);
+	public String handleCreateSetting(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request, @ModelAttribute SettingsModel settingModel ,Model model) {
+		settingsService.saveSettings(currentUserModel,settingModel,request);
 		List<SettingsModel> allSettings = settingsService.getAllSettings();
 		 model.addAttribute(ChunksFinanceConstants.ALL_SETTINGS, allSettings);
         return "settings";

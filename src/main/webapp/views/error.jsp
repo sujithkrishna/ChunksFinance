@@ -132,7 +132,7 @@
         /* === Common Main Content Styles === */
         main {
             padding: 20px;
-            max-width: 1200px;
+            max-width: 1377px;
             margin: 0 auto;
         }
 
