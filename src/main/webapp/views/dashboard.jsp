@@ -184,7 +184,7 @@ nav ul li a:hover {
 /* === Common Main Content Styles === */
 main {
 	padding: 20px;
-	max-width: 1377px;
+	max-width: 1400px;
 	margin: 0 auto;
 }
 
@@ -652,6 +652,7 @@ footer {
 			<li><a href="payments">Payments</a></li>
 			<li><a href="reports">Reports</a></li>
 			<li><a href="loan">Loans</a></li>
+			<li><a href="loan-preclosure">Preclosure</a></li>
 			<li><a href="loan-enquires">Enquires</a></li>
 			<li><a href="revenue">Revenue</a></li>
 			<li><a href="expenses">Expenses</a></li>

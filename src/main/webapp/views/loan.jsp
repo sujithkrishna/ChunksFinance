@@ -129,7 +129,7 @@
         /* === Common Main Content Styles === */
         main {
             padding: 20px;
-            max-width: 1377px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -475,7 +475,7 @@
 
         main {
             padding: 2rem;
-            max-width: 1377px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -707,6 +707,7 @@
 			<li><a href="payments">Payments</a></li>
 			<li><a href="reports">Reports</a></li>
 			<li><a href="loan" class="active">Loans</a></li>
+			<li><a href="loan-preclosure">Preclosure</a></li>
 			<li><a href="loan-enquires">Enquires</a></li>
 			<li><a href="revenue">Revenue</a></li>
 			<li><a href="expenses">Expenses</a></li>
