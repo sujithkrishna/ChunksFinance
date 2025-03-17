@@ -927,7 +927,7 @@ input[type="date"]:focus {
 							
 							<c:if test="${not empty nonApprovedChitsEMI}">
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(46, 135, 134, 0.9), rgba(60, 176, 174, 0.9))">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(247, 236, 88, 0.9), rgba(252, 240, 90, 0.9))">
 									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber}</div>
 									<div class="table-cell">CHITS EMI ${ChitsApprovalItem.chits.chitsNameOf.memberName} Chits No# ${ChitsApprovalItem.chits.chitsNo}</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
@@ -948,7 +948,8 @@ input[type="date"]:focus {
 						
 						<c:if test="${not empty currentLoanWaitforApproval}">
 							<c:forEach items="${currentLoanWaitforApproval}" var="LoanApprovalItem">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(79, 79, 79, 0.9), rgba(133, 133, 133, 0.9))">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(10, 137, 240, 0.9), rgba(11, 141, 247, 0.9))">
+								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
 									<div class="table-cell">${LoanApprovalItem.loanReferenceName.memberName} Loan # ${LoanApprovalItem.loanNo}</div>
 									<div class="table-cell">NEW LOAN ${LoanApprovalItem.loanApplicantName.memberName}Loan No# ${LoanApprovalItem.loanNo}</div>
 									<div class="table-cell">&#8377;${LoanApprovalItem.loanAmount}</div>

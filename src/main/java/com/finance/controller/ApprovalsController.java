@@ -49,7 +49,7 @@ public class ApprovalsController {
 		//Fetching Revenue List
 		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
 		LocalDate givenDate = localDateTimeInIST.toLocalDate();
-		approvalsService.revewnueAndExpensesList(model,givenDate,currentUser);
+		approvalsService.displayApprovalList(model,givenDate,currentUser);
 		return "approvals";
 	}
 	
@@ -62,7 +62,7 @@ public class ApprovalsController {
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
 		}	
 		LocalDate selectedDate = request.getParameter(ChunksFinanceConstants.APPROVAL_DATE) != null ? LocalDate.parse(request.getParameter(ChunksFinanceConstants.APPROVAL_DATE), DateTimeFormatter.ISO_LOCAL_DATE) : null;
-		approvalsService.revewnueAndExpensesList(model,selectedDate,currentUser);
+		approvalsService.displayApprovalList(model,selectedDate,currentUser);
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
 		return "approvals";
 	}
@@ -83,24 +83,24 @@ public class ApprovalsController {
 			boolean status = approvalsService.processApprovels(request,currentUserModel);
 			if(status) {
 				model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getProperty(ChunksFinanceConstants.FINANCE_APPOVED_MESSAGE));
-				approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
+				approvalsService.displayApprovalList(model, selectedDate,currentUser);
 				model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
 				return "approvals";
 			}
 		}catch(DateExpiredException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_DATEEXPIRED_MESSAGE));
 			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
-			approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
+			approvalsService.displayApprovalList(model, selectedDate,currentUser);
 			return "approvals";
 		}catch(AlreadyApprovedException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_ALREADY_APPOVED_MESSAGE));
 			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
-			approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
+			approvalsService.displayApprovalList(model, selectedDate,currentUser);
 			return "approvals";
 		}catch(FirstApprovalCannotbeSameException exception) {
 			model.addAttribute(ChunksFinanceConstants.ERROR,propertyService.getProperty(ChunksFinanceConstants.FINANCE_FIRSTAPPROVAL_CANNOTBE_SAME_APPOVED_MESSAGE));
 			model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);
-			approvalsService.revewnueAndExpensesList(model, selectedDate,currentUser);
+			approvalsService.displayApprovalList(model, selectedDate,currentUser);
 			return "approvals";
 		}
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, selectedDate);

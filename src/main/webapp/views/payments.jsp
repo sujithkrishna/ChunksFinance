@@ -998,7 +998,7 @@
 								</div>
 						</c:forEach>
 						<div class="table-row header">
-			                <div class="table-cell">Finance No</div>
+			                <div class="table-cell">Sl No</div>
 			                <div class="table-cell">Name</div>
 			                <div class="table-cell">Finance</div>
 			                <div class="table-cell">Finance AMT</div>
@@ -1009,9 +1009,10 @@
 						    </c:when>
 						    <c:otherwise><input name="pendingAmountPrimaryName"  type="hidden" value="${pendingPaymentFin.id}"><input name="pendingAmountPrimaryTxt"  type="hidden" value="${pendingPaymentFin.totalAmount - pendingPaymentFin.paidAmount}"></c:otherwise>
 						</c:choose>	
+						<c:set var="counter" value="1" />
 						<c:forEach items="${pendingPrimaryPayment}" var="pendingPaymentFin">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
-									<div class="table-cell">${pendingPaymentFin.id}</div>
+									<div class="table-cell">${counter}</div><c:set var="counter" value="${counter + 1}" />
 									<div class="table-cell">${currentUser.memberName}</div>
 									<div class="table-cell">${pendingPaymentFin.financeType.financeName}</div>
 									<div class="table-cell">₹${pendingPaymentFin.totalAmount}</div>
@@ -1021,7 +1022,7 @@
 						
 						<c:forEach items="${pendingSecondaryPayment}" var="pendingSecondaryPaymentFin">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
-									<div class="table-cell">${pendingSecondaryPaymentFin.id}</div>
+									<div class="table-cell">${counter}</div><c:set var="counter" value="${counter + 1}" />
 									<div class="table-cell">${pendingSecondaryPaymentFin.accountHolderName.memberName}</div>
 									<div class="table-cell">${pendingSecondaryPaymentFin.financeType.financeName}</div>
 									<div class="table-cell">₹${pendingSecondaryPaymentFin.totalAmount}</div>

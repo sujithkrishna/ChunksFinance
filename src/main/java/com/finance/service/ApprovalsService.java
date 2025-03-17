@@ -90,7 +90,7 @@ public class ApprovalsService {
 	private SettingsService settingsService;
 	
 	
-	public void revewnueAndExpensesList(Model model, LocalDate givenDate,MemberModel currentUser) {
+	public void displayApprovalList(Model model, LocalDate givenDate,MemberModel currentUser) {
 		
 		//Fetching Revenue List	START--
 		List<RevenueModel> nonApprovedRevenueList = revenueService.getRevenueFromMondayToGivenDate(givenDate,currentUser);
@@ -139,7 +139,7 @@ public class ApprovalsService {
 		 model.addAttribute(ChunksFinanceConstants.CURRENT_LOAN_WAITFOR_APPROVAL, bycurrentLoanWaitingforApprovals);
 		//Fetching All the new Chits created Just now and waiting for Approvals.------END
 		 
-		 
+		// Fetching All paid LOAN EMI for approval process. 
 		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
 	}
