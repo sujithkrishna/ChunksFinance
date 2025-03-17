@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.finance.model.LoanEmiDetail;
+import com.finance.model.MemberModel;
 
 /**
  * @author Sujith Krishna
@@ -21,4 +22,15 @@ public interface LoanEmiDetailRepository extends JpaRepository<LoanEmiDetail, In
 	
 	@Query("SELECT e FROM LoanEmiDetail e WHERE e.loan.loanReferenceName.no = :loanReferenceNo AND e.currentStatus IN ('INPROGRESS', 'PAYMENT_INITIATED ', 'PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL', 'PAYMENT_SECOND_APPROVAL') AND e.emiDate = :emiDate AND e.emiAmount > e.paidAmount ORDER BY e.loan.financeType ,e.emiAmount ASC")
     List<LoanEmiDetail> findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(@Param("loanReferenceNo") Integer loanReferenceNo, @Param("emiDate") LocalDate emiDate);
+	
+	
+	@Query("SELECT l FROM LoanEmiDetail l WHERE l.firstapproverName = :firstApprover AND l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL') AND l.emiAmount = l.paidAmount AND l.firstApprovalTime IS NULL ")
+    List<LoanEmiDetail> findPaidLoanEmiDetails(@Param("firstApprover") MemberModel firstApprover);
+	
+	
+	@Query("SELECT l FROM LoanEmiDetail l WHERE l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL')  AND l.emiAmount = l.paidAmount AND l.firstApprovalTime IS NOT NULL AND l.secondApprovalTime IS NULL")
+    List<LoanEmiDetail> findPaidLoanEmiDetailsForAdminSequential();
+	
+	@Query("SELECT l FROM LoanEmiDetail l WHERE l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL')  AND l.emiAmount = l.paidAmount AND l.secondApprovalTime IS NULL ")
+    List<LoanEmiDetail> findPaidLoanEmiDetailsForAdminParallel();
 }

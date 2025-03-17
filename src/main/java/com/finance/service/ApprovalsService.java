@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -89,6 +90,10 @@ public class ApprovalsService {
 	@Autowired
 	private SettingsService settingsService;
 	
+	@Autowired
+	private LoanEmiDetailService emiDetailService;
+	
+	
 	
 	public void displayApprovalList(Model model, LocalDate givenDate,MemberModel currentUser) {
 		
@@ -139,7 +144,14 @@ public class ApprovalsService {
 		 model.addAttribute(ChunksFinanceConstants.CURRENT_LOAN_WAITFOR_APPROVAL, bycurrentLoanWaitingforApprovals);
 		//Fetching All the new Chits created Just now and waiting for Approvals.------END
 		 
-		// Fetching All paid LOAN EMI for approval process. 
+		// Fetching All paid LOAN EMI for approval process. START
+		 List<LoanEmiDetail> paidLoanEmiDetails = emiDetailService.getPaidLoanEmiDetails(currentUser);
+		 model.addAttribute(ChunksFinanceConstants.CURRENT_EMI_WAITFOR_APPROVAL, paidLoanEmiDetails);
+		// Fetching All paid LOAN EMI for approval process.	 END	 
+		 
+		 
+		 
+		 
 		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
 	}
@@ -496,6 +508,49 @@ public class ApprovalsService {
 			 		
 			 	}
 			return true;	 
+		 }else if(ChunksFinanceConstants.LOAN_EMI.equals(currentType) && null != idNumber) {
+			 Optional<LoanEmiDetail> emiItem = emiDetailRepository.findById(Integer.parseInt(idEMINumber));
+			 if(null != emiItem && emiItem.isPresent()) {
+				 if(emiItem.get().getCurrentStatus().equals(LoanEmiDetail.CurrentStatus.PAYMENT_SUBMITTED) && emiItem.get().getEmiAmount().compareTo(emiItem.get().getPaidAmount()) == 0 ) {
+					 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+						 // Check this scenario
+						 emiItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+						 emiItem.get().setSecondapproverName(currentUserModel.getMember());
+						 emiItem.get().setCurrentStatus(LoanEmiDetail.CurrentStatus.PAYMENT_INITIAL_APPROVAL);
+						 emiDetailRepository.save(emiItem.get());
+					 }else {
+						 emiItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+						 emiItem.get().setFirstapproverName(currentUserModel.getMember());
+						 emiItem.get().setCurrentStatus(LoanEmiDetail.CurrentStatus.PAYMENT_INITIAL_APPROVAL);
+						 emiDetailRepository.save(emiItem.get());
+					 }
+				 }else if(emiItem.get().getCurrentStatus().equals(LoanEmiDetail.CurrentStatus.PAYMENT_INITIAL_APPROVAL) && emiItem.get().getEmiAmount().compareTo(emiItem.get().getPaidAmount()) == 0 ) {
+					 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+						 emiItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+						 emiItem.get().setSecondapproverName(currentUserModel.getMember());
+						 emiItem.get().setCurrentStatus(LoanEmiDetail.CurrentStatus.PAID);
+						 emiDetailRepository.save(emiItem.get());
+						 // Update in the Finance
+						 FinanceModel financeItem = emiItem.get().getLoan().getFinanceType();
+						 Double currentBalance = financeItem.getCurrentBalance();
+						 currentBalance = currentBalance+ emiItem.get().getEmiAmount().doubleValue();
+						 financeItem.setCurrentBalance(currentBalance);
+						 financeRepository.save(financeItem);
+					 }else {
+						 emiItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+						 emiItem.get().setFirstapproverName(currentUserModel.getMember());
+						 emiItem.get().setCurrentStatus(LoanEmiDetail.CurrentStatus.PAID);
+						 emiDetailRepository.save(emiItem.get());
+						 // Update in the Finance
+						 FinanceModel financeItem = emiItem.get().getLoan().getFinanceType();
+						 Double currentBalance = financeItem.getCurrentBalance();
+						 currentBalance = currentBalance+ emiItem.get().getEmiAmount().doubleValue();
+						 financeItem.setCurrentBalance(currentBalance);
+						 financeRepository.save(financeItem);
+					 }
+				 }
+				 return true;	 
+			 }
 		 }
 		 return false;
 	 }
@@ -523,3 +578,4 @@ public class ApprovalsService {
 	
 
 }
+

@@ -851,7 +851,7 @@ input[type="date"]:focus {
 						<div class="table-cell" style="text-align: center;">Authorization</div>
 					</div>
 					<c:choose>
-						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval}">
+						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval}">
 							<!-- Show empty state message -->
 							<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
 								<h3>You don't have any items to approve.</h3>
@@ -861,7 +861,7 @@ input[type="date"]:focus {
 							<!-- Revenue Approvals -->
 							<c:if test="${not empty nonApprovedRevenueList}">
 								<c:forEach items="${nonApprovedRevenueList}" var="RevenueApprovalItem">
-									<div class="table-row" style="background: linear-gradient(135deg, rgba(134, 179, 121, 0.9), rgba(170, 227, 154, 0.9))">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(164, 184, 169, 0.9), rgba(212, 237, 218, 0.9))">
 										<div class="table-cell">${RevenueApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">REVENUE ${RevenueApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${RevenueApprovalItem.spendAmount}</div>
@@ -883,7 +883,7 @@ input[type="date"]:focus {
 							<!-- Expenses Approvals -->
 							<c:if test="${not empty nonApprovedExpensesList}">
 								<c:forEach items="${nonApprovedExpensesList}" var="ExpensesApprovalItem">
-									<div class="table-row" style="background: linear-gradient(135deg, rgba(189, 126, 126, 0.9), rgba(219, 147, 147, 0.9))">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(232, 203, 200, 0.9), rgba(250, 219, 216, 0.9))">
 										<div class="table-cell">${ExpensesApprovalItem.spenderName.memberName}</div>
 										<div class="table-cell">EXPENSE ${ExpensesApprovalItem.spenderDetails}</div>
 										<div class="table-cell">&#8377;${ExpensesApprovalItem.spendAmount}</div>
@@ -905,7 +905,7 @@ input[type="date"]:focus {
 							<!-- Expenses Approvals -->
 							<c:if test="${not empty nonApprovedChitsList}">
 								<c:forEach items="${nonApprovedChitsList}" var="ChitsApprovalItem">
-									<div class="table-row" style="background: linear-gradient(135deg, rgba(156, 148, 39, 0.9), rgba(196, 187, 50, 0.9))">
+									<div class="table-row" style="background: linear-gradient(135deg, rgba(222, 210, 172, 0.9), rgba(252, 239, 195, 0.9))">
 										<div class="table-cell">Chits #  ${ChitsApprovalItem.chitsNo}</div>
 										<div class="table-cell">NEW CHITS ${ChitsApprovalItem.chitsNameOf.memberName}</div>
 										<div class="table-cell">&#8377;${ChitsApprovalItem.totalChitsAmount}</div>
@@ -927,7 +927,7 @@ input[type="date"]:focus {
 							
 							<c:if test="${not empty nonApprovedChitsEMI}">
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(247, 236, 88, 0.9), rgba(252, 240, 90, 0.9))">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(227, 204, 136, 0.9), rgba(255, 229, 153, 0.9))">
 									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber}</div>
 									<div class="table-cell">CHITS EMI ${ChitsApprovalItem.chits.chitsNameOf.memberName} Chits No# ${ChitsApprovalItem.chits.chitsNo}</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
@@ -948,7 +948,7 @@ input[type="date"]:focus {
 						
 						<c:if test="${not empty currentLoanWaitforApproval}">
 							<c:forEach items="${currentLoanWaitforApproval}" var="LoanApprovalItem">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(10, 137, 240, 0.9), rgba(11, 141, 247, 0.9))">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(161, 206, 227, 0.9), rgba(179, 229, 252, 0.9))">
 								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
 									<div class="table-cell">${LoanApprovalItem.loanReferenceName.memberName} Loan # ${LoanApprovalItem.loanNo}</div>
 									<div class="table-cell">NEW LOAN ${LoanApprovalItem.loanApplicantName.memberName}Loan No# ${LoanApprovalItem.loanNo}</div>
@@ -967,12 +967,33 @@ input[type="date"]:focus {
 								</div>
 							</c:forEach>
 						</c:if>
-												
 						
-							
-							
+						<c:if test="${not empty currentEMIWaitforApproval}">
+							<c:forEach items="${currentEMIWaitforApproval}" var="LoanEMIApprovalItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(211, 211, 230, 0.9), rgba(230, 230, 250, 0.9))">
+								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
+									<div class="table-cell">${LoanEMIApprovalItem.loan.loanReferenceName.memberName} Loan # ${LoanEMIApprovalItem.loan.loanNo} </div>
+									<div class="table-cell">NEW EMI ${LoanEMIApprovalItem.loan.loanApplicantName.memberName} EMI No# ${LoanEMIApprovalItem.emiNumber}</div>
+									<div class="table-cell">&#8377; ${LoanEMIApprovalItem.emiAmount} </div>
+									<div class="table-cell"><span class="formattedStartDateandTime">${LoanEMIApprovalItem.paymentDateAndTime}</span></div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${LoanEMIApprovalItem.loan.loanNo}','${LoanEMIApprovalItem.id}','LOANEMI','APPROVED')" aria-label="Approve request">
+												<i class="fas fa-check"></i> Approve
+											</button>
+											<button onclick="validateForm('${LoanEMIApprovalItem.loan.loanNo}','${LoanEMIApprovalItem.id}','LOANEMI','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<i class="fas fa-times"></i> Reject
+											</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+						
+						
 						</c:otherwise>
 					</c:choose>
+					
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
@@ -1013,21 +1034,48 @@ input[type="date"]:focus {
 	   		 </c:if>	             
 	    });
 	    
-		  function formatDate(date) {
-		        var d = new Date(date);
-		        // Format using specific locale and time zone (e.g., 'en-US' for USA and 'Asia/Kolkata' for IST)
-		        var formattedDate = d.toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' });
-		        return formattedDate.replace(/\//g, '-');
-		  }
+	  function formatDate(date) {
+	        var d = new Date(date);
+	        // Format using specific locale and time zone (e.g., 'en-US' for USA and 'Asia/Kolkata' for IST)
+	        var formattedDate = d.toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' });
+	        return formattedDate.replace(/\//g, '-');
+	 }
+			
+	const dateElements = document.getElementsByClassName('formattedStartDate');
+	for (let i = 0; i < dateElements.length; i++) {
+		const dateElement = dateElements[i];
+		const rawDate = dateElement.innerText; // Get the raw date
+		const formattedDate = formatDate(rawDate); // Format the date
+		dateElement.innerText = formattedDate; // Set the formatted date back to the element
+	}
+
+	function formatDateTime(date) {
+	    var d = new Date(date); // Assume date is already in IST
+
+	    // Format Date (DD-MM-YYYY)
+	    var formattedDate = d.toLocaleDateString('en-GB').replace(/\//g, '-');
+
+	    // Format Time (hh:mm:ss AM/PM)
+	    var formattedTime = d.toLocaleTimeString('en-GB', { 
+	        hour12: true, // Enables AM/PM format
+	        hour: '2-digit', 
+	        minute: '2-digit', 
+	        second: '2-digit'
+	    });
+
+	    return formattedDate + ' ' + formattedTime; // Combine Date and Time
+	}
+
+	// Apply formatting to all elements with the class 'formattedStartDateandTime'
+	const dateElementswithTime = document.getElementsByClassName('formattedStartDateandTime');
+	for (let i = 0; i < dateElementswithTime.length; i++) {
+	    const dateElement = dateElementswithTime[i];
+	    const rawDate = dateElement.innerText.trim(); // Get the raw date-time string
+	    const formattedDateTime = formatDateTime(rawDate); // Format the date-time
+	    dateElement.innerText = formattedDateTime; // Set the formatted output
+	}
 		
-		const dateElements = document.getElementsByClassName('formattedStartDate');
-		for (let i = 0; i < dateElements.length; i++) {
-			const dateElement = dateElements[i];
-			const rawDate = dateElement.innerText; // Get the raw date
-			const formattedDate = formatDate(rawDate); // Format the date
-			dateElement.innerText = formattedDate; // Set the formatted date back to the element
-		}
-		        
+		
 	    function showErrorMessage() {
 	        const errorMsg = document.getElementById('redErrorMessage');
 	        errorMsg.classList.add('show');

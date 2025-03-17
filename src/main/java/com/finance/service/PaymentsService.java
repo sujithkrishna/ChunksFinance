@@ -179,6 +179,7 @@ public class PaymentsService {
 	}
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public void processEMI(List<Double> loanEmiValues, List<Integer> loanEmiNames) {
+		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
 		Map<Integer,Double> loanEmIPaid = new HashMap<Integer,Double>();
 		if (loanEmiValues.size() == loanEmiNames.size()) {
 			for (int i = 0; i < loanEmiValues.size(); i++) {
@@ -199,6 +200,10 @@ public class PaymentsService {
 								emiItem.get().setPaidAmount(BigDecimal.valueOf(totalPaid));
 								if(totalPaid == emiItem.get().getEmiAmount().doubleValue()) {
 									emiItem.get().setCurrentStatus(CurrentStatus.PAYMENT_SUBMITTED);
+									emiItem.get().setFirstApprovalTime(null);
+									emiItem.get().setSecondApprovalTime(null);
+									emiItem.get().setSecondapproverName(null);
+									emiItem.get().setPaymentDateAndTime(localDateTimeInIST);
 								}
 								
 							}else {
@@ -211,6 +216,10 @@ public class PaymentsService {
 							}else {
 								emiItem.get().setPaidAmount(BigDecimal.valueOf(value));
 								emiItem.get().setCurrentStatus(CurrentStatus.PAYMENT_SUBMITTED);
+								emiItem.get().setFirstApprovalTime(null);
+								emiItem.get().setSecondApprovalTime(null);
+								emiItem.get().setSecondapproverName(null);
+								emiItem.get().setPaymentDateAndTime(localDateTimeInIST);
 							}
 							
 						}
