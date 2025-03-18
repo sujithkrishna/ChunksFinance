@@ -41,8 +41,11 @@ public class AccountTransactionsModel {
     @Column(name = "paid_amount", precision = 19, scale = 2)
     private BigDecimal paidAmount;     
     
-    @Column(name = "payment_date")
-    private LocalDate paymentDate;
+    @Column(name = "actual_payment_date")
+    private LocalDate actualPaymentDate;
+    
+    @Column(name = "paid_date")
+    private LocalDateTime paidDate;    
     
     @ManyToOne
     @JoinColumn(name = "first_approver_member_no", referencedColumnName = "no")

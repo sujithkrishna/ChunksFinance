@@ -1,11 +1,11 @@
 package com.finance.service;
 
-import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +20,7 @@ import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
 import com.finance.exception.DateExpiredException;
 import com.finance.exception.FirstApprovalCannotbeSameException;
+import com.finance.model.AccountTransactionsModel;
 import com.finance.model.ChitsEmiDetail;
 import com.finance.model.ChitsModel;
 import com.finance.model.ExpensesModel;
@@ -40,11 +41,6 @@ import com.finance.repository.RevenueRepository;
 import com.finance.user.MemberDetails;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-
-
-
-
 /**
  * @author Sujith Krishna
  *
@@ -93,7 +89,11 @@ public class ApprovalsService {
 	@Autowired
 	private LoanEmiDetailService emiDetailService;
 	
+	@Autowired
+	private CreateFinanceService createFinanceService;
 	
+	@Autowired
+	private AccountTransactionsService accountTransactionsService;
 	
 	public void displayApprovalList(Model model, LocalDate givenDate,MemberModel currentUser) {
 		
@@ -150,9 +150,28 @@ public class ApprovalsService {
 		// Fetching All paid LOAN EMI for approval process.	 END	 
 		 
 		 
+		 LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+			LocalDate today = localDateTimeInIST.toLocalDate();
+			LocalDate upcomingSunday = null;
+			if (today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+				upcomingSunday= today;
+	        }
+			int daysUntilSunday = DayOfWeek.SUNDAY.getValue() - today.getDayOfWeek().getValue();
+	        if (daysUntilSunday < 0) {
+	            daysUntilSunday += 7; // Move to the next week's Sunday
+	        }
+	        upcomingSunday= today.plusDays(daysUntilSunday);
 		 
+		// Fetching All paid Weekly Collection/Primary Accounts for approval process. START
+		 List<FinanceModel> activePrimaryFinancesWithOwner = createFinanceService.getActivePrimaryFinancesWithOwner(currentUser);
+		 List<AccountTransactionsModel> listPendingApprovalTransation= new ArrayList<AccountTransactionsModel>();
+		 for (FinanceModel finItem : activePrimaryFinancesWithOwner) {
+			 List<AccountTransactionsModel> pendingTransactionsForPrimaryAccount = accountTransactionsService.getPendingTransactionsForPrimaryAccount(finItem,upcomingSunday);
+			 listPendingApprovalTransation.addAll(pendingTransactionsForPrimaryAccount);
+		 }
+		 model.addAttribute(ChunksFinanceConstants.CURRENT_PRIMARY_APPROVAL, listPendingApprovalTransation);
+		 // Fetching All paid Weekly Collection/Primary Accounts for approval process. END
 		 
-		
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
 	}
 	

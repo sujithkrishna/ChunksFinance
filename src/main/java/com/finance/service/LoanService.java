@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
+import com.finance.exception.DuplicateLoanException;
 import com.finance.model.FinanceModel;
 import com.finance.model.LoanEmiDetail;
 import com.finance.model.LoanModel;
@@ -64,6 +65,13 @@ public class LoanService {
 		BigDecimal EmiAmtfor16 = emiAmt.multiply(total16EMI);
 		BigDecimal lastEmiAmt = loanAmount.subtract(EmiAmtfor16);
         List<LoanEmiDetail> emiDetails = new ArrayList<LoanEmiDetail>();
+        MemberModel loanReferenceName = loanModel.getLoanReferenceName();
+        MemberModel loanApplicantName = loanModel.getLoanApplicantName();
+        List<LoanModel> inProgressLoans = getInProgressLoans(loanReferenceName,loanApplicantName);
+        if(null != inProgressLoans && inProgressLoans.size() >= 1) {
+        	throw new DuplicateLoanException();
+        }
+        
         Integer currentLoanNumber = getMaxLoanNumber();
         int startEmiId = 1;
         if (currentLoanNumber != null) {
@@ -155,6 +163,10 @@ public class LoanService {
 	        return loanRepository.findAll();
 	 }
 	
+	 
+	 public List<LoanModel> getInProgressLoans(MemberModel loanReference, MemberModel loanApplicant) {
+	        return loanRepository.findInProgressLoans(loanReference, loanApplicant);
+	    }
 	
 
 }

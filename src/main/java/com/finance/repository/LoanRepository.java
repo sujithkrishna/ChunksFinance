@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.finance.model.LoanModel;
+import com.finance.model.MemberModel;
 
 /**
  * @author Sujith Krishna
@@ -32,7 +34,8 @@ public interface LoanRepository extends JpaRepository<LoanModel, Integer> {
     @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstApprovalTime IS NOT NULL AND l.secondApprovalTime IS NULL ORDER BY l.loanDate ASC")
     List<LoanModel> findLoansByStatusWithBothApprovals(List<LoanModel.CurrentStatus> currentStatuses);
 
-
+    @Query("SELECT l FROM LoanModel l WHERE l.loanReferenceName = :loanReferenceName AND l.loanApplicantName = :loanApplicantName AND l.currentStatus = 'INPROGRESS'")
+     List<LoanModel> findInProgressLoans(@Param("loanReferenceName") MemberModel loanReferenceName,@Param("loanApplicantName") MemberModel loanApplicantName);
 
    
 }

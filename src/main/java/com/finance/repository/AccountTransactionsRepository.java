@@ -24,10 +24,13 @@ public interface AccountTransactionsRepository extends JpaRepository<AccountTran
 	@Query("SELECT COALESCE(MAX(a.id), 0) FROM AccountTransactionsModel a")
 	Integer findMaxTransactionId();
 	   
-	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.paymentDate = :paymentDate")
-    List<AccountTransactionsModel> findTransactions(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("paymentDate") LocalDate paymentDate);
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.actualPaymentDate = :actualPaymentDate")
+    List<AccountTransactionsModel> findTransactions(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("actualPaymentDate") LocalDate actualPaymentDate);
 	
-	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.paymentDate = :paymentDate AND a.totalAmount >= a.paidAmount")
-    List<AccountTransactionsModel> findTransactionsForDisplay(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("paymentDate") LocalDate paymentDate);
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount >= a.paidAmount")
+    List<AccountTransactionsModel> findTransactionsForDisplay(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("actualPaymentDate") LocalDate actualPaymentDate);
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount = a.paidAmount AND a.firstApprovalTime IS NULL AND a.secondApprovalTime IS NULL")
+	List<AccountTransactionsModel> findPendingTransactionsForPrimaryAccount(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
 	
 }

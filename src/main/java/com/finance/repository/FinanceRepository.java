@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.finance.model.FinanceModel;
+import com.finance.model.MemberModel;
 
 /**
  * @author Sujith Krishna
@@ -28,7 +29,9 @@ public interface FinanceRepository extends JpaRepository<FinanceModel, Long>{
 	List<FinanceModel> findActiveFinances();
 	
 	@Query("SELECT f FROM FinanceModel f WHERE f.financeType = :financeType AND f.status = :status ORDER BY f.id")
-    List<FinanceModel> findActivePrimaryFinances(@Param("financeType") FinanceModel.FinanceType financeType, @Param("status") FinanceModel.FinanceStatus status
-    );
+    List<FinanceModel> findActivePrimaryFinances(@Param("financeType") FinanceModel.FinanceType financeType, @Param("status") FinanceModel.FinanceStatus status);
+	
+	@Query("SELECT f FROM FinanceModel f WHERE f.status = 'ACTIVE' AND f.financeOwner = :financeOwner AND f.financeType = 'PRIMARY'")
+	List<FinanceModel> findActivePrimaryFinancesWithOwner(@Param("financeOwner") MemberModel financeOwner);
 	
 }

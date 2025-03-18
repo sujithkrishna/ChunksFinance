@@ -21,15 +21,18 @@ import com.finance.repository.AccountTransactionsRepository;
 public class AccountTransactionsService {
 	
 	@Autowired
-    private AccountTransactionsRepository repository;
+    private AccountTransactionsRepository accountTransactionsRepository;
 
     public List<AccountTransactionsModel> getTransactions(FinanceModel financeType, MemberModel accountHolderName, LocalDate paymentDate) {
-        return repository.findTransactions(financeType, accountHolderName, paymentDate);
+        return accountTransactionsRepository.findTransactions(financeType, accountHolderName, paymentDate);
     }
 
     
     public List<AccountTransactionsModel> getTransactionsForDisplay(FinanceModel financeType, MemberModel accountHolderName, LocalDate paymentDate) {
-        return repository.findTransactionsForDisplay(financeType, accountHolderName, paymentDate);
+        return accountTransactionsRepository.findTransactionsForDisplay(financeType, accountHolderName, paymentDate);
     }
     
+    public List<AccountTransactionsModel> getPendingTransactionsForPrimaryAccount(FinanceModel financeType, LocalDate paymentDate) {
+        return accountTransactionsRepository.findPendingTransactionsForPrimaryAccount(financeType, paymentDate);
+    }
 }

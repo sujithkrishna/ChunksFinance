@@ -92,8 +92,8 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 10px;
-            gap: 10px;
+			padding: 6px;
+			gap: 8px;
         }
 
         nav ul li a {
@@ -120,8 +120,8 @@
 
         /* === Common Main Content Styles === */
         main {
-            padding: 20px;
-            max-width: 1400px;
+            padding: 11px;
+            max-width: 1450px;
             margin: 0 auto;
         }
 
@@ -477,8 +477,8 @@
         /* === Common END here === */
 
         main {
-            padding: 2rem;
-            max-width: 1400px;
+            padding: 11px;
+            max-width: 1450px;
             margin: 0 auto;
         }
 
@@ -1020,7 +1020,11 @@
 									<div class="table-cell"><input name="pendingAmountPrimaryName"  type="hidden" value="${pendingPaymentFin.id}"><input name="pendingAmountPrimaryTxt"  type="text" value="${pendingPaymentFin.totalAmount - pendingPaymentFin.paidAmount}"></div>
 								</div>
 						</c:forEach>
-						
+						<c:choose>
+						    <c:when test="${fn:length(pendingSecondaryPayment) > 0}">
+						    </c:when>
+						    <c:otherwise><input name="pendingAmountSecondaryName" type="hidden" value="${pendingSecondaryPaymentFin.id}"><input name="pendingAmountSecondaryTxt" type="hidden" value="${pendingSecondaryPaymentFin.totalAmount}"></c:otherwise>
+						</c:choose>
 						<c:forEach items="${pendingSecondaryPayment}" var="pendingSecondaryPaymentFin">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
 									<div class="table-cell">${counter}</div><c:set var="counter" value="${counter + 1}" />
@@ -1170,14 +1174,14 @@
 
 // Updated JavaScript
         function validateForm() {
-			          
+			alert("1");          
             let isValid = true;
             const paymentInputs = [
                 ...document.getElementsByName('loanEMITxt'),
                 ...document.getElementsByName('pendingAmountPrimaryTxt'),
                 ...document.getElementsByName('pendingAmountSecondaryTxt'),
             ];
-            
+            alert("2");
             paymentInputs.forEach(input => {
                 const value = parseFloat(input.value);
                 if (isNaN(value) || value < 0) {
@@ -1187,7 +1191,8 @@
                     input.classList.remove('error');
                 }
             });
-            
+            alert("3");
+            alert("isValid"+isValid);
             if (isValid) {
             // Submit the form or handle valid data
                 const form = document.getElementById('formpayments');
@@ -1202,6 +1207,7 @@
 			    csrfInput.value = csrfToken;
 			    form.appendChild(csrfInput);
 			    document.body.appendChild(form);
+			    alert("4");
 			    form.submit();		
             
                //showSuccessMessage();

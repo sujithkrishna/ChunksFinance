@@ -82,4 +82,9 @@ public class CreateFinanceService {
 	 public List<FinanceModel> getActiveSecondaryFinances() {
 	        return financeRepository.findActivePrimaryFinances(FinanceModel.FinanceType.SECONDARY, FinanceModel.FinanceStatus.ACTIVE);
 	 }
+	 
+	 public List<FinanceModel> getActivePrimaryFinancesWithOwner(MemberModel financeOwner) {
+	        return financeRepository.findActivePrimaryFinancesWithOwner(financeOwner);
+	 }
+	 
 }

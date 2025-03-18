@@ -273,8 +273,8 @@ public class PaymentsService {
 		    		 currentPaidAmt = currentPaidAmt.add(BigDecimal.valueOf(entry.getValue()));
 		    		 accountTransactionsModel.setPaidAmount(currentPaidAmt);
 		    	 }
-		        
-		        accountTransactionsModel.setPaymentDate(upcomingSunday);
+		    	accountTransactionsModel.setPaidDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+		        accountTransactionsModel.setActualPaymentDate(upcomingSunday);
 		        if(null != accountItem && accountItem.isPresent()) {
 		        	 accountTransactionsModel.setFinanceType(accountItem.get().getFinanceType());
 		        	 accountTransactionsModel.setTotalAmount(BigDecimal.valueOf(accountItem.get().getFinanceType().getFinanceAmount()));
@@ -321,7 +321,8 @@ public class PaymentsService {
 			    		 currentPaidAmt = currentPaidAmt.add(BigDecimal.valueOf(entry.getValue()));
 			    		 accountTransactionsModel.setPaidAmount(currentPaidAmt);
 			    	 }
-			    	 accountTransactionsModel.setPaymentDate(upcomingSunday);
+			    	 accountTransactionsModel.setPaidDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+			    	 accountTransactionsModel.setActualPaymentDate(upcomingSunday);
 				        if(null != accountItem && accountItem.isPresent()) {
 				        	 accountTransactionsModel.setFinanceType(accountItem.get().getFinanceType());
 				        }

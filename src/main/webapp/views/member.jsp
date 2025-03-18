@@ -92,8 +92,8 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 10px;
-            gap: 10px;
+			padding: 6px;
+			gap: 8px;
         }
 
         nav ul li a {
@@ -120,8 +120,8 @@
 
         /* === Common Main Content Styles === */
         main {
-            padding: 20px;
-            max-width: 1400px;
+            padding: 11px;
+            max-width: 1450px;
             margin: 0 auto;
         }
 
@@ -472,8 +472,8 @@
 
 
         main {
-            padding: 2rem;
-            max-width: 1400px;
+            padding: 11px;
+            max-width: 1450px;
             margin: 0 auto;
         }
 

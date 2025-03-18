@@ -121,6 +121,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String CURRENT_EMI_WAITFOR_APPROVAL = "currentEMIWaitforApproval";
 	
+	public static final String CURRENT_PRIMARY_APPROVAL = "currentPriforApproval";
+	
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	
 	public static final String IN_PROGRESS = "IN_PROGRESS";
@@ -156,6 +158,8 @@ public class ChunksFinanceConstants {
 	public static final String FINANCE_FIRSTAPPROVAL_CANNOTBE_SAME_APPOVED_MESSAGE = "finance.firstapproval.cannotbe.same.appoved.message";
 	
 	public static final String FINANCE_DATEEXPIRED_MESSAGE = "finance.dateexpired.message";
+	
+	public static final String DUPLICATE_LOAN_MESSAGE = "duplicate.loan.message";
 	
 	public static final String FINANCE_APPOVED_MESSAGE = "finance.appoved.message";
 	

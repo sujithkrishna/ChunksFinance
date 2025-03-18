@@ -105,8 +105,8 @@ nav ul {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	padding: 10px;
-	gap: 10px;
+	padding: 6px;
+	gap: 8px;
 }
 
 nav ul li a {
@@ -133,8 +133,8 @@ nav ul li a:hover {
 
 /* === Common Main Content Styles === */
 main {
-	padding: 20px;
-	max-width: 1400px;
+	padding: 11px;
+	max-width: 1450px;
 	margin: 0 auto;
 }
 
@@ -698,9 +698,9 @@ input[type="date"]:focus {
 /* Updated Table Styles */
 .table-row.header .table-cell:nth-child(1), /* Requester */
 .table-row:not(.header) .table-cell:nth-child(1) {
-    flex: 1 0 19%; /* Minimum width for requester column */
+    flex: 1 0 21%; /* Minimum width for requester column */
     min-width: 190px;
-    padding-left: 3px;
+    padding-left: 0px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -726,7 +726,7 @@ input[type="date"]:focus {
 
 .table-row.header .table-cell:nth-child(4), /* Date */
 .table-row:not(.header) .table-cell:nth-child(4) {
-    flex: 1 0 120px;
+    flex: 1 0 160px;
     text-align: right;
     padding-right: 25px;
 }
@@ -852,7 +852,7 @@ input[type="date"]:focus {
 						<div class="table-cell" style="text-align: center;">Authorization</div>
 					</div>
 					<c:choose>
-						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval}">
+						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval and empty currentPriforApproval}">
 							<!-- Show empty state message -->
 							<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
 								<h3>You don't have any items to approve.</h3>
@@ -928,7 +928,7 @@ input[type="date"]:focus {
 							
 							<c:if test="${not empty nonApprovedChitsEMI}">
 							<c:forEach items="${nonApprovedChitsEMI}" var="ChitsApprovalItem">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(227, 204, 136, 0.9), rgba(255, 229, 153, 0.9))">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(237, 203, 172, 0.9), rgba(255, 218, 185, 0.9))">
 									<div class="table-cell">${ChitsApprovalItem.chits.chitsNameOf.memberName} EMI # ${ChitsApprovalItem.emiNumber}</div>
 									<div class="table-cell">CHITS EMI ${ChitsApprovalItem.chits.chitsNameOf.memberName} Chits No# ${ChitsApprovalItem.chits.chitsNo}</div>
 									<div class="table-cell">&#8377;${ChitsApprovalItem.amount}</div>
@@ -952,7 +952,7 @@ input[type="date"]:focus {
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(161, 206, 227, 0.9), rgba(179, 229, 252, 0.9))">
 								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
 									<div class="table-cell">${LoanApprovalItem.loanReferenceName.memberName} Loan # ${LoanApprovalItem.loanNo}</div>
-									<div class="table-cell">NEW LOAN ${LoanApprovalItem.loanApplicantName.memberName}Loan No# ${LoanApprovalItem.loanNo}</div>
+									<div class="table-cell">NEW LOAN ${LoanApprovalItem.loanApplicantName.memberName} Loan No# ${LoanApprovalItem.loanNo}</div>
 									<div class="table-cell">&#8377;${LoanApprovalItem.loanAmount}</div>
 									<div class="table-cell"><span class="formattedStartDate">${LoanApprovalItem.loanDate}</span></div>
 									<div class="table-cell">
@@ -991,6 +991,29 @@ input[type="date"]:focus {
 							</c:forEach>
 						</c:if>
 						
+
+
+						<c:if test="${not empty currentPriforApproval}">
+							<c:forEach items="${currentPriforApproval}" var="primaryAccountItemApprovalItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(163, 204, 200, 0.9), rgba(178, 223, 219, 0.9))">
+								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
+									<div class="table-cell">${primaryAccountItemApprovalItem.accountHolderName.memberName}</div>
+									<div class="table-cell">WEEKLY COLLECTION for ${primaryAccountItemApprovalItem.financeType.financeName} on &nbsp;<span class="formattedStartDate">${primaryAccountItemApprovalItem.actualPaymentDate}</span></div>
+									<div class="table-cell">&#8377; ${primaryAccountItemApprovalItem.paidAmount}</div>
+									<div class="table-cell"><span class="formattedStartDateandTime">${primaryAccountItemApprovalItem.paidDate}</span></div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${primaryAccountItemApprovalItem.id}','1','WEEKLY','APPROVED')" aria-label="Approve request">
+												<i class="fas fa-check"></i> Approve
+											</button>
+											<button onclick="validateForm('${primaryAccountItemApprovalItem.id}','1','WEEKLY','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<i class="fas fa-times"></i> Reject
+											</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
 						
 						</c:otherwise>
 					</c:choose>
