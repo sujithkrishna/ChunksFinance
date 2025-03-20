@@ -51,6 +51,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String LOANENQUIRES_NO = "loanenquiresNo";
 	
+	public static final String LOAN_ITEM = "loanItem";
+	
 	public static final String ALL_SETTINGS = "allSettings";
 	
 	public static final String SECONDARY_LOGIN = "secondaryLogin";
@@ -85,6 +87,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String SECONDARY_APPROVAL_TIME = "secondaryapprovaltime";
 	
+	public static final String HH_MM = "HH:mm";
+	
 	public static final String EXPENSES_STATUS = "expensesStatus";
 	
 	public static final String REVENUE_STATUS = "revenueStatus";
@@ -108,6 +112,8 @@ public class ChunksFinanceConstants {
 	public static final String LOANS = "LOAN";
 	
 	public static final String LOAN_EMI = "LOANEMI";
+	
+	public static final String WEEKLY = "WEEKLY";
 	
 	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";
 	
@@ -136,6 +142,10 @@ public class ChunksFinanceConstants {
 	public static final String SECONDARY_MEMBERS = "secondaryMembers";
 	
 	public static final String SECONDARY_FINANCE = "secondaryFinance";
+	
+	public static final String ALL_ACTIVE_FINANCE = "allActiveFinance";
+	
+	public static final String LOAN_LOAN = "loanLoan";
 
 	public static final String PRIMARY_MEMBERS = "primaryMembers";
 	

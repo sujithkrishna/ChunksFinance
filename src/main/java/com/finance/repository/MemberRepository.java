@@ -22,6 +22,8 @@ public interface MemberRepository extends JpaRepository<MemberModel, Integer> {
     Integer findMaxNo();
 
     Optional<MemberModel> findByEmailId(String emailId);
+    
+    Optional<MemberModel> findByMemberName(String memberName);
         
     List<MemberModel> findByMemberType(MemberModel.MemberType memberType);
     

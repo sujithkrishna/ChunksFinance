@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.AccountModel;
 import com.finance.model.FinanceModel;
+import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
+import com.finance.model.SettingsModel;
 import com.finance.repository.AccountRepository;
 import com.finance.repository.FinanceRepository;
 
@@ -32,6 +35,9 @@ public class CreateFinanceService {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private SettingsService settingsService;
 		
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean creatFinance(FinanceModel finance) {
@@ -83,8 +89,12 @@ public class CreateFinanceService {
 	        return financeRepository.findActivePrimaryFinances(FinanceModel.FinanceType.SECONDARY, FinanceModel.FinanceStatus.ACTIVE);
 	 }
 	 
-	 public List<FinanceModel> getActivePrimaryFinancesWithOwner(MemberModel financeOwner) {
-	        return financeRepository.findActivePrimaryFinancesWithOwner(financeOwner);
+	 public List<FinanceModel> getActivePrimaryFinancesWithOwner(MemberModel currentUser) {
+			if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+				 return financeRepository.findActivePrimaryFinances();
+			 }else {
+				 return financeRepository.findActivePrimaryFinancesWithOwner(currentUser);
+			 }
 	 }
 	 
 }

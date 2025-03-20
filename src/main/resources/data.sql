@@ -144,7 +144,7 @@ CREATE TABLE loan (
 	first_approval_date_time TIMESTAMP(6),
     second_approver_member_no INTEGER,
     second_approval_date_time TIMESTAMP(6),
-    current_status VARCHAR(20) CHECK (current_status IN ('CLOSED', 'INITIAL_APPROVAL', 'INPROGRESS', 'PRE_CLOSED', 'REJECTED', 'REQUESTED'))
+    current_status VARCHAR(20) CHECK (current_status IN ('CLOSED','INITIAL_APPROVAL','INPROGRESS','PRE_CLOSED','PRE_REQUEST','PRE_REQUEST_INITIAL_APPROVAL','REJECTED','REQUESTED'))
 );
 
 

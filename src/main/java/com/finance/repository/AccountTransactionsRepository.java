@@ -30,7 +30,14 @@ public interface AccountTransactionsRepository extends JpaRepository<AccountTran
 	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.accountHolderName = :accountHolderName AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount >= a.paidAmount")
     List<AccountTransactionsModel> findTransactionsForDisplay(@Param("financeType") FinanceModel financeType, @Param("accountHolderName") MemberModel accountHolderName, @Param("actualPaymentDate") LocalDate actualPaymentDate);
 	
-	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount = a.paidAmount AND a.firstApprovalTime IS NULL AND a.secondApprovalTime IS NULL")
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount = a.paidAmount AND a.firstApprovalTime IS NULL")
 	List<AccountTransactionsModel> findPendingTransactionsForPrimaryAccount(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
+	
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount = a.paidAmount AND a.firstApprovalTime IS NOT NULL AND a.secondApprovalTime IS NULL")
+	List<AccountTransactionsModel> findPendingTransactionsForPrimaryAccountAdminSequential(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount = a.paidAmount AND a.secondApprovalTime IS NULL")
+	List<AccountTransactionsModel> findPendingTransactionsForPrimaryAccountAdminParallel(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
 	
 }

@@ -1,5 +1,6 @@
 package com.finance.service;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ import com.finance.model.LoanModel.CurrentStatus;
 import com.finance.model.MemberModel;
 import com.finance.model.RevenueModel;
 import com.finance.model.SettingsModel;
+import com.finance.repository.AccountTransactionsRepository;
 import com.finance.repository.ChitsEmiDetailRepository;
 import com.finance.repository.ChitsRepository;
 import com.finance.repository.ExpensesRepository;
@@ -94,6 +96,9 @@ public class ApprovalsService {
 	
 	@Autowired
 	private AccountTransactionsService accountTransactionsService;
+	
+	@Autowired
+	private AccountTransactionsRepository accountTransactionsRepository;
 	
 	public void displayApprovalList(Model model, LocalDate givenDate,MemberModel currentUser) {
 		
@@ -163,14 +168,46 @@ public class ApprovalsService {
 	        upcomingSunday= today.plusDays(daysUntilSunday);
 		 
 		// Fetching All paid Weekly Collection/Primary Accounts for approval process. START
-		 List<FinanceModel> activePrimaryFinancesWithOwner = createFinanceService.getActivePrimaryFinancesWithOwner(currentUser);
-		 List<AccountTransactionsModel> listPendingApprovalTransation= new ArrayList<AccountTransactionsModel>();
-		 for (FinanceModel finItem : activePrimaryFinancesWithOwner) {
-			 List<AccountTransactionsModel> pendingTransactionsForPrimaryAccount = accountTransactionsService.getPendingTransactionsForPrimaryAccount(finItem,upcomingSunday);
-			 listPendingApprovalTransation.addAll(pendingTransactionsForPrimaryAccount);
-		 }
-		 model.addAttribute(ChunksFinanceConstants.CURRENT_PRIMARY_APPROVAL, listPendingApprovalTransation);
+	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	       	 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+	       	 String approvalProcessStatus = null;
+	       	 if(null != settingModelData) {
+	       		 approvalProcessStatus = settingModelData.getSettingsValue();
+	       	 }
+	        if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+	        	List<FinanceModel> activePrimaryFinancesWithOwner = createFinanceService.getActivePrimaryFinancesWithOwner(currentUser);
+	        	 List<AccountTransactionsModel> listPendingApprovalTransation= new ArrayList<AccountTransactionsModel>();
+	    		 for (FinanceModel finItem : activePrimaryFinancesWithOwner) {
+	    			 List<AccountTransactionsModel> pendingTransactionsForPrimaryAccount = accountTransactionsService.getPendingTransactionsForPrimaryAccountSequential(finItem,upcomingSunday);
+	    			 listPendingApprovalTransation.addAll(pendingTransactionsForPrimaryAccount);
+	    		 }
+	    		 model.addAttribute(ChunksFinanceConstants.CURRENT_PRIMARY_APPROVAL, listPendingApprovalTransation);	 
+	        }else {
+	        	List<FinanceModel> activePrimaryFinancesWithOwner = createFinanceService.getActivePrimaryFinancesWithOwner(currentUser);
+	        	 List<AccountTransactionsModel> listPendingApprovalTransation= new ArrayList<AccountTransactionsModel>();
+	    		 for (FinanceModel finItem : activePrimaryFinancesWithOwner) {
+	    			 List<AccountTransactionsModel> pendingTransactionsForPrimaryAccount = accountTransactionsService.getPendingTransactionsForPrimaryAccountParallel(finItem,upcomingSunday);
+	    			 listPendingApprovalTransation.addAll(pendingTransactionsForPrimaryAccount);
+	    		 }
+	    		 model.addAttribute(ChunksFinanceConstants.CURRENT_PRIMARY_APPROVAL, listPendingApprovalTransation);	 
+	        }
+	        }else {
+	       	 // Return
+	        	 List<FinanceModel> activePrimaryFinancesWithOwner = createFinanceService.getActivePrimaryFinancesWithOwner(currentUser);
+	    		 List<AccountTransactionsModel> listPendingApprovalTransation= new ArrayList<AccountTransactionsModel>();
+	    		 for (FinanceModel finItem : activePrimaryFinancesWithOwner) {
+	    			 List<AccountTransactionsModel> pendingTransactionsForPrimaryAccount = accountTransactionsService.getPendingTransactionsForPrimaryAccount(finItem,upcomingSunday);
+	    			 listPendingApprovalTransation.addAll(pendingTransactionsForPrimaryAccount);
+	    		 }
+	    		 model.addAttribute(ChunksFinanceConstants.CURRENT_PRIMARY_APPROVAL, listPendingApprovalTransation);	        	
+	        }   
 		 // Fetching All paid Weekly Collection/Primary Accounts for approval process. END
+	        
+	        
+	        
+		 
+		 
+		 
 		 
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
 	}
@@ -549,6 +586,16 @@ public class ApprovalsService {
 						 emiItem.get().setSecondapproverName(currentUserModel.getMember());
 						 emiItem.get().setCurrentStatus(LoanEmiDetail.CurrentStatus.PAID);
 						 emiDetailRepository.save(emiItem.get());
+						 // Update the Remaining Balance and Received amount
+						 LoanModel currentLoan = emiItem.get().getLoan();
+						 BigDecimal receivedAmount = emiItem.get().getLoan().getReceivedAmount();
+						 BigDecimal remainingBalance = emiItem.get().getLoan().getRemainingBalance();
+						 receivedAmount = receivedAmount.add(emiItem.get().getEmiAmount());
+						 remainingBalance = remainingBalance.subtract(emiItem.get().getEmiAmount());
+						 currentLoan.setReceivedAmount(receivedAmount);
+						 currentLoan.setRemainingBalance(remainingBalance);
+						 loanRepository.save(currentLoan);
+						 
 						 // Update in the Finance
 						 FinanceModel financeItem = emiItem.get().getLoan().getFinanceType();
 						 Double currentBalance = financeItem.getCurrentBalance();
@@ -560,6 +607,16 @@ public class ApprovalsService {
 						 emiItem.get().setFirstapproverName(currentUserModel.getMember());
 						 emiItem.get().setCurrentStatus(LoanEmiDetail.CurrentStatus.PAID);
 						 emiDetailRepository.save(emiItem.get());
+						 // Update the Remaining Balance and Received amount
+						 LoanModel currentLoan = emiItem.get().getLoan();
+						 BigDecimal receivedAmount = emiItem.get().getLoan().getReceivedAmount();
+						 BigDecimal remainingBalance = emiItem.get().getLoan().getRemainingBalance();
+						 receivedAmount = receivedAmount.add(emiItem.get().getEmiAmount());
+						 remainingBalance = remainingBalance.subtract(emiItem.get().getEmiAmount());
+						 currentLoan.setReceivedAmount(receivedAmount);
+						 currentLoan.setRemainingBalance(remainingBalance);
+						 loanRepository.save(currentLoan);
+						 
 						 // Update in the Finance
 						 FinanceModel financeItem = emiItem.get().getLoan().getFinanceType();
 						 Double currentBalance = financeItem.getCurrentBalance();
@@ -569,6 +626,33 @@ public class ApprovalsService {
 					 }
 				 }
 				 return true;	 
+			 }
+		 }else if(ChunksFinanceConstants.WEEKLY.equals(currentType) && null != idNumber) {
+			 Optional<AccountTransactionsModel> accountTransationItem = accountTransactionsRepository.findById(Integer.parseInt(idNumber));
+			 if(null != accountTransationItem && accountTransationItem.isPresent()) {
+				 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+					 accountTransationItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+					 accountTransationItem.get().setSecondapproverName(currentUserModel.getMember());
+					 if(null != accountTransationItem.get().getFirstApprovalTime() && null !=  accountTransationItem.get().getFirstapproverName()) {
+						 FinanceModel financeItem = accountTransationItem.get().getFinanceType();
+						 Double currentBalance = financeItem.getCurrentBalance();
+						 currentBalance = currentBalance + accountTransationItem.get().getPaidAmount().doubleValue();
+						 financeItem.setCurrentBalance(currentBalance);
+						 financeRepository.save(financeItem);
+					 }
+				 }else {
+					 accountTransationItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+					 accountTransationItem.get().setFirstapproverName(currentUserModel.getMember());
+					 if(null != accountTransationItem.get().getSecondApprovalTime() && null !=  accountTransationItem.get().getSecondapproverName()) {
+						 FinanceModel financeItem = accountTransationItem.get().getFinanceType();
+						 Double currentBalance = financeItem.getCurrentBalance();
+						 currentBalance = currentBalance + accountTransationItem.get().getPaidAmount().doubleValue();
+						 financeItem.setCurrentBalance(currentBalance);
+						 financeRepository.save(financeItem);
+					 }
+				 }
+				 accountTransactionsRepository.save(accountTransationItem.get());
+				 return true;
 			 }
 		 }
 		 return false;

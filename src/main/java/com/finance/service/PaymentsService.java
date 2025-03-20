@@ -4,11 +4,15 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -63,6 +67,9 @@ public class PaymentsService {
 	
 	@Autowired
 	private AccountTransactionsRepository accountTransactionsRepository;
+	
+	@Autowired
+	private SettingsService settingsService;
 	
 	public List<LoanEmiDetail> loadEMI(MemberDetails currentUser){
 		List<LoanEmiDetail> allLoansForCurrentUser = loanService.findAllLoansForCurrentUser(currentUser);
@@ -161,8 +168,28 @@ public class PaymentsService {
 				}
 			}
 		}
+		String secondaryApprovalCutDay = settingsService.getSettingByName(ChunksFinanceConstants.SECONDARY_APPROVAL_CUTOFF_DAY).getSettingsValue();
+		String secondaryApprovalCutTime = settingsService.getSettingByName(ChunksFinanceConstants.SECONDARY_APPROVAL_CUTOFF_TIME).getSettingsValue();
 		
-		model.addAttribute(ChunksFinanceConstants.PENDING_SECONDAY_PAYMENT, secondaryPendingPaymentList);
+        LocalDate todaywithZone = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDate();
+        LocalDateTime localDateTimeIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+		
+        DayOfWeek targetDay = DayOfWeek.valueOf(secondaryApprovalCutDay.toUpperCase(Locale.ROOT));
+        LocalTime cutOffTime = LocalTime.parse(secondaryApprovalCutTime, DateTimeFormatter.ofPattern(ChunksFinanceConstants.HH_MM));
+        LocalDate nextTargetDate = todaywithZone.with(TemporalAdjusters.next(targetDay));
+        LocalDateTime secondaryApprovalCutoffDateTime = LocalDateTime.of(nextTargetDate, cutOffTime);
+        LocalDateTime endOfSunday = LocalDateTime.of(nextTargetDate, LocalTime.of(23, 59));
+        System.out.println("-----localDateTimeIST----"+localDateTimeIST);
+        System.out.println("-----secondaryApprovalCutoffDateTime----"+secondaryApprovalCutoffDateTime);
+        System.out.println("-----endOfSunday----"+endOfSunday);
+        if (localDateTimeIST.isAfter(secondaryApprovalCutoffDateTime) && localDateTimeIST.isBefore(endOfSunday)) {
+            System.out.println("Business time has already passed.------------------");
+        } else {
+        	model.addAttribute(ChunksFinanceConstants.PENDING_SECONDAY_PAYMENT, secondaryPendingPaymentList);
+        }
+        
+        
+		
 	}	
 	
 	

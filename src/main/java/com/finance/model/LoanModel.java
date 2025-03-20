@@ -36,6 +36,8 @@ public class LoanModel {
         REJECTED,   
         INPROGRESS,    
         CLOSED,
+        PRE_REQUEST,
+        PRE_REQUEST_INITIAL_APPROVAL,
         PRE_CLOSED,
     }	
    

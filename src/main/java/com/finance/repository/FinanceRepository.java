@@ -34,4 +34,7 @@ public interface FinanceRepository extends JpaRepository<FinanceModel, Long>{
 	@Query("SELECT f FROM FinanceModel f WHERE f.status = 'ACTIVE' AND f.financeOwner = :financeOwner AND f.financeType = 'PRIMARY'")
 	List<FinanceModel> findActivePrimaryFinancesWithOwner(@Param("financeOwner") MemberModel financeOwner);
 	
+	@Query("SELECT f FROM FinanceModel f WHERE f.status = 'ACTIVE' AND f.financeType = 'PRIMARY'")
+	List<FinanceModel> findActivePrimaryFinances();
+	
 }

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Chunks Finance Upload Portal - Secure financial document management system for administrators">
     <meta name="keywords" content="finance upload, chunks finance, document management, financial records, admin portal">
-    <title>Financial Document Upload | Chunks Finance Admin</title>
+    <title>Financial Entrolment | Chunks Finance Admin</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -265,9 +265,19 @@
 
         /* === Common Responsive Design === */
         @media (max-width: 768px) {
-            .form-group {
-                align-items: flex-start;
-            }		
+        
+        	.form-container {
+     		   flex-direction: column;
+    		}
+    		
+    		.form-left,
+		    .form-right {
+		        width: 100%;
+		    }
+    		
+           .form-group {
+       		 grid-template-columns: 1fr;
+ 		   }		
             nav ul {
                 flex-direction: column;
                 align-items: center;
@@ -509,11 +519,12 @@
 
         .form-group {
             margin-bottom: 15px;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
             align-items: center;
             justify-content: space-between;
 			flex-direction: column;
-            gap: 5px;
+            gap: 15px;
         }
 
 		.form-group label {
@@ -604,13 +615,50 @@
             }
 
             .form-group label {
-                margin-bottom: 5px;
-            }
+		        text-align: left;
+		        padding-right: 0;
+		    }
 
             .input-field {
-                width: 100%;
-            }
+		        max-width: 100%;
+		    }
+		    
+		    
+		    /* EMI Grid Layout */
+			.emi-section .form-container {
+			    display: grid;
+			    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			    gap: 10px;
+			}
+			
+			.emi-section .form-group {
+			    grid-template-columns: 1fr 2fr;
+			    margin-bottom: 8px;
+			}
+			
+			.emi-section label {
+			    font-size: 0.9em;
+			}
+			
+			.emi-section .input-field {
+			    padding: 8px;
+			    font-size: 0.9em;
+			}
+					    
+    
         }
+        
+        /* Read-only field styling */
+			input[readonly] {
+			    background-color: #eeeeee;
+			    cursor: not-allowed;
+			}
+			
+		
+		/* Required Field Indicator */
+		input:required, select:required {
+		    border-left: 3px solid #ff9800;
+		}	
 
 		/* Add desktop-specific adjustment */
         @media (min-width: 769px) {
@@ -876,7 +924,37 @@
         flex: 1;
         justify-content: flex-start;
     }
-}        
+}
+
+/* Add these styles to the existing CSS */
+
+/* Form Container Styles */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.form-left,
+.form-right {
+    width: 48%;
+}
+    
+/* EMI Section Styles */
+.emi-section {
+    margin-top: 20px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.emi-section h3 {
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+        
     </style>
 </head>
 <body>
@@ -922,16 +1000,17 @@
         </div>
     </header>
 
+	
 	<!-- Navigation -->
 	<nav>
 		<ul>
 			<li><a href="dashboard">Dashboard</a></li>
 			<li><a href="approvals">Approvals</a></li>
-			<li><a href="payments" class="active">Payments</a></li>
+			<li><a href="payments">Payments</a></li>
 			<li><a href="reports">Reports</a></li>
 			<li><a href="loan">Loans</a></li>
-			<li><a href="loan-preclosure">Preclosure</a></li>
-			<li><a href="loan-enquires">Enquires</a></li>
+			<li><a href="loan-preclosure" class="active">Preclosure</a></li>
+			<li><a href="loan-enquires" >Enquires</a></li>
 			<li><a href="revenue">Revenue</a></li>
 			<li><a href="expenses">Expenses</a></li>
 			<c:choose>
@@ -939,7 +1018,7 @@
 					<li><a href="member">Members</a></li>
 					<li><a href="chits">Chits</a></li>
 					<li><a href="finance">Finance</a></li>
-					<li><a href="enrolment">Enrolment</a></li>
+					<li><a href="enrolment" >Enrolment</a></li>
 				</c:when>
 			</c:choose>
 		</ul>
@@ -949,12 +1028,12 @@
     <main>
         <div class="content-wrapper">
             <section>
-                <h2 class="sectionh2">Payments on <span class="formattedStartDate">${upcomgingPaymentDate}</span></h2>
+                <h2 class="sectionh2">Loan Preclosure</h2>
 				<!-- Update the success message section -->
 				<div class="green-success-message" id="greenSuccessMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
+						<span><c:out value="${success}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeGreenSuccessMessage()">
 						<i class="fas fa-times"></i>
@@ -964,94 +1043,250 @@
 				<div class="red-error-message" id="redErrorMessage">
 					<i class="fas fa-check-circle"></i>
 					<div class="message-text">
-						<span>Finance created successfully!</span>
+						<span><c:out value="${error}" /></span>
 					</div>
 					<div class="close-btn" onclick="closeRedErrorMessage()">
 						<i class="fas fa-times"></i>
 					</div>
 				</div>				
-               		 <form method="post"  action="payments" id="formpayments" name="formpayments">
-	                    <div class="table-container">
-			            <!-- Header Row -->
-						<c:choose>
-						    <c:when test="${fn:length(allLoansEMI) > 0}">
-						         <div class="table-row header">
-					                <div class="table-cell">Loan No</div>
-					                <div class="table-cell">Name</div>
-					                <div class="table-cell">Finance</div>
-					                <div class="table-cell">EMI AMT</div>
-					                <div class="table-cell">Payment</div>
-					            </div>
-						    </c:when>
-						    <c:otherwise><input name="loanEMIName" type="hidden" value="${loanEMI.id}"><input name="loanEMITxt" type="hidden" value="${loanEMI.emiAmount - loanEMI.paidAmount}"></c:otherwise>
-						</c:choose>			            
-			            <!-- Data Rows -->
-			           <c:forEach items="${allLoansEMI}" var="loanEMI">
-							  <c:choose>
-							 	 <c:when test="${loanEMI.loan.financeType.id == '1'}"><div class="table-row" style="background: linear-gradient(135deg, rgba(139, 181, 140, 0.9), rgba(147, 191, 127, 0.9))"></c:when>
-							  	 <c:when test="${loanEMI.loan.financeType.id == '2'}"><div class="table-row" style="background: linear-gradient(135deg, rgba(184, 212, 185, 0.9), rgba(206, 237, 207, 0.9))"></c:when>
-							  </c:choose>
-									<div class="table-cell">${loanEMI.loan.loanNo}</div>
-									<div class="table-cell">${loanEMI.loan.loanApplicantName.memberName}</div>
-									<div class="table-cell">${loanEMI.loan.financeType.financeName}</div>
-									<div class="table-cell">₹${loanEMI.emiAmount}</div>
-									<div class="table-cell"><input name="loanEMIName" type="hidden" value="${loanEMI.id}"><input name="loanEMITxt" type="text" value="${loanEMI.emiAmount - loanEMI.paidAmount}"></div>
-								</div>
-						</c:forEach>
-						<div class="table-row header">
-			                <div class="table-cell">Sl No</div>
-			                <div class="table-cell">Name</div>
-			                <div class="table-cell">Finance</div>
-			                <div class="table-cell">Finance AMT</div>
-			                <div class="table-cell">Payment</div>
-			            </div>
-			            <c:choose>
-						    <c:when test="${fn:length(pendingPrimaryPayment) > 0}">
-						    </c:when>
-						    <c:otherwise><input name="pendingAmountPrimaryName"  type="hidden" value="${pendingPaymentFin.id}"><input name="pendingAmountPrimaryTxt"  type="hidden" value="${pendingPaymentFin.totalAmount - pendingPaymentFin.paidAmount}"></c:otherwise>
-						</c:choose>	
-						<c:set var="counter" value="1" />
-						<c:forEach items="${pendingPrimaryPayment}" var="pendingPaymentFin">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
-									<div class="table-cell">${counter}</div><c:set var="counter" value="${counter + 1}" />
-									<div class="table-cell">${currentUser.memberName}</div>
-									<div class="table-cell">${pendingPaymentFin.financeType.financeName}</div>
-									<div class="table-cell">₹${pendingPaymentFin.totalAmount}</div>
-									<div class="table-cell"><input name="pendingAmountPrimaryName"  type="hidden" value="${pendingPaymentFin.id}"><input name="pendingAmountPrimaryTxt"  type="text" value="${pendingPaymentFin.totalAmount - pendingPaymentFin.paidAmount}"></div>
-								</div>
-						</c:forEach>
-						<c:choose>
-						    <c:when test="${fn:length(pendingSecondaryPayment) > 0}">
-						    </c:when>
-						    <c:otherwise><input name="pendingAmountSecondaryName" type="hidden" value="${pendingSecondaryPaymentFin.id}"><input name="pendingAmountSecondaryTxt" type="hidden" value="${empty pendingSecondaryPaymentFin.totalAmount ? '0' : pendingSecondaryPaymentFin.totalAmount}"></c:otherwise>
-						</c:choose>
-						<c:forEach items="${pendingSecondaryPayment}" var="pendingSecondaryPaymentFin">
-								<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 194, 194, 0.9), rgba(238, 238, 238, 0.9))">	
-									<div class="table-cell">${counter}</div><c:set var="counter" value="${counter + 1}" />
-									<div class="table-cell">${pendingSecondaryPaymentFin.accountHolderName.memberName}</div>
-									<div class="table-cell">${pendingSecondaryPaymentFin.financeType.financeName}</div>
-									<div class="table-cell">₹${pendingSecondaryPaymentFin.totalAmount}</div>
-									<div class="table-cell"><input name="pendingAmountSecondaryName" type="hidden" value="${pendingSecondaryPaymentFin.id}"><input name="pendingAmountSecondaryTxt" type="text" value="${pendingSecondaryPaymentFin.totalAmount}"></div>
-								</div>								
-						</c:forEach>
-						
-						<!-- Total Row -->
-						<div class="table-row header" style="background: #2c3e50;">
-						    <div class="table-cell"></div>
-						    <div class="table-cell"></div>
-						    <div class="table-cell"></div>
-						    <div class="table-cell">Total</div>
-						    <div class="table-cell" id="totalAmount">₹0.00</div>
+               		 <form method="post" action="loanpreclosure" id="formloanpreclosure" name="formloanpreclosure">
+               		 
+               		 		<c:choose>
+							    <c:when test="${loanLoan == true}">
+								<div class="form-container">
+			                        <div class="form-left">
+										<!-- Loan No -->
+			                            <div class="form-group">
+			                                <label for="loan-no">Loan No</label>
+			                                <input type="text" id="loan-no" name="loanNo" class="input-field" value="${loanItem.loanNo}" placeholder="Loan No" required readonly>
+											<div class="error-message" id="loan-number-error">
+												<i class="fas fa-exclamation-circle"></i>
+												<span>Loan Number is required</span>
+											</div>								
+			                            </div>
+			                            
+			                            
+					                    <div class="form-group">
+					                        <label for="finance-type">Finance Type</label>
+					                        <input type="text" id="financeType" name="financeType" class="input-field" value="${loanItem.financeType.financeName}" placeholder="Finance Type" required readonly>
+					                        <div class="error-message" id="financeType-error">
+					                            <i class="fas fa-exclamation-circle"></i>
+					                            <span>Please select a finance type</span>
+					                        </div>
+					                    </div>                        
+			                        
+			                            <!-- Finance Source -->
+										<div class="form-group">
+											<label for="finance-source">Loan Reference Name</label>
+											<input type="text" id="finance-source" name="loanReferenceName" class="input-field" value="${loanItem.loanReferenceName.memberName}" placeholder="Loan Refference Name" required readonly>
+											<div class="error-message" id="finance-source-error">
+												<i class="fas fa-exclamation-circle"></i>
+												<span>Reference Name is required</span>
+											</div>
+										</div>
+			
+			                            <!-- Loan Applicant Name -->
+			                            <div class="form-group">
+			                                <label for="applicant-name">Loan Applicant Name</label>
+					   						 <input type="text" id="applicant-name" name="loanApplicantName" class="input-field" value="${loanItem.loanApplicantName.memberName}" placeholder="Loan Applicant Name" required readonly>
+											<div class="error-message" id="applicant-name-error">
+												<i class="fas fa-exclamation-circle"></i>
+												<span>Applicant Name is required</span>
+											</div>								
+																			
+			                            </div>
+			
+			                            <!-- Loan Amount -->
+			                            <div class="form-group">
+			                                <label for="loan-amount">Loan Amount</label>
+			                                <input type="text" id="loan-amount" name="loanAmount" class="input-field" value="${loanItem.loanAmount}" placeholder="loan Amount" required readonly>
+										<div class="error-message" id="loan-amount-error">
+											<i class="fas fa-exclamation-circle"></i>
+											<span>Loan Amount is required</span>
+										</div>								
+			                            </div>
+			
+			                            <!-- Loan Date -->
+			                            <div class="form-group">
+			                                <label for="loan-date">Loan Date</label>
+			                                <input type="text" id="loan-date" name="loanDate" class="input-field" value="${loanItem.loanDate}"  placeholder="loan Date" required readonly>
+											<div class="error-message" id="loan-date-error">
+												<i class="fas fa-exclamation-circle"></i>
+												<span>Loan Date is required</span>
+											</div>								
+			                            </div>
+			
+			
+			                            <!-- Loan Date -->
+			                            <div class="form-group">
+			                                <label for="loan-repayment-date">Loan repayment start date</label>
+			                                <input type="text" id="loan-repayment-date" name="loanStartDate" class="input-field" value="${loanItem.loanStartDate}" placeholder="loan Repayment Date" required readonly>
+											<div class="error-message" id="loan-repayment-date-error">
+												<i class="fas fa-exclamation-circle"></i>
+												<span>Loan repayment date is required</span>
+											</div>								
+			                            </div>                            
+			                        </div>
+			
+			                        <div class="form-right">
+											<!-- Loan Disbursement Amount -->
+											<div class="form-group">
+												<label for="disbursement-amount">Loan Disbursement Amount</label>
+												<input type="text" id="disbursement-amount" name="disbursementAmount" value="${loanItem.disbursementAmount}" class="input-field" placeholder="Enter disbursement amount" readonly>
+											</div>
+			
+											<!-- Interest Amount -->
+											<div class="form-group">
+												<label for="interest-amount">Interest Amount</label>
+												<input type="text" id="interest-amount" name="interestAmount" value="${loanItem.interestAmount}" class="input-field" placeholder="Enter interest amount" readonly>
+											</div>
+										
+			
+			                            <!-- Received and Yet to Receive Amount -->
+			                            <div class="form-group">
+			                                <label for="received-amount">Received Amount</label>
+			                                <input type="text" id="received-amount" name="receivedAmount" value="${loanItem.receivedAmount}" class="input-field" placeholder="Enter received amount" readonly>
+			                            </div>
+			
+			                            <div class="form-group">
+			                                <label for="pending-amount">Yet to Receive Amount</label>
+			                                <input type="text" id="pending-amount" name="remainingBalance" value="${loanItem.remainingBalance}" class="input-field" placeholder="Enter yet to receive amount" readonly>
+			                            </div>
+			                            
+			                            <div class="form-group">
+			                                <label for="pre-closure-amount">Pre closure Amount</label>
+			                                <input type="text" id="pre-closure-amount" name="preclosureamount" style="background-color: #b8e1b8;font-weight: bold;" value="${loanItem.remainingBalance}" class="input-field" placeholder="Enter yet to receive amount" readonly>
+			                            </div>			                            
+			                        </div>
+			                    </div>
+			                    
+			                    
+			                     <!-- EMI Section -->
+			                    <div class="emi-section">
+			                        <h3>EMI Details</h3>
+			                        <div class="form-container">
+			                            <div class="form-left">
+			                                <!-- EMI 1 to EMI 9 -->
+			                                <div class="form-group">
+			                                    <label for="emi-1">EMI 1</label>
+			                                    <input type="text" id="emi-1" name="emi-1" style="background-color: ${loanItem.emiDetails[0].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[0].emiAmount}" placeholder="Enter EMI 1 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-2">EMI 2</label>
+			                                    <input type="text" id="emi-2" name="emi-2" style="background-color: ${loanItem.emiDetails[1].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[1].emiAmount}" placeholder="Enter EMI 2 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-3">EMI 3</label>
+			                                    <input type="text" id="emi-3" style="background-color: ${loanItem.emiDetails[2].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" name="emi-3" class="input-field" value="${loanItem.emiDetails[2].emiAmount}" placeholder="Enter EMI 3 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-4">EMI 4</label>
+			                                    <input type="text" id="emi-4" name="emi-4" style="background-color: ${loanItem.emiDetails[3].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[3].emiAmount}" placeholder="Enter EMI 4 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-5">EMI 5</label>
+			                                    <input type="text" id="emi-5" name="emi-5" style="background-color: ${loanItem.emiDetails[4].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[4].emiAmount}" placeholder="Enter EMI 5 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-6">EMI 6</label>
+			                                    <input type="text" id="emi-6" name="emi-6" style="background-color: ${loanItem.emiDetails[5].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[5].emiAmount}" placeholder="Enter EMI 6 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-7">EMI 7</label>
+			                                    <input type="text" id="emi-7" name="emi-7" style="background-color: ${loanItem.emiDetails[6].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[6].emiAmount}" placeholder="Enter EMI 7 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-8">EMI 8</label>
+			                                    <input type="text" id="emi-8" name="emi-8" style="background-color: ${loanItem.emiDetails[7].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[7].emiAmount}" placeholder="Enter EMI 8 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-9">EMI 9</label>
+			                                    <input type="text" id="emi-9" name="emi-9" style="background-color: ${loanItem.emiDetails[8].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[8].emiAmount}" placeholder="Enter EMI 9 amount" readonly>
+			                                </div>
+			                            </div>
+			
+			                            <div class="form-right">
+			                                <!-- EMI 10 to EMI 17 -->
+			                                <div class="form-group">
+			                                    <label for="emi-10">EMI 10</label>
+			                                    <input type="text" id="emi-10" name="emi-10" style="background-color: ${loanItem.emiDetails[9].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[9].emiAmount}" placeholder="Enter EMI 10 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-11">EMI 11</label>
+			                                    <input type="text" id="emi-11" name="emi-11" style="background-color: ${loanItem.emiDetails[10].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[10].emiAmount}" placeholder="Enter EMI 11 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-12">EMI 12</label>
+			                                    <input type="text" id="emi-12" name="emi-12" style="background-color: ${loanItem.emiDetails[11].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[11].emiAmount}" placeholder="Enter EMI 12 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-13">EMI 13</label>
+			                                    <input type="text" id="emi-13" name="emi-13" style="background-color: ${loanItem.emiDetails[12].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[12].emiAmount}" placeholder="Enter EMI 13 amount" readonly>
+			                                </div>
+			                                <div class="form-group">
+			                                    <label for="emi-14">EMI 14</label>
+			                                    <input type="text" id="emi-14" name="emi-14" style="background-color: ${loanItem.emiDetails[14].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[13].emiAmount}" placeholder="Enter EMI 14 amount" readonly>
+			                                </div>
+											<div class="form-group">
+											  <label for="emi-15">EMI 15</label>
+											  <input type="text" id="emi-15" name="emi-15" style="background-color: ${loanItem.emiDetails[14].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[14].emiAmount}" placeholder="Enter EMI 15 amount" readonly>
+											</div>
+											<div class="form-group">
+											  <label for="emi-16">EMI 16</label> 
+											  <input type="text" id="emi-16" name="emi-16" style="background-color: ${loanItem.emiDetails[15].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" value="${loanItem.emiDetails[15].emiAmount}" class="input-field" placeholder="Enter EMI 16 amount" readonly>
+											</div>
+											<div class="form-group">
+											  <label for="emi-17">EMI 17</label>
+											  <input type="text" id="emi-17" name="emi-17" style="background-color: ${loanItem.emiDetails[16].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" value="${loanItem.emiDetails[16].emiAmount}"  class="input-field" placeholder="Enter EMI 17 amount" readonly>
+											</div>
+										  </div>
+										</div>
+									  </div>
+									  
+							    </c:when>
+							    
+							    <c:otherwise>
+							        <!-- Finance Source -->
+											<div class="form-group">
+												<label for="finance-source">Primary Member Name</label>
+												<select id="finance-source" name="loanReferenceName" class="input-field" required>
+													<option value="" disabled selected>Primary Member Name</option>
+											        <c:forEach items="${primaryMembers}" var="member">
+											            <option value="${member.no}">${member.memberName}</option>
+											        </c:forEach>
+												</select>
+												<div class="error-message" id="finance-source-error">
+													<i class="fas fa-exclamation-circle"></i>
+													<span>Primary Member is required</span>
+												</div>
+											</div>
+											
+											<!-- Loan Applicant Name -->
+				                            <div class="form-group">
+				                                <label for="applicant-name">Applicant Name</label>
+												 <select id="applicant-name" name="AccountHolderName" class="input-field" required>
+						        					<option value="" disabled selected>Select Applicant</option>
+						   						 </select>	
+												<div class="error-message" id="applicant-name-error">
+													<i class="fas fa-exclamation-circle"></i>
+													<span>Applicant Name is required</span>
+												</div>								
+				                            </div>
+							    </c:otherwise>							    
+							</c:choose>
+	                    <!-- Submit Button -->
+						<div class="button-group">
+							<c:choose>
+							    <c:when test="${loanLoan == false}">
+							        	<button type="button" onclick="validateForm()"><i class="fas fa-hand-holding-usd"></i> Fetch Loan</button>
+							    </c:when>
+							    <c:otherwise>
+							        	<button class="confirm-btn yes" type="button" onclick="validateForm()"><i class="fas fa-hand-holding-usd"></i> Pre closure Loan</button>
+							    </c:otherwise>							    
+							</c:choose>
 						</div>
-
-						
-	     			</div>  
-                    <!-- Submit Button -->
-					<div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Pay</button>
-					</div>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>		
-                </form>
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                   </form>
             </section>
         </div>
     </main>
@@ -1067,13 +1302,6 @@
     
 	 // Check for success message on page load
     document.addEventListener('DOMContentLoaded', function() {
-    	
-    	  const dateInput = document.getElementById('finance-date');
-    	  const options = { timeZone: 'Asia/Kolkata' };
-	        const today = new Date().toLocaleDateString('en-CA', options);
-	        dateInput.value = today;
-	
-    	
 	        <c:if test="${not empty success}">
 	            showSuccessMessage();
 	        </c:if>	  
@@ -1082,71 +1310,34 @@
 	   		 </c:if>	             
     	});
 	 
+    // Convert secondary members to JS array
+	  const secondaryMembers = [
+	      <c:forEach items="${secondaryMembers}" var="secMember" varStatus="loop">
+	          { 
+	              no: "${secMember.referenceMember.no}", 
+	              memberNo: "${secMember.no}",
+	              memberName: "${secMember.memberName}" 
+	          }<c:if test="${not loop.last}">,</c:if>
+	      </c:forEach>
+	  ];
 
-    function calculateTotal() {
-        let total = 0;
-        
-        // Get all input values
-        const loanInputs = document.getElementsByName('loanEMITxt');
-        const primaryInputs = document.getElementsByName('pendingAmountPrimaryTxt');
-        const secondaryInputs = document.getElementsByName('pendingAmountSecondaryTxt');
-
-        // Sum loan inputs
-        Array.from(loanInputs).forEach(input => {
-            total += parseFloat(input.value) || 0;
-        });
-
-        // Sum primary inputs
-        Array.from(primaryInputs).forEach(input => {
-            total += parseFloat(input.value) || 0;
-        });
-
-        // Sum secondary inputs
-        Array.from(secondaryInputs).forEach(input => {
-            total += parseFloat(input.value) || 0;
-        });
-
-        // Update total display
-        document.getElementById('totalAmount').textContent = " \u20B9 "+ total;
-    }
-
-    // Add event listeners to all inputs
-    function addInputListeners() {
-        const allInputs = [
-            ...document.getElementsByName('loanEMITxt'),
-            ...document.getElementsByName('pendingAmountPrimaryTxt'),
-            ...document.getElementsByName('pendingAmountSecondaryTxt')
-        ];
-
-        allInputs.forEach(input => {
-            input.addEventListener('input', calculateTotal);
-        });
-    }
-
-    // Initial calculation and setup
-    document.addEventListener('DOMContentLoaded', function() {
-        calculateTotal();
-        addInputListeners();
-    });
+	  document.getElementById('finance-source').addEventListener('change', function() {
+	        const primaryMemberNo = this.value;
+	        const primaryMemberName = this.options[this.selectedIndex].text;
+	        const applicantSelect = document.getElementById('applicant-name');
+	        
+	        // Clear existing options
+	        applicantSelect.innerHTML = '<option value="" disabled selected>Select Applicant</option><option value="'+primaryMemberNo+'">'+primaryMemberName+'</option>';
+	        
+	        // Filter and populate secondary members
+	        secondaryMembers
+	            .filter(member => member.no === primaryMemberNo)
+	            .forEach(member => {
+	                const option = new Option(member.memberName, member.memberNo);
+	                applicantSelect.add(option);
+	            });
+	    });
 	 
-	 
-	 
-	 
-	 
-	    function formatDate(date) {
-	        var d = new Date(date);
-	        // Format using specific locale and time zone (e.g., 'en-US' for USA and 'Asia/Kolkata' for IST)
-	        var formattedDate = d.toLocaleDateString('en-GB', { timeZone: 'Asia/Kolkata' });
-	        return formattedDate.replace(/\//g, '-');
-	    }
-	
-	    const dateElements = document.getElementsByClassName('formattedStartDate');
-	    for (let i = 0; i < dateElements.length; i++) {
-	        const dateElement = dateElements[i];
-	        const rawDate = dateElement.innerText; // Get the raw date
-	        const formattedDate = formatDate(rawDate); // Format the date
-	        dateElement.innerText = formattedDate; // Set the formatted date back to the element
-	    }
 
         function showErrorMessage() {
             const errorMsg = document.getElementById('redErrorMessage');
@@ -1174,40 +1365,47 @@
 
 // Updated JavaScript
         function validateForm() {
+        	const fields = [
+        	    { id: 'finance-source', errorId: 'finance-source-error' },
+        	    { id: 'applicant-name', errorId: 'applicant-name-error' }
+        	];
+
             let isValid = true;
-            const paymentInputs = [
-                ...document.getElementsByName('loanEMITxt'),
-                ...document.getElementsByName('pendingAmountPrimaryTxt'),
-                ...document.getElementsByName('pendingAmountSecondaryTxt'),
-            ];
-            
-            paymentInputs.forEach(input => {
-                const value = parseFloat(input.value);
-                if (isNaN(value) || value < 0) {
-                    input.classList.add('error');
-                    isValid = false;
+
+            fields.forEach(({ id, errorId }) => {
+                const field = document.getElementById(id);
+                clearError(field, errorId);
+
+                if (field.tagName === 'SELECT') {
+                    if (field.value === "" || field.value === null) {
+                        showError(field, errorId);
+                        isValid = false;
+                    }
                 } else {
-                    input.classList.remove('error');
+                    if (!field.value.trim()) {
+                        showError(field, errorId);
+                        isValid = false;
+                    }
                 }
             });
             if (isValid) {
-            // Submit the form or handle valid data
-                const form = document.getElementById('formpayments');
-			    form.method = 'POST';
-			    form.action = 'payments'; // Your endpoint URL
+            // Submit the form or handle valid data			
+              // showSuccessMessage();
+				//showErrorMessage();
+            	const form = document.getElementById('formloanpreclosure');
+  			    form.method = 'POST';
+  			    form.action = 'loan-preclosure'; // Your endpoint URL
 
-			    // Add CSRF token (required for Spring Security)
-			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
-			    const csrfInput = document.createElement('input');
-			    csrfInput.type = 'hidden';
-			    csrfInput.name = '_csrf';
-			    csrfInput.value = csrfToken;
-			    form.appendChild(csrfInput);
-			    document.body.appendChild(form);
-			    form.submit();		
-            
-               //showSuccessMessage();
-			   //showErrorMessage();
+  			    // Add CSRF token (required for Spring Security)
+  			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+  			    const csrfInput = document.createElement('input');
+  			    csrfInput.type = 'hidden';
+  			    csrfInput.name = '_csrf';
+  			    csrfInput.value = csrfToken;
+  			    form.appendChild(csrfInput);
+  			    document.body.appendChild(form);
+  			    form.submit();		
+				
             }
         }
 
