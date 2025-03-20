@@ -954,7 +954,14 @@
     color: #2c3e50;
     margin-bottom: 15px;
 }
-        
+
+.preclose-btn {
+    background-color: #e74c3c !important;
+}
+
+.preclose-btn:hover {
+    background-color: #c0392b !important;
+}        
     </style>
 </head>
 <body>
@@ -1278,10 +1285,10 @@
 						<div class="button-group">
 							<c:choose>
 							    <c:when test="${loanLoan == false}">
-							        	<button type="button" onclick="validateForm()"><i class="fas fa-hand-holding-usd"></i> Fetch Loan</button>
+							        	<button type="button" onclick="validateForm('FETCH')"><i class="fas fa-hand-holding-usd"></i> Fetch Loan</button>
 							    </c:when>
 							    <c:otherwise>
-							        	<button class="confirm-btn yes" type="button" onclick="validateForm()"><i class="fas fa-hand-holding-usd"></i> Pre closure Loan</button>
+							        	<button type="button" class="preclose-btn" onclick="validateForm('PRECLOSE')"><i class="fas fa-hand-holding-usd"></i> Pre closure Loan</button>
 							    </c:otherwise>							    
 							</c:choose>
 						</div>
@@ -1364,14 +1371,12 @@
         }
 
 // Updated JavaScript
-        function validateForm() {
+       function validateForm(actionType) {
         	const fields = [
         	    { id: 'finance-source', errorId: 'finance-source-error' },
         	    { id: 'applicant-name', errorId: 'applicant-name-error' }
         	];
-
             let isValid = true;
-
             fields.forEach(({ id, errorId }) => {
                 const field = document.getElementById(id);
                 clearError(field, errorId);
@@ -1388,14 +1393,18 @@
                     }
                 }
             });
+            
             if (isValid) {
             // Submit the form or handle valid data			
               // showSuccessMessage();
 				//showErrorMessage();
-            	const form = document.getElementById('formloanpreclosure');
-  			    form.method = 'POST';
-  			    form.action = 'loan-preclosure'; // Your endpoint URL
-
+				const form = document.getElementById('formloanpreclosure');
+				if(actionType === "FETCH") {
+		            form.action = 'loan-preclosure';
+		        } else {
+		            form.action = 'loan-submit-preclosure';
+		        }
+            	form.method = 'POST';
   			    // Add CSRF token (required for Spring Security)
   			    const csrfToken = document.querySelector('input[name="_csrf"]').value;
   			    const csrfInput = document.createElement('input');

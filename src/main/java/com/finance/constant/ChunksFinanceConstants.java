@@ -146,6 +146,10 @@ public class ChunksFinanceConstants {
 	public static final String ALL_ACTIVE_FINANCE = "allActiveFinance";
 	
 	public static final String LOAN_LOAN = "loanLoan";
+	
+	public static final String LOAN_NO = "loanNo";
+	
+	public static final String ACCOUNT_HOLDER_NAME = "AccountHolderName";
 
 	public static final String PRIMARY_MEMBERS = "primaryMembers";
 	
@@ -178,6 +182,8 @@ public class ChunksFinanceConstants {
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_SAMENAME_TYPE_MESSAGE = "member.create.newuser.error.samename.type.message";
 	
 	public static final String ENROLMENT_CREATE_NEWUSER_ERROR_EXISTING_USER_MESSAGE = "enrolment.create.newuser.error.existing.user.message";
+	
+	public static final String NO_LOAN_FOUND_MESSAGE = "no.loan.found.message";
 	
 	public static final String FINANCE_CREATE_REVENUE_MESSAGE = "finance.create.revenue.message";
 	

@@ -21,7 +21,8 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 @Controller
 public class LoanPreclosureController {
-	private static final String ACCOUNT_HOLDER_NAME = "AccountHolderName";
+	
+	
 	@Autowired
 	private LoanPreclosureService loanPreclosureService;
 
@@ -35,13 +36,30 @@ public class LoanPreclosureController {
 	
 	@PostMapping(path = {"/loan-preclosure"})
 	public String handlePreclosureloadLoan(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request, Model model) {
-		
-		String loanPersonNo = request.getParameter(ACCOUNT_HOLDER_NAME);
+		boolean status = false;
+		String loanPersonNo = request.getParameter(ChunksFinanceConstants.ACCOUNT_HOLDER_NAME);
 		if(null != loanPersonNo) {
-			loanPreclosureService.populateLoanData(loanPersonNo,model);
+			status = loanPreclosureService.populateLoanData(loanPersonNo,model);
 		}
 		loanPreclosureService.populatePreClosureData(currentUserModel, model);
-		model.addAttribute(ChunksFinanceConstants.LOAN_LOAN, Boolean.TRUE);
+		if(status) {
+			model.addAttribute(ChunksFinanceConstants.LOAN_LOAN, Boolean.TRUE);
+		}else {
+			model.addAttribute(ChunksFinanceConstants.LOAN_LOAN, Boolean.FALSE);
+		}
+		
 		return "loanPreclosure";
 	}
+	
+	@PostMapping(path = {"/loan-submit-preclosure"})
+	public String handleCreatePreclosureloadLoan(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request, Model model) {
+		String loanNo = request.getParameter(ChunksFinanceConstants.LOAN_NO);
+		if(null != loanNo) {
+			loanPreclosureService.requestPreclosure(loanNo);
+		}
+		loanPreclosureService.populatePreClosureData(currentUserModel, model);
+		model.addAttribute(ChunksFinanceConstants.LOAN_LOAN, Boolean.FALSE);
+		return "loanPreclosure";
+	}
+	
 }
