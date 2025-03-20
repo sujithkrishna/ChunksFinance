@@ -852,7 +852,7 @@ input[type="date"]:focus {
 						<div class="table-cell" style="text-align: center;">Authorization</div>
 					</div>
 					<c:choose>
-						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval and empty currentPriforApproval}">
+						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval and empty currentPriforApproval and empty currentPreclosureApproval}">
 							<!-- Show empty state message -->
 							<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
 								<h3>You don't have any items to approve.</h3>
@@ -974,7 +974,7 @@ input[type="date"]:focus {
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(211, 211, 230, 0.9), rgba(230, 230, 250, 0.9))">
 								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
 									<div class="table-cell">${LoanEMIApprovalItem.loan.loanReferenceName.memberName} Loan # ${LoanEMIApprovalItem.loan.loanNo} </div>
-									<div class="table-cell">NEW EMI ${LoanEMIApprovalItem.loan.loanApplicantName.memberName} EMI No# ${LoanEMIApprovalItem.emiNumber}</div>
+									<div class="table-cell">LOAN EMI ${LoanEMIApprovalItem.loan.loanApplicantName.memberName} EMI No# ${LoanEMIApprovalItem.emiNumber}</div>
 									<div class="table-cell">&#8377; ${LoanEMIApprovalItem.emiAmount} </div>
 									<div class="table-cell"><span class="formattedStartDateandTime">${LoanEMIApprovalItem.paymentDateAndTime}</span></div>
 									<div class="table-cell">
@@ -1015,6 +1015,27 @@ input[type="date"]:focus {
 							</c:forEach>
 						</c:if>
 						
+						<c:if test="${not empty currentPreclosureApproval}">
+							<c:forEach items="${currentPreclosureApproval}" var="LoanPreclosureApprovalItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(0, 209, 129, 0.9), rgba(0, 250, 154, 0.9))">
+								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
+									<div class="table-cell">${LoanPreclosureApprovalItem.loanReferenceName.memberName} Loan # ${LoanPreclosureApprovalItem.loanNo}</div>
+									<div class="table-cell">LOAN PRECLOSURE ${LoanPreclosureApprovalItem.loanApplicantName.memberName} Loan No# ${LoanPreclosureApprovalItem.loanNo}</div>
+									<div class="table-cell">&#8377;${LoanPreclosureApprovalItem.remainingBalance}</div>
+									<div class="table-cell"><span class="formattedStartDate">${LoanPreclosureApprovalItem.loanDate}</span></div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${LoanPreclosureApprovalItem.loanNo}','${LoanPreclosureApprovalItem.loanNo}','LOAN','APPROVED')" aria-label="Approve request">
+												<i class="fas fa-check"></i> Approve
+											</button>
+											<button onclick="validateForm('${LoanPreclosureApprovalItem.loanNo}','${LoanPreclosureApprovalItem.loanNo}','LOAN','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<i class="fas fa-times"></i> Reject
+											</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
 						</c:otherwise>
 					</c:choose>
 					

@@ -129,6 +129,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String CURRENT_PRIMARY_APPROVAL = "currentPriforApproval";
 	
+	public static final String CURRENT_PRECLOSURE_APPROVAL = "currentPreclosureApproval";
+	
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	
 	public static final String IN_PROGRESS = "IN_PROGRESS";
@@ -182,6 +184,10 @@ public class ChunksFinanceConstants {
 	public static final String MEMBER_CREATE_NEWUSER_ERROR_SAMENAME_TYPE_MESSAGE = "member.create.newuser.error.samename.type.message";
 	
 	public static final String ENROLMENT_CREATE_NEWUSER_ERROR_EXISTING_USER_MESSAGE = "enrolment.create.newuser.error.existing.user.message";
+	
+	public static final String  LOAN_PRECLOSURE_REQUEST_MESSAGE = "loan.preclosure.request.message";
+	
+	public static final String  LOAN_PRECLOSURE_REQUEST_ALREADY_UNDERPROCESS_MESSAGE ="loan.preclosure.already.processing.message";
 	
 	public static final String NO_LOAN_FOUND_MESSAGE = "no.loan.found.message";
 	

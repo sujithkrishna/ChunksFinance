@@ -203,9 +203,30 @@ public class ApprovalsService {
 	        }   
 		 // Fetching All paid Weekly Collection/Primary Accounts for approval process. END
 	        
+	      // Fetching All Pre closure request for approval process. START
+	        
+	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	        	 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+	        	 String approvalProcessStatus = null;
+	        		 if(null != settingModelData) {
+	        			 approvalProcessStatus = settingModelData.getSettingsValue();
+	        		 }
+	        		if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+	        			List<LoanModel> allPreclosureLoan = loanService.getAllPreclosureLoanForAdminSequential();
+	        	        model.addAttribute(ChunksFinanceConstants.CURRENT_PRECLOSURE_APPROVAL, allPreclosureLoan);	      
+	        		}else {
+		        		List<LoanModel> allPreclosureLoan = loanService.getAllPreclosureLoanForAdminParallel();
+	        	        model.addAttribute(ChunksFinanceConstants.CURRENT_PRECLOSURE_APPROVAL, allPreclosureLoan);	        			
+	        		}
+	        	}else {
+	        		List<LoanModel> allPreclosureLoan = loanService.getAllPreclosureLoanForFinOwner(currentUser);
+        	        model.addAttribute(ChunksFinanceConstants.CURRENT_PRECLOSURE_APPROVAL, allPreclosureLoan);	        			
+	        	}   
 	        
 	        
-		 
+	        
+	        
+	        // Fetching All Pre closure request for approval process. END
 		 
 		 
 		 

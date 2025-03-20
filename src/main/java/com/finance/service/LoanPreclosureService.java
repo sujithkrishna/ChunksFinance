@@ -1,5 +1,7 @@
 package com.finance.service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,8 +65,13 @@ public class LoanPreclosureService {
 			if(null != byMemberName && byMemberName.isPresent()) {
 				List<LoanModel> byLoanApplicantName = loanRepository.findByLoanApplicantName(byMemberName.get());
 				if(null != byLoanApplicantName && byLoanApplicantName.size() >=1) {
-					model.addAttribute(ChunksFinanceConstants.LOAN_ITEM,byLoanApplicantName.get(0));
-					return true;
+					if(LoanModel.CurrentStatus.PRECLOSURE_REQUEST.equals(byLoanApplicantName.get(0).getCurrentStatus())) {
+						model.addAttribute(ChunksFinanceConstants.ERROR, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_PRECLOSURE_REQUEST_ALREADY_UNDERPROCESS_MESSAGE,byLoanApplicantName.get(0).getLoanApplicantName().getMemberName()) );
+						return false;
+					}else {
+						model.addAttribute(ChunksFinanceConstants.LOAN_ITEM,byLoanApplicantName.get(0));
+						return true;
+					}
 				}else {
 					System.out.println("ELSE CASE");
 					StringBuffer errorMessage = new StringBuffer(propertyService.getFormattedProperty(ChunksFinanceConstants.NO_LOAN_FOUND_MESSAGE));
@@ -77,10 +84,24 @@ public class LoanPreclosureService {
 		return false;
 	}
 	
-	public void requestPreclosure(String loanNo) {
+	public void requestPreclosure(String loanNo,Model model) {
 		if(null != loanNo) {
 			//Preclosure the loan
-			System.out.println("LOAN NO------------"+loanNo);
+			Optional<LoanModel> loanItem = loanRepository.findById(Integer.parseInt(loanNo));
+			if(null != loanItem && loanItem.isPresent()) {
+				if(loanItem.get().getCurrentStatus().equals(LoanModel.CurrentStatus.PRECLOSURE_REQUEST)) {
+					model.addAttribute(ChunksFinanceConstants.ERROR, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_PRECLOSURE_REQUEST_ALREADY_UNDERPROCESS_MESSAGE,loanItem.get().getLoanApplicantName().getMemberName()) );
+				}else {
+					loanItem.get().setCurrentStatus(LoanModel.CurrentStatus.PRECLOSURE_REQUEST);
+					loanItem.get().setLoanPreclosureRequestDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDate());
+					loanItem.get().setFirstApprovalTime(null);
+					loanItem.get().setSecondApprovalTime(null);
+					loanItem.get().setSecondapproverName(null);
+					loanRepository.save(loanItem.get());
+					model.addAttribute(ChunksFinanceConstants.SUCCESS, propertyService.getFormattedProperty(ChunksFinanceConstants.LOAN_PRECLOSURE_REQUEST_MESSAGE,loanItem.get().getLoanApplicantName().getMemberName()) );
+				}
+				
+			}
 		}
 		
 	}

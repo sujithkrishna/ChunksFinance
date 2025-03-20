@@ -20,17 +20,17 @@ import com.finance.model.MemberModel;
 @Repository
 public interface LoanEmiDetailRepository extends JpaRepository<LoanEmiDetail, Integer> {
 	
-	@Query("SELECT e FROM LoanEmiDetail e WHERE e.loan.loanReferenceName.no = :loanReferenceNo AND e.currentStatus IN ('INPROGRESS', 'PAYMENT_INITIATED ', 'PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL', 'PAYMENT_SECOND_APPROVAL') AND e.emiDate = :emiDate AND e.emiAmount > e.paidAmount ORDER BY e.loan.financeType ,e.emiAmount ASC")
+	@Query("SELECT e FROM LoanEmiDetail e WHERE e.loan.loanReferenceName.no = :loanReferenceNo AND e.currentStatus IN ('INPROGRESS', 'PAYMENT_INITIATED ', 'PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL', 'PAYMENT_SECOND_APPROVAL') AND e.emiDate = :emiDate AND e.emiAmount > e.paidAmount AND e.loan.currentStatus NOT IN ('PRECLOSURE_REQUEST', 'PRECLOSURE_INITIAL_APPROVAL', 'PRECLOSURE_CLOSED') ORDER BY e.loan.financeType ,e.emiAmount ASC")
     List<LoanEmiDetail> findEmiDetailsByLoanReferenceNameAndStatusAndEmiDate(@Param("loanReferenceNo") Integer loanReferenceNo, @Param("emiDate") LocalDate emiDate);
 	
 	
-	@Query("SELECT l FROM LoanEmiDetail l WHERE l.firstapproverName = :firstApprover AND l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL') AND l.emiAmount = l.paidAmount AND l.firstApprovalTime IS NULL ")
+	@Query("SELECT l FROM LoanEmiDetail l WHERE l.firstapproverName = :firstApprover AND l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL') AND l.emiAmount = l.paidAmount AND l.firstApprovalTime IS NULL AND l.loan.currentStatus NOT IN ('PRECLOSURE_REQUEST', 'PRECLOSURE_INITIAL_APPROVAL', 'PRECLOSURE_CLOSED')")
     List<LoanEmiDetail> findPaidLoanEmiDetails(@Param("firstApprover") MemberModel firstApprover);
 	
 	
-	@Query("SELECT l FROM LoanEmiDetail l WHERE l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL')  AND l.emiAmount = l.paidAmount AND l.firstApprovalTime IS NOT NULL AND l.secondApprovalTime IS NULL")
+	@Query("SELECT l FROM LoanEmiDetail l WHERE l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL')  AND l.emiAmount = l.paidAmount AND l.firstApprovalTime IS NOT NULL AND l.secondApprovalTime IS NULL AND l.loan.currentStatus NOT IN ('PRECLOSURE_REQUEST', 'PRECLOSURE_INITIAL_APPROVAL', 'PRECLOSURE_CLOSED')")
     List<LoanEmiDetail> findPaidLoanEmiDetailsForAdminSequential();
 	
-	@Query("SELECT l FROM LoanEmiDetail l WHERE l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL')  AND l.emiAmount = l.paidAmount AND l.secondApprovalTime IS NULL ")
+	@Query("SELECT l FROM LoanEmiDetail l WHERE l.currentStatus IN ('PAYMENT_SUBMITTED', 'PAYMENT_INITIAL_APPROVAL')  AND l.emiAmount = l.paidAmount AND l.secondApprovalTime IS NULL AND l.loan.currentStatus NOT IN ('PRECLOSURE_REQUEST', 'PRECLOSURE_INITIAL_APPROVAL', 'PRECLOSURE_CLOSED')")
     List<LoanEmiDetail> findPaidLoanEmiDetailsForAdminParallel();
 }

@@ -163,6 +163,20 @@ public class LoanService {
 	        return loanRepository.findAll();
 	 }
 	
+	 public List<LoanModel> getAllPreclosureLoanForAdminParallel() {
+		 List<LoanModel.CurrentStatus> statusList = List.of(LoanModel.CurrentStatus.PRECLOSURE_REQUEST);
+	     return loanRepository.findLoansByPreclosureAdminParallel(statusList);
+	 }
+	
+	 public List<LoanModel> getAllPreclosureLoanForAdminSequential() {
+		 List<LoanModel.CurrentStatus> statusList = List.of(LoanModel.CurrentStatus.PRECLOSURE_REQUEST);
+	     return loanRepository.findLoansByPreclosureAdminSequential(statusList);
+	 }
+	 
+	 public List<LoanModel> getAllPreclosureLoanForFinOwner(MemberModel currentUser) {
+		 List<LoanModel.CurrentStatus> statusList = List.of(LoanModel.CurrentStatus.PRECLOSURE_REQUEST);
+	     return loanRepository.findLoansByPreclosure(statusList,currentUser.getNo());
+	 }
 	 
 	 public List<LoanModel> getInProgressLoans(MemberModel loanReference, MemberModel loanApplicant) {
 	        return loanRepository.findInProgressLoans(loanReference, loanApplicant);

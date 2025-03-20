@@ -36,9 +36,9 @@ public class LoanModel {
         REJECTED,   
         INPROGRESS,    
         CLOSED,
-        PRE_REQUEST,
-        PRE_REQUEST_INITIAL_APPROVAL,
-        PRE_CLOSED,
+        PRECLOSURE_REQUEST,
+        PRECLOSURE_INITIAL_APPROVAL,
+        PRECLOSURE_CLOSED,
     }	
    
     @Id
@@ -71,6 +71,9 @@ public class LoanModel {
     
     @Column(name = "loan_preclosure_date")
     private LocalDate loanPreclosureDate;
+    
+    @Column(name = "loan_preclosure_request_date")
+    private LocalDate loanPreclosureRequestDate;    
 
     // Disbursement section
     @Column(name = "disbursement_amount", precision = 19, scale = 2)

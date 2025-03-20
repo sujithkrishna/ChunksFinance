@@ -55,7 +55,7 @@ public class LoanPreclosureController {
 	public String handleCreatePreclosureloadLoan(@AuthenticationPrincipal MemberDetails currentUserModel,HttpServletRequest request, Model model) {
 		String loanNo = request.getParameter(ChunksFinanceConstants.LOAN_NO);
 		if(null != loanNo) {
-			loanPreclosureService.requestPreclosure(loanNo);
+			loanPreclosureService.requestPreclosure(loanNo,model);
 		}
 		loanPreclosureService.populatePreClosureData(currentUserModel, model);
 		model.addAttribute(ChunksFinanceConstants.LOAN_LOAN, Boolean.FALSE);
