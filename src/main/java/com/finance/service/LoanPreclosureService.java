@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.config.ChunksFinancePropertyService;
@@ -84,6 +87,7 @@ public class LoanPreclosureService {
 		return false;
 	}
 	
+	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public void requestPreclosure(String loanNo,Model model) {
 		if(null != loanNo) {
 			//Preclosure the loan

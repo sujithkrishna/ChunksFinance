@@ -746,7 +746,85 @@ input[type="date"]:focus {
     padding: 8px 0;
     min-width: 0; /* Crucial for flex item shrinking */
 }
-		
+	
+/* Bulk Approval Button Styles */
+.button-group-bulk {
+    display: flex;
+    justify-content: flex-start; /* Align to the left */
+    margin: 15px 0 10px 600px; /* Top Right Bottom Left - Adjust left margin as needed */
+}
+
+.button-group-bulk button {
+    background-color: #3498db; /* Blue color */
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.button-group-bulk button:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.button-group-bulk button i {
+    font-size: 14px;
+}
+
+/* Checkbox Styles */
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px;
+}
+
+.checkbox-checkmark {
+    position: absolute;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkbox-option input:checked ~ .checkbox-checkmark {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+}
+
+.checkbox-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-option input:checked ~ .checkbox-checkmark:after {
+    display: block;
+}		
 </style>
 </head>
 <body>
@@ -856,7 +934,7 @@ input[type="date"]:focus {
 						<div class="table-cell" style="text-align: center;">Authorization</div>
 					</div>
 					<c:choose>
-						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval and empty currentPriforApproval and empty currentPreclosureApproval}">
+						<c:when test="${empty nonApprovedRevenueList and empty nonApprovedExpensesList and empty nonApprovedChitsList and empty nonApprovedChitsEMI and empty currentLoanWaitforApproval and empty currentEMIWaitforApproval and empty currentPriforApproval and empty currentPreclosureApproval and empty currentfinanceTransferApproval and empty currentSecondaryforApproval}">
 							<!-- Show empty state message -->
 							<div class="table-row" style="background: linear-gradient(135deg, rgba(194, 163, 69, 0.9), rgba(245, 206, 88, 0.9))">
 								<h3>You don't have any items to approve.</h3>
@@ -1019,6 +1097,29 @@ input[type="date"]:focus {
 							</c:forEach>
 						</c:if>
 						
+						<c:if test="${not empty currentSecondaryforApproval}">
+							<c:forEach items="${currentSecondaryforApproval}" var="secondaryAccountItemApprovalItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(163, 204, 200, 0.9), rgba(178, 223, 219, 0.9))">
+								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
+									<div class="table-cell"><label class="checkbox-option"><input type="checkbox" name="secondaryAccountApprovals" value="${secondaryAccountItemApprovalItem.id}"><span class="checkbox-checkmark"></span></label> ${secondaryAccountItemApprovalItem.accountHolderName.memberName}</div>
+									<div class="table-cell">PAYMENT for ${secondaryAccountItemApprovalItem.financeType.financeName} on &nbsp;<span class="formattedStartDate">${secondaryAccountItemApprovalItem.actualPaymentDate}</span></div>
+									<div class="table-cell">&#8377; ${secondaryAccountItemApprovalItem.paidAmount}</div>
+									<div class="table-cell"><span class="formattedStartDateandTime">${secondaryAccountItemApprovalItem.paidDate}</span></div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${secondaryAccountItemApprovalItem.id}','1','WEEKLYSECONDARY','APPROVED')" aria-label="Approve request">
+												<i class="fas fa-check"></i> Approve
+											</button>
+											<button onclick="validateForm('${secondaryAccountItemApprovalItem.id}','1','WEEKLYSECONDARY','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<i class="fas fa-times"></i> Reject
+											</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+						
+						
 						<c:if test="${not empty currentPreclosureApproval}">
 							<c:forEach items="${currentPreclosureApproval}" var="LoanPreclosureApprovalItem">
 								<div class="table-row" style="background: linear-gradient(135deg, rgba(0, 209, 129, 0.9), rgba(0, 250, 154, 0.9))">
@@ -1029,10 +1130,10 @@ input[type="date"]:focus {
 									<div class="table-cell"><span class="formattedStartDate">${LoanPreclosureApprovalItem.loanDate}</span></div>
 									<div class="table-cell">
 										<div class="button-group-approved">
-											<button onclick="validateForm('${LoanPreclosureApprovalItem.loanNo}','${LoanPreclosureApprovalItem.loanNo}','LOAN','APPROVED')" aria-label="Approve request">
+											<button onclick="validateForm('${LoanPreclosureApprovalItem.loanNo}','${LoanPreclosureApprovalItem.loanNo}','LOANPRE','APPROVED')" aria-label="Approve request">
 												<i class="fas fa-check"></i> Approve
 											</button>
-											<button onclick="validateForm('${LoanPreclosureApprovalItem.loanNo}','${LoanPreclosureApprovalItem.loanNo}','LOAN','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+											<button onclick="validateForm('${LoanPreclosureApprovalItem.loanNo}','${LoanPreclosureApprovalItem.loanNo}','LOANPRE','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
 												<i class="fas fa-times"></i> Reject
 											</button>
 										</div>
@@ -1040,6 +1141,37 @@ input[type="date"]:focus {
 								</div>
 							</c:forEach>
 						</c:if>
+						
+						<c:if test="${not empty currentfinanceTransferApproval}">
+							<c:forEach items="${currentfinanceTransferApproval}" var="finTransferItem">
+								<div class="table-row" style="background: linear-gradient(135deg, rgba(57, 114, 189, 0.9), rgba(71, 143, 236, 0.9))">
+								<!-- <div class="table-row" style="background: linear-gradient(135deg, rgba(7, 89, 156, 0.9), rgba(7, 96, 168, 0.9))">   Dark Blue -->
+									<div class="table-cell">${finTransferItem.sourceFinanceType.financeOwner.memberName}</div>
+									<div class="table-cell">AMOUNT TRANSFER FROM ${finTransferItem.sourceFinanceType.financeName} to ${finTransferItem.destinationFinanceType.financeName}</div>
+									<div class="table-cell">&#8377;${finTransferItem.financeAmount}</div>
+									<div class="table-cell"><span class="formattedStartDate">${finTransferItem.financeTransferDate}</span></div>
+									<div class="table-cell">
+										<div class="button-group-approved">
+											<button onclick="validateForm('${finTransferItem.id}','${finTransferItem.id}','FINTRANSFER','APPROVED')" aria-label="Approve request">
+												<i class="fas fa-check"></i> Approve
+											</button>
+											<button onclick="validateForm('${finTransferItem.id}','${finTransferItem.id}','FINTRANSFER','REJECTED')" style="background-color: #e74c3c;" aria-label="Reject request">
+												<i class="fas fa-times"></i> Reject
+											</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:if>
+						
+						<c:if test="${not empty currentSecondaryforApproval}">
+							<div class="button-group-bulk">
+		                        <button type="button" onclick="validateForm()"><i class="fas fa-file-upload"></i> Bulk Approval</button>
+							</div>
+						</c:if>
+						
+						
+						
 						</c:otherwise>
 					</c:choose>
 					

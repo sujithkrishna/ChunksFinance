@@ -133,7 +133,11 @@ public class ChunksFinanceConstants {
 	
 	public static final String CURRENT_PRIMARY_APPROVAL = "currentPriforApproval";
 	
+	public static final String CURRENT_SECONDARY_APPROVAL = "currentSecondaryforApproval";
+	
 	public static final String CURRENT_PRECLOSURE_APPROVAL = "currentPreclosureApproval";
+	
+	public static final String CURRENT_FINANCE_TRANSFER_APPROVAL = "currentfinanceTransferApproval";
 	
 	public static final String CURRENT_USER_NAME = "currentUserName";
 	

@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
@@ -48,6 +51,7 @@ public class EnrolmentService {
 		model.addAttribute(ChunksFinanceConstants.SECONDARY_MEMBERS,secondaryMembers);
 	}
 
+	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean createEnrolment(AccountModel accountModel) {
 		Integer currentAccountMaxId = accountRepository.findMaxAccountNo();
 		++currentAccountMaxId;

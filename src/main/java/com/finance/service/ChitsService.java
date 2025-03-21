@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.ChitsEmiDetail;
@@ -47,7 +50,7 @@ public class ChitsService {
 	public ChitsModel getChitByNo(Integer chitsNo) {
         return chitsRepository.findByChitsNo(chitsNo);
     }
-
+	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean createChits(ChitsModel chitsModel, HttpServletRequest request) {
 
 		Integer currentChitsNumber = getMaxChitsNumber();

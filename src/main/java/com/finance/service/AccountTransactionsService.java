@@ -43,4 +43,17 @@ public class AccountTransactionsService {
     public List<AccountTransactionsModel> getPendingTransactionsForPrimaryAccountParallel(FinanceModel financeType, LocalDate paymentDate) {
         return accountTransactionsRepository.findPendingTransactionsForPrimaryAccountAdminParallel(financeType, paymentDate);
     }
+    
+    
+    public List<AccountTransactionsModel> getPendingTransactionsForSecondayAccount(FinanceModel financeType, LocalDate paymentDate) {
+        return accountTransactionsRepository.findPendingTransactionsForSecondayAccount(financeType, paymentDate);
+    }
+    
+    public List<AccountTransactionsModel> getPendingTransactionsForSecondayAccountSequential(FinanceModel financeType, LocalDate paymentDate) {
+        return accountTransactionsRepository.findPendingTransactionsForSecondayAccountAdminSequential(financeType, paymentDate);
+    }
+    
+    public List<AccountTransactionsModel> getPendingTransactionsForSecondayAccountParallel(FinanceModel financeType, LocalDate paymentDate) {
+        return accountTransactionsRepository.findPendingTransactionsForSecondayAccountAdminParallel(financeType, paymentDate);
+    }
 }

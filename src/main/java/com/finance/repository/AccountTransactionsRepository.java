@@ -40,4 +40,15 @@ public interface AccountTransactionsRepository extends JpaRepository<AccountTran
 	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate AND a.totalAmount = a.paidAmount AND a.secondApprovalTime IS NULL")
 	List<AccountTransactionsModel> findPendingTransactionsForPrimaryAccountAdminParallel(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
 	
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate  AND a.firstApprovalTime IS NULL")
+	List<AccountTransactionsModel> findPendingTransactionsForSecondayAccount(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
+	
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate  AND a.firstApprovalTime IS NOT NULL AND a.secondApprovalTime IS NULL")
+	List<AccountTransactionsModel> findPendingTransactionsForSecondayAccountAdminSequential(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
+	
+	@Query("SELECT a FROM AccountTransactionsModel a WHERE a.financeType = :financeType AND a.actualPaymentDate = :actualPaymentDate  AND a.secondApprovalTime IS NULL")
+	List<AccountTransactionsModel> findPendingTransactionsForSecondayAccountAdminParallel(@Param("financeType") FinanceModel financeType,@Param("actualPaymentDate") LocalDate actualPaymentDate);
+	
 }

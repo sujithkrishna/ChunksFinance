@@ -4,10 +4,14 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ import com.finance.model.ChitsEmiDetail;
 import com.finance.model.ChitsModel;
 import com.finance.model.ExpensesModel;
 import com.finance.model.FinanceModel;
+import com.finance.model.FinanceTransferModel;
 import com.finance.model.LoanEmiDetail;
 import com.finance.model.LoanModel;
 import com.finance.model.LoanModel.CurrentStatus;
@@ -99,6 +104,9 @@ public class ApprovalsService {
 	
 	@Autowired
 	private AccountTransactionsRepository accountTransactionsRepository;
+	
+	@Autowired
+	private FinanceTransferService financeTransferService;
 	
 	public void displayApprovalList(Model model, LocalDate givenDate,MemberModel currentUser) {
 		
@@ -203,6 +211,77 @@ public class ApprovalsService {
 	        }   
 		 // Fetching All paid Weekly Collection/Primary Accounts for approval process. END
 	        
+	        String secondaryApprovalCutDay = settingsService.getSettingByName(ChunksFinanceConstants.SECONDARY_APPROVAL_CUTOFF_DAY).getSettingsValue();
+			String secondaryApprovalCutTime = settingsService.getSettingByName(ChunksFinanceConstants.SECONDARY_APPROVAL_CUTOFF_TIME).getSettingsValue();
+			
+	        LocalDate todaywithZone = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDate();
+	        LocalDateTime localDateTimeIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();
+			
+	        DayOfWeek targetDay = DayOfWeek.valueOf(secondaryApprovalCutDay.toUpperCase(Locale.ROOT));
+	        LocalTime cutOffTime = LocalTime.parse(secondaryApprovalCutTime, DateTimeFormatter.ofPattern(ChunksFinanceConstants.HH_MM));
+	        LocalDate nextTargetDate = todaywithZone.with(TemporalAdjusters.next(targetDay));
+	        LocalDateTime secondaryApprovalCutoffDateTime = LocalDateTime.of(nextTargetDate, cutOffTime);
+	        LocalDateTime endOfSunday = LocalDateTime.of(nextTargetDate, LocalTime.of(23, 59));
+	        System.out.println("-----localDateTimeIST----"+localDateTimeIST);
+	        System.out.println("-----secondaryApprovalCutoffDateTime----"+secondaryApprovalCutoffDateTime);
+	        System.out.println("-----endOfSunday----"+endOfSunday);
+	        boolean timeStatustoDisplay = false;
+	        if (localDateTimeIST.isAfter(secondaryApprovalCutoffDateTime) && localDateTimeIST.isBefore(endOfSunday)) {
+	        	timeStatustoDisplay = true;
+	        } else {
+	        	timeStatustoDisplay = false;
+	        }
+	        
+	        // Bypassing here for Testing Remove below line after validation now.
+	        timeStatustoDisplay = true;
+	        
+	       
+	     // Fetching All paid Secondary for approval process. START
+	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+		       	 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+		       	 String approvalProcessStatus = null;
+		       	 if(null != settingModelData) {
+		       		 approvalProcessStatus = settingModelData.getSettingsValue();
+		       	 }
+		       	if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+		       		 if(timeStatustoDisplay) {	
+		       			 List<AccountTransactionsModel> pendingList = new ArrayList<AccountTransactionsModel>(); 
+			    		 List<FinanceModel> activeFinancesSecondary = financeRepository.findActiveSecondaryFinances();
+			    		 for (FinanceModel finItem : activeFinancesSecondary) {
+			    			   List<AccountTransactionsModel> pendingTransactionsForSecondaryAccount = accountTransactionsService.getPendingTransactionsForSecondayAccountSequential(finItem,upcomingSunday);
+			    			   pendingList.addAll(pendingTransactionsForSecondaryAccount);
+			    		 }
+		       			 model.addAttribute(ChunksFinanceConstants.CURRENT_SECONDARY_APPROVAL, pendingList);
+		       		 }
+		       	}else {
+		       		if(timeStatustoDisplay) {
+	       			 List<AccountTransactionsModel> pendingList = new ArrayList<AccountTransactionsModel>(); 
+		    		 List<FinanceModel> activeFinancesSecondary = financeRepository.findActiveSecondaryFinances();
+		    		 for (FinanceModel finItem : activeFinancesSecondary) {
+		    			   List<AccountTransactionsModel> pendingTransactionsForSecondaryAccount = accountTransactionsService.getPendingTransactionsForSecondayAccountParallel(finItem,upcomingSunday);
+		    			   pendingList.addAll(pendingTransactionsForSecondaryAccount);
+		    		 }
+		       		 model.addAttribute(ChunksFinanceConstants.CURRENT_SECONDARY_APPROVAL, pendingList);	 
+		       		} 
+		       	}
+	       }else {
+	    	   if(timeStatustoDisplay) {
+	    		   List<AccountTransactionsModel> pendingList = new ArrayList<AccountTransactionsModel>(); 
+	    		   List<FinanceModel> activeFinancesWithOwner = financeRepository.findActiveFinancesWithOwner(currentUser);
+	    		   for (FinanceModel finItem : activeFinancesWithOwner) {
+	    			   List<AccountTransactionsModel> pendingTransactionsForSecondaryAccount = accountTransactionsService.getPendingTransactionsForSecondayAccount(finItem,upcomingSunday);
+	    			   pendingList.addAll(pendingTransactionsForSecondaryAccount);
+	    		   	}
+	    		   model.addAttribute(ChunksFinanceConstants.CURRENT_SECONDARY_APPROVAL, pendingList);
+	    	   }   
+	       }   
+	     // Fetching All paid Secondary Accounts for approval process. END    
+	        
+	        
+	        
+	        
+	        
+	        
 	      // Fetching All Pre closure request for approval process. START
 	        
 	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
@@ -222,13 +301,27 @@ public class ApprovalsService {
 	        		List<LoanModel> allPreclosureLoan = loanService.getAllPreclosureLoanForFinOwner(currentUser);
         	        model.addAttribute(ChunksFinanceConstants.CURRENT_PRECLOSURE_APPROVAL, allPreclosureLoan);	        			
 	        	}   
-	        
-	        
-	        
-	        
 	        // Fetching All Pre closure request for approval process. END
 		 
-		 
+	        // Fetching All Inter transfer Fund request for approval process. START
+	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+	        	 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
+	        	 String approvalProcessStatus = null;
+	        		 if(null != settingModelData) {
+	        			 approvalProcessStatus = settingModelData.getSettingsValue();
+	        		 }
+	        		if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
+	        			List<FinanceTransferModel> fetchAllFinanceTransfersForFinanceOwner = financeTransferService.fetchAllFinanceTransfersForAdmin(currentUser);
+	        	        model.addAttribute(ChunksFinanceConstants.CURRENT_FINANCE_TRANSFER_APPROVAL, fetchAllFinanceTransfersForFinanceOwner);	      
+	        		}else {
+	        			List<FinanceTransferModel> fetchAllFinanceTransfersForFinanceOwner = financeTransferService.fetchAllFinanceTransfersForAdmin(currentUser);
+	        	        model.addAttribute(ChunksFinanceConstants.CURRENT_FINANCE_TRANSFER_APPROVAL, fetchAllFinanceTransfersForFinanceOwner);	        			
+	        		}
+	        	}else {
+	        		List<FinanceTransferModel> fetchAllFinanceTransfersForFinanceOwner = financeTransferService.fetchAllFinanceTransfersForFinanceOwner(currentUser);
+	        		model.addAttribute(ChunksFinanceConstants.CURRENT_FINANCE_TRANSFER_APPROVAL, fetchAllFinanceTransfersForFinanceOwner);	        			
+	        	}   
+	        // Fetching All Inter transfer Fund request for approval process. END
 		 
 		model.addAttribute(ChunksFinanceConstants.SELCTED_APPROVAL_DATE, givenDate);
 	}
