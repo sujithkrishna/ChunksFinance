@@ -8,6 +8,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.CustomAuthenticationFailureHandler;
 import com.finance.handler.LoginSuccessHandler;
 import com.finance.service.MemberDetailsService;
@@ -41,7 +42,7 @@ public class FinanceSecurityConfig {
 				.requestMatchers("/", "/views/**", "/financeLogin", "/index", "/about", "/services", "/contact", "/assets/**", "/vendor/**", "/assets/css/**", "/assets/fonts/**", "/assets/js/**", "/assets/images/**")
 				.permitAll().requestMatchers("/test-ping").permitAll()
 				.requestMatchers("/h2-console/**", "/secure/**", "/member/**").authenticated()
-				.requestMatchers("/finance/**","/enrolment/**", "/member/**", "/chits/**", "/settings/**").hasRole("SUPER_ADMIN")
+				.requestMatchers("/enrolment/**", "/member/**", "/chits/**", "/settings/**").hasRole(ChunksFinanceConstants.SUPER_ADMIN)
 				.anyRequest().authenticated() // Secure all other endpoints  
 		
 				).formLogin(form -> form.loginPage("/index") // UNCOMMENTED: Custom login page

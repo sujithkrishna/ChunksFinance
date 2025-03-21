@@ -13,6 +13,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String COMPLETED = "COMPLETED";
 	
+	public static final String SUPER_ADMIN = "SUPER_ADMIN";
+	
 	public static final String CHITS_DASH = "chits-";
 
 	public static final String ZERO = "0";
@@ -48,6 +50,8 @@ public class ChunksFinanceConstants {
 	public static final String PRIMARY = "Primary";
 	
 	public static final String CURRENT_USER = "currentUser";
+	
+	public static final String FINANCE_TRANSFER = "financeTransfer";
 	
 	public static final String LOANENQUIRES_NO = "loanenquiresNo";
 	
@@ -155,6 +159,10 @@ public class ChunksFinanceConstants {
 
 	public static final String PRIMARY_MEMBERS = "primaryMembers";
 	
+	public static final String SOURCE_FINANCE = "sourceFinance";
+	
+	public static final String DESTINATION_FINANCE = "destinationFinance";
+	
 	public static final String APPROVAL_PROCESS_SEQUENTIAL = "approvalProcessSequential";
 	
 	public static final String LOGIN_STATUS_NO = "loginStatusNo";
@@ -166,6 +174,8 @@ public class ChunksFinanceConstants {
 	public static final String MEMBER_CREATE_NEWUSER_MESSAGE = "member.create.newuser.message";
 	
 	public static final String FINANCE_CREATE_NEWFINANCE_MESSAGE = "finance.create.message";
+	
+	public static final String FINANCE_CREATE_NEWFINANCENOTAUTHORISED_MESSAGE = "finance.create.notauthorised.message";
 	
 	public static final String FINANCE_ALREADY_APPOVED_MESSAGE = "finance.already.appoved.message";
 	
@@ -206,6 +216,8 @@ public class ChunksFinanceConstants {
 	public static final String CREATE_CHITS_MESSAGE = "create.chits.message";
 	
 	public static final String USER_PASSWORD_WRONG_ERROR = "user.password.wrong.error";
+	
+	public static final String FINANCE_FUND_TRANSFER_MESSAGE = "finance.fund.transfer.message";
 	
 	public static final String FINANCE_LOGIN_ERROR = "/financeLogin?error";
 	

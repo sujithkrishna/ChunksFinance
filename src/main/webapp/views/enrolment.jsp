@@ -665,218 +665,219 @@
 			    font-size: 14px; /* Optional: Increase font size for better hierarchy */
 			    font-weight: 500; /* Optional: Match dashboard header weight */
 			} 
-/* Div-based Table Styles */
-.table-container {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-
-.table-row {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: #f9f9f9;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	padding: 0px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.table-row.header {
-	background-color: #334558;
-	color: white;
-	font-weight: bold;
-}
-
-.table-row.header .table-cell {
-	border-bottom: none;
-}
-
-
-.table-row.header .table-cell:nth-child(2) { /* Request Type */
-    flex: 3;
-    text-align: left;
-    padding-left: 30px; /* Increased from 20px */
-}
-
-.table-row:not(.header) .table-cell:nth-child(2) {
-    flex: 3;
-    text-align: left;
-    padding-left: 30px; /* Increased from 20px */
-    align-items: flex-start; /* Ensure content starts from left */
-}
-
-
-.table-row.header .table-cell:nth-child(3) { /* Amount */
-    flex: 0 1 150px;
-    text-align: right;
-    padding-right: 61px;
-    justify-content: flex-end; /* Add this line */
-    display: flex; /* Add this line */
-}
-
-.table-row:not(.header) .table-cell:nth-child(3) {
-    flex: 0 1 150px;
-    text-align: right;
-    padding-right: 35px;
-    justify-content: flex-end; /* Add this line */
-    display: flex; /* Add this line */
-}
-
-.table-row.header .table-cell:nth-child(5) {
-	padding-right: 22px;
-}
-.table-row.header .table-cell:nth-child(4) { /* Date Submitted */
-    flex: 1;
-    text-align: right;
-    padding-right:  68px;
-}
-
-.table-row:not(.header) .table-cell:nth-child(4) {
-    flex: 1;
-    text-align: right;
-    padding-right: 15px;
-}
-
-.table-cell {
-   padding: 8px 0; /* Adjust cell padding */
-}
-
-.table-cell:last-child {
-	text-align: right;
-}
-
-.button-group-approved {
-    display: flex;
-    gap: 8px;
-    flex-wrap: nowrap; /* Prevent wrapping to new line */
-    padding: 2px 0;
-    justify-content: flex-end; /* Align to right */
-    width: 100%; /* Take full available width */
-}
-
-.button-group-approved button {
-    padding: 6px 12px;
-    font-size: 12px;
-    height: 30px;
-    margin: 0; /* Remove any margin */
-    background-color: #3D3D3D;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: inline-flex;
-    white-space: nowrap; /* Prevent text wrapping */
-}
-
-.button-group-approved button i {
-	font-size: 12px;
-	transition: transform 0.2s ease;
-	margin-right: 5px;
-}
-
-.button-group-approved button:hover i {
-	transform: scale(1.1);
-}
-
-.button-group-approved button:hover {
-	background-color: #2c2c2c;
-}
-
-/* Specific style for delete button */
-.button-group-approved button.delete-btn {
-	background-color: #e74c3c;
-}
-
-.button-group-approved button.delete-btn:hover {
-	background-color: #c0392b;
-}
-
-.button-group-view {
-	display: flex;
-	gap: 10px;
-	justify-content: flex-end;
-}
-
-.button-group-view button {
-	padding: 10px 25px;
-	background-color: #3D3D3D;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	white-space: nowrap;
-	height: 40px; /* Match input height */
-}
-
-.button-group-view button i {
-	font-size: 14px;
-	transition: transform 0.2s ease;
-}
-
-.button-group-view button:hover i {
-	transform: scale(1.1);
-}
-
-.button-group-view button:hover {
-	background-color: #2c2c2c;
-}
-
-/* Specific style for delete button */
-.button-group-view button.delete-btn {
-	background-color: #e74c3c;
-}
-
-.button-group-view button.delete-btn:hover {
-	background-color: #c0392b;
-}		        
-
-/* Apply consistent input field styling */
-.table-row input[type="text"] {
-    width: 70%;
-    padding: 10px;
-    font-size: 14px;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    background-color: #fafafa;
-    color: #333;
-    transition: border-color 0.3s ease;
-    box-sizing: border-box;
-    max-width: 120px; /* Adjust based on your needs */
-    text-align: right;
-}
-
-/* Focus state */
-.table-row input[type="text"]:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-
-/* Error states */
-.table-row input.error {
-    border-color: #e74c3c !important;
-    animation: shake 0.4s ease;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .table-row input[type="text"] {
-        width: 100%;
-        max-width: none;
-    }
-    
-    .table-row .table-cell:nth-child(5) {
-        flex: 1;
-        justify-content: flex-start;
-    }
-}        
+			
+			/* Div-based Table Styles */
+			.table-container {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			
+			.table-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				background-color: #f9f9f9;
+				border: 1px solid #ddd;
+				border-radius: 8px;
+				padding: 0px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			}
+			
+			.table-row.header {
+				background-color: #334558;
+				color: white;
+				font-weight: bold;
+			}
+			
+			.table-row.header .table-cell {
+				border-bottom: none;
+			}
+			
+			
+			.table-row.header .table-cell:nth-child(2) { /* Request Type */
+			    flex: 3;
+			    text-align: left;
+			    padding-left: 30px; /* Increased from 20px */
+			}
+			
+			.table-row:not(.header) .table-cell:nth-child(2) {
+			    flex: 3;
+			    text-align: left;
+			    padding-left: 30px; /* Increased from 20px */
+			    align-items: flex-start; /* Ensure content starts from left */
+			}
+			
+			
+			.table-row.header .table-cell:nth-child(3) { /* Amount */
+			    flex: 0 1 150px;
+			    text-align: right;
+			    padding-right: 61px;
+			    justify-content: flex-end; /* Add this line */
+			    display: flex; /* Add this line */
+			}
+			
+			.table-row:not(.header) .table-cell:nth-child(3) {
+			    flex: 0 1 150px;
+			    text-align: right;
+			    padding-right: 35px;
+			    justify-content: flex-end; /* Add this line */
+			    display: flex; /* Add this line */
+			}
+			
+			.table-row.header .table-cell:nth-child(5) {
+				padding-right: 22px;
+			}
+			.table-row.header .table-cell:nth-child(4) { /* Date Submitted */
+			    flex: 1;
+			    text-align: right;
+			    padding-right:  68px;
+			}
+			
+			.table-row:not(.header) .table-cell:nth-child(4) {
+			    flex: 1;
+			    text-align: right;
+			    padding-right: 15px;
+			}
+			
+			.table-cell {
+			   padding: 8px 0; /* Adjust cell padding */
+			}
+			
+			.table-cell:last-child {
+				text-align: right;
+			}
+			
+			.button-group-approved {
+			    display: flex;
+			    gap: 8px;
+			    flex-wrap: nowrap; /* Prevent wrapping to new line */
+			    padding: 2px 0;
+			    justify-content: flex-end; /* Align to right */
+			    width: 100%; /* Take full available width */
+			}
+			
+			.button-group-approved button {
+			    padding: 6px 12px;
+			    font-size: 12px;
+			    height: 30px;
+			    margin: 0; /* Remove any margin */
+			    background-color: #3D3D3D;
+			    color: white;
+			    border: none;
+			    border-radius: 5px;
+			    cursor: pointer;
+			    transition: background-color 0.3s ease;
+			    display: inline-flex;
+			    white-space: nowrap; /* Prevent text wrapping */
+			}
+			
+			.button-group-approved button i {
+				font-size: 12px;
+				transition: transform 0.2s ease;
+				margin-right: 5px;
+			}
+			
+			.button-group-approved button:hover i {
+				transform: scale(1.1);
+			}
+			
+			.button-group-approved button:hover {
+				background-color: #2c2c2c;
+			}
+			
+			/* Specific style for delete button */
+			.button-group-approved button.delete-btn {
+				background-color: #e74c3c;
+			}
+			
+			.button-group-approved button.delete-btn:hover {
+				background-color: #c0392b;
+			}
+			
+			.button-group-view {
+				display: flex;
+				gap: 10px;
+				justify-content: flex-end;
+			}
+			
+			.button-group-view button {
+				padding: 10px 25px;
+				background-color: #3D3D3D;
+				color: white;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: background-color 0.3s ease;
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				white-space: nowrap;
+				height: 40px; /* Match input height */
+			}
+			
+			.button-group-view button i {
+				font-size: 14px;
+				transition: transform 0.2s ease;
+			}
+			
+			.button-group-view button:hover i {
+				transform: scale(1.1);
+			}
+			
+			.button-group-view button:hover {
+				background-color: #2c2c2c;
+			}
+			
+			/* Specific style for delete button */
+			.button-group-view button.delete-btn {
+				background-color: #e74c3c;
+			}
+			
+			.button-group-view button.delete-btn:hover {
+				background-color: #c0392b;
+			}		        
+			
+			/* Apply consistent input field styling */
+			.table-row input[type="text"] {
+			    width: 70%;
+			    padding: 10px;
+			    font-size: 14px;
+			    border: 2px solid #ccc;
+			    border-radius: 6px;
+			    background-color: #fafafa;
+			    color: #333;
+			    transition: border-color 0.3s ease;
+			    box-sizing: border-box;
+			    max-width: 120px; /* Adjust based on your needs */
+			    text-align: right;
+			}
+			
+			/* Focus state */
+			.table-row input[type="text"]:focus {
+			    border-color: #007bff;
+			    outline: none;
+			    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+			}
+			
+			/* Error states */
+			.table-row input.error {
+			    border-color: #e74c3c !important;
+			    animation: shake 0.4s ease;
+			}
+			
+			/* Mobile responsiveness */
+			@media (max-width: 768px) {
+			    .table-row input[type="text"] {
+			        width: 100%;
+			        max-width: none;
+			    }
+			    
+			    .table-row .table-cell:nth-child(5) {
+			        flex: 1;
+			        justify-content: flex-start;
+			    }
+			}        
     </style>
 </head>
 <body>
@@ -939,10 +940,14 @@
 				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 					<li><a href="member">Members</a></li>
 					<li><a href="chits">Chits</a></li>
-					<li><a href="finance">Finance</a></li>
-					<li><a href="enrolment" class="active">Enrolment</a></li>
 				</c:when>
-			</c:choose>
+			</c:choose>	
+					<li><a href="finance">Finance</a></li>
+			<c:choose>
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">		
+					<li><a href="enrolment" class="active">Enrolment</a></li>
+				</c:when>	
+			</c:choose>		
 		</ul>
 	</nav>
 

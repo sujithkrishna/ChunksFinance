@@ -72,6 +72,28 @@ public class CreateFinanceService {
 		return true;
 	}
 	
+	public List<FinanceModel> getActiveFinancesWithOwner(MemberModel currentUser) {
+		if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			 return financeRepository.findActiveFinances();
+		 }else {
+			 return financeRepository.findActiveFinancesWithOwner(currentUser);
+		 }
+	}
+	
+	
+	public List<FinanceModel> getActiveFinancesWithOwnerNotOwner(MemberModel currentUser) {
+		if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+			 return financeRepository.findActiveFinances();
+		 }else {
+			 List<FinanceModel> activeFinancesWithOwner = financeRepository.findActiveFinancesWithOwner(currentUser);
+			 if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1 ) {
+				 return financeRepository.findActiveFinancesWithOwnerNot(currentUser);
+			 }else {
+				 return null;
+			 }
+		 }
+	}
+	
 	
 	public List<FinanceModel> getAllSortedByLoanPriorityNum(){
 		return financeRepository.findAllSortedByLoanPriorityOrderNumber();

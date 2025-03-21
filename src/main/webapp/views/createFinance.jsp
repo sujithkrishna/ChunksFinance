@@ -288,7 +288,22 @@
                 text-align: center;
                 gap: 20px;
             }
-
+			
+			tab-nav {
+		        flex-direction: column;
+		        padding: 0;
+		    }
+		
+		    .tab-link {
+		        border-bottom: 1px solid #eee;
+		        width: 100%;
+		        text-align: left;
+		        padding: 12px 20px;
+		    }
+		
+		    .tab-link.active:after {
+		        display: none;
+		    }
             .user-profile {
                 width: auto;
                 justify-content: space-between;
@@ -579,7 +594,7 @@
         }
 
         button:hover {
-            background-color: #2c2c2c;
+            background-color: #6E6E6F;
         }
 
 
@@ -682,7 +697,60 @@
 		    display: block;
 		    opacity: 1;
 		    height: auto;
-		}				        
+		}
+		/* Tabbed Panel Styles */
+		.tabbed-panel {
+		    background: rgba(255, 255, 255, 0.95);
+		    border-radius: 10px;
+		    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		    width: 100%;
+		}
+		
+		.tab-nav {
+		    display: flex;
+		    border-bottom: 2px solid #f0f0f0;
+		    padding: 0 20px;
+		}
+		
+		.tab-link {
+		    padding: 15px 30px;
+		    background: none;
+		    border: none;
+		    cursor: pointer;
+		    font-size: 14px;
+		    color: #666;
+		    position: relative;
+		    transition: all 0.3s ease;
+		}
+		
+		.tab-link.active {
+		    color: #2c3e50;
+		    font-weight: 500;
+		}
+		
+		.tab-link.active:after {
+		    content: '';
+		    position: absolute;
+		    bottom: -2px;
+		    left: 0;
+		    right: 0;
+		    height: 3px;
+		    background: linear-gradient(135deg, #a3a3a3, #4d4d4d);
+		}
+		
+		.tab-link:hover:not(.active) {
+		    color: #007bff;
+		    background: rgba(0, 123, 255, 0.05);
+		}
+		
+		.tab-pane {
+		    display: none;
+		    padding: 25px;
+		}
+		
+		.tab-pane.active {
+		    display: block;
+		}						        
     </style>
 </head>
 <body>
@@ -744,10 +812,14 @@
 				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 					<li><a href="member">Members</a></li>
 					<li><a href="chits">Chits</a></li>
-					<li><a href="finance" class="active">Finance</a></li>
-					<li><a href="enrolment">Enrolment</a></li>
 				</c:when>
-			</c:choose>
+			</c:choose>	
+					<li><a href="finance" class="active">Finance</a></li>
+			<c:choose>
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">		
+					<li><a href="enrolment">Enrolment</a></li>
+				</c:when>	
+			</c:choose>		
 		</ul>
 	</nav>
 
@@ -776,96 +848,187 @@
                         <i class="fas fa-times"></i>
                     </div>
                 </div>	
-                <form action="finance" id="formcreateFinance" name="formcreateFinance"	>
-                    <!-- Finance Type -->
-                    <div class="form-group">
-                        <label for="finance-type">Finance Type</label>
-                        <select id="finance-type" name="financeType" class="input-field" required>
-                            <option value="" disabled selected>Select Finance Type</option>
-                            <option value="PRIMARY">Primary</option>
-                            <option value="SECONDARY">Secondary</option>
-                        </select>
-                        <div class="error-message" id="finance-type-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Type is required</span>
-                        </div>
-                    </div>
-
-                    <!-- Finance Name -->
-                    <div class="form-group">
-                        <label for="finance-name">Finance Name</label>
-                        <input type="text" id="finance-name" name="financeName" class="input-field" placeholder="Enter finance Name" required>
-                        <div class="error-message" id="finance-name-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Name is required</span>
-                        </div>
-                    </div>
-                    <!-- Finance Owner Name -->
-                    <div class="form-group">
-                        <label for="finance-owner">Finance Owner Name</label>
-                        <select id="finance-owner" name="financeOwner" class="input-field" required>
-                            <option value="" disabled selected>Select Person</option>
-					        <c:forEach items="${primaryMembers}" var="member">
-					            <option value="${member.no}">${member.memberName}</option>
-					        </c:forEach>  
-                        </select>
-                        
-                        <div class="error-message" id="finance-owner-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Owner Name is required</span>
-                        </div>
-                    </div>
-
-                    <!-- Finance Date -->
-                    <div class="form-group">
-                        <label for="finance-date">Finance Creation Date</label>
-                        <input type="date" id="finance-date"  name="financeCreationDate" class="input-field" required>
-                        <div class="error-message" id="finance-date-error">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <span>Finance Date is required</span>
-                        </div>
-                    </div>
-
-                    <!-- Finance Amount (Optional) -->
-                    <div class="form-group">
-                        <label for="finance-amount">Finance Amount</label>
-                        <input type="number" id="finance-amount"  name="financeAmount" class="input-field" placeholder="Enter finance amount">
-					    <!-- Add this error message -->
-					    <div class="error-message" id="finance-amount-error">
-					        <i class="fas fa-exclamation-circle"></i>
-					        <span>Finance Amount is required for Primary accounts</span>
-					    </div>                        
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="loan-priority-order-number">Loan Priority Order</label>
-                        <input type="number" id="loanPriorityOrderNumber"  name="loanPriorityOrderNumber" class="input-field" placeholder="Enter loan Priority Order Number">
-					    <!-- Add this error message -->
-					    <div class="error-message" id="finance-loan-priority-order-number-error">
-					        <i class="fas fa-exclamation-circle"></i>
-					        <span>loan Priority Order Number is required</span>
-					    </div>                        
-                    </div>  
-                    
-                    <div id="interest-group">
-					    <div class="form-group">
-					        <label for="finance-interest">Interest providing</label>
-					        <input type="number" id="interest-amount" name="interestAmount" class="input-field"  placeholder="Enter the interest Amount">
-					        <div class="error-message" id="interest-amount-error">
-					            <i class="fas fa-exclamation-circle"></i>
-					            <span>Interest amount is required for Secondary accounts</span>
-					        </div>
-					    </div>
-					</div>                                     
-
-                    <!-- Submit Button -->
-                    <div class="button-group">
-                        <button type="button" onclick="validateForm()"><i class="fa-solid fa-receipt"></i> Add Finance</button>
-                        <button type="button"><i class="fas fa-edit"></i> Edit</button>
-                        <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>
-                    </div>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                </form>
+                
+                	<div class="tabbed-panel">
+							<!-- Tab Headers -->
+							<div class="tab-nav">
+								<c:choose>
+								    <c:when test="${not empty financeTransfer}"><button class="tab-link" data-tab="financial-creation">Finance Creation</button><button class="tab-link active" data-tab="financial-transfer">Finance Inter transfer</button></c:when>
+								    <c:otherwise><button class="tab-link active" data-tab="financial-creation">Finance Creation</button><button class="tab-link" data-tab="financial-transfer">Finance Inter transfer</button></c:otherwise>
+								</c:choose>							
+							</div>
+							<!-- Tab Content -->
+							<div class="tab-content">
+								<!-- First Tab Content -->
+								
+								<c:choose>
+								    <c:when test="${not empty financeTransfer}"><div id="financial-creation" class="tab-pane"></c:when>
+								    <c:otherwise><div id="financial-creation" class="tab-pane active"></c:otherwise>
+								</c:choose>								
+									<div class="report-card">
+										<form action="finance" id="formcreateFinance" name="formcreateFinance"	>
+							                    <!-- Finance Type -->
+							                    <div class="form-group">
+							                        <label for="finance-type">Finance Type</label>
+							                        <select id="finance-type" name="financeType" class="input-field" required>
+							                            <option value="" disabled selected>Select Finance Type</option>
+							                            <option value="PRIMARY">Primary</option>
+							                            <option value="SECONDARY">Secondary</option>
+							                        </select>
+							                        <div class="error-message" id="finance-type-error">
+							                            <i class="fas fa-exclamation-circle"></i>
+							                            <span>Finance Type is required</span>
+							                        </div>
+							                    </div>
+							
+							                    <!-- Finance Name -->
+							                    <div class="form-group">
+							                        <label for="finance-name">Finance Name</label>
+							                        <input type="text" id="finance-name" name="financeName" class="input-field" placeholder="Enter finance Name" required>
+							                        <div class="error-message" id="finance-name-error">
+							                            <i class="fas fa-exclamation-circle"></i>
+							                            <span>Finance Name is required</span>
+							                        </div>
+							                    </div>
+							                    <!-- Finance Owner Name -->
+							                    <div class="form-group">
+							                        <label for="finance-owner">Finance Owner Name</label>
+							                        <select id="finance-owner" name="financeOwner" class="input-field" required>
+							                            <option value="" disabled selected>Select Person</option>
+												        <c:forEach items="${primaryMembers}" var="member">
+												            <option value="${member.no}">${member.memberName}</option>
+												        </c:forEach>  
+							                        </select>
+							                        
+							                        <div class="error-message" id="finance-owner-error">
+							                            <i class="fas fa-exclamation-circle"></i>
+							                            <span>Finance Owner Name is required</span>
+							                        </div>
+							                    </div>
+							
+							                    <!-- Finance Date -->
+							                    <div class="form-group">
+							                        <label for="finance-date">Finance Creation Date</label>
+							                        <input type="date" id="finance-date"  name="financeCreationDate" class="input-field" required>
+							                        <div class="error-message" id="finance-date-error">
+							                            <i class="fas fa-exclamation-circle"></i>
+							                            <span>Finance Date is required</span>
+							                        </div>
+							                    </div>
+							
+							                    <!-- Finance Amount (Optional) -->
+							                    <div class="form-group">
+							                        <label for="finance-amount">Finance Amount</label>
+							                        <input type="number" id="finance-amount"  name="financeAmount" class="input-field" placeholder="Enter finance amount">
+												    <!-- Add this error message -->
+												    <div class="error-message" id="finance-amount-error">
+												        <i class="fas fa-exclamation-circle"></i>
+												        <span>Finance Amount is required for Primary accounts</span>
+												    </div>                        
+							                    </div>
+							                    
+							                    <div class="form-group">
+							                        <label for="loan-priority-order-number">Loan Priority Order</label>
+							                        <input type="number" id="loanPriorityOrderNumber"  name="loanPriorityOrderNumber" class="input-field" placeholder="Enter loan Priority Order Number">
+												    <!-- Add this error message -->
+												    <div class="error-message" id="finance-loan-priority-order-number-error">
+												        <i class="fas fa-exclamation-circle"></i>
+												        <span>loan Priority Order Number is required</span>
+												    </div>                        
+							                    </div>  
+							                    
+							                    <div id="interest-group">
+												    <div class="form-group">
+												        <label for="finance-interest">Interest providing</label>
+												        <input type="number" id="interest-amount" name="interestAmount" class="input-field"  placeholder="Enter the interest Amount">
+												        <div class="error-message" id="interest-amount-error">
+												            <i class="fas fa-exclamation-circle"></i>
+												            <span>Interest amount is required for Secondary accounts</span>
+												        </div>
+												    </div>
+												</div>                                     
+							
+							                    <!-- Submit Button -->
+							                    <div class="button-group">
+							                        <button type="button" onclick="validateForm()"><i class="fa-solid fa-receipt"></i> Add Finance</button>
+							                        <button type="button"><i class="fas fa-edit"></i> Edit</button>
+							                        <button type="button" style="background-color: #e74c3c;"><i class="fas fa-trash-alt"></i> Delete</button>
+							                    </div>
+							                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							                </form>
+										
+									</div>
+								</div>
+				
+								
+	
+				
+								<!-- Second Tab Content -->
+								
+								<c:choose>
+								    <c:when test="${not empty financeTransfer}"><div id="financial-transfer" class="tab-pane active"></c:when>
+								    <c:otherwise><div id="financial-transfer" class="tab-pane"></c:otherwise>
+								</c:choose>							
+									<div class="report-card">
+										 <form method="post" action="finance-transfer" id="formfinancetransfer" name="formfinancetransfer">
+										 	  <div class="form-group">
+							                        <label for="finance-type">Source Fund</label>
+							                        <select name="sourceFinanceType" id="finance-source" class="input-field">
+							                            <option value="" disabled selected>Finance Type</option>
+							                            <c:forEach items="${sourceFinance}" var="financeItem">
+							                            	<option value="${financeItem.id}">${financeItem.financeName} by ${financeItem.financeOwner.memberName}</option> 
+							                            </c:forEach>
+							                        </select>
+							                        <div class="error-message" id="finance-source-error">
+							                            <i class="fas fa-exclamation-circle"></i>
+							                            <span>Please select a finance type</span>
+							                        </div>
+							                   </div>  
+											  <div class="form-group">
+								                        <label for="finance-type">Destination Fund</label>
+								                        <select name="destinationFinanceType" id="finance-destination" class="input-field">
+								                            <option value="" disabled selected>Finance Type</option>
+								                            <c:forEach items="${destinationFinance}" var="financeItem">
+								                            	<option value="${financeItem.id}">${financeItem.financeName} by ${financeItem.financeOwner.memberName}</option> 
+								                            </c:forEach>
+								                        </select>
+								                        <div class="error-message" id="finance-destination-error">
+								                            <i class="fas fa-exclamation-circle"></i>
+								                            <span>Please select a finance type</span>
+								                        </div>
+								              </div> 
+								              
+										 		<!-- Finance Amount (Optional) -->
+							                    <div class="form-group">
+							                        <label for="finance-transfer-amount">Finance Amount</label>
+							                        <input type="number" id="finance-transfer-amount"  name="financeAmount" class="input-field" placeholder="Enter finance amount">
+												    <!-- Add this error message -->
+												    <div class="error-message" id="finance-transfer-amount-error">
+												        <i class="fas fa-exclamation-circle"></i>
+												        <span>Finance Amount is required for finance transfer</span>
+												    </div>                        
+							               		</div>
+							               		
+							               		  <div class="button-group">
+							                        <button type="button" onclick="financeValidateForm()"><i class="fa-solid fa-receipt"></i> Transfer Fund</button>
+							                    </div>
+							               		
+										 	  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										 </form>
+										 
+									</div>
+								</div>
+													
+								
+								
+							</div>
+						</div>
+                
+                
+                
+                
+                
+                
             </section>
         </div>
     </main>
@@ -879,8 +1042,52 @@
 	</form>
     <script>
 	
+		    // Tabbed Panel Functionality
+		    document.querySelectorAll('.tab-link').forEach(link => {
+		        link.addEventListener('click', function(e) {
+		            e.preventDefault();
+		            
+		            // Remove active classes
+		            document.querySelectorAll('.tab-link, .tab-pane').forEach(el => {
+		                el.classList.remove('active');
+		            });
+		            
+		            // Add active classes
+		            this.classList.add('active');
+		            const tabId = this.getAttribute('data-tab');
+		            document.getElementById(tabId).classList.add('active');
+		        });
+		    });
 			 // Check for success message on page load
 		    document.addEventListener('DOMContentLoaded', function() {
+		    	
+		    	const sourceSelect = document.getElementById("finance-source");
+		        const destinationSelect = document.getElementById("finance-destination");
+		     // Store the original options of the destination combo box
+		        let originalOptions = Array.from(destinationSelect.options).map(option => ({
+		            value: option.value,
+		            text: option.text
+		        }));
+
+		        function updateDestinationOptions() {
+		            let selectedValue = sourceSelect.value;
+
+		            // Clear the destination combo box
+		            destinationSelect.innerHTML = "";
+
+		            // Re-add all original options except the selected one
+		            originalOptions.forEach(option => {
+		                if (option.value !== selectedValue) {
+		                    let newOption = document.createElement("option");
+		                    newOption.value = option.value;
+		                    newOption.textContent = option.text;
+		                    destinationSelect.appendChild(newOption);
+		                }
+		            });
+		        }
+		        // Attach event listener to the source combo box
+		        sourceSelect.addEventListener("change", updateDestinationOptions);
+		    	
 		    	
 		    	handleFinanceType();
 		    	const dateInput = document.getElementById('finance-date');
@@ -915,7 +1122,51 @@
 		    	    }
 		    }
 		    
-		 document.getElementById('finance-type').addEventListener('change', handleFinanceType);		    
+		 document.getElementById('finance-type').addEventListener('change', handleFinanceType);	
+		 function financeValidateForm() {
+			 let isValid = true;
+			 
+			 
+			 const financeSource = document.getElementById("finance-source");
+	         const financeDestination = document.getElementById("finance-destination");
+	         const financeTransferAmount = document.getElementById("finance-transfer-amount"); 
+	         
+	         clearError(financeSource, 'finance-type-error');
+	         clearError(financeDestination, 'finance-name-error');
+	         clearError(financeTransferAmount, 'finance-transfer-amount-error');
+			 
+	         if (!financeSource.value.trim()) {
+	                showError(financeSource, 'finance-source-error');
+	                isValid = false;
+	         }
+	         
+	         if (!financeDestination.value.trim()) {
+	                showError(financeDestination, 'finance-destination-error');
+	                isValid = false;
+	          }
+	         
+	         if (!financeTransferAmount.value.trim()) {
+	                showError(financeTransferAmount, 'finance-transfer-amount-error');
+	                isValid = false;
+	          }	   
+	         if (isValid) {
+	        	  const form = document.getElementById('formfinancetransfer');
+				    form.method = 'POST';
+				    form.action = 'finance-transfer'; // Your endpoint URL
+
+				    // Add CSRF token (required for Spring Security)
+				    const csrfToken = document.querySelector('input[name="_csrf"]').value;
+				    const csrfInput = document.createElement('input');
+				    csrfInput.type = 'hidden';
+				    csrfInput.name = '_csrf';
+				    csrfInput.value = csrfToken;
+				    form.appendChild(csrfInput);
+				    document.body.appendChild(form);
+				    form.submit();				
+	         }
+	         
+			 
+		 }
     
         function validateForm() {
 

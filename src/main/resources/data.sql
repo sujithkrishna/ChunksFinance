@@ -231,6 +231,23 @@ CREATE TABLE settings (
     last_updated_member_no INTEGER
 );
 
+
+
+CREATE TABLE finance_transfer (
+    id INTEGER NOT NULL PRIMARY KEY, -- Defining PRIMARY KEY inline
+    source_finance_type INTEGER,
+    destination_finance_type INTEGER, 
+    finance_amount DOUBLE, -- H2 uses DOUBLE for floating point numbers
+    finance_transfer_date DATE NOT NULL,
+    first_approver_member_no INTEGER,
+    first_approval_date_time TIMESTAMP(6),
+    second_approver_member_no INTEGER,
+    second_approval_date_time TIMESTAMP(6),
+    current_status VARCHAR(20) NOT NULL CHECK (current_status IN ('CLOSED', 'INITIAL_APPROVAL', 'REJECTED', 'REQUESTED'))
+);
+
+
+
 INSERT INTO settings (no, last_updated_date, settings_name, settings_value, last_updated_member_no) 
 VALUES (1, '2025-03-06 02:22:37.0538', 'approvalProcess', 'approvalProcessParallel', 12);
 
