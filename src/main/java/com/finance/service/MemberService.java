@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -42,6 +43,12 @@ public class MemberService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	private final CreateFinanceService financeService;
+
+    public MemberService(@Lazy CreateFinanceService financeService) {
+        this.financeService = financeService;
+    }
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean  createMember(MemberModel member) {
@@ -87,6 +94,10 @@ public class MemberService {
         if (currentUserDetails != null) {
             MemberModel currentUser = currentUserDetails.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = financeService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}	
 	}
 	

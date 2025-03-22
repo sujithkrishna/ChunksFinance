@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,8 +36,11 @@ public class RevenueService {
 	@Autowired
 	private SettingsService settingsService;
 	
-	@Autowired
-	private CreateFinanceService financeService;
+	private final CreateFinanceService financeService;
+
+    public RevenueService(@Lazy CreateFinanceService financeService) {
+        this.financeService = financeService;
+    }
 	
 
 	public Integer getMaxRevenueNumber() {

@@ -47,6 +47,10 @@ public class ChitsController {
 		if (currentUserModel != null) {
             MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = financeService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}
 		
 		List<FinanceModel> financeModel = financeService.getAllFinanceRecords();

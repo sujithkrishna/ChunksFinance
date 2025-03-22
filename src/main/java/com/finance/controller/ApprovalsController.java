@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,8 +19,10 @@ import com.finance.constant.ChunksFinanceConstants;
 import com.finance.exception.AlreadyApprovedException;
 import com.finance.exception.DateExpiredException;
 import com.finance.exception.FirstApprovalCannotbeSameException;
+import com.finance.model.FinanceModel;
 import com.finance.model.MemberModel;
 import com.finance.service.ApprovalsService;
+import com.finance.service.CreateFinanceService;
 import com.finance.user.MemberDetails;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +41,8 @@ public class ApprovalsController {
 	@Autowired
 	private ChunksFinancePropertyService propertyService;
 	
+	@Autowired
+	private CreateFinanceService financeService;
 	
 	@GetMapping(path = {"/approvals"})
 	public String handleApprovals(@AuthenticationPrincipal MemberDetails currentUserModel, Model model) {
@@ -45,6 +50,10 @@ public class ApprovalsController {
 		if (currentUserModel != null) {
 			currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = financeService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}	
 		//Fetching Revenue List
 		LocalDateTime localDateTimeInIST = ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime();

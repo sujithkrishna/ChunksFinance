@@ -42,6 +42,10 @@ public class CreateFinanceController {
 		if (currentUserModel != null) {
             MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = createFinanceService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}		
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
 		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);

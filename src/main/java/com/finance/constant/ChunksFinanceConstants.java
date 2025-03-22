@@ -51,6 +51,8 @@ public class ChunksFinanceConstants {
 	
 	public static final String CURRENT_USER = "currentUser";
 	
+	public static final String FINANCE_OWNER = "financeOwner";
+	
 	public static final String FINANCE_TRANSFER = "financeTransfer";
 	
 	public static final String LOANENQUIRES_NO = "loanenquiresNo";

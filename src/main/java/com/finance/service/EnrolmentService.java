@@ -34,11 +34,18 @@ public class EnrolmentService {
 	
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private CreateFinanceService financeService;
 
 	public void populateEnrolmentData(MemberDetails currentUserModel, Model model) {
 		if (currentUserModel != null) {
             MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = financeService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}
 		
 		List<FinanceModel> allSecondaryFinance = createFinanceService.getActiveSecondaryFinances();

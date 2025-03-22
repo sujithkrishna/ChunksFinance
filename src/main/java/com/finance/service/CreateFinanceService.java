@@ -9,12 +9,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.finance.constant.ChunksFinanceConstants;
 import com.finance.model.AccountModel;
 import com.finance.model.FinanceModel;
-import com.finance.model.LoanModel;
 import com.finance.model.MemberModel;
-import com.finance.model.SettingsModel;
 import com.finance.repository.AccountRepository;
 import com.finance.repository.FinanceRepository;
 
@@ -36,9 +33,6 @@ public class CreateFinanceService {
 	@Autowired
 	private AccountRepository accountRepository;
 	
-	@Autowired
-	private SettingsService settingsService;
-		
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED)
 	public boolean creatFinance(FinanceModel finance) {
 		if(null == finance.getCurrentBalance()) {

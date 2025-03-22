@@ -52,6 +52,8 @@ public class LoanService {
 	@Autowired
 	private CreateFinanceService financeService;
 	
+	
+	
 	public Integer getMaxLoanNumber() {
         return loanRepository.findMaxNo(); 
     }
@@ -69,7 +71,8 @@ public class LoanService {
         MemberModel loanApplicantName = loanModel.getLoanApplicantName();
         List<LoanModel> inProgressLoans = getInProgressLoans(loanReferenceName,loanApplicantName);
         if(null != inProgressLoans && inProgressLoans.size() >= 1) {
-        	throw new DuplicateLoanException();
+        	//Check with the team
+        	//throw new DuplicateLoanException();
         }
         
         Integer currentLoanNumber = getMaxLoanNumber();
@@ -111,6 +114,10 @@ public class LoanService {
 		if (currentUserModel != null) {
             MemberModel currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = financeService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
 		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);

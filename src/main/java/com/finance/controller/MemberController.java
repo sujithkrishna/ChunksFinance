@@ -31,6 +31,8 @@ public class MemberController {
 	@Autowired
 	private ChunksFinancePropertyService propertyService;
 	
+
+	
 	@GetMapping(path = {"/member"})
 	public String handleMember(@AuthenticationPrincipal MemberDetails currentUser,Model model) {
 		memberService.loadPrimaryMemCurrentUser(model,currentUser);

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.finance.constant.ChunksFinanceConstants;
+import com.finance.model.FinanceModel;
 import com.finance.model.LoanEnquiresModel;
 import com.finance.model.MemberModel;
 import com.finance.repository.LoanEnquiresRepository;
@@ -42,6 +43,9 @@ public class LoanEnquiresService {
 	@Autowired
 	private MemberRepository memberRepository;
 	
+	@Autowired
+	private CreateFinanceService financeService;
+	
 	public Integer getMaxLoanNumber() {
         return loanEnquiresRepository.findMaxNo(); 
     }
@@ -51,6 +55,10 @@ public class LoanEnquiresService {
 		if (currentUserModel != null) {
 			currentUser = currentUserModel.getMember();
             model.addAttribute(ChunksFinanceConstants.CURRENT_USER, currentUser);
+            List<FinanceModel> activeFinancesWithOwner = financeService.getActiveFinancesWithOwner(currentUser);
+            if(null != activeFinancesWithOwner && activeFinancesWithOwner.size() >=1) {
+            	model.addAttribute(ChunksFinanceConstants.FINANCE_OWNER, Boolean.TRUE);
+            }
 		}	
 		List<MemberModel> primaryMembers = memberService.getAllPrimaryMemeber();
 		model.addAttribute(ChunksFinanceConstants.PRIMARY_MEMBERS,primaryMembers);

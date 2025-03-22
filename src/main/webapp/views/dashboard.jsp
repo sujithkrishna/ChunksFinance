@@ -630,7 +630,11 @@ footer {
 							</h4>
 						</c:when>
 						<c:otherwise>
-				        Contributor
+				       <c:choose>
+							<c:when test="${not empty financeOwner}">Finance Owner</c:when>
+							<c:otherwise>Contributor</c:otherwise>
+						</c:choose>
+				        
 				    </c:otherwise>
 					</c:choose>
 				</div>
