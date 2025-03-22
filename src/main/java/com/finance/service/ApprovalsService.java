@@ -233,7 +233,7 @@ public class ApprovalsService {
 	        }
 	        
 	        // Bypassing here for Testing Remove below line after validation now.
-	        timeStatustoDisplay = true;
+	        //timeStatustoDisplay = true;
 	        
 	       
 	     // Fetching All paid Secondary for approval process. START
