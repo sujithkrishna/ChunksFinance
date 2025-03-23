@@ -1032,17 +1032,22 @@
 										            <div class="form-group">
 										                <label>Loan Status:</label>
 										                <div class="radio-group">
-										                    <label class="radio-option">
-										                        <input type="radio" name="loanStatus" value="running" checked>
-										                        <span class="radio-checkmark"></span>
-										                        Running Loans
-										                    </label>
-										                    <label class="radio-option">
-										                        <input type="radio" name="loanStatus" value="closed">
-										                        <span class="radio-checkmark"></span>
-										                        Closed Loans
-										                    </label>
-										                </div>
+															    <label class="radio-option">
+															        <input type="radio" name="loanStatus" value="all" checked>
+															        <span class="radio-checkmark"></span>
+															        All Loans
+															    </label>
+															    <label class="radio-option">
+															        <input type="radio" name="loanStatus" value="running">
+															        <span class="radio-checkmark"></span>
+															        Running Loans
+															    </label>
+															    <label class="radio-option">
+															        <input type="radio" name="loanStatus" value="closed">
+															        <span class="radio-checkmark"></span>
+															        Closed Loans
+															    </label>
+														</div>
 										            </div>
 										            
 			            							<div class="form-group">
@@ -1390,24 +1395,41 @@
         
         
         function filterLoans() {
-            // Get selected member ID from dropdown value
+            // Get selected member ID from dropdown
             const select = document.getElementById('finance-source');
-            const selectedId = select.value; // Get the value attribute which should contain the member.no
+            const selectedId = select.value;
             
-            // Get all table rows (excluding header)
+            // Get selected loan status from radio buttons
+            const selectedStatus = document.querySelector('input[name="loanStatus"]:checked').value;
+            
+            // Get all loan rows (excluding header)
             const rows = document.querySelectorAll('.table-container .table-row:not(.header)');
 
             rows.forEach(row => {
-                // Get the data attribute containing the loan reference ID
-                const loanRefId = row.dataset.loanRefId; // Using data attribute
+                // Get loan reference ID from data attribute
+                const loanRefId = row.dataset.loanRefId;
                 
-                if (selectedId === "" || loanRefId === selectedId) {
-                    row.style.display = 'flex';
+                // Get status text from the 5th cell's span
+                const statusCell = row.querySelector('.table-cell:nth-child(5) span');
+                const statusText = statusCell.textContent.trim();
+                
+                // Determine if member matches (if any selected)
+                const memberMatch = selectedId === "" || loanRefId === selectedId;
+                
+                // Determine if status matches
+                let statusMatch = false;
+                if (selectedStatus === 'all') {
+                    statusMatch = true;  // Show all statuses
+                } else if (selectedStatus === 'running') {
+                    statusMatch = statusText === 'RUNNING';
                 } else {
-                    row.style.display = 'none';
+                    statusMatch = statusText === 'CLOSED';
                 }
+                
+                // Show/hide row based on both conditions
+                row.style.display = (memberMatch && statusMatch) ? 'flex' : 'none';
             });
-        }        
+        }      
         
         function formatDate(date) {
 	        var d = new Date(date);

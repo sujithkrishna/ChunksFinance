@@ -698,7 +698,7 @@ input[type="date"]:focus {
 /* Updated Table Styles */
 .table-row.header .table-cell:nth-child(1), /* Requester */
 .table-row:not(.header) .table-cell:nth-child(1) {
-    flex: 1 0 21%; /* Minimum width for requester column */
+    flex: 1 0 22%; /* Minimum width for requester column */
     min-width: 190px;
     padding-left: 0px;
     overflow: hidden;
@@ -726,7 +726,7 @@ input[type="date"]:focus {
 
 .table-row.header .table-cell:nth-child(4), /* Date */
 .table-row:not(.header) .table-cell:nth-child(4) {
-    flex: 1 0 160px;
+    flex: 1 0 163px;
     text-align: right;
     padding-right: 25px;
 }
