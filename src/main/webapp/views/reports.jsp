@@ -920,8 +920,47 @@
 			#loan-reports .form-group {
 			    margin-left: 120px; /* Adjust this value as needed */
 			}
-  
-									        				
+		/* Modal Styles */
+		.modal {
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: rgba(0, 0, 0, 0.5);
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    z-index: 1000;
+		}
+		
+		.modal-content {
+		    background: white;
+		    padding: 25px;
+		    border-radius: 8px;
+		    width: 400px;
+		    position: relative;
+		}
+		
+		.close-btn {
+		    position: absolute;
+		    top: 10px;
+		    right: 15px;
+		    font-size: 24px;
+		    cursor: pointer;
+		}
+		
+		.detail-item {
+		    margin: 15px 0;
+		    display: flex;
+		    justify-content: space-between;
+		}
+		
+		.detail-item label {
+		    font-weight: 500;
+		    color: #2c3e50;
+		}  
+											        				
     </style>
     
 </head>
@@ -1027,6 +1066,39 @@
 						                <div id="loan-reports" class="tab-pane">
 										    <div class="report-card">
 										        <h3><i class="fas fa-hand-holding-usd"></i> Loan Portfolio</h3>
+										        <div id="loanDetailModal" class="modal" style="display:none;">
+												    <div class="modal-content">
+												        <span class="close-btn">&times;</span>
+												        <div class="loan-details">
+												            <h3>Loan Details</h3>
+												            <div class="detail-item">
+												                <label>Loan Number:</label>
+												                <span id="detail-loan-no"></span>
+												            </div>
+												            <div class="detail-item">
+												                <label>Borrower:</label>
+												                <span id="detail-borrower"></span>
+												            </div>
+												            <div class="detail-item">
+												                <label>Amount:</label>
+												                <span id="detail-amount"></span>
+												            </div>
+												             <div class="detail-item">
+												                <label>Current Status:</label>
+												                <span id="detail-status"></span>
+												            </div>
+												             <div class="detail-item">
+												                <label>Loan Start Date:</label>
+												                <span id="detail-start-date"></span>
+												            </div>		
+												             <div class="detail-item">
+												                <label>Loan End Date:</label>
+												                <span id="detail-end-date"></span>
+												            </div>													            										            
+												            <!-- Add other fields similarly -->
+												        </div>
+												    </div>
+												</div>
 										        <!-- Loan Filter Form -->
 										        <div class="form-container">
 										            <div class="form-group">
@@ -1086,13 +1158,35 @@
 										             <c:forEach items="${allLoans}" var="loans">
 													            <!-- Example Data Row -->
 													            <div class="table-row" data-loan-ref-id="${loans.loanReferenceName.no}">
-													                <div class="table-cell">${loans.loanNo}</div>
-													                <div class="table-cell">${loans.loanApplicantName.memberName}</div>
+													                <div class="table-cell">
+																	    <a href="javascript:void(0)" class="loan-detail-link" 
+																	       data-loan-no="${loans.loanNo}"
+																	       data-borrower="${loans.loanApplicantName.memberName}"
+																	       data-amount="${loans.loanAmount}"
+																	       data-interest="${loans.interestAmount}"
+																	       data-status="${loans.currentStatus}"
+																	       data-start-date="${loans.loanStartDate}"
+																	       data-closed-date="${loans.loanEndDate}" style="color: inherit; text-decoration: none;"> <!-- Replace with actual closed date field -->
+																	        ${loans.loanNo}
+																	    </a>
+																	</div>
+																	<div class="table-cell">
+																	    <a href="javascript:void(0)" class="loan-detail-link" 
+																	       data-loan-no="${loans.loanNo}"
+																	       data-borrower="${loans.loanApplicantName.memberName}"
+																	       data-amount="${loans.loanAmount}"
+																	       data-interest="${loans.interestAmount}"
+																	       data-status="${loans.currentStatus}"
+																	       data-start-date="${loans.loanStartDate}"
+																	       data-closed-date="${loans.loanEndDate}" style="color: inherit; text-decoration: none;"> <!-- Replace with actual closed date field -->
+																	        ${loans.loanApplicantName.memberName}
+																	    </a>
+																	</div>
 													                <div class="table-cell">&#8377;${loans.loanAmount}</div>
 													                <div class="table-cell">&#8377;${loans.interestAmount}</div>
 													                <div class="table-cell"><span class="status-active">${loans.currentStatus == 'INPROGRESS' ? 'RUNNING' : loans.currentStatus}</span></div>
-													                <div class="table-cell"><span class="formattedStartDate">${loans.loanDate}</span></div>
-													                <div class="table-cell">2024-03-15</div>
+													                <div class="table-cell"><span class="formattedStartDate">${loans.loanStartDate}</span></div>
+													                <div class="table-cell"><span class="formattedStartDate">${loans.loanEndDate}</span></div>
 													            </div>
 													  </c:forEach>
 										            
@@ -1225,7 +1319,60 @@
     </div>
 	
     <script>
+    function formatISODate(isoString) {
+        if (!isoString) return 'N/A';
+        const parts = isoString.split('-');
+        if (parts.length === 3) {
+        	return parts[2] + '-' + parts[1] + '-' + parts[0];
+        }
+        return isoString;
+    }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('loanDetailModal');
+        const closeBtn = document.querySelector('.close-btn');
+		
+        // Handle loan detail clicks
+        document.querySelectorAll('.loan-detail-link').forEach(link => {
+            link.addEventListener('click', function() {
+                // Extract data from attributes
+                const loanData = {
+                    no: this.dataset.loanNo,
+                    borrower: this.dataset.borrower,
+                    amount: '₹' + this.dataset.amount,
+                    interest: '₹' + this.dataset.interest,
+                    status: this.dataset.status === 'INPROGRESS' ? 'RUNNING' : 'CLOSED',
+                    startDate: formatISODate(this.dataset.startDate),
+                    closedDate: formatISODate(this.dataset.closedDate)
+                };
+
+                // Populate modal
+                document.getElementById('detail-loan-no').textContent = loanData.no;
+                document.getElementById('detail-borrower').textContent = loanData.borrower;
+                document.getElementById('detail-amount').textContent = loanData.amount;
+                document.getElementById('detail-status').textContent = loanData.status;
+                document.getElementById('detail-start-date').textContent = loanData.startDate;
+                document.getElementById('detail-end-date').textContent = loanData.closedDate;
+                // Populate other fields...
+
+                // Show modal
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+    
+    
  // Financial Chart Configuration
     const financialCtx = document.getElementById('financialChart').getContext('2d');
 
