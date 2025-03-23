@@ -223,7 +223,12 @@ public class ApprovalsService {
 			
 	        DayOfWeek targetDay = DayOfWeek.valueOf(secondaryApprovalCutDay.toUpperCase(Locale.ROOT));
 	        LocalTime cutOffTime = LocalTime.parse(secondaryApprovalCutTime, DateTimeFormatter.ofPattern(ChunksFinanceConstants.HH_MM));
-	        LocalDate nextTargetDate = todaywithZone.with(TemporalAdjusters.next(targetDay));
+	        LocalDate nextTargetDate = null;
+	        if (todaywithZone.getDayOfWeek() == targetDay) {
+	            nextTargetDate = todaywithZone; // If today is the target day, use today itself
+	        } else {
+	            nextTargetDate = todaywithZone.with(TemporalAdjusters.next(targetDay)); // Otherwise, get the next occurrence
+	        }
 	        LocalDateTime secondaryApprovalCutoffDateTime = LocalDateTime.of(nextTargetDate, cutOffTime);
 	        LocalDateTime endOfSunday = LocalDateTime.of(nextTargetDate, LocalTime.of(23, 59));
 	        System.out.println("-----localDateTimeIST----"+localDateTimeIST);
