@@ -33,6 +33,7 @@ public class FinanceTransferModel {
     	REQUESTED, 
     	INITIAL_APPROVAL,  
         REJECTED,
+        PENDING,
         CLOSED 
     }
     

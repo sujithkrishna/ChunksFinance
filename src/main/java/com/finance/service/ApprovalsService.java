@@ -42,6 +42,7 @@ import com.finance.repository.ChitsEmiDetailRepository;
 import com.finance.repository.ChitsRepository;
 import com.finance.repository.ExpensesRepository;
 import com.finance.repository.FinanceRepository;
+import com.finance.repository.FinanceTransferRepository;
 import com.finance.repository.LoanEmiDetailRepository;
 import com.finance.repository.LoanRepository;
 import com.finance.repository.RevenueRepository;
@@ -107,6 +108,9 @@ public class ApprovalsService {
 	
 	@Autowired
 	private FinanceTransferService financeTransferService;
+	
+	@Autowired
+	private FinanceTransferRepository financeTransferRepository;
 	
 	public void displayApprovalList(Model model, LocalDate givenDate,MemberModel currentUser) {
 		
@@ -233,7 +237,7 @@ public class ApprovalsService {
 	        }
 	        
 	        // Bypassing here for Testing Remove below line after validation now.
-	        //timeStatustoDisplay = true;
+	       // timeStatustoDisplay = true;
 	        
 	       
 	     // Fetching All paid Secondary for approval process. START
@@ -768,7 +772,95 @@ public class ApprovalsService {
 				 accountTransactionsRepository.save(accountTransationItem.get());
 				 return true;
 			 }
+		 }else if(ChunksFinanceConstants.FINTRANSFER.equals(currentType) && null != idNumber) {
+			 
+			 Optional<FinanceTransferModel> finTransferItem = financeTransferRepository.findById(Integer.parseInt(idNumber));
+			 if(null != finTransferItem && finTransferItem.isPresent()) {
+				 if(finTransferItem.get().getCurrentStatus().equals(FinanceTransferModel.CurrentStatus.REQUESTED)) {
+				     if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+				    	 finTransferItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+				    	 finTransferItem.get().setSecondapproverName(currentUserModel.getMember());
+				    	 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.INITIAL_APPROVAL);
+				    	 financeTransferRepository.save(finTransferItem.get());
+					 }else {
+						 finTransferItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+						 finTransferItem.get().setFirstapproverName(currentUserModel.getMember());
+						 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.INITIAL_APPROVAL);
+						 financeTransferRepository.save(finTransferItem.get());
+					 }
+				 }else if(finTransferItem.get().getCurrentStatus().equals(FinanceTransferModel.CurrentStatus.INITIAL_APPROVAL)) {
+					 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+				    	 finTransferItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+				    	 finTransferItem.get().setSecondapproverName(currentUserModel.getMember());
+				    	 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.PENDING);
+				    	 // Subtract from Source and add to Destination.
+				    	 Double sourceCurrentBalance = finTransferItem.get().getSourceFinanceType().getCurrentBalance();
+				    	 FinanceModel sourceFinanceType = finTransferItem.get().getSourceFinanceType();
+				    	 Double transferAmount = finTransferItem.get().getFinanceAmount();
+				    	 sourceCurrentBalance = sourceCurrentBalance - transferAmount;
+				    	 sourceFinanceType.setCurrentBalance(sourceCurrentBalance);
+				    	 Double destinationCurrentBalance = finTransferItem.get().getDestinationFinanceType().getCurrentBalance();
+				    	 FinanceModel destinationFinanceType = finTransferItem.get().getDestinationFinanceType();
+				    	 destinationCurrentBalance = destinationCurrentBalance + transferAmount;
+				    	 destinationFinanceType.setCurrentBalance(destinationCurrentBalance);
+				    	 financeRepository.save(sourceFinanceType);
+				    	 financeRepository.save(destinationFinanceType);
+				    	 financeTransferRepository.save(finTransferItem.get());
+					 }else {
+						 finTransferItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+						 finTransferItem.get().setFirstapproverName(currentUserModel.getMember());
+						 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.PENDING);
+						 // Subtract from Source and add to Destination.
+				    	 Double sourceCurrentBalance = finTransferItem.get().getSourceFinanceType().getCurrentBalance();
+				    	 FinanceModel sourceFinanceType = finTransferItem.get().getSourceFinanceType();
+				    	 Double transferAmount = finTransferItem.get().getFinanceAmount();
+				    	 sourceCurrentBalance = sourceCurrentBalance - transferAmount;
+				    	 sourceFinanceType.setCurrentBalance(sourceCurrentBalance);
+				    	 Double destinationCurrentBalance = finTransferItem.get().getDestinationFinanceType().getCurrentBalance();
+				    	 FinanceModel destinationFinanceType = finTransferItem.get().getDestinationFinanceType();
+				    	 destinationCurrentBalance = destinationCurrentBalance + transferAmount;
+				    	 destinationFinanceType.setCurrentBalance(destinationCurrentBalance);
+				    	 financeRepository.save(sourceFinanceType);
+				    	 financeRepository.save(destinationFinanceType);
+				    	 financeTransferRepository.save(finTransferItem.get());
+					 }
+				 }
+				 
+				 return true;
+			 }
+		 }else if(ChunksFinanceConstants.WEEKLYSECONDARY.equals(currentType) && null != idNumber) {
+			 
+			 Optional<AccountTransactionsModel> accountTransationItem = accountTransactionsRepository.findById(Integer.parseInt(idNumber));
+			 if(null != accountTransationItem && accountTransationItem.isPresent()) {
+				 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+					 accountTransationItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+					 accountTransationItem.get().setSecondapproverName(currentUserModel.getMember());
+					 if(null != accountTransationItem.get().getFirstApprovalTime() && null !=  accountTransationItem.get().getFirstapproverName()) {
+						 FinanceModel financeItem = accountTransationItem.get().getFinanceType();
+						 Double currentBalance = financeItem.getCurrentBalance();
+						 currentBalance = currentBalance + accountTransationItem.get().getPaidAmount().doubleValue();
+						 financeItem.setCurrentBalance(currentBalance);
+						 financeRepository.save(financeItem);
+					 }
+				 }else {
+					 accountTransationItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+					 accountTransationItem.get().setFirstapproverName(currentUserModel.getMember());
+					 if(null != accountTransationItem.get().getSecondApprovalTime() && null !=  accountTransationItem.get().getSecondapproverName()) {
+						 FinanceModel financeItem = accountTransationItem.get().getFinanceType();
+						 Double currentBalance = financeItem.getCurrentBalance();
+						 currentBalance = currentBalance + accountTransationItem.get().getPaidAmount().doubleValue();
+						 financeItem.setCurrentBalance(currentBalance);
+						 financeRepository.save(financeItem);
+					 }
+				 }
+				 accountTransactionsRepository.save(accountTransationItem.get());
+				 return true;
+			 }
+			 
+			 
+			 return true;
 		 }
+		 
 		 return false;
 	 }
 	 

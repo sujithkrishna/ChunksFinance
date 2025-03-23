@@ -25,15 +25,15 @@ public interface FinanceTransferRepository extends JpaRepository<FinanceTransfer
     @Query("SELECT MAX(f.id) FROM FinanceTransferModel f")
     Optional<Integer> findMaxId();	
     
-    @Query("SELECT f FROM FinanceTransferModel f WHERE f.currentStatus = :status AND f.sourceFinanceType = :sourceFinanceType AND f.firstApprovalTime IS NULL")
-    List<FinanceTransferModel> findAllByCurrentStatusAndSourceFinanceType(@Param("status") CurrentStatus status, @Param("sourceFinanceType") FinanceModel sourceFinanceType);
+    @Query("SELECT f FROM FinanceTransferModel f WHERE f.currentStatus IN :statusList AND f.destinationFinanceType = :destinationFinanceType AND f.firstApprovalTime IS NULL")
+    List<FinanceTransferModel> findAllByCurrentStatusAndSourceFinanceType(@Param("statusList") List<CurrentStatus> statusList, @Param("destinationFinanceType") FinanceModel sourceFinanceType);
 
     
-    @Query("SELECT f FROM FinanceTransferModel f WHERE f.currentStatus = :status AND f.firstApprovalTime IS NOT NULL AND f.secondApprovalTime IS NULL")
-    List<FinanceTransferModel> findAllByCurrentStatusForAdminSequential(@Param("status") CurrentStatus status);
+    @Query("SELECT f FROM FinanceTransferModel f WHERE f.currentStatus IN :statusList AND f.firstApprovalTime IS NOT NULL AND f.secondApprovalTime IS NULL")
+    List<FinanceTransferModel> findAllByCurrentStatusForAdminSequential(@Param("statusList") List<CurrentStatus> statusList);
 	
     
-    @Query("SELECT f FROM FinanceTransferModel f WHERE f.currentStatus = :status AND f.secondApprovalTime IS NULL")
-    List<FinanceTransferModel> findAllByCurrentStatusForAdminParallel(@Param("status") CurrentStatus status);
+    @Query("SELECT f FROM FinanceTransferModel f WHERE f.currentStatus IN :statusList AND f.secondApprovalTime IS NULL")
+    List<FinanceTransferModel> findAllByCurrentStatusForAdminParallel(@Param("statusList") List<CurrentStatus> statusList);
 	
 }

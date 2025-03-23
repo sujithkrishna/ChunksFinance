@@ -72,7 +72,7 @@ public class LoanService {
         List<LoanModel> inProgressLoans = getInProgressLoans(loanReferenceName,loanApplicantName);
         if(null != inProgressLoans && inProgressLoans.size() >= 1) {
         	//Check with the team
-        	//throw new DuplicateLoanException();
+        	throw new DuplicateLoanException();
         }
         
         Integer currentLoanNumber = getMaxLoanNumber();

@@ -58,8 +58,9 @@ public class FinanceTransferService {
 	public List<FinanceTransferModel> fetchAllFinanceTransfersForFinanceOwner(MemberModel currentUser){
 		List<FinanceTransferModel> pendingList = new ArrayList<FinanceTransferModel>();
 		List<FinanceModel> activeFinancesWithOwner = financeRepository.findActiveFinancesWithOwner(currentUser);
+		List<CurrentStatus> statusList = List.of(CurrentStatus.REQUESTED, CurrentStatus.INITIAL_APPROVAL);
 		for (FinanceModel financeModel : activeFinancesWithOwner) {
-			List<FinanceTransferModel> pendingRequestItem = financeTransferRepository.findAllByCurrentStatusAndSourceFinanceType(CurrentStatus.REQUESTED,financeModel);
+			List<FinanceTransferModel> pendingRequestItem = financeTransferRepository.findAllByCurrentStatusAndSourceFinanceType(statusList,financeModel);
 			pendingList.addAll(pendingRequestItem);
 		}
 		return pendingList;
@@ -72,10 +73,11 @@ public class FinanceTransferService {
 				 if(null != settingModelData) {
 					 approvalProcessStatus = settingModelData.getSettingsValue();
 				 }
+				 List<CurrentStatus> statusList = List.of(CurrentStatus.REQUESTED, CurrentStatus.INITIAL_APPROVAL); 
 				if(ChunksFinanceConstants.APPROVAL_PROCESS_SEQUENTIAL.equals(approvalProcessStatus)) {
-					return financeTransferRepository.findAllByCurrentStatusForAdminSequential(CurrentStatus.REQUESTED);
+					return financeTransferRepository.findAllByCurrentStatusForAdminSequential(statusList);
 				}else {
-					return financeTransferRepository.findAllByCurrentStatusForAdminParallel(CurrentStatus.REQUESTED);
+					return financeTransferRepository.findAllByCurrentStatusForAdminParallel(statusList);
 				}
 			}
 		return null;

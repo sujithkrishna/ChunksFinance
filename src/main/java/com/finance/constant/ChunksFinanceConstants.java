@@ -121,6 +121,10 @@ public class ChunksFinanceConstants {
 	
 	public static final String WEEKLY = "WEEKLY";
 	
+	public static final String FINTRANSFER = "FINTRANSFER";
+	
+	public static final String WEEKLYSECONDARY = "WEEKLYSECONDARY";
+	
 	public static final String NON_APPROVED_REVENUE_LIST = "nonApprovedRevenueList";
 	
 	public static final String NON_APPROVED_EXPENSES_LIST = "nonApprovedExpensesList";

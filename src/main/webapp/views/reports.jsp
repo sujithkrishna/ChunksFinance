@@ -1085,7 +1085,7 @@
 													                <div class="table-cell">${loans.loanApplicantName.memberName}</div>
 													                <div class="table-cell">&#8377;${loans.loanAmount}</div>
 													                <div class="table-cell">&#8377;${loans.interestAmount}</div>
-													                <div class="table-cell"><span class="status-active">Active</span></div>
+													                <div class="table-cell"><span class="status-active">${loans.currentStatus == 'INPROGRESS' ? 'RUNNING' : loans.currentStatus}</span></div>
 													                <div class="table-cell"><span class="formattedStartDate">${loans.loanDate}</span></div>
 													                <div class="table-cell">2024-03-15</div>
 													            </div>
