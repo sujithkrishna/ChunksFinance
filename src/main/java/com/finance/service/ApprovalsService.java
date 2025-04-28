@@ -292,7 +292,6 @@ public class ApprovalsService {
 	        
 	        
 	      // Fetching All Pre closure request for approval process. START
-	        
 	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
 	        	 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
 	        	 String approvalProcessStatus = null;
@@ -312,6 +311,9 @@ public class ApprovalsService {
 	        	}   
 	        // Fetching All Pre closure request for approval process. END
 		 
+	        
+	        
+	        
 	        // Fetching All Inter transfer Fund request for approval process. START
 	        if(currentUser.getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
 	        	 SettingsModel settingModelData = settingsService.getSettingByName(ChunksFinanceConstants.APPROVAL_PROCESS);
@@ -797,7 +799,7 @@ public class ApprovalsService {
 					 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
 				    	 finTransferItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 				    	 finTransferItem.get().setSecondapproverName(currentUserModel.getMember());
-				    	 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.PENDING);
+				    	 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.CLOSED);
 				    	 // Subtract from Source and add to Destination.
 				    	 Double sourceCurrentBalance = finTransferItem.get().getSourceFinanceType().getCurrentBalance();
 				    	 FinanceModel sourceFinanceType = finTransferItem.get().getSourceFinanceType();
@@ -814,7 +816,7 @@ public class ApprovalsService {
 					 }else {
 						 finTransferItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
 						 finTransferItem.get().setFirstapproverName(currentUserModel.getMember());
-						 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.PENDING);
+						 finTransferItem.get().setCurrentStatus(FinanceTransferModel.CurrentStatus.CLOSED);
 						 // Subtract from Source and add to Destination.
 				    	 Double sourceCurrentBalance = finTransferItem.get().getSourceFinanceType().getCurrentBalance();
 				    	 FinanceModel sourceFinanceType = finTransferItem.get().getSourceFinanceType();
@@ -864,8 +866,98 @@ public class ApprovalsService {
 			 
 			 
 			 return true;
+		 }else if(ChunksFinanceConstants.LOAN_LOAN_PRECLOSURE.equals(currentType) && null != idNumber) {
+			 System.out.println("--------idNumber-----------"+idNumber);
+			 Optional<LoanModel> loanItem = loanRepository.findByLoanNo(Integer.parseInt(idNumber));
+			 if(loanItem.isPresent()) {
+				 if(loanItem.get().getCurrentStatus().equals(CurrentStatus.PRECLOSURE_REQUEST)) {
+					 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+						 	loanItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+			 				loanItem.get().setSecondapproverName(currentUserModel.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.PRECLOSURE_INITIAL_APPROVAL);
+			 				loanRepository.save(loanItem.get());
+					 }else {
+						 	loanItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+			 				loanItem.get().setFirstapproverName(currentUserModel.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.PRECLOSURE_INITIAL_APPROVAL);
+			 				loanRepository.save(loanItem.get());
+					 }
+				 }else if(loanItem.get().getCurrentStatus().equals(CurrentStatus.PRECLOSURE_INITIAL_APPROVAL)) {
+					 if(currentUserModel.getMember().getRole().equals(MemberModel.ROLE.SUPER_ADMIN)) {
+						 	loanItem.get().setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+			 				loanItem.get().setSecondapproverName(currentUserModel.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.PRECLOSURE_CLOSED);	
+			 				// Close other EMI as well.
+			 				BigDecimal remainingBalance = loanItem.get().getRemainingBalance();
+			 				BigDecimal receivedAmount = loanItem.get().getReceivedAmount();
+			 				BigDecimal completeAmt = remainingBalance.add(receivedAmount);
+			 				loanItem.get().setRemainingBalance(BigDecimal.ZERO);
+			 				loanItem.get().setReceivedAmount(completeAmt);
+			 				loanItem.get().setPreclosureAmount(remainingBalance);
+			 				loanItem.get().setLoanPreclosureDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDate());
+			 				loanRepository.save(loanItem.get());
+			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
+			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
+			 					if(loanEmiItem.getCurrentStatus().equals(com.finance.model.LoanEmiDetail.CurrentStatus.INPROGRESS)) {
+			 						loanEmiItem.setCurrentStatus(com.finance.model.LoanEmiDetail.CurrentStatus.PRECLOSE);
+			 						loanEmiItem.setSecondApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+				 					loanEmiItem.setSecondapproverName(currentUserModel.getMember());
+				 					loanEmiItem.setPaidAmount(loanEmiItem.getEmiAmount());
+				 					loanEmiItem.setPaymentDateAndTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+				 					loanEmiItem.setPaidOnTime(true);
+				 				}
+			 					emiDetailRepository.save(loanEmiItem);
+							}
+			 				
+			 				// Update the Finance with current balance should subtract from Disbursement amt
+			 				FinanceModel financeItem =  loanItem.get().getFinanceType();
+			 				Double currentFinBal = financeItem.getCurrentBalance();
+			 				currentFinBal = currentFinBal + Double.valueOf(loanItem.get().getPreclosureAmount().doubleValue());
+			 				financeItem.setCurrentBalance(currentFinBal);
+			 				financeRepository.save(financeItem);
+			 				
+			 				
+					 }else {
+						 	loanItem.get().setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+			 				loanItem.get().setFirstapproverName(currentUserModel.getMember());
+			 				loanItem.get().setCurrentStatus(CurrentStatus.PRECLOSURE_CLOSED);
+			 				// 	Close other EMI as well.
+			 				BigDecimal remainingBalance = loanItem.get().getRemainingBalance();
+			 				BigDecimal receivedAmount = loanItem.get().getReceivedAmount();
+			 				BigDecimal completeAmt = remainingBalance.add(receivedAmount);
+			 				loanItem.get().setRemainingBalance(BigDecimal.ZERO);
+			 				loanItem.get().setReceivedAmount(completeAmt);
+			 				loanItem.get().setPreclosureAmount(remainingBalance);
+			 				loanItem.get().setLoanPreclosureDate(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDate());
+			 				loanRepository.save(loanItem.get());
+			 				
+			 				List<LoanEmiDetail> emiDetails = loanItem.get().getEmiDetails();
+			 				for (LoanEmiDetail loanEmiItem : emiDetails) {
+			 					if(loanEmiItem.getCurrentStatus().equals(com.finance.model.LoanEmiDetail.CurrentStatus.INPROGRESS)) {
+			 						loanEmiItem.setCurrentStatus(com.finance.model.LoanEmiDetail.CurrentStatus.PRECLOSE);
+			 						loanEmiItem.setFirstApprovalTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+				 					loanEmiItem.setFirstapproverName(currentUserModel.getMember());
+				 					loanEmiItem.setPaidAmount(loanEmiItem.getEmiAmount());
+				 					loanEmiItem.setPaymentDateAndTime(ZonedDateTime.now(ZoneId.of(ChunksFinanceConstants.ASIA_KOLKATA)).toLocalDateTime());
+				 					loanEmiItem.setPaidOnTime(true);
+				 				}
+			 					emiDetailRepository.save(loanEmiItem);
+							}
+			 			// Update the Finance with current balance should subtract from Disbursement amt
+			 				FinanceModel financeItem =  loanItem.get().getFinanceType();
+			 				Double currentFinBal = financeItem.getCurrentBalance();
+			 				currentFinBal = currentFinBal + Double.valueOf(loanItem.get().getPreclosureAmount().doubleValue());
+			 				financeItem.setCurrentBalance(currentFinBal);
+			 				financeRepository.save(financeItem);
+			 				
+					 }
+				 }
+			 }else {
+				// Loan Is not present in the system 
+			 }
+			 
+			 return true;
 		 }
-		 
 		 return false;
 	 }
 	 

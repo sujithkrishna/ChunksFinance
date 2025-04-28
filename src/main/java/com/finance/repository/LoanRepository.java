@@ -32,13 +32,13 @@ public interface LoanRepository extends JpaRepository<LoanModel, Integer> {
     @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.secondApprovalTime IS NULL ORDER BY l.loanDate ASC")
     List<LoanModel> findLoansByStatusWithSecondApproval(List<LoanModel.CurrentStatus> currentStatuses);
  
-    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstapproverName.no = :firstApproverMemberNo ORDER BY l.loanDate ASC")
+    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstapproverName.no = :firstApproverMemberNo AND l.firstApprovalTime IS NULL ORDER BY l.loanDate ASC")
     List<LoanModel> findLoansByPreclosure(List<LoanModel.CurrentStatus> currentStatuses,Integer firstApproverMemberNo);
     
-    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstApprovalTime IS NOT NULL ORDER BY l.loanDate ASC")
+    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.secondApprovalTime IS NULL AND l.firstApprovalTime IS NOT NULL ORDER BY l.loanDate ASC")
     List<LoanModel> findLoansByPreclosureAdminSequential(List<LoanModel.CurrentStatus> currentStatuses);
     
-    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses ORDER BY l.loanDate ASC")
+    @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.secondApprovalTime IS NULL ORDER BY l.loanDate ASC")
     List<LoanModel> findLoansByPreclosureAdminParallel(List<LoanModel.CurrentStatus> currentStatuses);
     
     @Query("SELECT l FROM LoanModel l WHERE l.currentStatus IN :currentStatuses AND l.firstApprovalTime IS NOT NULL AND l.secondApprovalTime IS NULL ORDER BY l.loanDate ASC")

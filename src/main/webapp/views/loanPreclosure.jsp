@@ -1173,7 +1173,7 @@
 			                            
 			                            <div class="form-group">
 			                                <label for="pre-closure-amount">Pre closure Amount</label>
-			                                <input type="text" id="pre-closure-amount" name="preclosureamount" style="background-color: #b8e1b8;font-weight: bold;" value="${loanItem.remainingBalance}" class="input-field" placeholder="Enter yet to receive amount" readonly>
+			                                <input type="text" id="pre-closure-amount" name="preclosureamount" style="background-color: #b8e1b8;font-weight: bold;" value="${loanItem.preclosureAmount}" class="input-field" placeholder="Enter yet to receive amount" readonly>
 			                            </div>			                            
 			                        </div>
 			                    </div>
@@ -1187,39 +1187,39 @@
 			                                <!-- EMI 1 to EMI 9 -->
 			                                <div class="form-group">
 			                                    <label for="emi-1">EMI 1</label>
-			                                    <input type="text" id="emi-1" name="emi-1" style="background-color: ${loanItem.emiDetails[0].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[0].emiAmount}" placeholder="Enter EMI 1 amount" readonly>
+			                                    <input type="text" id="emi-1" name="emi-1" style="background-color: ${loanItem.emiDetails[0].currentStatus == 'PAID'  || loanItem.emiDetails[0].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[0].emiAmount}" placeholder="Enter EMI 1 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-2">EMI 2</label>
-			                                    <input type="text" id="emi-2" name="emi-2" style="background-color: ${loanItem.emiDetails[1].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[1].emiAmount}" placeholder="Enter EMI 2 amount" readonly>
+			                                    <input type="text" id="emi-2" name="emi-2" style="background-color: ${loanItem.emiDetails[1].currentStatus == 'PAID'  || loanItem.emiDetails[1].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[1].emiAmount}" placeholder="Enter EMI 2 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-3">EMI 3</label>
-			                                    <input type="text" id="emi-3" style="background-color: ${loanItem.emiDetails[2].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" name="emi-3" class="input-field" value="${loanItem.emiDetails[2].emiAmount}" placeholder="Enter EMI 3 amount" readonly>
+			                                    <input type="text" id="emi-3" style="background-color: ${loanItem.emiDetails[2].currentStatus == 'PAID'  || loanItem.emiDetails[2].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" name="emi-3" class="input-field" value="${loanItem.emiDetails[2].emiAmount}" placeholder="Enter EMI 3 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-4">EMI 4</label>
-			                                    <input type="text" id="emi-4" name="emi-4" style="background-color: ${loanItem.emiDetails[3].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[3].emiAmount}" placeholder="Enter EMI 4 amount" readonly>
+			                                    <input type="text" id="emi-4" name="emi-4" style="background-color: ${loanItem.emiDetails[3].currentStatus == 'PAID'  || loanItem.emiDetails[3].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[3].emiAmount}" placeholder="Enter EMI 4 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-5">EMI 5</label>
-			                                    <input type="text" id="emi-5" name="emi-5" style="background-color: ${loanItem.emiDetails[4].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[4].emiAmount}" placeholder="Enter EMI 5 amount" readonly>
+			                                    <input type="text" id="emi-5" name="emi-5" style="background-color: ${loanItem.emiDetails[4].currentStatus == 'PAID'  || loanItem.emiDetails[4].currentStatus == 'PRECLOSE' ?  '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[4].emiAmount}" placeholder="Enter EMI 5 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-6">EMI 6</label>
-			                                    <input type="text" id="emi-6" name="emi-6" style="background-color: ${loanItem.emiDetails[5].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[5].emiAmount}" placeholder="Enter EMI 6 amount" readonly>
+			                                    <input type="text" id="emi-6" name="emi-6" style="background-color: ${loanItem.emiDetails[5].currentStatus == 'PAID' || loanItem.emiDetails[5].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[5].emiAmount}" placeholder="Enter EMI 6 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-7">EMI 7</label>
-			                                    <input type="text" id="emi-7" name="emi-7" style="background-color: ${loanItem.emiDetails[6].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[6].emiAmount}" placeholder="Enter EMI 7 amount" readonly>
+			                                    <input type="text" id="emi-7" name="emi-7" style="background-color: ${loanItem.emiDetails[6].currentStatus == 'PAID' || loanItem.emiDetails[6].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[6].emiAmount}" placeholder="Enter EMI 7 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-8">EMI 8</label>
-			                                    <input type="text" id="emi-8" name="emi-8" style="background-color: ${loanItem.emiDetails[7].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[7].emiAmount}" placeholder="Enter EMI 8 amount" readonly>
+			                                    <input type="text" id="emi-8" name="emi-8" style="background-color: ${loanItem.emiDetails[7].currentStatus == 'PAID' || loanItem.emiDetails[7].currentStatus == 'PRECLOSE' ?  '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[7].emiAmount}" placeholder="Enter EMI 8 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-9">EMI 9</label>
-			                                    <input type="text" id="emi-9" name="emi-9" style="background-color: ${loanItem.emiDetails[8].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[8].emiAmount}" placeholder="Enter EMI 9 amount" readonly>
+			                                    <input type="text" id="emi-9" name="emi-9" style="background-color: ${loanItem.emiDetails[8].currentStatus == 'PAID' || loanItem.emiDetails[8].currentStatus == 'PRECLOSE' ?  '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[8].emiAmount}" placeholder="Enter EMI 9 amount" readonly>
 			                                </div>
 			                            </div>
 			
@@ -1227,35 +1227,35 @@
 			                                <!-- EMI 10 to EMI 17 -->
 			                                <div class="form-group">
 			                                    <label for="emi-10">EMI 10</label>
-			                                    <input type="text" id="emi-10" name="emi-10" style="background-color: ${loanItem.emiDetails[9].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[9].emiAmount}" placeholder="Enter EMI 10 amount" readonly>
+			                                    <input type="text" id="emi-10" name="emi-10" style="background-color: ${loanItem.emiDetails[9].currentStatus == 'PAID' || loanItem.emiDetails[9].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[9].emiAmount}" placeholder="Enter EMI 10 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-11">EMI 11</label>
-			                                    <input type="text" id="emi-11" name="emi-11" style="background-color: ${loanItem.emiDetails[10].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[10].emiAmount}" placeholder="Enter EMI 11 amount" readonly>
+			                                    <input type="text" id="emi-11" name="emi-11" style="background-color: ${loanItem.emiDetails[10].currentStatus == 'PAID' || loanItem.emiDetails[10].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[10].emiAmount}" placeholder="Enter EMI 11 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-12">EMI 12</label>
-			                                    <input type="text" id="emi-12" name="emi-12" style="background-color: ${loanItem.emiDetails[11].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[11].emiAmount}" placeholder="Enter EMI 12 amount" readonly>
+			                                    <input type="text" id="emi-12" name="emi-12" style="background-color: ${loanItem.emiDetails[11].currentStatus == 'PAID' || loanItem.emiDetails[11].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[11].emiAmount}" placeholder="Enter EMI 12 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-13">EMI 13</label>
-			                                    <input type="text" id="emi-13" name="emi-13" style="background-color: ${loanItem.emiDetails[12].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[12].emiAmount}" placeholder="Enter EMI 13 amount" readonly>
+			                                    <input type="text" id="emi-13" name="emi-13" style="background-color: ${loanItem.emiDetails[12].currentStatus == 'PAID'  || loanItem.emiDetails[12].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[12].emiAmount}" placeholder="Enter EMI 13 amount" readonly>
 			                                </div>
 			                                <div class="form-group">
 			                                    <label for="emi-14">EMI 14</label>
-			                                    <input type="text" id="emi-14" name="emi-14" style="background-color: ${loanItem.emiDetails[14].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[13].emiAmount}" placeholder="Enter EMI 14 amount" readonly>
+			                                    <input type="text" id="emi-14" name="emi-14" style="background-color: ${loanItem.emiDetails[13].currentStatus == 'PAID' || loanItem.emiDetails[13].currentStatus == 'PRECLOSE' ?  '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[13].emiAmount}" placeholder="Enter EMI 14 amount" readonly>
 			                                </div>
 											<div class="form-group">
 											  <label for="emi-15">EMI 15</label>
-											  <input type="text" id="emi-15" name="emi-15" style="background-color: ${loanItem.emiDetails[14].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[14].emiAmount}" placeholder="Enter EMI 15 amount" readonly>
+											  <input type="text" id="emi-15" name="emi-15" style="background-color: ${loanItem.emiDetails[14].currentStatus == 'PAID' || loanItem.emiDetails[14].currentStatus == 'PRECLOSE' ?  '#b8e1b8' : '#fd9d9d8c'};" class="input-field" value="${loanItem.emiDetails[14].emiAmount}" placeholder="Enter EMI 15 amount" readonly>
 											</div>
 											<div class="form-group">
 											  <label for="emi-16">EMI 16</label> 
-											  <input type="text" id="emi-16" name="emi-16" style="background-color: ${loanItem.emiDetails[15].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" value="${loanItem.emiDetails[15].emiAmount}" class="input-field" placeholder="Enter EMI 16 amount" readonly>
+											  <input type="text" id="emi-16" name="emi-16" style="background-color: ${loanItem.emiDetails[15].currentStatus == 'PAID' || loanItem.emiDetails[15].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" value="${loanItem.emiDetails[15].emiAmount}" class="input-field" placeholder="Enter EMI 16 amount" readonly>
 											</div>
 											<div class="form-group">
 											  <label for="emi-17">EMI 17</label>
-											  <input type="text" id="emi-17" name="emi-17" style="background-color: ${loanItem.emiDetails[16].currentStatus == 'PAID' ? '#b8e1b8' : '#fd9d9d8c'};" value="${loanItem.emiDetails[16].emiAmount}"  class="input-field" placeholder="Enter EMI 17 amount" readonly>
+											  <input type="text" id="emi-17" name="emi-17" style="background-color: ${loanItem.emiDetails[16].currentStatus == 'PAID' || loanItem.emiDetails[16].currentStatus == 'PRECLOSE' ? '#b8e1b8' : '#fd9d9d8c'};" value="${loanItem.emiDetails[16].emiAmount}"  class="input-field" placeholder="Enter EMI 17 amount" readonly>
 											</div>
 										  </div>
 										</div>
