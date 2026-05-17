@@ -29,6 +29,14 @@ public class MemberDetails implements UserDetails {
         return member;
     }
 
+    public String getMemberName() {
+        return member.getMemberName();
+    }
+
+    public String getRole() {
+        return member.getRole().name();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Convert user roles into Spring Security GrantedAuthorities

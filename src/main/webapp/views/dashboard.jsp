@@ -668,10 +668,11 @@ footer {
 			</c:choose>	
 					<li><a href="finance">Finance</a></li>
 			<c:choose>
-				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">		
+				<c:when test="${currentUser.role == 'SUPER_ADMIN'}">
 					<li><a href="enrolment">Enrolment</a></li>
-				</c:when>	
-			</c:choose>		
+					<li><a href="excel">Excel</a></li>
+				</c:when>
+			</c:choose>
 		</ul>
 	</nav>
 

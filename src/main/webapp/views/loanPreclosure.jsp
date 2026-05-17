@@ -1444,7 +1444,7 @@
         // Add input event listeners to clear errors
         document.querySelectorAll('.input-field').forEach(input => {
             input.addEventListener('input', function() {
-                const errorId = `${this.id}-error`;
+                const errorId = this.id + '-error';
                 clearError(this, errorId);
             });
         });
@@ -1452,7 +1452,7 @@
         // Add change listeners for select elements
         document.querySelectorAll('select.input-field').forEach(select => {
             select.addEventListener('change', function() {
-                const errorId = `${this.id}-error`;
+                const errorId = this.id + '-error';
                 clearError(this, errorId);
             });
         });

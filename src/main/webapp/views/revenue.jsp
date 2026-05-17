@@ -975,7 +975,7 @@
         // Add input event listeners to clear errors
         document.querySelectorAll('.input-field').forEach(input => {
             input.addEventListener('input', function() {
-                const errorId = `${this.id}-error`;
+                const errorId = this.id + '-error';
                 clearError(this, errorId);
             });
         });

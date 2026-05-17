@@ -51,7 +51,7 @@ public class FinanceSecurityConfig {
 	            ).permitAll()
 	            .requestMatchers("/test-ping").permitAll()
 	            .requestMatchers("/secure/**", "/member/**").authenticated()
-	            .requestMatchers("/enrolment/**", "/member/**", "/chits/**", "/settings/**")
+	            .requestMatchers("/enrolment/**", "/excel/**", "/member/**", "/chits/**", "/settings/**")
 	                .hasRole(ChunksFinanceConstants.SUPER_ADMIN)
 	            .anyRequest().authenticated()
 	        )
